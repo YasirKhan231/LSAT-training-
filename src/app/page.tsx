@@ -1,5 +1,13 @@
-import Image from "next/image";
+// app/dashboard/page.tsx
+import ProtectedRoute from "../../components/ProtectRoute";
 
-export default function Home() {
-  return " hi from the main app";
+export default function DashboardPage() {
+  return (
+    <ProtectedRoute>
+      <div>
+        <h1>Dashboard</h1>
+        <p>Welcome to your dashboard!</p>
+      </div>
+    </ProtectedRoute>
+  );
 }
