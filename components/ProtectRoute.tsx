@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import { auth } from "../lib/firebase";
+import { auth } from "@/lib/firebase";
 
 const publicRoutes = ["/login", "/signup"]; // Pages that don’t require authentication
 

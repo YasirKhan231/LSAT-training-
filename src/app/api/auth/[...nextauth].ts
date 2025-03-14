@@ -1,10 +1,9 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { FirestoreAdapter } from "@next-auth/firebase-adapter";
-import { cert } from "firebase-admin/app";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../../../lib/firebase";
+import { auth } from "@/lib/firebase";
+import { firestore } from "@/lib/firebaseAdmin"; // Import Firestore instance
 
 export default NextAuth({
   providers: [
@@ -27,6 +26,13 @@ export default NextAuth({
           const userCredential = await signInWithEmailAndPassword(auth, credentials.email, credentials.password);
           const user = userCredential.user;
 
+          // Save user data to Firestore
+          await firestore.collection("users").doc(user.uid).set({
+            id: user.uid,
+            email: user.email,
+            name: user.displayName || "User",
+          });
+
           return {
             id: user.uid,
             email: user.email,
@@ -39,13 +45,27 @@ export default NextAuth({
       },
     }),
   ],
-  adapter: FirestoreAdapter({
-    credential: cert({
-      projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID!,
-      clientEmail: process.env.FIREBASE_CLIENT_EMAIL!,
-      privateKey: process.env.FIREBASE_PRIVATE_KEY!.replace(/\\n/g, "\n"),
-    }),
-  }),
+  callbacks: {
+    async session({ session, token }) {
+      // Ensure token.sub is defined
+      if (token.sub) {
+        // Fetch user data from Firestore
+        const userDoc = await firestore.collection("users").doc(token.sub).get();
+        if (userDoc.exists) {
+          session.user = userDoc.data();
+        }
+      } else {
+        console.warn("Token.sub is undefined. Unable to fetch user data from Firestore.");
+      }
+      return session;
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        token.sub = user.id; // Store user ID in the token
+      }
+      return token;
+    },
+  },
   session: { strategy: "jwt" },
   secret: process.env.NEXTAUTH_SECRET,
 });

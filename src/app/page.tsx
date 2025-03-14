@@ -6,7 +6,9 @@ export default function DashboardPage() {
     <ProtectedRoute>
       <div>
         <h1>Dashboard</h1>
-        <p>Welcome to your dashboard!</p>
+        <p className=" bg-red-300  text-4xl font-extrabold  flex self-center">
+          Welcome to your dashboard!
+        </p>
       </div>
     </ProtectedRoute>
   );
