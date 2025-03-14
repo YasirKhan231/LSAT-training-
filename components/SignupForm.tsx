@@ -48,7 +48,7 @@ export default function SignupForm() {
         });
       }
 
-      router.push("/dashboard"); // Redirect to dashboard after signup
+      router.push("/onboarding"); // Redirect to dashboard after signup
     } catch (error: any) {
       let errorMessage = "Failed to create account";
       if (error.code === "auth/email-already-in-use") {

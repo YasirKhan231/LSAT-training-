@@ -21,7 +21,7 @@ export default function LoginForm() {
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      router.push("/dashboard"); // Redirect to dashboard after login
+      router.push("/onboarding"); // Redirect to dashboard after login
     } catch (error: any) {
       let errorMessage = "Failed to log in";
       if (error.code === "auth/user-not-found") {
