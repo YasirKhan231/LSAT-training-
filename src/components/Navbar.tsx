@@ -61,9 +61,9 @@ export default function Navbar() {
                     Dashboard
                   </Link>
                   <Link
-                    href="/practice"
+                    href="/practise/mock-exam"
                     className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
-                      pathname.startsWith("/practice")
+                      pathname.startsWith("/practise/mock-exam")
                         ? "border-blue-500 text-gray-900"
                         : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
                     }`}
@@ -200,9 +200,9 @@ export default function Navbar() {
                   Dashboard
                 </Link>
                 <Link
-                  href="/practice"
+                  href="/practise/mock-exam"
                   className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
-                    pathname.startsWith("/practice")
+                    pathname.startsWith("/practise/mock-exam")
                       ? "bg-blue-50 border-blue-500 text-blue-700"
                       : "border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
                   }`}
