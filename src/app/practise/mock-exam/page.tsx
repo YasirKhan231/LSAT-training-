@@ -1,0 +1,236 @@
+"use client";
+
+import { useState } from "react";
+import ProtectedRoute from "../../../../components/ProtectRoute";
+import Link from "next/link";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+
+// Mock data for available exams
+const availableExams = [
+  {
+    id: "prep-test-71",
+    title: "PrepTest 71",
+    difficulty: "Medium",
+    sections: [
+      "Logical Reasoning",
+      "Reading Comprehension",
+      "Analytical Reasoning",
+      "Logical Reasoning",
+    ],
+    duration: 175, // minutes
+    questions: 100,
+    aiAssisted: true,
+  },
+  {
+    id: "prep-test-72",
+    title: "PrepTest 72",
+    difficulty: "Hard",
+    sections: [
+      "Logical Reasoning",
+      "Reading Comprehension",
+      "Analytical Reasoning",
+      "Logical Reasoning",
+    ],
+    duration: 175,
+    questions: 100,
+    aiAssisted: true,
+  },
+  {
+    id: "custom-exam",
+    title: "Custom AI-Generated Exam",
+    difficulty: "Adaptive",
+    sections: [
+      "Logical Reasoning",
+      "Reading Comprehension",
+      "Analytical Reasoning",
+      "Logical Reasoning",
+    ],
+    duration: 175,
+    questions: 100,
+    aiAssisted: true,
+    isCustomizable: true,
+  },
+];
+
+export default function MockExamPage() {
+  const [selectedExam, setSelectedExam] = useState<string | null>(null);
+
+  return (
+    <ProtectedRoute>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <header className="py-8">
+          <h1 className="text-3xl font-extrabold text-gray-900">
+            Full-Length LSAT Simulated Exams
+          </h1>
+          <p className="mt-2 text-lg text-gray-600">
+            Take realistic timed LSAT practice tests with AI-powered analysis
+            and feedback
+          </p>
+        </header>
+
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 mt-8">
+          <div>
+            <h2 className="text-xl font-bold text-gray-800 mb-4">
+              Available Practice Tests
+            </h2>
+            <div className="space-y-4">
+              {availableExams.map((exam) => (
+                <Card
+                  key={exam.id}
+                  className={`transition-all cursor-pointer ${
+                    selectedExam === exam.id ? "ring-2 ring-blue-500" : ""
+                  }`}
+                  onClick={() => setSelectedExam(exam.id)}
+                >
+                  <CardHeader className="pb-2">
+                    <div className="flex justify-between items-center">
+                      <CardTitle>{exam.title}</CardTitle>
+                      <Badge
+                        variant={
+                          exam.difficulty === "Hard" ? "destructive" : "default"
+                        }
+                      >
+                        {exam.difficulty}
+                      </Badge>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="pb-2">
+                    <div className="text-sm text-gray-600">
+                      <p>
+                        {exam.questions} questions •{" "}
+                        {Math.floor(exam.duration / 60)}h {exam.duration % 60}m
+                      </p>
+                      <p className="mt-1">
+                        Sections: {exam.sections.join(", ")}
+                      </p>
+                    </div>
+                  </CardContent>
+                  <CardFooter className="pt-2">
+                    <div className="flex space-x-2">
+                      {exam.aiAssisted && (
+                        <Badge
+                          variant="outline"
+                          className="text-blue-600 border-blue-200 bg-blue-50"
+                        >
+                          AI-Assisted
+                        </Badge>
+                      )}
+                      {exam.isCustomizable && (
+                        <Badge
+                          variant="outline"
+                          className="text-purple-600 border-purple-200 bg-purple-50"
+                        >
+                          Customizable
+                        </Badge>
+                      )}
+                    </div>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h2 className="text-xl font-bold text-gray-800 mb-4">
+              Exam Details
+            </h2>
+            {selectedExam ? (
+              <div className="bg-white p-6 rounded-lg shadow-md">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                  {availableExams.find((e) => e.id === selectedExam)?.title}
+                </h3>
+
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-500">
+                      Features
+                    </h4>
+                    <ul className="mt-1 list-disc list-inside text-gray-700">
+                      <li>Realistic exam conditions with timed sections</li>
+                      <li>AI-powered performance analysis</li>
+                      <li>Instant scoring and feedback</li>
+                      <li>Section-by-section breakdown</li>
+                      <li>Optional AI hints during the exam</li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-500">
+                      Settings
+                    </h4>
+                    <div className="mt-2 space-y-2">
+                      {/* These could be real controls in the full implementation */}
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          id="timing"
+                          className="mr-2"
+                          defaultChecked
+                        />
+                        <label
+                          htmlFor="timing"
+                          className="text-sm text-gray-700"
+                        >
+                          Enable strict timing
+                        </label>
+                      </div>
+                      <div className="flex items-center">
+                        <input
+                          type="checkbox"
+                          id="ai-hints"
+                          className="mr-2"
+                          defaultChecked
+                        />
+                        <label
+                          htmlFor="ai-hints"
+                          className="text-sm text-gray-700"
+                        >
+                          Enable AI hints (limited to 3 per section)
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-6">
+                  <Link href={`/practise/mock-exam/${selectedExam}`}>
+                    <Button className="w-full">Start Exam</Button>
+                  </Link>
+                </div>
+              </div>
+            ) : (
+              <div className="bg-gray-50 p-6 rounded-lg border border-dashed border-gray-300 text-center">
+                <p className="text-gray-500">
+                  Select an exam to view details and start
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="mt-12 bg-blue-50 rounded-lg p-6">
+          <h2 className="text-xl font-bold text-blue-800 mb-2">
+            AI-Powered Exam Creation
+          </h2>
+          <p className="text-blue-600 mb-4">
+            Create a custom exam tailored to your specific needs and weaknesses
+          </p>
+          <Button
+            variant="outline"
+            className="bg-white border-blue-300 text-blue-700 hover:bg-blue-100"
+          >
+            Create Custom Exam
+          </Button>
+        </div>
+      </div>
+    </ProtectedRoute>
+  );
+}
