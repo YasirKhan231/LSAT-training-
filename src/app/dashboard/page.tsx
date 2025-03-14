@@ -155,7 +155,7 @@ export default function DashboardPage() {
               </div>
             </Link>
 
-            <Link href="/practice/mock-exam" className="block">
+            <Link href="/practise/mock-exam" className="block">
               <div className="bg-white overflow-hidden shadow rounded-lg transition duration-150 ease-in-out transform hover:scale-105 hover:shadow-md">
                 <div className="px-4 py-5 sm:p-6">
                   <h3 className="text-lg font-medium text-gray-900">
