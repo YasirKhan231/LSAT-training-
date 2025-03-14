@@ -1,7 +1,6 @@
 // app/Signup/page.tsx
 import SignupForm from "../../../components/SignupForm";
 import GoogleSignIn from "../../../components/GoogleSignin";
-import Link from "next/link";
 
 export default function SignupPage() {
   return (

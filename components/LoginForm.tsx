@@ -22,13 +22,13 @@ export default function LoginForm() {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       router.push("/onboarding"); // Redirect to dashboard after login
-    } catch (error: any) {
+    } catch (error: unknown) {
       let errorMessage = "Failed to log in";
-      if (error.code === "auth/user-not-found") {
+      if (error === "auth/user-not-found") {
         errorMessage = "No account found with this email";
-      } else if (error.code === "auth/wrong-password") {
+      } else if (error === "auth/wrong-password") {
         errorMessage = "Incorrect password";
-      } else if (error.code === "auth/invalid-credential") {
+      } else if (error === "auth/invalid-credential") {
         errorMessage = "Invalid email or password";
       }
       setError(errorMessage);

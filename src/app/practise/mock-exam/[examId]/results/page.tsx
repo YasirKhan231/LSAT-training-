@@ -1,6 +1,4 @@
 "use client";
-
-import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import ProtectedRoute from "../../../../../../components/ProtectRoute";
 import Link from "next/link";
@@ -8,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
-import { Badge } from "@/components/ui/badge";
 import {
   BarChart3,
   Clock,
@@ -112,12 +109,12 @@ export default function ResultsPage() {
     return <div>Results not found</div>;
   }
 
-  const getTotalAnswered = () => {
-    return results.sections.reduce(
-      (acc, section) => acc + section.correct + section.incorrect,
-      0
-    );
-  };
+  // const getTotalAnswered = () => {
+  //   return results.sections.reduce(
+  //     (acc, section) => acc + section.correct + section.incorrect,
+  //     0
+  //   );
+  // };
 
   const getTotalQuestions = () => {
     return results.sections.reduce(

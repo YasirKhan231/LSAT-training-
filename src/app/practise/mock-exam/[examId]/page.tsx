@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
+// import { Badge } from "@/components/ui/badge";
 import { Clock, HelpCircle, ArrowRight } from "lucide-react";
 
 // Mock data - in a real app this would come from an API or database
@@ -426,7 +426,15 @@ export default function ExamPage() {
 
       return () => clearInterval(timer);
     }
-  }, [examStarted, currentSection, examData, examId, router, currentQuestion]);
+  }, [
+    examStarted,
+    currentSection,
+    examData,
+    examId,
+    router,
+    currentQuestion,
+    section,
+  ]);
 
   if (!examData) {
     return <div>Exam not found</div>;

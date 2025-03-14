@@ -6,6 +6,7 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { FirebaseError } from "firebase/app";
 
 export default function SignupForm() {
   const [name, setName] = useState("");
@@ -49,14 +50,16 @@ export default function SignupForm() {
       }
 
       router.push("/onboarding"); // Redirect to dashboard after signup
-    } catch (error: any) {
+    } catch (error: unknown) {
       let errorMessage = "Failed to create account";
-      if (error.code === "auth/email-already-in-use") {
-        errorMessage = "Email already in use";
-      } else if (error.code === "auth/invalid-email") {
-        errorMessage = "Invalid email address";
-      } else if (error.code === "auth/weak-password") {
-        errorMessage = "Password is too weak";
+      if (error instanceof FirebaseError) {
+        if (error.code === "auth/email-already-in-use") {
+          errorMessage = "Email already in use";
+        } else if (error.code === "auth/invalid-email") {
+          errorMessage = "Invalid email address";
+        } else if (error.code === "auth/weak-password") {
+          errorMessage = "Password is too weak";
+        }
       }
       setError(errorMessage);
     } finally {
