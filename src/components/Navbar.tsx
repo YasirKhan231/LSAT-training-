@@ -36,6 +36,7 @@ export default function Navbar() {
                 LSAT Training
               </Link>
             </div>
+            {/* Desktop Nav Links */}
             <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
               <Link
                 href="/"
@@ -69,10 +70,33 @@ export default function Navbar() {
                   >
                     Practice
                   </Link>
+                  {/* Plan Link (Desktop) */}
+                  <Link
+                    href="/plan"
+                    className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
+                      pathname === "/plan"
+                        ? "border-blue-500 text-gray-900"
+                        : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                    }`}
+                  >
+                    Plan
+                  </Link>
+                  {/* Question Bank Link (Desktop) */}
+                  <Link
+                    href="/question-bank"
+                    className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
+                      pathname === "/question-bank"
+                        ? "border-blue-500 text-gray-900"
+                        : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                    }`}
+                  >
+                    Question Bank
+                  </Link>
                 </>
               )}
             </div>
           </div>
+          {/* Desktop Auth Links */}
           <div className="hidden sm:ml-6 sm:flex sm:items-center">
             {isLoggedIn ? (
               <div className="flex items-center space-x-4">
@@ -103,6 +127,7 @@ export default function Navbar() {
               </div>
             )}
           </div>
+          {/* Mobile Menu Button */}
           <div className="flex items-center sm:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -148,7 +173,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="sm:hidden">
           <div className="pt-2 pb-3 space-y-1">
@@ -177,22 +202,34 @@ export default function Navbar() {
                 <Link
                   href="/practice"
                   className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
-                    pathname.startsWith("/question-bank")
+                    pathname.startsWith("/practice")
                       ? "bg-blue-50 border-blue-500 text-blue-700"
                       : "border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
                   }`}
                 >
-                  question-bank
+                  Practice
                 </Link>
+                {/* Plan Link (Mobile) */}
                 <Link
                   href="/plan"
                   className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
-                    pathname.startsWith("/question-bank")
+                    pathname === "/plan"
                       ? "bg-blue-50 border-blue-500 text-blue-700"
                       : "border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
                   }`}
                 >
                   Plan
+                </Link>
+                {/* Question Bank Link (Mobile) */}
+                <Link
+                  href="/question-bank"
+                  className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
+                    pathname === "/question-bank"
+                      ? "bg-blue-50 border-blue-500 text-blue-700"
+                      : "border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
+                  }`}
+                >
+                  Question Bank
                 </Link>
               </>
             )}
