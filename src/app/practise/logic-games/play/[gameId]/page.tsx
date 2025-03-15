@@ -24,8 +24,30 @@ import {
   Trophy,
 } from "lucide-react";
 
+// Define a type for the game object
+interface Game {
+  title: string;
+  type: string;
+  difficulty: string;
+  description: string;
+  rules: string[];
+  elements: string[];
+  slots: string[] | number[];
+  questions: {
+    id: string;
+    text: string;
+    choices: { id: string; text: string }[];
+    correctAnswer: string;
+    explanation: string;
+  }[];
+  selectionSize?: number; // Optional for Selection games
+  groupSizes?: number[]; // Optional for Grouping games
+  isHybrid?: boolean; // Optional for Hybrid games
+  hybridType?: string; // Optional for Hybrid games
+}
+
 // Mock game data for all game types
-const mockGames = {
+const mockGames: Record<string, Game> = {
   // SEQUENCING GAMES
   "race-lineup": {
     title: "Race Lineup",
@@ -74,39 +96,6 @@ const mockGames = {
     ],
   },
 
-  "book-arrangement": {
-    title: "Book Arrangement",
-    type: "Sequencing",
-    difficulty: "Medium",
-    description:
-      "Seven books (F through L) must be arranged on a shelf in a specific order according to various constraints.",
-    rules: [
-      "Book F must be placed somewhere to the left of book G.",
-      "Book H must be either the second or the sixth book.",
-      "Book J must be placed immediately adjacent to book K.",
-      "Book L must be the first or the last book on the shelf.",
-      "If book F is the third book, then book G must be the fifth book.",
-    ],
-    elements: ["F", "G", "H", "J", "K", "L", "I"],
-    slots: [1, 2, 3, 4, 5, 6, 7],
-    questions: [
-      {
-        id: "q1",
-        text: "Which one of the following could be the arrangement of books on the shelf, from left to right?",
-        choices: [
-          { id: "A", text: "L, H, F, I, G, J, K" },
-          { id: "B", text: "I, H, F, J, K, G, L" },
-          { id: "C", text: "L, F, I, J, K, H, G" },
-          { id: "D", text: "I, H, J, K, F, G, L" },
-          { id: "E", text: "L, H, J, K, F, I, G" },
-        ],
-        correctAnswer: "A",
-        explanation:
-          "Option A satisfies all constraints: F (position 3) is to the left of G (position 5); H is in position 2; J (position 6) is adjacent to K (position 7); L is in position 1 (first book); F is the third book and G is the fifth book.",
-      },
-    ],
-  },
-
   // GROUPING GAMES
   "committee-selection": {
     title: "Committee Selection",
@@ -126,7 +115,7 @@ const mockGames = {
     ],
     elements: ["A", "B", "C", "D", "E", "F", "G", "H"],
     slots: ["Planning", "Budget", "Outreach"],
-    groupSizes: [3, 2, 3],
+    groupSizes: [3, 2, 3], // Specific to Grouping games
     questions: [
       {
         id: "q1",
@@ -160,68 +149,6 @@ const mockGames = {
     ],
   },
 
-  "zoo-exhibits": {
-    title: "Zoo Exhibits",
-    type: "Grouping",
-    difficulty: "Hard",
-    description:
-      "Nine animals must be assigned to three different exhibits based on habitat requirements and compatibility conditions.",
-    rules: [
-      "The savanna exhibit can hold exactly three animals.",
-      "The rainforest exhibit can hold exactly three animals.",
-      "The desert exhibit can hold exactly three animals.",
-      "Lions and zebras must be placed in the same exhibit.",
-      "Snakes cannot be in the same exhibit as monkeys.",
-      "Camels must be in the desert exhibit.",
-      "Giraffes must be in either the savanna or desert exhibit.",
-      "If tigers are in the rainforest exhibit, then parrots must also be in the rainforest exhibit.",
-    ],
-    elements: [
-      "Lion",
-      "Zebra",
-      "Snake",
-      "Monkey",
-      "Camel",
-      "Giraffe",
-      "Tiger",
-      "Parrot",
-      "Elephant",
-    ],
-    slots: ["Savanna", "Rainforest", "Desert"],
-    groupSizes: [3, 3, 3],
-    questions: [
-      {
-        id: "q1",
-        text: "Which one of the following could be a complete and accurate assignment of animals to exhibits?",
-        choices: [
-          {
-            id: "A",
-            text: "Savanna: Lion, Zebra, Giraffe; Rainforest: Monkey, Tiger, Parrot; Desert: Snake, Camel, Elephant",
-          },
-          {
-            id: "B",
-            text: "Savanna: Elephant, Tiger, Parrot; Rainforest: Snake, Monkey, Giraffe; Desert: Lion, Zebra, Camel",
-          },
-          {
-            id: "C",
-            text: "Savanna: Lion, Zebra, Elephant; Rainforest: Snake, Tiger, Parrot; Desert: Monkey, Camel, Giraffe",
-          },
-          {
-            id: "D",
-            text: "Savanna: Lion, Zebra, Giraffe; Rainforest: Snake, Tiger, Elephant; Desert: Monkey, Camel, Parrot",
-          },
-          {
-            id: "E",
-            text: "Savanna: Elephant, Giraffe, Parrot; Rainforest: Lion, Zebra, Tiger; Desert: Snake, Monkey, Camel",
-          },
-        ],
-        correctAnswer: "A",
-        explanation:
-          "Option A satisfies all constraints: Each exhibit has exactly 3 animals; Lions and zebras are in the same exhibit (Savanna); Snakes (Desert) and monkeys (Rainforest) are in different exhibits; Camels are in the Desert exhibit; Giraffes are in the Savanna exhibit; Tigers and parrots are both in the Rainforest exhibit.",
-      },
-    ],
-  },
-
   // SELECTION GAMES
   "gift-selection": {
     title: "Gift Selection",
@@ -237,7 +164,7 @@ const mockGames = {
     ],
     elements: ["Q", "R", "S", "T", "U", "V", "W"],
     slots: ["Selected", "Not Selected"],
-    selectionSize: 4,
+    selectionSize: 4, // Specific to Selection games
     questions: [
       {
         id: "q1",
@@ -252,40 +179,6 @@ const mockGames = {
         correctAnswer: "D",
         explanation:
           "Option D satisfies all constraints: Q is selected but R is not; S is not selected so T and U don't have to be selected together (though both are selected); V is selected and W is not selected; and since W is not selected, the rule about Q being selected if W is selected doesn't apply.",
-      },
-    ],
-  },
-
-  "movie-selection": {
-    title: "Movie Selection",
-    type: "Selection",
-    difficulty: "Medium",
-    description:
-      "A film festival must select exactly five films from a pool of eight candidates (F through M) based on specific selection criteria.",
-    rules: [
-      "If film F is selected, then film G must also be selected.",
-      "If film H is selected, then film J cannot be selected.",
-      "At least one of films K and L must be selected.",
-      "Film M cannot be selected unless both films F and G are selected.",
-      "If film L is not selected, then film H must be selected.",
-    ],
-    elements: ["F", "G", "H", "J", "K", "L", "M", "N"],
-    slots: ["Selected", "Not Selected"],
-    selectionSize: 5,
-    questions: [
-      {
-        id: "q1",
-        text: "Which one of the following could be a complete and accurate list of the selected films?",
-        choices: [
-          { id: "A", text: "F, G, H, K, M" },
-          { id: "B", text: "F, G, J, K, N" },
-          { id: "C", text: "F, G, K, L, M" },
-          { id: "D", text: "H, J, K, L, N" },
-          { id: "E", text: "H, K, L, M, N" },
-        ],
-        correctAnswer: "C",
-        explanation:
-          "Option C satisfies all constraints: F and G are both selected; H is not selected and J is not selected (so the rule about H and J doesn't apply); K and L are both selected (at least one must be selected); M is selected and both F and G are selected (as required); L is selected so the rule about H doesn't apply.",
       },
     ],
   },
@@ -307,7 +200,7 @@ const mockGames = {
     ],
     elements: ["J", "K", "L", "M", "N", "P"],
     slots: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-    isHybrid: true,
+    isHybrid: true, // Specific to Hybrid games
     hybridType: "schedule",
     questions: [
       {
@@ -341,45 +234,6 @@ const mockGames = {
       },
     ],
   },
-
-  "museum-exhibit": {
-    title: "Museum Exhibit",
-    type: "Hybrid (Sequencing & Grouping)",
-    difficulty: "Hard",
-    description:
-      "A museum must display seven artifacts in three different rooms, with specific artifacts displayed in a particular order.",
-    rules: [
-      "Room 1 must display exactly two artifacts.",
-      "Room 2 must display exactly three artifacts.",
-      "Room 3 must display exactly two artifacts.",
-      "Artifact A must be displayed in a room with an odd number.",
-      "If artifact B is displayed in Room 2, artifact C must also be displayed in Room 2.",
-      "Artifacts D and E must be displayed in the same room.",
-      "Artifact F must be displayed in a room with a lower number than artifact G.",
-      "The artifacts in each room must be arranged in alphabetical order.",
-    ],
-    elements: ["A", "B", "C", "D", "E", "F", "G"],
-    slots: ["Room 1", "Room 2", "Room 3"],
-    groupSizes: [2, 3, 2],
-    isHybrid: true,
-    hybridType: "museum",
-    questions: [
-      {
-        id: "q1",
-        text: "Which one of the following could be a valid arrangement of artifacts?",
-        choices: [
-          { id: "A", text: "Room 1: A, F; Room 2: B, C, D; Room 3: E, G" },
-          { id: "B", text: "Room 1: A, F; Room 2: B, C, G; Room 3: D, E" },
-          { id: "C", text: "Room 1: D, E; Room 2: B, C, F; Room 3: A, G" },
-          { id: "D", text: "Room 1: F, G; Room 2: B, C, D; Room 3: A, E" },
-          { id: "E", text: "Room 1: A, B; Room 2: C, F, G; Room 3: D, E" },
-        ],
-        correctAnswer: "C",
-        explanation:
-          "Option C satisfies all constraints: Room 1 has 2 artifacts, Room 2 has 3, Room 3 has 2; Artifact A is in Room 3 (odd number); B and C are both in Room 2; D and E are in the same room (Room 1); F (Room 2) is in a lower-numbered room than G (Room 3); All artifacts in each room can be arranged alphabetically.",
-      },
-    ],
-  },
 };
 
 export default function LogicGamePlayPage() {
@@ -388,8 +242,7 @@ export default function LogicGamePlayPage() {
   const gameId = params.gameId as string;
 
   // Handle case for non-existent game ID by providing a default game
-  const game =
-    mockGames[gameId as keyof typeof mockGames] || mockGames["race-lineup"];
+  const game = mockGames[gameId] || mockGames["race-lineup"];
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answerState, setAnswerState] = useState<{
@@ -716,10 +569,10 @@ export default function LogicGamePlayPage() {
                       </div>
                     ))}
                   <div className="text-sm text-gray-400 mt-2 text-center">
-                    {typeof game.slots[index] === 'object' && 'maxSize' in game.slots[index]
+                    {game.groupSizes
                       ? `(${
                           gameState.filter((item) => item?.slot === slot).length
-                        }/${(game.slots[index] as {maxSize: number}).maxSize})`
+                        }/${game.groupSizes[index]})`
                       : ""}
                   </div>
                 </div>

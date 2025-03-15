@@ -4,19 +4,20 @@ import { headers } from "next/headers";
 import { updateUserSubscription } from "@/lib/stripe";
 import {
   getFirestore,
-  doc,
-  getDoc,
-  updateDoc,
-  serverTimestamp,
+  collection,
+  query,
+  where,
+  getDocs,
 } from "firebase/firestore";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2023-10-16",
+  apiVersion: "2023-10-16" as Stripe.LatestApiVersion,
 });
+
 
 export async function POST(request: Request) {
   const body = await request.text();
-  const signature = headers().get("stripe-signature")!;
+  const signature = (await headers()).get("stripe-signature")!;
 
   let event: Stripe.Event;
 
@@ -26,9 +27,9 @@ export async function POST(request: Request) {
       signature,
       process.env.STRIPE_WEBHOOK_SECRET!
     );
-  } catch (err: any) {
+  } catch (err: unknown) {
     return NextResponse.json(
-      { error: `Webhook Error: ${err.message}` },
+      { error: `Webhook Error: ${err}` },
       { status: 400 }
     );
   }
@@ -42,7 +43,7 @@ export async function POST(request: Request) {
 
       // Update the user's subscription
       if (planId === "weekly") {
-        // For subscriptions, we need to fetch the subscription details
+        // For subscriptions, fetch the subscription details
         if (session.subscription) {
           const subscription = await stripe.subscriptions.retrieve(
             session.subscription as string
@@ -78,11 +79,12 @@ export async function POST(request: Request) {
 
         // Find the user associated with this subscription
         const db = getFirestore();
-        const usersSnapshot = await db
-          .collection("users")
-          .where("subscription.stripeSubscriptionId", "==", subscription.id)
-          .limit(1)
-          .get();
+        const usersRef = collection(db, "users");
+        const usersQuery = query(
+          usersRef,
+          where("subscription.stripeSubscriptionId", "==", subscription.id)
+        );
+        const usersSnapshot = await getDocs(usersQuery);
 
         if (!usersSnapshot.empty) {
           const userId = usersSnapshot.docs[0].id;
@@ -105,11 +107,12 @@ export async function POST(request: Request) {
 
       // Find the user associated with this subscription
       const db = getFirestore();
-      const usersSnapshot = await db
-        .collection("users")
-        .where("subscription.stripeSubscriptionId", "==", subscription.id)
-        .limit(1)
-        .get();
+      const usersRef = collection(db, "users");
+      const usersQuery = query(
+        usersRef,
+        where("subscription.stripeSubscriptionId", "==", subscription.id)
+      );
+      const usersSnapshot = await getDocs(usersQuery);
 
       if (!usersSnapshot.empty) {
         const userId = usersSnapshot.docs[0].id;

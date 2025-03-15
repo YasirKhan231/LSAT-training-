@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
-import { headers } from "next/headers";
+// import { headers } from "next/headers";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2023-10-16",
+  apiVersion: "2023-10-16" as Stripe.LatestApiVersion,
 });
+
 
 export async function POST(request: Request) {
   try {
@@ -44,10 +45,10 @@ export async function POST(request: Request) {
     });
 
     return NextResponse.json({ sessionId: session.id });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error creating checkout session:", error);
     return NextResponse.json(
-      { error: error.message || "An error occurred" },
+      { error: error ||"An error occurred" },
       { status: 500 }
     );
   }

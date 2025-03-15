@@ -2,25 +2,6 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import ProtectedRoute from "../../../../../../components/ProtectRoute";
-import Link from "next/link";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
-import {
-  HelpCircle,
-  Clock,
-  BrainCircuit,
-  Check,
-  X,
-  LightbulbIcon,
-  ArrowRightIcon,
-  UndoIcon,
-  ChevronDown,
-  ChevronUp,
-} from "lucide-react";
 
 const gameData = {
   title: "Race Lineup",

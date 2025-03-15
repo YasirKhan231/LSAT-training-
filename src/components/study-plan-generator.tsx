@@ -37,15 +37,74 @@ export function StudyPlanGenerator({ onClose }: StudyPlanGeneratorProps) {
   const [step, setStep] = useState(1);
   const [isGenerating, setIsGenerating] = useState(false);
 
-  const handleNext = () => {
+  // State for each input field
+  const [lsatDate, setLsatDate] = useState("");
+  const [targetScore, setTargetScore] = useState("");
+  const [currentScore, setCurrentScore] = useState("");
+  const [weeklyHours, setWeeklyHours] = useState(0);
+  const [challengingAreas, setChallengingAreas] = useState<string[]>([]);
+  const [preferredSchedule, setPreferredSchedule] = useState("");
+  const [focusAreas, setFocusAreas] = useState<string[]>([]);
+  const [materials, setMaterials] = useState("");
+  const [additionalInfo, setAdditionalInfo] = useState("");
+
+  // Check if all required fields are filled
+  const isFormValid = () => {
+    if (step === 1) {
+      return lsatDate && targetScore && currentScore;
+    } else if (step === 2) {
+      return (
+        weeklyHours > 0 && challengingAreas.length > 0 && preferredSchedule
+      );
+    } else if (step === 3) {
+      return focusAreas.length > 0 && materials;
+    }
+    return false;
+  };
+
+  const handleNext = async () => {
     if (step < 3) {
       setStep(step + 1);
     } else {
       setIsGenerating(true);
-      setTimeout(() => {
-        setIsGenerating(false);
+
+      try {
+        // Prepare the form data to send to the backend
+        const formData = {
+          lsatDate,
+          targetScore,
+          currentScore,
+          weeklyHours,
+          challengingAreas,
+          preferredSchedule,
+          focusAreas,
+          materials,
+          additionalInfo,
+        };
+
+        // Send form data to the backend
+        const response = await fetch("/api/plan/generate-plan", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to generate study plan");
+        }
+
+        const data = await response.json();
+        console.log("Generated Plan:", data.plan);
+
+        // Close the modal or show success message
         onClose();
-      }, 2000);
+      } catch (error) {
+        console.error("Error generating plan:", error);
+      } finally {
+        setIsGenerating(false);
+      }
     }
   };
 
@@ -73,7 +132,12 @@ export function StudyPlanGenerator({ onClose }: StudyPlanGeneratorProps) {
               <Label htmlFor="exam-date">When is your LSAT exam?</Label>
               <div className="flex items-center gap-2">
                 <LucideCalendar className="h-4 w-4 text-muted-foreground" />
-                <Input type="date" id="exam-date" defaultValue="2025-06-12" />
+                <Input
+                  type="date"
+                  id="exam-date"
+                  value={lsatDate}
+                  onChange={(e) => setLsatDate(e.target.value)}
+                />
               </div>
             </div>
 
@@ -83,7 +147,10 @@ export function StudyPlanGenerator({ onClose }: StudyPlanGeneratorProps) {
               </Label>
               <div className="flex items-center gap-2">
                 <LucideTarget className="h-4 w-4 text-muted-foreground" />
-                <Select defaultValue="170">
+                <Select
+                  value={targetScore}
+                  onValueChange={(value) => setTargetScore(value)}
+                >
                   <SelectTrigger id="target-score">
                     <SelectValue placeholder="Select target score" />
                   </SelectTrigger>
@@ -106,7 +173,10 @@ export function StudyPlanGenerator({ onClose }: StudyPlanGeneratorProps) {
               </Label>
               <div className="flex items-center gap-2">
                 <LucideBarChart className="h-4 w-4 text-muted-foreground" />
-                <Select defaultValue="162">
+                <Select
+                  value={currentScore}
+                  onValueChange={(value) => setCurrentScore(value)}
+                >
                   <SelectTrigger id="current-score">
                     <SelectValue placeholder="Select current score" />
                   </SelectTrigger>
@@ -137,7 +207,12 @@ export function StudyPlanGenerator({ onClose }: StudyPlanGeneratorProps) {
               <div className="flex items-center gap-2">
                 <LucideClock className="h-4 w-4 text-muted-foreground" />
                 <div className="flex-1 space-y-2">
-                  <Slider defaultValue={[15]} max={40} step={1} />
+                  <Slider
+                    defaultValue={[weeklyHours]}
+                    max={40}
+                    step={1}
+                    onValueChange={(value) => setWeeklyHours(value[0])}
+                  />
                   <div className="flex justify-between text-xs text-muted-foreground">
                     <span>5 hours</span>
                     <span>15 hours</span>
@@ -149,7 +224,10 @@ export function StudyPlanGenerator({ onClose }: StudyPlanGeneratorProps) {
 
             <div className="space-y-2">
               <Label>Which section do you find most challenging?</Label>
-              <RadioGroup defaultValue="analytical">
+              <RadioGroup
+                value={challengingAreas[0] || ""}
+                onValueChange={(value) => setChallengingAreas([value])}
+              >
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="logical" id="logical" />
                   <Label htmlFor="logical">Logical Reasoning</Label>
@@ -169,7 +247,10 @@ export function StudyPlanGenerator({ onClose }: StudyPlanGeneratorProps) {
 
             <div className="space-y-2">
               <Label>What is your preferred study schedule?</Label>
-              <RadioGroup defaultValue="weekday">
+              <RadioGroup
+                value={preferredSchedule}
+                onValueChange={(value) => setPreferredSchedule(value)}
+              >
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="weekday" id="weekday" />
                   <Label htmlFor="weekday">Weekdays (Monday-Friday)</Label>
@@ -194,57 +275,30 @@ export function StudyPlanGenerator({ onClose }: StudyPlanGeneratorProps) {
                 Do you have any specific areas you want to focus on?
               </Label>
               <div className="grid grid-cols-2 gap-2">
-                <div className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    id="assumption"
-                    className="rounded border-gray-300"
-                    defaultChecked
-                  />
-                  <Label htmlFor="assumption">Assumption Questions</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    id="grouping"
-                    className="rounded border-gray-300"
-                    defaultChecked
-                  />
-                  <Label htmlFor="grouping">Grouping Games</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    id="science"
-                    className="rounded border-gray-300"
-                  />
-                  <Label htmlFor="science">Science Passages</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    id="timing"
-                    className="rounded border-gray-300"
-                    defaultChecked
-                  />
-                  <Label htmlFor="timing">Timing Strategies</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    id="inference"
-                    className="rounded border-gray-300"
-                  />
-                  <Label htmlFor="inference">Inference Questions</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    id="sequencing"
-                    className="rounded border-gray-300"
-                  />
-                  <Label htmlFor="sequencing">Sequencing Games</Label>
-                </div>
+                {[
+                  { id: "assumption", label: "Assumption Questions" },
+                  { id: "grouping", label: "Grouping Games" },
+                  { id: "science", label: "Science Passages" },
+                  { id: "timing", label: "Timing Strategies" },
+                  { id: "inference", label: "Inference Questions" },
+                  { id: "sequencing", label: "Sequencing Games" },
+                ].map((area) => (
+                  <div key={area.id} className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id={area.id}
+                      checked={focusAreas.includes(area.id)}
+                      onChange={(e) => {
+                        const updatedAreas = e.target.checked
+                          ? [...focusAreas, area.id]
+                          : focusAreas.filter((a) => a !== area.id);
+                        setFocusAreas(updatedAreas);
+                      }}
+                      className="rounded border-gray-300"
+                    />
+                    <Label htmlFor={area.id}>{area.label}</Label>
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -252,7 +306,10 @@ export function StudyPlanGenerator({ onClose }: StudyPlanGeneratorProps) {
               <Label htmlFor="materials">
                 What LSAT prep materials do you have access to?
               </Label>
-              <Select defaultValue="official">
+              <Select
+                value={materials}
+                onValueChange={(value) => setMaterials(value)}
+              >
                 <SelectTrigger id="materials">
                   <SelectValue placeholder="Select materials" />
                 </SelectTrigger>
@@ -277,6 +334,8 @@ export function StudyPlanGenerator({ onClose }: StudyPlanGeneratorProps) {
                 id="additional"
                 placeholder="E.g., specific challenges, learning style, etc."
                 className="h-20"
+                value={additionalInfo}
+                onChange={(e) => setAdditionalInfo(e.target.value)}
               />
             </div>
           </div>
@@ -297,7 +356,7 @@ export function StudyPlanGenerator({ onClose }: StudyPlanGeneratorProps) {
         <Button variant="outline" onClick={handleBack}>
           {step === 1 ? "Cancel" : "Back"}
         </Button>
-        <Button onClick={handleNext} disabled={isGenerating}>
+        <Button onClick={handleNext} disabled={!isFormValid() || isGenerating}>
           {step === 3 ? "Generate Plan" : "Next"}
         </Button>
       </CardFooter>

@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import ProtectedRoute from "../../../../components/ProtectRoute";
 import Link from "next/link";
 import {
@@ -20,7 +19,6 @@ import {
   Users,
   Box,
   Shuffle,
-  Filter,
 } from "lucide-react";
 
 export default function LogicGamesPage() {

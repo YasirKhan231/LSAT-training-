@@ -48,10 +48,10 @@ export async function createCheckoutSession(
 export async function updateUserSubscription(
   userId: string,
   subscriptionData: {
-    tier: "weekly" | "one-time";
+    tier: "weekly" | "one-time"| "free";
     endsAt?: Date;
     stripeCustomerId?: string;
-    stripeSubscriptionId?: string;
+    stripeSubscriptionId?: string | null;
   }
 ) {
   try {
