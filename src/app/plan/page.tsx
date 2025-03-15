@@ -157,7 +157,7 @@ export default function Dashboard() {
               </div>
             </div>
             <div className="mt-6">
-              <Link href="/plain/study-plan">
+              <Link href="/plan/study-plan">
                 <Button variant="outline" className="w-full">
                   View Full Study Plan
                   <LucideArrowRight className="ml-2 h-4 w-4" />
@@ -208,7 +208,7 @@ export default function Dashboard() {
               </p>
             </div>
             <div className="mt-6">
-              <Link href="/plain/ai-coach">
+              <Link href="/plan/ai-coach">
                 <Button variant="outline" className="w-full">
                   Talk to AI Coach
                   <LucideBrain className="ml-2 h-4 w-4" />

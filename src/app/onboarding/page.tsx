@@ -6,6 +6,7 @@ import { CalendarIcon, Loader2 } from "lucide-react";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css"; // Default styling for react-day-picker
 import { useToast } from "@/hooks/use-toast";
+import { getAuth, getIdToken } from "firebase/auth"; // Firebase Auth
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -82,10 +83,20 @@ export default function OnboardingForm() {
     try {
       setIsSubmitting(true);
 
+      // Get Firebase ID token
+      const auth = getAuth();
+      const user = auth.currentUser;
+      if (!user) {
+        throw new Error("User not authenticated");
+      }
+      const idToken = await getIdToken(user);
+
+      // Send data to backend
       const response = await fetch("/api/onboarding", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${idToken}`, // Include the ID token in the request
         },
         body: JSON.stringify(formData),
       });
@@ -99,7 +110,7 @@ export default function OnboardingForm() {
           "Your personalized LSAT study plan is now ready. You can access it from your dashboard.",
       });
 
-      // Redirect to home page after a short delay to allow the user to see the notification
+      // Redirect to home page after a short delay
       setTimeout(() => {
         router.push("/");
       }, 2000);

@@ -1,12 +1,12 @@
-// components/SignupForm.tsx
 "use client"; // Mark as a Client Component
 
 import { useState } from "react";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth } from "@/lib/firebase";
+import { auth, db } from "@/lib/firebase"; // Import Firestore (db) from your Firebase config
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { FirebaseError } from "firebase/app";
+import { doc, setDoc } from "firebase/firestore"; // Import Firestore functions
 
 export default function SignupForm() {
   const [name, setName] = useState("");
@@ -36,20 +36,35 @@ export default function SignupForm() {
     setIsLoading(true);
 
     try {
+      // Create user with email and password
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
 
-      // Update user profile if name is provided
+      // Update user profile with the provided name
       if (name && userCredential.user) {
         await updateProfile(userCredential.user, {
           displayName: name,
         });
       }
 
-      router.push("/onboarding"); // Redirect to dashboard after signup
+      // Store user information in Firestore
+      if (userCredential.user) {
+        const userRef = doc(db, "users", userCredential.user.uid);
+        await setDoc(userRef, {
+          uid: userCredential.user.uid,
+          displayName: name,
+          email: userCredential.user.email,
+          createdAt: new Date().toISOString(),
+          onboarded: false, // User has not completed onboarding yet
+          subscription: "free", // Default to free plan
+        });
+      }
+
+      // Redirect to onboarding page
+      router.push("/onboarding");
     } catch (error: unknown) {
       let errorMessage = "Failed to create account";
       if (error instanceof FirebaseError) {

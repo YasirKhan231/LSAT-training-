@@ -1,6 +1,7 @@
-import { NextResponse } from "next/server"
-import { initializeApp, getApps, cert } from "firebase-admin/app"
-import { getFirestore } from "firebase-admin/firestore"
+import { NextResponse } from "next/server";
+import { initializeApp, getApps, cert } from "firebase-admin/app";
+import { getFirestore } from "firebase-admin/firestore";
+import { getAuth } from "firebase-admin/auth"; // Firebase Admin Auth
 
 // Initialize Firebase Admin if it hasn't been initialized
 if (!getApps().length) {
@@ -10,51 +11,64 @@ if (!getApps().length) {
       clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
       privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
     }),
-  })
+  });
 }
 
-const db = getFirestore()
+const db = getFirestore();
 
 export async function POST(request: Request) {
   try {
-    const data = await request.json()
+    const data = await request.json();
 
-    // Validate required fields
-    if (!data.examDate || !data.targetScore || !data.studyHours) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
+    // Extract required fields
+    const { examDate, targetScore, studyHours } = data;
+
+    if (!examDate || !targetScore || !studyHours) {
+      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    // Get the user ID from the session (you would implement your auth logic here)
-    // This is a placeholder - replace with your actual auth implementation
-    const userId = "user_123" // Example user ID
+    // Verify Firebase ID token
+    const authHeader = request.headers.get("Authorization");
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return NextResponse.json({ error: "Unauthorized: Missing token" }, { status: 401 });
+    }
 
-    // Save to Firestore
-    const userRef = db.collection("users").doc(userId)
+    const idToken = authHeader.split("Bearer ")[1];
+    const auth = getAuth();
+    const decodedToken = await auth.verifyIdToken(idToken);
+    const uid = decodedToken.uid;
+
+    // Firestore Admin uses `.doc("users/{uid}")` directly
+    const userRef = db.collection("users").doc(uid);
+
+    // Update user onboarding data
     await userRef.set(
       {
-        onboarding: {
-          examDate: data.examDate,
-          targetScore: data.targetScore,
-          studyHours: data.studyHours,
-          completedAt: new Date().toISOString(),
+        lsatDate: examDate,
+        targetScore,
+        weeklyHours: studyHours,
+        onboarded: true,
+        progress: {
+          logicalReasoning: 0,
+          analyticalReasoning: 0,
+          readingComprehension: 0,
         },
+        practiceHistory: [],
+        bookmarkedQuestions: [],
+        testAttempts: 0,
+        totalTimeSpent: 0,
+        performanceInsights: [],
       },
-      { merge: true },
-    )
+      { merge: true } // 🔥 Ensures we don't overwrite existing data
+    );
 
     return NextResponse.json({
       success: true,
       message: "Your study plan has been created successfully",
-      data: {
-        examDate: data.examDate,
-        targetScore: data.targetScore,
-        studyHours: data.studyHours,
-        completedAt: new Date().toISOString(),
-      },
-    })
+      data: { examDate, targetScore, studyHours, completedAt: new Date().toISOString() },
+    });
   } catch (error) {
-    console.error("Error saving onboarding data:", error)
-    return NextResponse.json({ error: "Failed to save onboarding data" }, { status: 500 })
+    console.error("Error saving onboarding data:", error);
+    return NextResponse.json({ error: "Failed to save onboarding data" }, { status: 500 });
   }
 }
-

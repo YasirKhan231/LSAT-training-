@@ -2,8 +2,8 @@ import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/lib/firebase";
-import { firestore } from "@/lib/firebaseAdmin"; // Import Firestore instance
+import { auth, db } from "@/lib/firebase"; // Import `db` from Firebase SDK
+import { doc, setDoc, getDoc } from "firebase/firestore"; // Import Firestore modular functions
 
 export default NextAuth({
   providers: [
@@ -27,7 +27,8 @@ export default NextAuth({
           const user = userCredential.user;
 
           // Save user data to Firestore
-          await firestore.collection("users").doc(user.uid).set({
+          const userRef = doc(db, "users", user.uid); // Reference to the user document
+          await setDoc(userRef, {
             id: user.uid,
             email: user.email,
             name: user.displayName || "User",
@@ -50,9 +51,10 @@ export default NextAuth({
       // Ensure token.sub is defined
       if (token.sub) {
         // Fetch user data from Firestore
-        const userDoc = await firestore.collection("users").doc(token.sub).get();
-        if (userDoc.exists) {
-          session.user = userDoc.data();
+        const userRef = doc(db, "users", token.sub); // Reference to the user document
+        const userDoc = await getDoc(userRef); // Fetch the document
+        if (userDoc.exists()) {
+          session.user = userDoc.data(); // Attach user data to the session
         }
       } else {
         console.warn("Token.sub is undefined. Unable to fetch user data from Firestore.");
