@@ -5,11 +5,14 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { auth } from "../lib/firebase";
 import { signOut } from "firebase/auth";
+import { useUser } from "../lib/context/UserContext";
+import { Crown } from "lucide-react";
 
 export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
+  const { isLoggedIn: userLoggedIn, isSubscriptionActive, subscriptionTier } = useUser();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -24,6 +27,31 @@ export default function Navbar() {
     } catch (error) {
       console.error("Error signing out:", error);
     }
+  };
+
+  const subscriptionBadge = () => {
+    if (!userLoggedIn) return null;
+    
+    if (isSubscriptionActive) {
+      return (
+        <Link 
+          href="/subscription" 
+          className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-gradient-to-r from-amber-300 to-amber-500 text-white font-medium"
+        >
+          <Crown className="h-4 w-4 mr-1" />
+          {subscriptionTier === "one-time" ? "Premium" : "Weekly Premium"}
+        </Link>
+      );
+    }
+    
+    return (
+      <Link 
+        href="/subscription" 
+        className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-gray-100 text-gray-700 font-medium hover:bg-gray-200"
+      >
+        Upgrade
+      </Link>
+    );
   };
 
   return (
@@ -48,7 +76,7 @@ export default function Navbar() {
               >
                 Home
               </Link>
-              {isLoggedIn && (
+              {userLoggedIn && (
                 <>
                   <Link
                     href="/dashboard"
@@ -69,6 +97,16 @@ export default function Navbar() {
                     }`}
                   >
                     Practice
+                  </Link>
+                  <Link
+                    href="/practise/logic-games"
+                    className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
+                      pathname === "/practise/logic-games"
+                        ? "border-blue-500 text-gray-900"
+                        : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                    }`}
+                  >
+                    Logic Games
                   </Link>
                   {/* Plan Link (Desktop) */}
                   <Link
@@ -98,7 +136,8 @@ export default function Navbar() {
           </div>
           {/* Desktop Auth Links */}
           <div className="hidden sm:ml-6 sm:flex sm:items-center">
-            {isLoggedIn ? (
+            {subscriptionBadge()}
+            {userLoggedIn ? (
               <div className="flex items-center space-x-4">
                 <span className="text-sm text-gray-700">
                   {auth.currentUser?.email}
@@ -187,7 +226,7 @@ export default function Navbar() {
             >
               Home
             </Link>
-            {isLoggedIn && (
+            {userLoggedIn && (
               <>
                 <Link
                   href="/dashboard"
@@ -208,6 +247,16 @@ export default function Navbar() {
                   }`}
                 >
                   Practice
+                </Link>
+                <Link
+                  href="/practise/logic-games"
+                  className={`block pl-3 pr-4 py-2 border-l-4 text-base font-medium ${
+                    pathname === "/practise/logic-games"
+                      ? "bg-blue-50 border-blue-500 text-blue-700"
+                      : "border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800"
+                  }`}
+                >
+                  Logic Games
                 </Link>
                 {/* Plan Link (Mobile) */}
                 <Link
@@ -235,7 +284,7 @@ export default function Navbar() {
             )}
           </div>
           <div className="pt-4 pb-3 border-t border-gray-200">
-            {isLoggedIn ? (
+            {userLoggedIn ? (
               <div className="flex items-center px-4">
                 <div className="flex-shrink-0">
                   <div className="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">

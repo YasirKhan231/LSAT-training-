@@ -12,6 +12,9 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useUser } from "@/lib/context/UserContext";
+import PremiumFeature from "@/components/PremiumFeature";
+import { Crown } from "lucide-react";
 
 // Mock data for available exams
 const availableExams = [
@@ -61,7 +64,60 @@ const availableExams = [
 ];
 
 export default function MockExamPage() {
+  const { isSubscriptionActive } = useUser();
   const [selectedExam, setSelectedExam] = useState<string | null>(null);
+
+  // Free users only get access to one exam
+  const availableExamsForUser = isSubscriptionActive 
+    ? [
+        // Full list of exams for premium users
+        {
+          id: "prep-test-71",
+          title: "PrepTest 71",
+          difficulty: "Medium",
+          sections: [
+            "Logical Reasoning",
+            "Reading Comprehension",
+            "Analytical Reasoning",
+            "Logical Reasoning",
+          ],
+          duration: 175, // minutes
+          questions: 100,
+          aiAssisted: true,
+        },
+        {
+          id: "prep-test-72",
+          title: "PrepTest 72",
+          difficulty: "Hard",
+          sections: [
+            "Logical Reasoning",
+            "Reading Comprehension",
+            "Analytical Reasoning",
+            "Logical Reasoning",
+          ],
+          duration: 175,
+          questions: 100,
+          aiAssisted: true,
+        },
+        // More exams for premium users
+      ]
+    : [
+        // Limited exams for free users
+        {
+          id: "prep-test-71",
+          title: "PrepTest 71",
+          difficulty: "Medium",
+          sections: [
+            "Logical Reasoning",
+            "Reading Comprehension",
+            "Analytical Reasoning",
+            "Logical Reasoning",
+          ],
+          duration: 175, // minutes
+          questions: 100,
+          aiAssisted: true,
+        }
+      ];
 
   return (
     <ProtectedRoute>
@@ -74,6 +130,21 @@ export default function MockExamPage() {
             Take realistic timed LSAT practice tests with AI-powered analysis
             and feedback
           </p>
+          
+          {!isSubscriptionActive && (
+            <div className="mt-4 bg-amber-50 border border-amber-200 rounded-md p-4">
+              <div className="flex">
+                <Crown className="h-5 w-5 text-amber-500 mr-2" />
+                <p className="text-amber-800">
+                  Free users get access to one practice exam. 
+                  <Link href="/subscription" className="ml-1 font-medium underline">
+                    Upgrade to Premium
+                  </Link> 
+                  for unlimited exams and AI-powered analysis.
+                </p>
+              </div>
+            </div>
+          )}
         </header>
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 mt-8">
@@ -82,7 +153,7 @@ export default function MockExamPage() {
               Available Practice Tests
             </h2>
             <div className="space-y-4">
-              {availableExams.map((exam) => (
+              {availableExamsForUser.map((exam) => (
                 <Card
                   key={exam.id}
                   className={`transition-all cursor-pointer ${
@@ -145,7 +216,7 @@ export default function MockExamPage() {
             {selectedExam ? (
               <div className="bg-white p-6 rounded-lg shadow-md">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                  {availableExams.find((e) => e.id === selectedExam)?.title}
+                  {availableExamsForUser.find((e) => e.id === selectedExam)?.title}
                 </h3>
 
                 <div className="space-y-4">
@@ -216,20 +287,32 @@ export default function MockExamPage() {
           </div>
         </div>
 
-        <div className="mt-12 bg-blue-50 rounded-lg p-6">
-          <h2 className="text-xl font-bold text-blue-800 mb-2">
-            AI-Powered Exam Creation
-          </h2>
-          <p className="text-blue-600 mb-4">
-            Create a custom exam tailored to your specific needs and weaknesses
-          </p>
-          <Button
-            variant="outline"
-            className="bg-white border-blue-300 text-blue-700 hover:bg-blue-100"
-          >
-            Create Custom Exam
-          </Button>
-        </div>
+        {/* Premium feature: Custom Exam Creation */}
+        <PremiumFeature fallback={
+          <div className="mt-12 bg-gray-100 rounded-lg p-6">
+            <h2 className="text-xl font-bold text-gray-800 mb-2">
+              AI-Powered Exam Creation
+            </h2>
+            <p className="text-gray-600 mb-4">
+              Upgrade to premium to create custom exams tailored to your specific needs and weaknesses
+            </p>
+            <Link href="/subscription">
+              <Button variant="outline">Upgrade to Premium</Button>
+            </Link>
+          </div>
+        }>
+          <div className="mt-12 bg-blue-50 rounded-lg p-6">
+            <h2 className="text-xl font-bold text-blue-800 mb-2">
+              AI-Powered Exam Creation
+            </h2>
+            <p className="text-blue-600 mb-4">
+              Create a custom exam tailored to your specific needs and weaknesses
+            </p>
+            <Button variant="outline" className="bg-white border-blue-300 text-blue-700 hover:bg-blue-100">
+              Create Custom Exam
+            </Button>
+          </div>
+        </PremiumFeature>
       </div>
     </ProtectedRoute>
   );
