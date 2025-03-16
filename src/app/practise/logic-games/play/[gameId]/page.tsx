@@ -21,7 +21,6 @@ import {
   UndoIcon,
   ChevronDown,
   ChevronUp,
-  Trophy,
 } from "lucide-react";
 
 // Define a type for the game object

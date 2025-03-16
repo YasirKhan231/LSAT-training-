@@ -9,17 +9,13 @@ import { useUser } from "../lib/context/UserContext";
 import { Crown } from "lucide-react";
 
 export default function Navbar() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
-  const { isLoggedIn: userLoggedIn, isSubscriptionActive, subscriptionTier } = useUser();
-
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      setIsLoggedIn(!!user);
-    });
-    return () => unsubscribe();
-  }, []);
+  const {
+    isLoggedIn: userLoggedIn,
+    isSubscriptionActive,
+    subscriptionTier,
+  } = useUser();
 
   const handleLogout = async () => {
     try {
@@ -31,11 +27,11 @@ export default function Navbar() {
 
   const subscriptionBadge = () => {
     if (!userLoggedIn) return null;
-    
+
     if (isSubscriptionActive) {
       return (
-        <Link 
-          href="/subscription" 
+        <Link
+          href="/subscription"
           className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-gradient-to-r from-amber-300 to-amber-500 text-white font-medium"
         >
           <Crown className="h-4 w-4 mr-1" />
@@ -43,10 +39,10 @@ export default function Navbar() {
         </Link>
       );
     }
-    
+
     return (
-      <Link 
-        href="/subscription" 
+      <Link
+        href="/subscription"
         className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-gray-100 text-gray-700 font-medium hover:bg-gray-200"
       >
         Upgrade
@@ -66,16 +62,6 @@ export default function Navbar() {
             </div>
             {/* Desktop Nav Links */}
             <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-              <Link
-                href="/"
-                className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
-                  pathname === "/"
-                    ? "border-blue-500 text-gray-900"
-                    : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
-                }`}
-              >
-                Home
-              </Link>
               {userLoggedIn && (
                 <>
                   <Link
@@ -283,54 +269,37 @@ export default function Navbar() {
               </>
             )}
           </div>
+
+          {/* Mobile Auth Links */}
           <div className="pt-4 pb-3 border-t border-gray-200">
             {userLoggedIn ? (
-              <div className="flex items-center px-4">
-                <div className="flex-shrink-0">
-                  <div className="h-10 w-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">
-                    {auth.currentUser?.email?.charAt(0).toUpperCase() || "U"}
-                  </div>
-                </div>
-                <div className="ml-3">
-                  <div className="text-base font-medium text-gray-800">
-                    {auth.currentUser?.displayName || "User"}
-                  </div>
-                  <div className="text-sm font-medium text-gray-500">
+              <div className="space-y-2">
+                <div className="px-4">
+                  {subscriptionBadge()}
+                  <p className="text-sm text-gray-600 mt-2">
                     {auth.currentUser?.email}
-                  </div>
+                  </p>
                 </div>
-                <button
-                  onClick={handleLogout}
-                  className="ml-auto flex-shrink-0 p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                >
-                  <span className="sr-only">Logout</span>
-                  <svg
-                    className="h-6 w-6"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
+                <div className="px-4">
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full text-center px-4 py-2 text-sm text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                    />
-                  </svg>
-                </button>
+                    Logout
+                  </button>
+                </div>
               </div>
             ) : (
-              <div className="mt-3 space-y-1 px-2">
+              <div className="px-4 space-y-2">
                 <Link
                   href="/login"
-                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+                  className="block w-full text-center px-4 py-2 text-sm text-blue-600 border border-blue-600 rounded-md hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 >
                   Login
                 </Link>
                 <Link
                   href="/Signup"
-                  className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+                  className="block w-full text-center px-4 py-2 text-sm text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 >
                   Sign Up
                 </Link>
