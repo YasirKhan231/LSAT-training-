@@ -1,4 +1,3 @@
-// src/app/page.tsx
 import Link from "next/link";
 import {
   ArrowRight,
@@ -11,9 +10,9 @@ import {
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen flex flex-col">
+    <>
       {/* Hero Section */}
-      <section className="relative flex-grow flex flex-col items-center justify-center px-4 py-20 bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 text-white overflow-hidden">
+      <section className="relative w-full flex flex-col items-center justify-center px-4 py-20 bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 text-white overflow-hidden">
         {/* Animated background elements */}
         <div className="absolute inset-0">
           <div className="absolute w-96 h-96 bg-blue-500 rounded-full opacity-10 -top-20 -right-20 animate-pulse"></div>
@@ -81,7 +80,7 @@ export default function LandingPage() {
       </section>
 
       {/* Features Section */}
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-white w-full">
         <div className="max-w-6xl mx-auto px-4">
           <h2 className="text-4xl font-bold text-center mb-16 text-gray-900">
             Why Choose LSAT Training
@@ -164,7 +163,7 @@ export default function LandingPage() {
       </section>
 
       {/* Testimonials */}
-      <section className="py-20 bg-gradient-to-br from-blue-50 to-indigo-50">
+      <section className="py-20 bg-gradient-to-br from-blue-50 to-indigo-50 w-full">
         <div className="max-w-6xl mx-auto px-4">
           <h2 className="text-4xl font-bold text-center mb-16 text-gray-900">
             Success Stories
@@ -211,7 +210,7 @@ export default function LandingPage() {
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-blue-700 to-indigo-800 text-white">
+      <section className="py-20 bg-gradient-to-br from-blue-700 to-indigo-800 text-white w-full">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-8">
             Ready to Improve Your LSAT Score?
@@ -245,7 +244,7 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
+      <footer className="bg-gray-900 text-white py-12 w-full">
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center mb-8">
             <div className="text-2xl font-bold mb-4 md:mb-0">LSAT Training</div>
@@ -263,6 +262,6 @@ export default function LandingPage() {
           </div>
         </div>
       </footer>
-    </div>
+    </>
   );
 }

@@ -1,39 +1,38 @@
-// app/login/page.tsx
-import LoginForm from "../../../components/LoginForm";
-import GoogleSignIn from "../../../components/GoogleSignin";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import LoginForm from "../../../components/LoginForm";
+import GoogleSignIn from "../../../components/GoogleSignin";
 
 export default function LoginPage() {
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
+    <div className="flex h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
       {/* Left Panel - Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 lg:p-8">
-        <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-6 lg:p-8 transition-all duration-300 hover:shadow-[0_15px_35px_-15px_rgba(59,130,246,0.3)]">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-4">
+        <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-5 transition-all duration-300 hover:shadow-[0_15px_35px_-15px_rgba(59,130,246,0.3)]">
           {/* Header with Logo */}
-          <div className="mb-6 text-center">
+          <div className="mb-4 text-center">
             <Link href="/">
-              <div className="inline-flex bg-gradient-to-r from-blue-700 to-indigo-700 text-white p-2.5 rounded-xl shadow-md mx-auto hover:shadow-lg transition-shadow duration-200">
-                <span className="font-bold text-xl">LSAT Training</span>
+              <div className="inline-flex bg-gradient-to-r from-blue-700 to-indigo-700 text-white p-2 rounded-lg shadow-md mx-auto hover:shadow-lg transition-shadow duration-200">
+                <span className="font-bold text-lg">LSAT Training</span>
               </div>
             </Link>
-            <h1 className="text-2xl font-bold mt-6 mb-2 text-gray-800">
+            <h1 className="text-xl font-bold mt-4 mb-1 text-gray-800">
               Welcome back
             </h1>
-            <p className="text-gray-500 text-sm">
+            <p className="text-gray-500 text-xs">
               Sign in to your account to continue
             </p>
           </div>
 
           {/* Login Form */}
-          <div className="space-y-6">
+          <div className="space-y-4">
             <LoginForm />
 
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-gray-200"></div>
               </div>
-              <div className="relative flex justify-center text-sm">
+              <div className="relative flex justify-center text-xs">
                 <span className="px-2 bg-white text-gray-500">
                   Or continue with
                 </span>
@@ -42,7 +41,7 @@ export default function LoginPage() {
 
             <GoogleSignIn />
 
-            <div className="flex items-center justify-between pt-2 text-sm">
+            <div className="flex items-center justify-between pt-1 text-xs">
               <Link
                 href="/"
                 className="inline-flex items-center text-gray-500 hover:text-gray-700 transition-colors"
@@ -54,7 +53,7 @@ export default function LoginPage() {
               <span className="text-gray-500">
                 Need an account?{" "}
                 <Link
-                  href="/Signup"
+                  href="/signup"
                   className="text-blue-600 hover:text-blue-800 font-medium transition-colors duration-200"
                 >
                   Sign up
@@ -72,13 +71,13 @@ export default function LoginPage() {
         <div className="absolute w-96 h-96 rounded-full bg-indigo-500 blur-3xl opacity-20 top-10 -right-20"></div>
 
         {/* Content */}
-        <div className="absolute inset-0 flex flex-col justify-center items-center p-16">
-          <div className="max-w-md text-center">
-            <div className="mb-6">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-white bg-opacity-10 rounded-full backdrop-blur-sm border border-white border-opacity-20 shadow-2xl">
+        <div className="absolute inset-0 flex flex-col justify-center items-center p-8">
+          <div className="max-w-md">
+            <div className="mb-6 flex justify-center">
+              <div className="inline-flex items-center justify-center w-14 h-14 bg-white bg-opacity-10 rounded-full backdrop-blur-sm border border-white border-opacity-20 shadow-2xl">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-8 w-8 text-white"
+                  className="h-7 w-7 text-white"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -93,38 +92,40 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <h2 className="text-3xl font-bold text-white mb-4">
+            <h2 className="text-2xl font-bold text-white mb-3 text-center">
               Prepare for Success
             </h2>
-            <p className="text-lg text-blue-100 mb-6">
+            <p className="text-base text-blue-100 mb-5 text-center">
               Our AI-powered platform helps you maximize your LSAT score with
               personalized study plans and advanced analytics.
             </p>
 
-            <div className="grid grid-cols-2 gap-4 mb-6">
-              <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-xl p-4 text-left border border-white border-opacity-10 hover:bg-opacity-20 transition-all duration-200">
-                <div className="text-2xl font-bold text-white mb-1">93%</div>
-                <p className="text-blue-100 text-sm">
+            <div className="grid grid-cols-2 gap-3 mb-5">
+              <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-3 text-left border border-white border-opacity-10 hover:bg-opacity-20 transition-all duration-200">
+                <div className="text-xl font-bold text-white mb-0.5">93%</div>
+                <p className="text-blue-100 text-xs">
                   of our students improve their scores by 8+ points
                 </p>
               </div>
-              <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-xl p-4 text-left border border-white border-opacity-10 hover:bg-opacity-20 transition-all duration-200">
-                <div className="text-2xl font-bold text-white mb-1">5,000+</div>
-                <p className="text-blue-100 text-sm">
+              <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-3 text-left border border-white border-opacity-10 hover:bg-opacity-20 transition-all duration-200">
+                <div className="text-xl font-bold text-white mb-0.5">
+                  5,000+
+                </div>
+                <p className="text-blue-100 text-xs">
                   practice questions with detailed explanations
                 </p>
               </div>
             </div>
 
             {/* Testimonial */}
-            <div className="bg-white bg-opacity-5 backdrop-blur-sm rounded-xl p-6 text-left border border-white border-opacity-10 shadow-xl hover:bg-opacity-10 transition-all duration-200">
+            <div className="bg-white bg-opacity-5 backdrop-blur-sm rounded-lg p-4 text-left border border-white border-opacity-10 shadow-xl hover:bg-opacity-10 transition-all duration-200">
               <p className="italic text-white mb-3 text-sm">
                 "The personalized feedback and analytics helped me identify my
                 weak areas and focus my study time effectively. I improved my
                 score by 12 points!"
               </p>
               <div className="flex items-center">
-                <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center font-bold text-white mr-2">
+                <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center font-bold text-white text-xs mr-2">
                   JD
                 </div>
                 <div>

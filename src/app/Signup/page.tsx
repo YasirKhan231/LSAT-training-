@@ -1,12 +1,11 @@
-// app/Signup/page.tsx
-import SignupForm from "../../../components/SignupForm";
-import GoogleSignIn from "../../../components/GoogleSignin";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import SignupForm from "../../../components/SignupForm";
+import GoogleSignIn from "../../../components/GoogleSignin";
 
 export default function SignupPage() {
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-purple-50 to-indigo-50">
+    <div className="flex h-screen bg-gradient-to-br from-purple-50 to-indigo-50">
       {/* Left Panel - Background Image and Content */}
       <div className="hidden lg:block lg:w-1/2 bg-gradient-to-br from-purple-600 to-indigo-600 overflow-hidden relative">
         {/* Background Pattern */}
@@ -40,13 +39,13 @@ export default function SignupPage() {
         <div className="absolute w-96 h-96 rounded-full bg-indigo-500 blur-3xl opacity-20 top-10 -right-20"></div>
 
         {/* Content */}
-        <div className="absolute inset-0 flex flex-col justify-center items-center p-16">
-          <div className="max-w-lg text-center">
-            <div className="mb-8">
-              <div className="inline-flex items-center justify-center w-24 h-24 bg-white bg-opacity-10 rounded-full backdrop-blur-sm border border-white border-opacity-20 shadow-2xl">
+        <div className="absolute inset-0 flex flex-col justify-center items-center p-8">
+          <div className="max-w-lg">
+            <div className="mb-6 flex justify-center">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-white bg-opacity-10 rounded-full backdrop-blur-sm border border-white border-opacity-20 shadow-2xl">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-12 w-12 text-white"
+                  className="h-8 w-8 text-white"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -61,122 +60,123 @@ export default function SignupPage() {
               </div>
             </div>
 
-            <h2 className="text-4xl font-bold text-white mb-6">
+            <h2 className="text-3xl font-bold text-white mb-4 text-center">
               Start Your LSAT Journey
             </h2>
-            <p className="text-xl text-indigo-100 mb-10">
+            <p className="text-lg text-indigo-100 mb-6 text-center">
               Join thousands of students who improved their LSAT scores with our
               AI-powered learning platform.
             </p>
 
-            <div className="space-y-6 mb-10">
-              <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-xl p-6 text-left border border-white border-opacity-10 shadow-lg">
-                <h3 className="text-xl font-semibold text-white mb-4">
-                  What you'll get:
-                </h3>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="flex items-start space-x-3">
-                    <div className="h-6 w-6 rounded-full bg-purple-500 flex-shrink-0 flex items-center justify-center mt-0.5">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-4 w-4 text-white"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                    </div>
-                    <span className="text-white text-sm">
-                      Personalized study plans
-                    </span>
+            <div className="grid grid-cols-2 gap-3 mb-6">
+              <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-3 border border-white border-opacity-10 shadow-lg">
+                <div className="flex items-start space-x-2">
+                  <div className="h-5 w-5 rounded-full bg-purple-500 flex-shrink-0 flex items-center justify-center mt-0.5">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-3 w-3 text-white"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
                   </div>
-                  <div className="flex items-start space-x-3">
-                    <div className="h-6 w-6 rounded-full bg-purple-500 flex-shrink-0 flex items-center justify-center mt-0.5">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-4 w-4 text-white"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                    </div>
-                    <span className="text-white text-sm">
-                      Interactive logic games
-                    </span>
+                  <span className="text-white text-xs">
+                    Personalized study plans
+                  </span>
+                </div>
+              </div>
+              <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-3 border border-white border-opacity-10 shadow-lg">
+                <div className="flex items-start space-x-2">
+                  <div className="h-5 w-5 rounded-full bg-purple-500 flex-shrink-0 flex items-center justify-center mt-0.5">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-3 w-3 text-white"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
                   </div>
-                  <div className="flex items-start space-x-3">
-                    <div className="h-6 w-6 rounded-full bg-purple-500 flex-shrink-0 flex items-center justify-center mt-0.5">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-4 w-4 text-white"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                    </div>
-                    <span className="text-white text-sm">
-                      Full-length practice exams
-                    </span>
+                  <span className="text-white text-xs">
+                    Interactive logic games
+                  </span>
+                </div>
+              </div>
+              <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-3 border border-white border-opacity-10 shadow-lg">
+                <div className="flex items-start space-x-2">
+                  <div className="h-5 w-5 rounded-full bg-purple-500 flex-shrink-0 flex items-center justify-center mt-0.5">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-3 w-3 text-white"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
                   </div>
-                  <div className="flex items-start space-x-3">
-                    <div className="h-6 w-6 rounded-full bg-purple-500 flex-shrink-0 flex items-center justify-center mt-0.5">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-4 w-4 text-white"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                    </div>
-                    <span className="text-white text-sm">
-                      Performance analytics
-                    </span>
+                  <span className="text-white text-xs">
+                    Full-length practice exams
+                  </span>
+                </div>
+              </div>
+              <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-3 border border-white border-opacity-10 shadow-lg">
+                <div className="flex items-start space-x-2">
+                  <div className="h-5 w-5 rounded-full bg-purple-500 flex-shrink-0 flex items-center justify-center mt-0.5">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-3 w-3 text-white"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
                   </div>
+                  <span className="text-white text-xs">
+                    Performance analytics
+                  </span>
                 </div>
               </div>
             </div>
 
-            {/* Success Stories */}
-            <div className="bg-white bg-opacity-5 backdrop-blur-sm rounded-xl p-6 text-left border border-white border-opacity-10 shadow-xl">
-              <p className="italic text-white mb-4">
+            {/* Success Story */}
+            <div className="bg-white bg-opacity-5 backdrop-blur-sm rounded-lg p-4 border border-white border-opacity-10 shadow-xl">
+              <p className="italic text-white text-sm mb-3">
                 "LSAT Training helped me target my weaknesses and improve where
                 it matters most. My score jumped from 157 to 171 in just 10
                 weeks!"
               </p>
               <div className="flex items-center">
-                <div className="w-10 h-10 rounded-full bg-purple-500 flex items-center justify-center font-bold text-white mr-3">
+                <div className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center font-bold text-white text-xs mr-2">
                   MT
                 </div>
                 <div>
-                  <p className="font-medium text-white">Michael T.</p>
-                  <p className="text-indigo-200 text-sm">Columbia Law '23</p>
+                  <p className="font-medium text-white text-sm">Michael T.</p>
+                  <p className="text-indigo-200 text-xs">Columbia Law '23</p>
                 </div>
               </div>
             </div>
@@ -185,32 +185,32 @@ export default function SignupPage() {
       </div>
 
       {/* Right Panel - Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 lg:p-8">
-        <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-6 lg:p-8 transition-all duration-300 hover:shadow-[0_15px_35px_-15px_rgba(79,70,229,0.3)]">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-4">
+        <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-5 transition-all duration-300 hover:shadow-[0_15px_35px_-15px_rgba(79,70,229,0.3)]">
           {/* Header with Logo */}
-          <div className="mb-6 text-center">
+          <div className="mb-4 text-center">
             <Link href="/">
-              <div className="inline-flex bg-gradient-to-r from-purple-700 to-indigo-700 text-white p-2.5 rounded-xl shadow-md mx-auto hover:shadow-lg transition-shadow duration-200">
-                <span className="font-bold text-xl">LSAT Training</span>
+              <div className="inline-flex bg-gradient-to-r from-purple-700 to-indigo-700 text-white p-2 rounded-lg shadow-md mx-auto hover:shadow-lg transition-shadow duration-200">
+                <span className="font-bold text-lg">LSAT Training</span>
               </div>
             </Link>
-            <h1 className="text-2xl font-bold mt-6 mb-2 text-gray-800">
+            <h1 className="text-xl font-bold mt-4 mb-1 text-gray-800">
               Create account
             </h1>
-            <p className="text-gray-500 text-sm">
+            <p className="text-gray-500 text-xs">
               Join our community of LSAT learners
             </p>
           </div>
 
           {/* Form */}
-          <div className="space-y-6">
+          <div className="space-y-4">
             <SignupForm />
 
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <div className="w-full border-t border-gray-200"></div>
               </div>
-              <div className="relative flex justify-center text-sm">
+              <div className="relative flex justify-center text-xs">
                 <span className="px-2 bg-white text-gray-500">
                   Or sign up with
                 </span>
@@ -219,7 +219,7 @@ export default function SignupPage() {
 
             <GoogleSignIn />
 
-            <div className="flex items-center justify-between pt-2 text-sm">
+            <div className="flex items-center justify-between pt-1 text-xs">
               <Link
                 href="/"
                 className="inline-flex items-center text-gray-500 hover:text-gray-700 transition-colors"
