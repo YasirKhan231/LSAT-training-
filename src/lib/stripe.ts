@@ -2,7 +2,6 @@ import { loadStripe } from "@stripe/stripe-js";
 import {
   getFirestore,
   doc,
-  setDoc,
   updateDoc,
   serverTimestamp,
 } from "firebase/firestore";

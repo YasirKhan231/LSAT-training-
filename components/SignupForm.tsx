@@ -7,6 +7,15 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { FirebaseError } from "firebase/app";
 import { doc, setDoc } from "firebase/firestore"; // Import Firestore functions
+import {
+  Eye,
+  EyeOff,
+  CheckCircle2,
+  AlertCircle,
+  User,
+  Mail,
+  Lock,
+} from "lucide-react";
 
 export default function SignupForm() {
   const [name, setName] = useState("");
@@ -15,11 +24,35 @@ export default function SignupForm() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [formTouched, setFormTouched] = useState({
+    name: false,
+    email: false,
+    password: false,
+    confirmPassword: false,
+  });
   const router = useRouter();
+
+  // Password validation
+  const hasMinLength = password.length >= 8;
+  const passwordsMatch = password === confirmPassword && confirmPassword !== "";
+  const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  const markFieldAsTouched = (field: keyof typeof formTouched) => {
+    setFormTouched({ ...formTouched, [field]: true });
+  };
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+
+    // Mark all fields as touched for validation display
+    setFormTouched({
+      name: true,
+      email: true,
+      password: true,
+      confirmPassword: true,
+    });
 
     // Validate password match
     if (password !== confirmPassword) {
@@ -119,93 +152,194 @@ export default function SignupForm() {
   };
 
   return (
-    <div className="bg-white py-8 px-6 shadow-md rounded-lg sm:px-10 sm:max-w-md w-full mx-auto">
-      <h2 className="text-2xl font-bold text-gray-900 text-center mb-6">
-        Create your account
-      </h2>
-      <form onSubmit={handleSignup} className="space-y-6">
-        <div>
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Full name
-          </label>
-          <input
-            id="name"
-            type="text"
-            placeholder="John Doe"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="input-field mt-1"
-          />
+    <div className="w-full">
+      {error && (
+        <div className="bg-red-50 border-l-3 border-red-400 p-2.5 mb-4 rounded-r-lg animate-fadeIn">
+          <div className="flex items-center">
+            <AlertCircle className="h-4 w-4 text-red-500 mr-2 flex-shrink-0" />
+            <p className="text-xs text-red-700">{error}</p>
+          </div>
         </div>
+      )}
+
+      <form onSubmit={handleSignup} className="space-y-4">
+        <div>
+          <div className="flex items-center justify-between mb-1">
+            <label htmlFor="name" className="text-xs font-medium text-gray-700">
+              Full name
+            </label>
+            <span className="text-xs text-gray-400">Optional</span>
+          </div>
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
+              <User className="h-4 w-4 text-gray-400" />
+            </div>
+            <input
+              id="name"
+              type="text"
+              placeholder="John Doe"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              onBlur={() => markFieldAsTouched("name")}
+              className="w-full pl-9 pr-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200"
+            />
+          </div>
+        </div>
+
         <div>
           <label
             htmlFor="email"
-            className="block text-sm font-medium text-gray-700"
+            className="block text-xs font-medium text-gray-700 mb-1"
           >
             Email address
           </label>
-          <input
-            id="email"
-            type="email"
-            placeholder="you@example.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="input-field mt-1"
-          />
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
+              <Mail className="h-4 w-4 text-gray-400" />
+            </div>
+            <input
+              id="email"
+              type="email"
+              placeholder="you@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onBlur={() => markFieldAsTouched("email")}
+              required
+              className={`w-full pl-9 pr-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-1 transition-all duration-200 ${
+                formTouched.email && !isValidEmail && email
+                  ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                  : formTouched.email && isValidEmail && email
+                  ? "border-green-300 focus:ring-green-500 focus:border-green-500"
+                  : "border-gray-300 focus:ring-purple-500 focus:border-purple-500"
+              }`}
+            />
+            {formTouched.email && email && (
+              <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
+                {isValidEmail ? (
+                  <CheckCircle2 className="h-4 w-4 text-green-500" />
+                ) : (
+                  <AlertCircle className="h-4 w-4 text-red-500" />
+                )}
+              </div>
+            )}
+          </div>
+          {formTouched.email && email && !isValidEmail && (
+            <p className="mt-1 text-xs text-red-500">
+              Please enter a valid email address
+            </p>
+          )}
         </div>
+
         <div>
           <label
             htmlFor="password"
-            className="block text-sm font-medium text-gray-700"
+            className="block text-xs font-medium text-gray-700 mb-1"
           >
             Password
           </label>
-          <input
-            id="password"
-            type="password"
-            placeholder="••••••••"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="input-field mt-1"
-          />
-          <p className="mt-1 text-xs text-gray-500">
-            Password must be at least 8 characters long
-          </p>
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
+              <Lock className="h-4 w-4 text-gray-400" />
+            </div>
+            <input
+              id="password"
+              type={showPassword ? "text" : "password"}
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              onBlur={() => markFieldAsTouched("password")}
+              required
+              className={`w-full pl-9 pr-10 py-2 text-sm border rounded-md focus:outline-none focus:ring-1 transition-all duration-200 ${
+                formTouched.password && !hasMinLength && password
+                  ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                  : formTouched.password && hasMinLength && password
+                  ? "border-green-300 focus:ring-green-500 focus:border-green-500"
+                  : "border-gray-300 focus:ring-purple-500 focus:border-purple-500"
+              }`}
+            />
+            <button
+              type="button"
+              className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? (
+                <EyeOff className="h-4 w-4" />
+              ) : (
+                <Eye className="h-4 w-4" />
+              )}
+            </button>
+          </div>
+
+          <div className="flex mt-1.5 space-x-4">
+            <div
+              className={`flex items-center ${
+                hasMinLength
+                  ? "text-green-500"
+                  : formTouched.password
+                  ? "text-red-500"
+                  : "text-gray-400"
+              }`}
+            >
+              {hasMinLength ? (
+                <CheckCircle2 className="h-3.5 w-3.5 mr-1" />
+              ) : (
+                <AlertCircle className="h-3.5 w-3.5 mr-1" />
+              )}
+              <span className="text-xs">Min 8 characters</span>
+            </div>
+          </div>
         </div>
+
         <div>
           <label
             htmlFor="confirmPassword"
-            className="block text-sm font-medium text-gray-700"
+            className="block text-xs font-medium text-gray-700 mb-1"
           >
             Confirm password
           </label>
-          <input
-            id="confirmPassword"
-            type="password"
-            placeholder="••••••••"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-            className="input-field mt-1"
-          />
-        </div>
-        {error && (
-          <div className="bg-red-50 border-l-4 border-red-400 p-4">
-            <p className="text-sm text-red-700">{error}</p>
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
+              <Lock className="h-4 w-4 text-gray-400" />
+            </div>
+            <input
+              id="confirmPassword"
+              type={showPassword ? "text" : "password"}
+              placeholder="••••••••"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              onBlur={() => markFieldAsTouched("confirmPassword")}
+              required
+              className={`w-full pl-9 pr-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-1 transition-all duration-200 ${
+                formTouched.confirmPassword && confirmPassword
+                  ? passwordsMatch
+                    ? "border-green-300 focus:ring-green-500 focus:border-green-500"
+                    : "border-red-300 focus:ring-red-500 focus:border-red-500"
+                  : "border-gray-300 focus:ring-purple-500 focus:border-purple-500"
+              }`}
+            />
+            {formTouched.confirmPassword && confirmPassword && (
+              <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
+                {passwordsMatch ? (
+                  <CheckCircle2 className="h-4 w-4 text-green-500" />
+                ) : (
+                  <AlertCircle className="h-4 w-4 text-red-500" />
+                )}
+              </div>
+            )}
           </div>
-        )}
-        <div>
+
+          {formTouched.confirmPassword &&
+            confirmPassword &&
+            !passwordsMatch && (
+              <p className="mt-1 text-xs text-red-500">Passwords don't match</p>
+            )}
+        </div>
+
+        <div className="pt-2">
           <button
             type="submit"
             disabled={isLoading}
-            className={`w-full btn-primary ${
-              isLoading ? "opacity-70 cursor-not-allowed" : ""
-            }`}
+            className="w-full py-2.5 px-4 text-sm font-medium rounded-md text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 shadow-sm hover:shadow transition-all duration-200"
           >
             {isLoading ? (
               <div className="flex items-center justify-center">
