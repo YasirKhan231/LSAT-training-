@@ -1,4 +1,9 @@
+"use client"; // Mark this component as a Client Component
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { getAuth, onAuthStateChanged } from "firebase/auth"; // Firebase Auth
+import app from "@/lib/firebase"; // Initialize Firebase app
 import {
   LucideArrowRight,
   LucideBarChart,
@@ -18,12 +23,75 @@ import {
 import { Progress } from "@/components/ui/progress";
 
 export default function Dashboard() {
+  const [uuid, setUuid] = useState<string | null>(null); // State to store UUID (Firebase UID)
+  const [userData, setUserData] = useState<any>(null); // State to store user data
+  const [loading, setLoading] = useState(true); // State to handle loading
+  const [error, setError] = useState<string | null>(null); // State to handle errors
+  const auth = getAuth(app); // Initialize Firebase Auth
+
+  // Fetch the authenticated user's UID when the component mounts
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        setUuid(user.uid); // Set the UUID (Firebase UID)
+        fetchUserData(user.uid); // Fetch user data from the backend API
+      } else {
+        console.error("User not authenticated");
+        setUuid(null);
+        setLoading(false);
+      }
+    });
+
+    // Cleanup subscription on unmount
+    return () => unsubscribe();
+  }, [auth]);
+
+  // Fetch user data from the backend API
+  const fetchUserData = async (uid: string) => {
+    try {
+      const response = await fetch(`/api/plan/generate-plan?uuid=${uid}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch user data");
+      }
+      const data = await response.json();
+      setUserData(data); // Set user data in state
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      setError("Failed to fetch user data. Please try again.");
+    } finally {
+      setLoading(false); // Set loading to false after fetching data
+    }
+  };
+
+  // Calculate days remaining until the LSAT exam
+  const calculateDaysRemaining = (lsatTestDate: string) => {
+    const today = new Date();
+    const examDate = new Date(lsatTestDate);
+    const timeDiff = examDate.getTime() - today.getTime();
+    return Math.ceil(timeDiff / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
+  };
+
+  if (loading) {
+    return <div className="container mx-auto p-6">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="container mx-auto p-6 text-red-600">{error}</div>;
+  }
+
+  if (!userData) {
+    return <div className="container mx-auto p-6">No user data found.</div>;
+  }
+
   return (
     <div className="container mx-auto p-6">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold">Welcome back, John</h1>
+        <h1 className="text-3xl font-bold">
+          Welcome back, {userData.displayName}
+        </h1>
         <p className="text-muted-foreground">
-          Your LSAT exam is in 45 days. Here's your progress so far.
+          Your LSAT exam is in {calculateDaysRemaining(userData.lsatTestDate)}{" "}
+          days. Here's your progress so far.
         </p>
       </div>
 
@@ -34,7 +102,9 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent>
             <div className="flex items-center justify-between">
-              <div className="text-2xl font-bold">7 days</div>
+              <div className="text-2xl font-bold">
+                {userData.StudyStreak} days
+              </div>
               <LucideClock className="h-4 w-4 text-muted-foreground" />
             </div>
             <p className="text-xs text-muted-foreground">Keep it up!</p>
@@ -48,7 +118,9 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent>
             <div className="flex items-center justify-between">
-              <div className="text-2xl font-bold">245</div>
+              <div className="text-2xl font-bold">
+                {userData.PracticeQuestions}
+              </div>
               <LucideBookOpen className="h-4 w-4 text-muted-foreground" />
             </div>
             <p className="text-xs text-muted-foreground">
@@ -62,7 +134,7 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent>
             <div className="flex items-center justify-between">
-              <div className="text-2xl font-bold">162</div>
+              <div className="text-2xl font-bold">{userData.currentScore}</div>
               <LucideBarChart className="h-4 w-4 text-muted-foreground" />
             </div>
             <p className="text-xs text-muted-foreground">
@@ -76,7 +148,7 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent>
             <div className="flex items-center justify-between">
-              <div className="text-2xl font-bold">170</div>
+              <div className="text-2xl font-bold">{userData.targetScore}</div>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-4 w-4 text-muted-foreground"
@@ -92,7 +164,10 @@ export default function Dashboard() {
                 />
               </svg>
             </div>
-            <p className="text-xs text-muted-foreground">8 points to go</p>
+            <p className="text-xs text-muted-foreground">
+              {Number(userData.targetScore) - Number(userData.currentScore)}{" "}
+              points to go
+            </p>
           </CardContent>
         </Card>
       </div>
@@ -179,23 +254,38 @@ export default function Dashboard() {
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <p className="text-sm font-medium">Logical Reasoning</p>
-                  <p className="text-sm font-medium">75%</p>
+                  <p className="text-sm font-medium">
+                    {userData.progress.logicalReasoning}%
+                  </p>
                 </div>
-                <Progress value={75} className="h-2" />
+                <Progress
+                  value={userData.progress.logicalReasoning}
+                  className="h-2"
+                />
               </div>
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <p className="text-sm font-medium">Analytical Reasoning</p>
-                  <p className="text-sm font-medium">68%</p>
+                  <p className="text-sm font-medium">
+                    {userData.progress.analyticalReasoning}%
+                  </p>
                 </div>
-                <Progress value={68} className="h-2" />
+                <Progress
+                  value={userData.progress.analyticalReasoning}
+                  className="h-2"
+                />
               </div>
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <p className="text-sm font-medium">Reading Comprehension</p>
-                  <p className="text-sm font-medium">82%</p>
+                  <p className="text-sm font-medium">
+                    {userData.progress.readingComprehension}%
+                  </p>
                 </div>
-                <Progress value={82} className="h-2" />
+                <Progress
+                  value={userData.progress.readingComprehension}
+                  className="h-2"
+                />
               </div>
             </div>
             <div className="mt-6 rounded-lg border border-amber-200 bg-amber-50 p-4 dark:border-amber-900/50 dark:bg-amber-900/20">

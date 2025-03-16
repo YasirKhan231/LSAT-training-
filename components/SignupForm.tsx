@@ -60,6 +60,42 @@ export default function SignupForm() {
           createdAt: new Date().toISOString(),
           onboarded: false, // User has not completed onboarding yet
           subscription: "free", // Default to free plan
+
+          // Set other fields to null or default values
+          authProvider: null,
+          lsatTestDate: null,
+          targetScore: null,
+          currentScore: null,
+          updatedAt: null,
+          StudyStreak: 0,
+          PracticeQuestions: 0,
+          preferredSchedule: null,
+          weeklyHours: null,
+          lsatPreparationMaterial: null,
+          additionalInformation: null,
+          progress: {
+            logicalReasoning: 0,
+            analyticalReasoning: 0,
+            readingComprehension: 0,
+            totalTimeSpent: 0,
+            testAttempts: 0,
+            lastUpdated: null,
+          },
+          performanceInsights: [],
+          practiceHistory: [],
+          bookmarkedQuestions: [],
+          simulatedExams: [],
+          logicGames: [],
+          plan: [],
+          studyPlan: {
+            today: [],
+            weekly: [],
+            monthly: [],
+            lastUpdated: null,
+          },
+          specificAreas: [],
+          challengingAreas: [],
+          payments: [],
         });
       }
 

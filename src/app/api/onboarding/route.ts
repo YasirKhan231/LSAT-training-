@@ -24,13 +24,19 @@ export async function POST(request: Request) {
     const { examDate, targetScore, studyHours } = data;
 
     if (!examDate || !targetScore || !studyHours) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Missing required fields" },
+        { status: 400 }
+      );
     }
 
     // Verify Firebase ID token
     const authHeader = request.headers.get("Authorization");
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return NextResponse.json({ error: "Unauthorized: Missing token" }, { status: 401 });
+      return NextResponse.json(
+        { error: "Unauthorized: Missing token" },
+        { status: 401 }
+      );
     }
 
     const idToken = authHeader.split("Bearer ")[1];
@@ -44,20 +50,36 @@ export async function POST(request: Request) {
     // Update user onboarding data
     await userRef.set(
       {
-        lsatDate: examDate,
+        lsatTestDate: examDate, // Updated field name to match your structure
         targetScore,
         weeklyHours: studyHours,
         onboarded: true,
+        updatedAt: new Date().toISOString(), // Add updatedAt timestamp
         progress: {
           logicalReasoning: 0,
           analyticalReasoning: 0,
           readingComprehension: 0,
+          totalTimeSpent: 0,
+          testAttempts: 0,
+          lastUpdated: null,
         },
+        performanceInsights: [],
+        StudyStreak: 1,
+          PracticeQuestions: 0,
         practiceHistory: [],
         bookmarkedQuestions: [],
-        testAttempts: 0,
-        totalTimeSpent: 0,
-        performanceInsights: [],
+        simulatedExams: [],
+        logicGames: [],
+        plan: [],
+        studyPlan: {
+          today: [],
+          weekly: [],
+          monthly: [],
+          lastUpdated: null,
+        },
+        specificAreas: [],
+        challengingAreas: [],
+        payments: [],
       },
       { merge: true } // 🔥 Ensures we don't overwrite existing data
     );
@@ -69,6 +91,9 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     console.error("Error saving onboarding data:", error);
-    return NextResponse.json({ error: "Failed to save onboarding data" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to save onboarding data" },
+      { status: 500 }
+    );
   }
 }

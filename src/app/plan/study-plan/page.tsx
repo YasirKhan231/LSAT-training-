@@ -1,9 +1,9 @@
-"use client";
+"use client"; // Mark this component as a Client Component
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { getAuth, onAuthStateChanged } from "firebase/auth"; // Firebase Auth
-import app from "@/lib/firebase"; // Initialize Firebase app
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import app from "@/lib/firebase";
 import {
   LucideArrowLeft,
   LucideBookOpen,
@@ -12,7 +12,7 @@ import {
   LucideClock,
   LucideEdit,
 } from "lucide-react";
-
+import { usePathname } from "next/navigation"; // Use `usePathname` from `next/navigation`
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -26,25 +26,82 @@ import { StudyPlanGenerator } from "@/components/study-plan-generator";
 
 export default function StudyPlan() {
   const [showGenerator, setShowGenerator] = useState(false);
-  const [uuid, setUuid] = useState<string | null>(null); // State to store UUID (Firebase UID)
-  const auth = getAuth(app); // Initialize Firebase Auth
+  const [uuid, setUuid] = useState<string | null>(null);
+  const [userData, setUserData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const auth = getAuth(app);
+  const pathname = usePathname(); // Use `usePathname` to detect route changes
 
   // Fetch the authenticated user's UID when the component mounts
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        // If the user is authenticated, set the UID as the UUID
         setUuid(user.uid);
+        fetchUserData(user.uid);
       } else {
-        // If the user is not authenticated, redirect to login or handle accordingly
         console.error("User not authenticated");
         setUuid(null);
+        setLoading(false);
       }
     });
 
-    // Cleanup subscription on unmount
     return () => unsubscribe();
   }, [auth]);
+
+  // Re-fetch data when the route changes or UUID changes
+  useEffect(() => {
+    if (uuid) {
+      fetchUserData(uuid);
+    }
+  }, [pathname, uuid]); // Use `pathname` instead of `router.pathname`
+
+  // Fetch user data from the backend API
+  const fetchUserData = async (uid: string) => {
+    try {
+      const response = await fetch(`/api/plan/generate-plan?uuid=${uid}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch user data");
+      }
+      const data = await response.json();
+      setUserData(data);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      setError("Failed to fetch user data. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Calculate days remaining until the LSAT exam
+  const calculateDaysRemaining = (lsatTestDate: string) => {
+    const today = new Date();
+    const examDate = new Date(lsatTestDate);
+    const timeDiff = examDate.getTime() - today.getTime();
+    return Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+  };
+
+  // Format the LSAT exam date
+  const formatLSATDate = (lsatTestDate: string) => {
+    const date = new Date(lsatTestDate);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
+  if (loading) {
+    return <div className="container mx-auto p-6">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="container mx-auto p-6 text-red-600">{error}</div>;
+  }
+
+  if (!userData) {
+    return <div className="container mx-auto p-6">No user data found.</div>;
+  }
 
   return (
     <div className="container mx-auto p-6">
@@ -70,6 +127,7 @@ export default function StudyPlan() {
         />
       ) : (
         <>
+          {/* LSAT Exam Date and Scores */}
           <div className="mb-6 rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-900/50 dark:bg-blue-900/20">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <div>
@@ -77,18 +135,20 @@ export default function StudyPlan() {
                   Your LSAT Exam Date
                 </h3>
                 <p className="text-sm text-blue-800 dark:text-blue-300">
-                  June 12, 2025 (45 days remaining)
+                  {formatLSATDate(userData.lsatTestDate)} (
+                  {calculateDaysRemaining(userData.lsatTestDate)} days
+                  remaining)
                 </p>
               </div>
               <div className="flex items-center gap-2">
                 <span className="text-sm font-medium text-blue-800 dark:text-blue-300">
-                  Target Score: 170
+                  Target Score: {userData.targetScore}
                 </span>
                 <span className="text-sm font-medium text-blue-800 dark:text-blue-300">
                   |
                 </span>
                 <span className="text-sm font-medium text-blue-800 dark:text-blue-300">
-                  Current Score: 162
+                  Current Score: {userData.currentScore}
                 </span>
               </div>
             </div>
