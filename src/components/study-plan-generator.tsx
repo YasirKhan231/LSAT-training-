@@ -31,9 +31,10 @@ import { Slider } from "@/components/ui/slider";
 
 interface StudyPlanGeneratorProps {
   onClose: () => void;
+  uuid: string; // Add UUID prop to identify the user
 }
 
-export function StudyPlanGenerator({ onClose }: StudyPlanGeneratorProps) {
+export function StudyPlanGenerator({ onClose, uuid }: StudyPlanGeneratorProps) {
   const [step, setStep] = useState(1);
   const [isGenerating, setIsGenerating] = useState(false);
 
@@ -77,13 +78,13 @@ export function StudyPlanGenerator({ onClose }: StudyPlanGeneratorProps) {
           weeklyHours,
           challengingAreas,
           preferredSchedule,
-          focusAreas,
-          materials,
-          additionalInfo,
+          specificAreas: focusAreas, // Map focusAreas to specificAreas
+          lsatPreparationMaterial: materials, // Map materials to lsatPreparationMaterial
+          additionalInformation: additionalInfo,
         };
 
         // Send form data to the backend
-        const response = await fetch("/api/plan/generate-plan", {
+        const response = await fetch(`/api/plan/generate-plan?uuid=${uuid}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

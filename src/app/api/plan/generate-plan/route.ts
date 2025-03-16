@@ -7,29 +7,16 @@ const openai = new OpenAI({ apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY });
 export async function POST(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
-    const uuid = searchParams.get("uuid");
+    let uuid = searchParams.get("uuid");
 
     if (!uuid) {
       return NextResponse.json({ error: "UUID is required" }, { status: 400 });
     }
 
-    const { 
-      lsatDate, 
-      currentScore, 
-      targetScore, 
-      weeklyHours, 
-      challengingAreas, 
-      specificAreas, 
-      preferredSchedule, 
-      lsatPreparationMaterial, 
-      additionalInformation 
-    } = await req.json();
+    uuid = uuid.trim(); // Remove any newline or extra spaces
+    console.log("Processed UUID:", uuid);
 
-    if (!lsatDate || currentScore === undefined || !targetScore || !weeklyHours || !challengingAreas || !specificAreas || !preferredSchedule || !lsatPreparationMaterial || !additionalInformation) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
-    }
-
-    // Fetch the existing user document
+    // Reference the user document in Firestore
     const userRef = db.collection("users").doc(uuid);
     const userDoc = await userRef.get();
 
@@ -37,27 +24,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    const userData = userDoc.data();
+    const userData = userDoc.data() || {}; // Ensure userData is not undefined
 
-    // Generate study plan
-    const planPrompt = `
-      Create a detailed LSAT study plan for a student who currently has a score of ${currentScore} and wants to achieve a target score of ${targetScore}.
-      They are studying ${weeklyHours} hours per week, focusing on ${challengingAreas.join(", ")}.
-      Their preferred schedule is ${preferredSchedule}, and they are using ${lsatPreparationMaterial} as preparation material.
-      Additional information: ${additionalInformation}
-    `;
-
-    const completion = await openai.chat.completions.create({
-      model: "gpt-4",
-      messages: [{ role: "user", content: planPrompt }],
-      max_tokens: 1000,
-    });
-
-    const plan = completion.choices[0].message.content;
-
-    // Update only the missing fields or overwrite existing ones
-    const updatedUserData = {
-      ...userData, // Keep existing fields
+    const {
       lsatDate,
       currentScore,
       targetScore,
@@ -67,11 +36,44 @@ export async function POST(req: NextRequest) {
       preferredSchedule,
       lsatPreparationMaterial,
       additionalInformation,
-      plan,
+    } = await req.json();
+
+    // Generate study plan if missing
+    let plan = userData.plan || "";
+    if (!plan) {
+      const planPrompt = `
+        Create a detailed LSAT study plan for a student who currently has a score of ${currentScore} and wants to achieve a target score of ${targetScore}.
+        They are studying ${weeklyHours} hours per week, focusing on ${challengingAreas.join(", ")}.
+        Their preferred schedule is ${preferredSchedule}, and they are using ${lsatPreparationMaterial} as preparation material.
+        Additional information: ${additionalInformation}
+      `;
+
+      const completion = await openai.chat.completions.create({
+        model: "gpt-4",
+        messages: [{ role: "user", content: planPrompt }],
+        max_tokens: 1000,
+      });
+
+      plan = completion.choices[0].message.content;
+    }
+
+    // Merge existing data with the new updates
+    const updatedUserData = {
+      ...userData, // Preserve existing fields
+      lsatDate: lsatDate || userData.lsatDate,
+      currentScore: currentScore ?? userData.currentScore,
+      targetScore: targetScore || userData.targetScore,
+      weeklyHours: weeklyHours || userData.weeklyHours,
+      challengingAreas: challengingAreas || userData.challengingAreas,
+      specificAreas: specificAreas || userData.specificAreas,
+      preferredSchedule: preferredSchedule || userData.preferredSchedule,
+      lsatPreparationMaterial: lsatPreparationMaterial || userData.lsatPreparationMaterial,
+      additionalInformation: additionalInformation || userData.additionalInformation,
+      plan, // Always update the plan if generated
       updatedAt: new Date().toISOString(),
     };
 
-    // Save updated user data
+    // Save the updated user data
     await userRef.set(updatedUserData, { merge: true });
 
     return NextResponse.json(updatedUserData, { status: 200 });
@@ -84,11 +86,13 @@ export async function POST(req: NextRequest) {
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
-    const uuid = searchParams.get("uuid");
+    let uuid = searchParams.get("uuid");
 
     if (!uuid) {
       return NextResponse.json({ error: "UUID is required" }, { status: 400 });
     }
+
+    uuid = uuid.trim(); // Remove any newline or extra spaces
 
     const userRef = db.collection("users").doc(uuid);
     const userDoc = await userRef.get();

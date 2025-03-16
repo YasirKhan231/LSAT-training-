@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { getAuth, onAuthStateChanged } from "firebase/auth"; // Firebase Auth
+import app from "@/lib/firebase"; // Initialize Firebase app
 import {
   LucideArrowLeft,
   LucideBookOpen,
@@ -24,6 +26,25 @@ import { StudyPlanGenerator } from "@/components/study-plan-generator";
 
 export default function StudyPlan() {
   const [showGenerator, setShowGenerator] = useState(false);
+  const [uuid, setUuid] = useState<string | null>(null); // State to store UUID (Firebase UID)
+  const auth = getAuth(app); // Initialize Firebase Auth
+
+  // Fetch the authenticated user's UID when the component mounts
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // If the user is authenticated, set the UID as the UUID
+        setUuid(user.uid);
+      } else {
+        // If the user is not authenticated, redirect to login or handle accordingly
+        console.error("User not authenticated");
+        setUuid(null);
+      }
+    });
+
+    // Cleanup subscription on unmount
+    return () => unsubscribe();
+  }, [auth]);
 
   return (
     <div className="container mx-auto p-6">
@@ -42,8 +63,11 @@ export default function StudyPlan() {
         </Button>
       </div>
 
-      {showGenerator ? (
-        <StudyPlanGenerator onClose={() => setShowGenerator(false)} />
+      {showGenerator && uuid ? ( // Only show StudyPlanGenerator if UUID (UID) is available
+        <StudyPlanGenerator
+          onClose={() => setShowGenerator(false)}
+          uuid={uuid} // Pass the UID as the UUID to the StudyPlanGenerator
+        />
       ) : (
         <>
           <div className="mb-6 rounded-lg border border-blue-200 bg-blue-50 p-4 dark:border-blue-900/50 dark:bg-blue-900/20">
