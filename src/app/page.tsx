@@ -13,7 +13,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Hero Section */}
-      <section className="relative flex-grow flex flex-col items-center justify-center px-4 py-20 bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 text-white overflow-hidden">
+      <section className="relative flex-grow flex flex-col items-center justify-center px-4 py-20 bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 text-white overflow-hidden border rounded-sm">
         {/* Animated background elements */}
         <div className="absolute inset-0">
           <div className="absolute w-96 h-96 bg-blue-500 rounded-full opacity-10 -top-20 -right-20 animate-pulse"></div>

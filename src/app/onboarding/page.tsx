@@ -112,7 +112,7 @@ export default function OnboardingForm() {
 
       // Redirect to home page after a short delay
       setTimeout(() => {
-        router.push("/");
+        router.push("/dashboard");
       }, 2000);
     } catch (error) {
       console.error("Onboarding submission error:", error);

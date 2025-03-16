@@ -16,8 +16,20 @@ import { useUser } from "@/lib/context/UserContext";
 import PremiumFeature from "@/components/PremiumFeature";
 import { Crown } from "lucide-react";
 
+// Define the type for an exam
+type Exam = {
+  id: string;
+  title: string;
+  difficulty: string;
+  sections: string[];
+  duration: number; // in minutes
+  questions: number;
+  aiAssisted: boolean;
+  isCustomizable?: boolean; // Optional property
+};
+
 // Mock data for available exams
-const availableExams = [
+const availableExams: Exam[] = [
   {
     id: "prep-test-71",
     title: "PrepTest 71",
@@ -28,7 +40,7 @@ const availableExams = [
       "Analytical Reasoning",
       "Logical Reasoning",
     ],
-    duration: 175, // minutes
+    duration: 175,
     questions: 100,
     aiAssisted: true,
   },
@@ -59,7 +71,7 @@ const availableExams = [
     duration: 175,
     questions: 100,
     aiAssisted: true,
-    isCustomizable: true,
+    isCustomizable: true, // Add the missing property
   },
 ];
 
@@ -68,7 +80,7 @@ export default function MockExamPage() {
   const [selectedExam, setSelectedExam] = useState<string | null>(null);
 
   // Free users only get access to one exam
-  const availableExamsForUser = isSubscriptionActive 
+  const availableExamsForUser: Exam[] = isSubscriptionActive
     ? [
         // Full list of exams for premium users
         {
@@ -81,7 +93,7 @@ export default function MockExamPage() {
             "Analytical Reasoning",
             "Logical Reasoning",
           ],
-          duration: 175, // minutes
+          duration: 175,
           questions: 100,
           aiAssisted: true,
         },
@@ -99,7 +111,21 @@ export default function MockExamPage() {
           questions: 100,
           aiAssisted: true,
         },
-        // More exams for premium users
+        {
+          id: "custom-exam",
+          title: "Custom AI-Generated Exam",
+          difficulty: "Adaptive",
+          sections: [
+            "Logical Reasoning",
+            "Reading Comprehension",
+            "Analytical Reasoning",
+            "Logical Reasoning",
+          ],
+          duration: 175,
+          questions: 100,
+          aiAssisted: true,
+          isCustomizable: true, // Add the missing property
+        },
       ]
     : [
         // Limited exams for free users
@@ -113,10 +139,10 @@ export default function MockExamPage() {
             "Analytical Reasoning",
             "Logical Reasoning",
           ],
-          duration: 175, // minutes
+          duration: 175,
           questions: 100,
           aiAssisted: true,
-        }
+        },
       ];
 
   return (
@@ -130,16 +156,19 @@ export default function MockExamPage() {
             Take realistic timed LSAT practice tests with AI-powered analysis
             and feedback
           </p>
-          
+
           {!isSubscriptionActive && (
             <div className="mt-4 bg-amber-50 border border-amber-200 rounded-md p-4">
               <div className="flex">
                 <Crown className="h-5 w-5 text-amber-500 mr-2" />
                 <p className="text-amber-800">
-                  Free users get access to one practice exam. 
-                  <Link href="/subscription" className="ml-1 font-medium underline">
+                  Free users get access to one practice exam.
+                  <Link
+                    href="/subscription"
+                    className="ml-1 font-medium underline"
+                  >
                     Upgrade to Premium
-                  </Link> 
+                  </Link>
                   for unlimited exams and AI-powered analysis.
                 </p>
               </div>
@@ -216,7 +245,10 @@ export default function MockExamPage() {
             {selectedExam ? (
               <div className="bg-white p-6 rounded-lg shadow-md">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                  {availableExamsForUser.find((e) => e.id === selectedExam)?.title}
+                  {
+                    availableExamsForUser.find((e) => e.id === selectedExam)
+                      ?.title
+                  }
                 </h3>
 
                 <div className="space-y-4">
@@ -288,27 +320,34 @@ export default function MockExamPage() {
         </div>
 
         {/* Premium feature: Custom Exam Creation */}
-        <PremiumFeature fallback={
-          <div className="mt-12 bg-gray-100 rounded-lg p-6">
-            <h2 className="text-xl font-bold text-gray-800 mb-2">
-              AI-Powered Exam Creation
-            </h2>
-            <p className="text-gray-600 mb-4">
-              Upgrade to premium to create custom exams tailored to your specific needs and weaknesses
-            </p>
-            <Link href="/subscription">
-              <Button variant="outline">Upgrade to Premium</Button>
-            </Link>
-          </div>
-        }>
+        <PremiumFeature
+          fallback={
+            <div className="mt-12 bg-gray-100 rounded-lg p-6">
+              <h2 className="text-xl font-bold text-gray-800 mb-2">
+                AI-Powered Exam Creation
+              </h2>
+              <p className="text-gray-600 mb-4">
+                Upgrade to premium to create custom exams tailored to your
+                specific needs and weaknesses
+              </p>
+              <Link href="/subscription">
+                <Button variant="outline">Upgrade to Premium</Button>
+              </Link>
+            </div>
+          }
+        >
           <div className="mt-12 bg-blue-50 rounded-lg p-6">
             <h2 className="text-xl font-bold text-blue-800 mb-2">
               AI-Powered Exam Creation
             </h2>
             <p className="text-blue-600 mb-4">
-              Create a custom exam tailored to your specific needs and weaknesses
+              Create a custom exam tailored to your specific needs and
+              weaknesses
             </p>
-            <Button variant="outline" className="bg-white border-blue-300 text-blue-700 hover:bg-blue-100">
+            <Button
+              variant="outline"
+              className="bg-white border-blue-300 text-blue-700 hover:bg-blue-100"
+            >
               Create Custom Exam
             </Button>
           </div>
