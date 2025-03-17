@@ -2,7 +2,14 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { CalendarIcon, Loader2 } from "lucide-react";
+import {
+  CalendarIcon,
+  Loader2,
+  LucideCalendar,
+  LucideClock,
+  LucideTarget,
+  LucideBarChart,
+} from "lucide-react";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css"; // Default styling for react-day-picker
 import { useToast } from "@/hooks/use-toast";
@@ -24,8 +31,20 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Slider } from "@/components/ui/slider";
 
-type OnboardingStep = "exam-date" | "target-score" | "study-hours" | "review";
+type OnboardingStep =
+  | "exam-date"
+  | "target-score"
+  | "current-score"
+  | "study-hours"
+  | "challenging-areas"
+  | "preferred-schedule"
+  | "focus-areas"
+  | "lsatPreparationMaterial"
+  | "additional-info"
+  | "review";
 
 export default function OnboardingForm() {
   const router = useRouter();
@@ -35,7 +54,13 @@ export default function OnboardingForm() {
   const [formData, setFormData] = useState({
     examDate: undefined as Date | undefined,
     targetScore: "",
+    currentScore: "",
     studyHours: "",
+    challengingAreas: [] as string[],
+    preferredSchedule: "",
+    focusAreas: [] as string[],
+    lsatPreparationMaterial: "",
+    additionalInfo: "",
   });
 
   const handleNext = () => {
@@ -56,6 +81,15 @@ export default function OnboardingForm() {
         });
         return;
       }
+      setStep("current-score");
+    } else if (step === "current-score") {
+      if (!formData.currentScore) {
+        toast("Missing information", {
+          description: "Please enter your current score",
+          variant: "destructive",
+        });
+        return;
+      }
       setStep("study-hours");
     } else if (step === "study-hours") {
       if (!formData.studyHours) {
@@ -65,6 +99,44 @@ export default function OnboardingForm() {
         });
         return;
       }
+      setStep("challenging-areas");
+    } else if (step === "challenging-areas") {
+      if (formData.challengingAreas.length === 0) {
+        toast("Missing information", {
+          description: "Please select the most challenging section",
+          variant: "destructive",
+        });
+        return;
+      }
+      setStep("preferred-schedule");
+    } else if (step === "preferred-schedule") {
+      if (!formData.preferredSchedule) {
+        toast("Missing information", {
+          description: "Please select your preferred schedule",
+          variant: "destructive",
+        });
+        return;
+      }
+      setStep("focus-areas");
+    } else if (step === "focus-areas") {
+      if (formData.focusAreas.length === 0) {
+        toast("Missing information", {
+          description: "Please select focus areas",
+          variant: "destructive",
+        });
+        return;
+      }
+      setStep("lsatPreparationMaterial");
+    } else if (step === "lsatPreparationMaterial") {
+      if (!formData.lsatPreparationMaterial) {
+        toast("Missing information", {
+          description: "Please select your LSAT prep lsatPreparationMaterial",
+          variant: "destructive",
+        });
+        return;
+      }
+      setStep("additional-info");
+    } else if (step === "additional-info") {
       setStep("review");
     }
   };
@@ -72,10 +144,22 @@ export default function OnboardingForm() {
   const handleBack = () => {
     if (step === "target-score") {
       setStep("exam-date");
-    } else if (step === "study-hours") {
+    } else if (step === "current-score") {
       setStep("target-score");
-    } else if (step === "review") {
+    } else if (step === "study-hours") {
+      setStep("current-score");
+    } else if (step === "challenging-areas") {
       setStep("study-hours");
+    } else if (step === "preferred-schedule") {
+      setStep("challenging-areas");
+    } else if (step === "focus-areas") {
+      setStep("preferred-schedule");
+    } else if (step === "lsatPreparationMaterial") {
+      setStep("focus-areas");
+    } else if (step === "additional-info") {
+      setStep("lsatPreparationMaterial");
+    } else if (step === "review") {
+      setStep("additional-info");
     }
   };
 
@@ -110,9 +194,9 @@ export default function OnboardingForm() {
           "Your personalized LSAT study plan is now ready. You can access it from your dashboard.",
       });
 
-      // Redirect to home page after a short delay
+      // Redirect to plan page after a short delay
       setTimeout(() => {
-        router.push("/dashboard");
+        router.push("/plan");
       }, 2000);
     } catch (error) {
       console.error("Onboarding submission error:", error);
@@ -131,8 +215,20 @@ export default function OnboardingForm() {
         return "When is your LSAT exam?";
       case "target-score":
         return "What's your target LSAT score?";
+      case "current-score":
+        return "What's your current LSAT score?";
       case "study-hours":
         return "How many hours can you study weekly?";
+      case "challenging-areas":
+        return "Which section do you find most challenging?";
+      case "preferred-schedule":
+        return "What is your preferred study schedule?";
+      case "focus-areas":
+        return "Do you have any specific areas you want to focus on?";
+      case "lsatPreparationMaterial":
+        return "What LSAT prep lsatPreparationMaterial do you have access to?";
+      case "additional-info":
+        return "Any additional information you'd like to share?";
       case "review":
         return "Review your information";
       default:
@@ -150,23 +246,38 @@ export default function OnboardingForm() {
 
           {/* Progress indicator */}
           <div className="flex mt-4 justify-between">
-            {["exam-date", "target-score", "study-hours", "review"].map(
-              (s, i) => (
-                <div
-                  key={s}
-                  className={`h-1.5 rounded-full flex-1 mx-0.5 transition-colors ${
-                    [
-                      "exam-date",
-                      "target-score",
-                      "study-hours",
-                      "review",
-                    ].indexOf(step) >= i
-                      ? "bg-blue-500"
-                      : "bg-blue-100"
-                  }`}
-                />
-              )
-            )}
+            {[
+              "exam-date",
+              "target-score",
+              "current-score",
+              "study-hours",
+              "challenging-areas",
+              "preferred-schedule",
+              "focus-areas",
+              "lsatPreparationMaterial",
+              "additional-info",
+              "review",
+            ].map((s, i) => (
+              <div
+                key={s}
+                className={`h-1.5 rounded-full flex-1 mx-0.5 transition-colors ${
+                  [
+                    "exam-date",
+                    "target-score",
+                    "current-score",
+                    "study-hours",
+                    "challenging-areas",
+                    "preferred-schedule",
+                    "focus-areas",
+                    "lsatPreparationMaterial",
+                    "additional-info",
+                    "review",
+                  ].indexOf(step) >= i
+                    ? "bg-blue-500"
+                    : "bg-blue-100"
+                }`}
+              />
+            ))}
           </div>
         </CardHeader>
 
@@ -229,7 +340,27 @@ export default function OnboardingForm() {
             </div>
           )}
 
-          {/* Step 3: Study Hours */}
+          {/* Step 3: Current Score */}
+          {step === "current-score" && (
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="current-score">Current Score (120-180)</Label>
+                <Input
+                  id="current-score"
+                  type="number"
+                  min="120"
+                  max="180"
+                  value={formData.currentScore}
+                  onChange={(e) =>
+                    setFormData({ ...formData, currentScore: e.target.value })
+                  }
+                  placeholder="Enter your current score"
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Step 4: Study Hours */}
           {step === "study-hours" && (
             <div className="space-y-4">
               <div className="space-y-2">
@@ -255,7 +386,158 @@ export default function OnboardingForm() {
             </div>
           )}
 
-          {/* Step 4: Review */}
+          {/* Step 5: Challenging Areas */}
+          {step === "challenging-areas" && (
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label>Which section do you find most challenging?</Label>
+                <RadioGroup
+                  value={formData.challengingAreas[0] || ""}
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, challengingAreas: [value] })
+                  }
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="logical" id="logical" />
+                    <Label htmlFor="logical">Logical Reasoning</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="analytical" id="analytical" />
+                    <Label htmlFor="analytical">
+                      Analytical Reasoning (Logic Games)
+                    </Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="reading" id="reading" />
+                    <Label htmlFor="reading">Reading Comprehension</Label>
+                  </div>
+                </RadioGroup>
+              </div>
+            </div>
+          )}
+
+          {/* Step 6: Preferred Schedule */}
+          {step === "preferred-schedule" && (
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label>What is your preferred study schedule?</Label>
+                <RadioGroup
+                  value={formData.preferredSchedule}
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, preferredSchedule: value })
+                  }
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="weekday" id="weekday" />
+                    <Label htmlFor="weekday">Weekdays (Monday-Friday)</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="weekend" id="weekend" />
+                    <Label htmlFor="weekend">Weekends (Saturday-Sunday)</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="everyday" id="everyday" />
+                    <Label htmlFor="everyday">Every day</Label>
+                  </div>
+                </RadioGroup>
+              </div>
+            </div>
+          )}
+
+          {/* Step 7: Focus Areas */}
+          {step === "focus-areas" && (
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label>
+                  Do you have any specific areas you want to focus on?
+                </Label>
+                <div className="grid grid-cols-2 gap-2">
+                  {[
+                    { id: "assumption", label: "Assumption Questions" },
+                    { id: "grouping", label: "Grouping Games" },
+                    { id: "science", label: "Science Passages" },
+                    { id: "timing", label: "Timing Strategies" },
+                    { id: "inference", label: "Inference Questions" },
+                    { id: "sequencing", label: "Sequencing Games" },
+                  ].map((area) => (
+                    <div key={area.id} className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        id={area.id}
+                        checked={formData.focusAreas.includes(area.id)}
+                        onChange={(e) => {
+                          const updatedAreas = e.target.checked
+                            ? [...formData.focusAreas, area.id]
+                            : formData.focusAreas.filter((a) => a !== area.id);
+                          setFormData({
+                            ...formData,
+                            focusAreas: updatedAreas,
+                          });
+                        }}
+                        className="rounded border-gray-300"
+                      />
+                      <Label htmlFor={area.id}>{area.label}</Label>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Step 8: lsatPreparationMaterial */}
+          {step === "lsatPreparationMaterial" && (
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="lsatPreparationMaterial">
+                  What LSAT prep lsatPreparationMaterial do you have access to?
+                </Label>
+                <Select
+                  value={formData.lsatPreparationMaterial}
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, lsatPreparationMaterial: value })
+                  }
+                >
+                  <SelectTrigger id="lsatPreparationMaterial">
+                    <SelectValue placeholder="Select lsatPreparationMaterial" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="official">
+                      Official LSAT PrepTests
+                    </SelectItem>
+                    <SelectItem value="powerscore">
+                      PowerScore Bibles
+                    </SelectItem>
+                    <SelectItem value="manhattan">Manhattan Prep</SelectItem>
+                    <SelectItem value="kaplan">Kaplan</SelectItem>
+                    <SelectItem value="princeton">Princeton Review</SelectItem>
+                    <SelectItem value="multiple">Multiple Resources</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          )}
+
+          {/* Step 9: Additional Info */}
+          {step === "additional-info" && (
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="additional">
+                  Any additional information you'd like to share?
+                </Label>
+                <Input
+                  id="additional"
+                  placeholder="E.g., specific challenges, learning style, etc."
+                  className="h-20"
+                  value={formData.additionalInfo}
+                  onChange={(e) =>
+                    setFormData({ ...formData, additionalInfo: e.target.value })
+                  }
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Step 10: Review */}
           {step === "review" && (
             <div className="space-y-4">
               <div className="space-y-3 text-sm rounded-md border p-4 bg-slate-50">
@@ -271,11 +553,51 @@ export default function OnboardingForm() {
                   <span className="text-muted-foreground">Target Score</span>
                   <span className="font-medium">{formData.targetScore}</span>
                 </div>
-                <div className="flex justify-between py-2">
+                <div className="flex justify-between py-2 border-b">
+                  <span className="text-muted-foreground">Current Score</span>
+                  <span className="font-medium">{formData.currentScore}</span>
+                </div>
+                <div className="flex justify-between py-2 border-b">
                   <span className="text-muted-foreground">
                     Weekly Study Hours
                   </span>
                   <span className="font-medium">{formData.studyHours}</span>
+                </div>
+                <div className="flex justify-between py-2 border-b">
+                  <span className="text-muted-foreground">
+                    Challenging Areas
+                  </span>
+                  <span className="font-medium">
+                    {formData.challengingAreas.join(", ")}
+                  </span>
+                </div>
+                <div className="flex justify-between py-2 border-b">
+                  <span className="text-muted-foreground">
+                    Preferred Schedule
+                  </span>
+                  <span className="font-medium">
+                    {formData.preferredSchedule}
+                  </span>
+                </div>
+                <div className="flex justify-between py-2 border-b">
+                  <span className="text-muted-foreground">Focus Areas</span>
+                  <span className="font-medium">
+                    {formData.focusAreas.join(", ")}
+                  </span>
+                </div>
+                <div className="flex justify-between py-2 border-b">
+                  <span className="text-muted-foreground">
+                    lsatPreparationMaterial
+                  </span>
+                  <span className="font-medium">
+                    {formData.lsatPreparationMaterial}
+                  </span>
+                </div>
+                <div className="flex justify-between py-2">
+                  <span className="text-muted-foreground">
+                    Additional Information
+                  </span>
+                  <span className="font-medium">{formData.additionalInfo}</span>
                 </div>
               </div>
             </div>

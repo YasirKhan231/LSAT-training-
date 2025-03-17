@@ -2,7 +2,7 @@ import { db } from "@/lib/firebaseAdmin";
 import { OpenAI } from "openai";
 import { NextRequest, NextResponse } from "next/server";
 
-const openai = new OpenAI({ apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY });
+import { studyPlans, StudyPlanKey } from "@/data/plan"; // Import prebuilt study plans
 
 export async function POST(req: NextRequest) {
   try {
@@ -54,58 +54,20 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    // Convert existing plan from string to JSON (if it exists and is a string)
-    let plan = userData.plan || [];
-    if (typeof plan === "string") {
-      try {
-        plan = JSON.parse(plan); // Convert string to JSON
-      } catch (error) {
-        console.error("Failed to parse existing plan as JSON:", error);
-        plan = []; // Fallback to an empty array if parsing fails
-      }
+    // Determine the plan key based on the current score
+    let planKey: StudyPlanKey = "terrible";
+    if (currentScore >= 170) {
+      planKey = "amazing";
+    } else if (currentScore >= 160) {
+      planKey = "good";
+    } else if (currentScore >= 150) {
+      planKey = "decent";
+    } else if (currentScore >= 140) {
+      planKey = "bad";
     }
 
-    // If no plan exists, generate a new one
-    if (!plan || plan.length === 0) {
-      const planPrompt = `
-      Create a comprehensive LSAT study plan for a student who currently has a score of ${currentScore} and wants to achieve a target score of ${targetScore}.
-      They are studying ${weeklyHours} hours per week, focusing on ${challengingAreas.join(", ")}.
-      Their preferred schedule is ${preferredSchedule}, and they are using ${lsatPreparationMaterial} as preparation material.
-      Additional information: ${additionalInformation}.
-
-      Format the response as a JSON array of objects. Each object should represent a day and include:
-      - "date": The date in YYYY-MM-DD format.
-      - "day": The day of the week.
-      - "tasks": An array of study sessions, where each session includes:
-        - "subject": The section being studied (e.g., Logical Reasoning, Reading Comprehension).
-        - "topic": The specific focus of the session.
-        - "duration": Duration in minutes.
-        - "description": A detailed description of the session.
-        - "status": The status of the session (default to "pending").
-      `;
-
-      const completion = await openai.chat.completions.create({
-        model: "gpt-4",
-        messages: [{ role: "user", content: planPrompt }],
-        max_tokens: 3000,
-      });
-
-      console.log("OpenAI Response:", completion.choices[0].message.content); // Log the response
-
-      // Parse the response as JSON
-      try {
-        const content = completion.choices[0].message.content;
-        if (typeof content === "string") {
-          plan = JSON.parse(content); // Ensure the plan is in JSON format
-        } else {
-          console.error("OpenAI response content is null or not a string.");
-          return NextResponse.json({ error: "Failed to generate a valid study plan" }, { status: 500 });
-        }
-      } catch (error) {
-        console.error("Failed to parse the study plan as JSON:", error);
-        return NextResponse.json({ error: "Failed to generate a valid study plan" }, { status: 500 });
-      }
-    }
+    // Get the prebuilt study plan based on the plan key
+    const plan = studyPlans[planKey];
 
     // Merge existing data with the new updates
     const updatedUserData = {
@@ -119,7 +81,7 @@ export async function POST(req: NextRequest) {
       preferredSchedule: preferredSchedule || userData.preferredSchedule,
       lsatPreparationMaterial: lsatPreparationMaterial || userData.lsatPreparationMaterial,
       additionalInformation: additionalInformation || userData.additionalInformation,
-      plan, // Store the plan in JSON format
+      plan, // Store the prebuilt plan
       updatedAt: new Date().toISOString(), // Update the timestamp
     };
 
@@ -139,6 +101,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
+
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
@@ -150,6 +113,7 @@ export async function GET(req: NextRequest) {
 
     uuid = uuid.trim(); // Remove any newline or extra spaces
 
+    // Fetch user data
     const userRef = db.collection("users").doc(uuid);
     const userDoc = await userRef.get();
 
@@ -157,7 +121,9 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "User data not found" }, { status: 404 });
     }
 
-    return NextResponse.json(userDoc.data(), { status: 200 });
+    const userData = userDoc.data();
+
+    return NextResponse.json(userData, { status: 200 });
   } catch (error) {
     console.error("Error fetching data:", error);
     return NextResponse.json({ error: "Failed to fetch data" }, { status: 500 });

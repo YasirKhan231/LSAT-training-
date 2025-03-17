@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { initializeApp, getApps, cert } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
-import { getAuth } from "firebase-admin/auth"; // Firebase Admin Auth
+import { getAuth } from "firebase-admin/auth";
+import { studyPlans, StudyPlanKey } from "@/data/plan"; // Import StudyPlanKey
 
 // Initialize Firebase Admin if it hasn't been initialized
 if (!getApps().length) {
@@ -21,9 +22,27 @@ export async function POST(request: Request) {
     const data = await request.json();
 
     // Extract required fields
-    const { examDate, targetScore, studyHours } = data;
+    const {
+      examDate,
+      targetScore,
+      studyHours,
+      currentScore,
+      challengingAreas,
+      focusAreas,
+      additionalInfo,
+      lsatPreparationMaterial, // Add this field
+    } = data;
 
-    if (!examDate || !targetScore || !studyHours) {
+    if (
+      !examDate ||
+      !targetScore ||
+      !studyHours ||
+      !currentScore ||
+      !challengingAreas ||
+      !focusAreas ||
+      !additionalInfo ||
+      !lsatPreparationMaterial // Ensure this field is required
+    ) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }
@@ -44,17 +63,36 @@ export async function POST(request: Request) {
     const decodedToken = await auth.verifyIdToken(idToken);
     const uid = decodedToken.uid;
 
-    // Firestore Admin uses `.doc("users/{uid}")` directly
+    // Determine study plan based on currentScore
+    let planKey: StudyPlanKey = "terrible";
+    if (currentScore >= 170) {
+      planKey = "amazing";
+    } else if (currentScore >= 160) {
+      planKey = "good";
+    } else if (currentScore >= 150) {
+      planKey = "decent";
+    } else if (currentScore >= 140) {
+      planKey = "bad";
+    }
+
+    // Get predefined study plan
+    const studyPlan = studyPlans[planKey];
+    console.log(studyPlan)
+
+    // Firestore references
     const userRef = db.collection("users").doc(uid);
+    const planRef = db.collection("plans").doc(uid);
 
     // Update user onboarding data
+    console.log("Updating user document in Firestore...");
     await userRef.set(
       {
-        lsatTestDate: examDate, // Updated field name to match your structure
+        lsatTestDate: examDate,
         targetScore,
+        currentScore,
         weeklyHours: studyHours,
         onboarded: true,
-        updatedAt: new Date().toISOString(), // Add updatedAt timestamp
+        updatedAt: new Date().toISOString(),
         progress: {
           logicalReasoning: 0,
           analyticalReasoning: 0,
@@ -65,29 +103,47 @@ export async function POST(request: Request) {
         },
         performanceInsights: [],
         StudyStreak: 1,
-          PracticeQuestions: 0,
+        PracticeQuestions: 0,
         practiceHistory: [],
         bookmarkedQuestions: [],
         simulatedExams: [],
         logicGames: [],
-        plan: [],
-        studyPlan: {
-          today: [],
-          weekly: [],
-          monthly: [],
-          lastUpdated: null,
-        },
-        specificAreas: [],
-        challengingAreas: [],
+        specificAreas: focusAreas,
+        challengingAreas: challengingAreas,
+        additionalInformation: additionalInfo,
+        lsatPreparationMaterial, // Add this field
         payments: [],
       },
-      { merge: true } // 🔥 Ensures we don't overwrite existing data
+      { merge: true } // Use merge to avoid overwriting existing fields
     );
+    console.log("User document updated successfully.");
+
+    // Create or update the plan document in the `plans` collection
+    console.log("Creating or updating plan document in Firestore...");
+    await planRef.set({
+      userId: uid,
+      planKey,
+      studyPlan,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    });
+    console.log("Plan document created or updated successfully.");
 
     return NextResponse.json({
       success: true,
       message: "Your study plan has been created successfully",
-      data: { examDate, targetScore, studyHours, completedAt: new Date().toISOString() },
+      data: {
+        examDate,
+        targetScore,
+        currentScore,
+        studyHours,
+        challengingAreas,
+        focusAreas,
+        additionalInfo,
+        lsatPreparationMaterial,
+        studyPlan,
+        completedAt: new Date().toISOString(),
+      },
     });
   } catch (error) {
     console.error("Error saving onboarding data:", error);

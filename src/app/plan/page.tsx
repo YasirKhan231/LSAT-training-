@@ -6,9 +6,8 @@ import { getAuth, onAuthStateChanged } from "firebase/auth"; // Firebase Auth
 import app from "@/lib/firebase"; // Initialize Firebase app
 import {
   LucideArrowRight,
-  LucideBarChart,
   LucideBookOpen,
-  LucideBrain,
+  LucideBarChart,
   LucideClock,
 } from "lucide-react";
 
@@ -20,11 +19,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
+
+// Import hardcoded study plan data
+import { studyPlans, StudyPlanKey } from "@/data/plan";
 
 export default function Dashboard() {
   const [uuid, setUuid] = useState<string | null>(null); // State to store UUID (Firebase UID)
   const [userData, setUserData] = useState<any>(null); // State to store user data
+  const [planKey, setPlanKey] = useState<StudyPlanKey>("terrible"); // State to store plan key
   const [loading, setLoading] = useState(true); // State to handle loading
   const [error, setError] = useState<string | null>(null); // State to handle errors
   const auth = getAuth(app); // Initialize Firebase Auth
@@ -34,7 +36,7 @@ export default function Dashboard() {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         setUuid(user.uid); // Set the UUID (Firebase UID)
-        fetchUserData(user.uid); // Fetch user data from the backend API
+        fetchUserData(user.uid); // Fetch user data
       } else {
         console.error("User not authenticated");
         setUuid(null);
@@ -55,6 +57,20 @@ export default function Dashboard() {
       }
       const data = await response.json();
       setUserData(data); // Set user data in state
+
+      // Determine planKey based on currentScore
+      const currentScore = Number(data.currentScore);
+      if (currentScore >= 170) {
+        setPlanKey("amazing");
+      } else if (currentScore >= 160) {
+        setPlanKey("good");
+      } else if (currentScore >= 150) {
+        setPlanKey("decent");
+      } else if (currentScore >= 140) {
+        setPlanKey("bad");
+      } else {
+        setPlanKey("terrible");
+      }
     } catch (error) {
       console.error("Error fetching user data:", error);
       setError("Failed to fetch user data. Please try again.");
@@ -71,8 +87,35 @@ export default function Dashboard() {
     return Math.ceil(timeDiff / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
   };
 
+  // Loading UI
   if (loading) {
-    return <div className="container mx-auto p-6">Loading...</div>;
+    return (
+      <div className="container mx-auto p-6">
+        {/* Header Skeleton */}
+        <div className="animate-pulse mb-8">
+          <div className="h-8 bg-gray-200 rounded w-1/2 mb-2"></div>
+          <div className="h-4 bg-gray-200 rounded w-1/3"></div>
+        </div>
+
+        {/* Stats Grid Skeleton */}
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8">
+          {[1, 2, 3, 4].map((_, index) => (
+            <div key={index} className="h-32 bg-gray-200 rounded"></div>
+          ))}
+        </div>
+
+        {/* Today's Study Plan Skeleton */}
+        <div className="animate-pulse">
+          <div className="h-8 bg-gray-200 rounded w-1/3 mb-2"></div>
+          <div className="h-4 bg-gray-200 rounded w-1/4 mb-4"></div>
+          <div className="space-y-4">
+            {[1, 2, 3].map((_, index) => (
+              <div key={index} className="h-16 bg-gray-200 rounded"></div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (error) {
@@ -80,8 +123,11 @@ export default function Dashboard() {
   }
 
   if (!userData) {
-    return <div className="container mx-auto p-6">No user data found.</div>;
+    return <div className="container mx-auto p-6">No data found.</div>;
   }
+
+  // Get the study plan based on the planKey
+  const studyPlan = studyPlans[planKey];
 
   return (
     <div className="container mx-auto p-6">
@@ -172,7 +218,7 @@ export default function Dashboard() {
         </Card>
       </div>
 
-      <div className="mt-8 grid gap-6 md:grid-cols-2">
+      <div className="mt-8">
         <Card>
           <CardHeader>
             <CardTitle>Today's Study Plan</CardTitle>
@@ -182,126 +228,22 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              <div className="flex items-start space-x-4">
-                <div className="mt-0.5 rounded-full bg-blue-100 p-1 dark:bg-blue-900">
-                  <LucideBookOpen className="h-4 w-4 text-blue-700 dark:text-blue-300" />
+              {studyPlan.today.map((task: string, index: number) => (
+                <div key={index} className="flex items-start space-x-4">
+                  <div className="mt-0.5 rounded-full bg-blue-100 p-1 dark:bg-blue-900">
+                    <LucideBookOpen className="h-4 w-4 text-blue-700 dark:text-blue-300" />
+                  </div>
+                  <div className="flex-1 space-y-1">
+                    <p className="font-medium leading-none">{task}</p>
+                  </div>
                 </div>
-                <div className="flex-1 space-y-1">
-                  <p className="font-medium leading-none">
-                    Logical Reasoning - Assumption Questions
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    Complete 15 practice questions (30 minutes)
-                  </p>
-                </div>
-                <Button variant="outline" size="sm">
-                  Start
-                </Button>
-              </div>
-              <div className="flex items-start space-x-4">
-                <div className="mt-0.5 rounded-full bg-purple-100 p-1 dark:bg-purple-900">
-                  <LucideBookOpen className="h-4 w-4 text-purple-700 dark:text-purple-300" />
-                </div>
-                <div className="flex-1 space-y-1">
-                  <p className="font-medium leading-none">
-                    Reading Comprehension - Science Passage
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    Read and answer questions (45 minutes)
-                  </p>
-                </div>
-                <Button variant="outline" size="sm">
-                  Start
-                </Button>
-              </div>
-              <div className="flex items-start space-x-4">
-                <div className="mt-0.5 rounded-full bg-green-100 p-1 dark:bg-green-900">
-                  <LucideBrain className="h-4 w-4 text-green-700 dark:text-green-300" />
-                </div>
-                <div className="flex-1 space-y-1">
-                  <p className="font-medium leading-none">
-                    Review Session with AI Coach
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    Analyze yesterday's performance (15 minutes)
-                  </p>
-                </div>
-                <Button variant="outline" size="sm">
-                  Start
-                </Button>
-              </div>
+              ))}
             </div>
             <div className="mt-6">
               <Link href="/plan/study-plan">
                 <Button variant="outline" className="w-full">
                   View Full Study Plan
                   <LucideArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Performance by Section</CardTitle>
-            <CardDescription>
-              Your strengths and areas for improvement
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <p className="text-sm font-medium">Logical Reasoning</p>
-                  <p className="text-sm font-medium">
-                    {userData.progress.logicalReasoning}%
-                  </p>
-                </div>
-                <Progress
-                  value={userData.progress.logicalReasoning}
-                  className="h-2"
-                />
-              </div>
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <p className="text-sm font-medium">Analytical Reasoning</p>
-                  <p className="text-sm font-medium">
-                    {userData.progress.analyticalReasoning}%
-                  </p>
-                </div>
-                <Progress
-                  value={userData.progress.analyticalReasoning}
-                  className="h-2"
-                />
-              </div>
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <p className="text-sm font-medium">Reading Comprehension</p>
-                  <p className="text-sm font-medium">
-                    {userData.progress.readingComprehension}%
-                  </p>
-                </div>
-                <Progress
-                  value={userData.progress.readingComprehension}
-                  className="h-2"
-                />
-              </div>
-            </div>
-            <div className="mt-6 rounded-lg border border-amber-200 bg-amber-50 p-4 dark:border-amber-900/50 dark:bg-amber-900/20">
-              <h4 className="mb-2 font-medium text-amber-800 dark:text-amber-300">
-                AI Recommendation
-              </h4>
-              <p className="text-sm text-amber-800 dark:text-amber-300">
-                Focus on improving your Analytical Reasoning skills. I've added
-                extra logic games practice to your study plan.
-              </p>
-            </div>
-            <div className="mt-6">
-              <Link href="/plan/ai-coach">
-                <Button variant="outline" className="w-full">
-                  Talk to AI Coach
-                  <LucideBrain className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
             </div>

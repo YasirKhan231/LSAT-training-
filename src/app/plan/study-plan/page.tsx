@@ -23,11 +23,13 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { StudyPlanGenerator } from "@/components/study-plan-generator";
+import { studyPlans, StudyPlanKey } from "@/data/plan"; // Import studyPlans and StudyPlanKey
 
 export default function StudyPlan() {
   const [showGenerator, setShowGenerator] = useState(false);
   const [uuid, setUuid] = useState<string | null>(null);
   const [userData, setUserData] = useState<any>(null);
+  const [planKey, setPlanKey] = useState<StudyPlanKey>("terrible"); // State to store plan key
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const auth = getAuth(app);
@@ -65,6 +67,20 @@ export default function StudyPlan() {
       }
       const data = await response.json();
       setUserData(data);
+
+      // Determine planKey based on currentScore
+      const currentScore = Number(data.currentScore);
+      if (currentScore >= 170) {
+        setPlanKey("amazing");
+      } else if (currentScore >= 160) {
+        setPlanKey("good");
+      } else if (currentScore >= 150) {
+        setPlanKey("decent");
+      } else if (currentScore >= 140) {
+        setPlanKey("bad");
+      } else {
+        setPlanKey("terrible");
+      }
     } catch (error) {
       console.error("Error fetching user data:", error);
       setError("Failed to fetch user data. Please try again.");
@@ -102,6 +118,9 @@ export default function StudyPlan() {
   if (!userData) {
     return <div className="container mx-auto p-6">No user data found.</div>;
   }
+
+  // Get the study plan based on the planKey
+  const studyPlan = studyPlans[planKey];
 
   return (
     <div className="container mx-auto p-6">
@@ -177,127 +196,29 @@ export default function StudyPlan() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    <div className="rounded-lg border p-4">
-                      <div className="mb-2 flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <div className="rounded-full bg-blue-100 p-1.5 dark:bg-blue-900">
-                            <LucideBookOpen className="h-4 w-4 text-blue-700 dark:text-blue-300" />
+                    {studyPlan.today.map((task: string, index: number) => (
+                      <div key={index} className="rounded-lg border p-4">
+                        <div className="mb-2 flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <div className="rounded-full bg-blue-100 p-1.5 dark:bg-blue-900">
+                              <LucideBookOpen className="h-4 w-4 text-blue-700 dark:text-blue-300" />
+                            </div>
+                            <h3 className="font-medium">{task}</h3>
                           </div>
-                          <h3 className="font-medium">
-                            Logical Reasoning - Assumption Questions
-                          </h3>
-                        </div>
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <LucideClock className="h-4 w-4" />
-                          <span>30 minutes</span>
-                        </div>
-                      </div>
-                      <p className="text-sm text-muted-foreground">
-                        Complete 15 practice questions focusing on identifying
-                        and evaluating assumptions in arguments.
-                      </p>
-                      <div className="mt-4 flex justify-end">
-                        <Button>Start Session</Button>
-                      </div>
-                    </div>
-
-                    <div className="rounded-lg border p-4">
-                      <div className="mb-2 flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <div className="rounded-full bg-purple-100 p-1.5 dark:bg-purple-900">
-                            <LucideBookOpen className="h-4 w-4 text-purple-700 dark:text-purple-300" />
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                            <LucideClock className="h-4 w-4" />
+                            <span>30 minutes</span>
                           </div>
-                          <h3 className="font-medium">
-                            Reading Comprehension - Science Passage
-                          </h3>
                         </div>
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <LucideClock className="h-4 w-4" />
-                          <span>45 minutes</span>
-                        </div>
-                      </div>
-                      <p className="text-sm text-muted-foreground">
-                        Read a complex science passage and answer 6-8 questions
-                        to test your comprehension and analysis skills.
-                      </p>
-                      <div className="mt-4 flex justify-end">
-                        <Button>Start Session</Button>
-                      </div>
-                    </div>
-
-                    <div className="rounded-lg border p-4">
-                      <div className="mb-2 flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <div className="rounded-full bg-green-100 p-1.5 dark:bg-green-900">
-                            <LucideBrain className="h-4 w-4 text-green-700 dark:text-green-300" />
-                          </div>
-                          <h3 className="font-medium">
-                            Review Session with AI Coach
-                          </h3>
-                        </div>
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <LucideClock className="h-4 w-4" />
-                          <span>15 minutes</span>
+                        <p className="text-sm text-muted-foreground">
+                          Complete 15 practice questions focusing on identifying
+                          and evaluating assumptions in arguments.
+                        </p>
+                        <div className="mt-4 flex justify-end">
+                          <Button>Start Session</Button>
                         </div>
                       </div>
-                      <p className="text-sm text-muted-foreground">
-                        Analyze yesterday's performance and receive personalized
-                        feedback and tips from your AI coach.
-                      </p>
-                      <div className="mt-4 flex justify-end">
-                        <Button>Start Session</Button>
-                      </div>
-                    </div>
-
-                    <div className="rounded-lg border p-4">
-                      <div className="mb-2 flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <div className="rounded-full bg-amber-100 p-1.5 dark:bg-amber-900">
-                            <LucideBookOpen className="h-4 w-4 text-amber-700 dark:text-amber-300" />
-                          </div>
-                          <h3 className="font-medium">
-                            Analytical Reasoning - Logic Games
-                          </h3>
-                        </div>
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <LucideClock className="h-4 w-4" />
-                          <span>1 hour</span>
-                        </div>
-                      </div>
-                      <p className="text-sm text-muted-foreground">
-                        Practice 2 logic games focusing on grouping and
-                        sequencing rules. This is a focus area based on your
-                        recent performance.
-                      </p>
-                      <div className="mt-4 flex justify-end">
-                        <Button>Start Session</Button>
-                      </div>
-                    </div>
-
-                    <div className="rounded-lg border p-4">
-                      <div className="mb-2 flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <div className="rounded-full bg-red-100 p-1.5 dark:bg-red-900">
-                            <LucideBookOpen className="h-4 w-4 text-red-700 dark:text-red-300" />
-                          </div>
-                          <h3 className="font-medium">
-                            Timed Mini-Section - Logical Reasoning
-                          </h3>
-                        </div>
-                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <LucideClock className="h-4 w-4" />
-                          <span>30 minutes</span>
-                        </div>
-                      </div>
-                      <p className="text-sm text-muted-foreground">
-                        Complete a timed section of 12 logical reasoning
-                        questions to build your speed and accuracy under test
-                        conditions.
-                      </p>
-                      <div className="mt-4 flex justify-end">
-                        <Button>Start Session</Button>
-                      </div>
-                    </div>
+                    ))}
                   </div>
                 </CardContent>
               </Card>
@@ -306,180 +227,24 @@ export default function StudyPlan() {
             <TabsContent value="weekly" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <CardTitle>Weekly Study Plan</CardTitle>
-                      <CardDescription>May 12 - May 18, 2025</CardDescription>
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <LucideCalendar className="h-4 w-4" />
-                      <span>Week 6 of 12</span>
-                    </div>
-                  </div>
+                  <CardTitle>Weekly Study Plan</CardTitle>
+                  <CardDescription>May 12 - May 18, 2025</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-6">
-                    {[
-                      "Monday",
-                      "Tuesday",
-                      "Wednesday",
-                      "Thursday",
-                      "Friday",
-                      "Saturday",
-                      "Sunday",
-                    ].map((day, index) => (
-                      <div key={day} className="rounded-lg border p-4">
-                        <h3 className="mb-3 font-medium">{day}</h3>
+                    {studyPlan.weekly.map((task: string, index: number) => (
+                      <div key={index} className="rounded-lg border p-4">
+                        <h3 className="mb-3 font-medium">Week {index + 1}</h3>
                         <div className="space-y-3">
-                          {index === 0 ? (
-                            <>
-                              <div className="flex items-center justify-between rounded-md bg-slate-50 p-2 dark:bg-slate-900">
-                                <div className="flex items-center gap-2">
-                                  <div className="rounded-full bg-blue-100 p-1 dark:bg-blue-900">
-                                    <LucideBookOpen className="h-3 w-3 text-blue-700 dark:text-blue-300" />
-                                  </div>
-                                  <span className="text-sm">
-                                    Logical Reasoning - Assumption Questions
-                                  </span>
-                                </div>
-                                <span className="text-xs text-muted-foreground">
-                                  30 min
-                                </span>
-                              </div>
-                              <div className="flex items-center justify-between rounded-md bg-slate-50 p-2 dark:bg-slate-900">
-                                <div className="flex items-center gap-2">
-                                  <div className="rounded-full bg-purple-100 p-1 dark:bg-purple-900">
-                                    <LucideBookOpen className="h-3 w-3 text-purple-700 dark:text-purple-300" />
-                                  </div>
-                                  <span className="text-sm">
-                                    Reading Comprehension - Science Passage
-                                  </span>
-                                </div>
-                                <span className="text-xs text-muted-foreground">
-                                  45 min
-                                </span>
-                              </div>
-                              <div className="flex items-center justify-between rounded-md bg-slate-50 p-2 dark:bg-slate-900">
-                                <div className="flex items-center gap-2">
-                                  <div className="rounded-full bg-green-100 p-1 dark:bg-green-900">
-                                    <LucideBrain className="h-3 w-3 text-green-700 dark:text-green-300" />
-                                  </div>
-                                  <span className="text-sm">
-                                    Review Session with AI Coach
-                                  </span>
-                                </div>
-                                <span className="text-xs text-muted-foreground">
-                                  15 min
-                                </span>
-                              </div>
-                              <div className="flex items-center justify-between rounded-md bg-slate-50 p-2 dark:bg-slate-900">
-                                <div className="flex items-center gap-2">
-                                  <div className="rounded-full bg-amber-100 p-1 dark:bg-amber-900">
-                                    <LucideBookOpen className="h-3 w-3 text-amber-700 dark:text-amber-300" />
-                                  </div>
-                                  <span className="text-sm">
-                                    Analytical Reasoning - Logic Games
-                                  </span>
-                                </div>
-                                <span className="text-xs text-muted-foreground">
-                                  1 hr
-                                </span>
-                              </div>
-                              <div className="flex items-center justify-between rounded-md bg-slate-50 p-2 dark:bg-slate-900">
-                                <div className="flex items-center gap-2">
-                                  <div className="rounded-full bg-red-100 p-1 dark:bg-red-900">
-                                    <LucideBookOpen className="h-3 w-3 text-red-700 dark:text-red-300" />
-                                  </div>
-                                  <span className="text-sm">
-                                    Timed Mini-Section - Logical Reasoning
-                                  </span>
-                                </div>
-                                <span className="text-xs text-muted-foreground">
-                                  30 min
-                                </span>
-                              </div>
-                            </>
-                          ) : index === 5 ? (
-                            <>
-                              <div className="flex items-center justify-between rounded-md bg-slate-50 p-2 dark:bg-slate-900">
-                                <div className="flex items-center gap-2">
-                                  <div className="rounded-full bg-indigo-100 p-1 dark:bg-indigo-900">
-                                    <LucideBookOpen className="h-3 w-3 text-indigo-700 dark:text-indigo-300" />
-                                  </div>
-                                  <span className="text-sm">
-                                    Full Practice Test
-                                  </span>
-                                </div>
-                                <span className="text-xs text-muted-foreground">
-                                  3 hrs
-                                </span>
-                              </div>
-                              <div className="flex items-center justify-between rounded-md bg-slate-50 p-2 dark:bg-slate-900">
-                                <div className="flex items-center gap-2">
-                                  <div className="rounded-full bg-green-100 p-1 dark:bg-green-900">
-                                    <LucideBrain className="h-3 w-3 text-green-700 dark:text-green-300" />
-                                  </div>
-                                  <span className="text-sm">
-                                    Test Review with AI Coach
-                                  </span>
-                                </div>
-                                <span className="text-xs text-muted-foreground">
-                                  1 hr
-                                </span>
-                              </div>
-                            </>
-                          ) : index === 6 ? (
-                            <div className="flex items-center justify-between rounded-md bg-slate-50 p-2 dark:bg-slate-900">
-                              <div className="flex items-center gap-2">
-                                <span className="text-sm">Rest Day</span>
-                              </div>
-                              <span className="text-xs text-muted-foreground">
-                                0 min
-                              </span>
+                          <div className="flex items-center justify-between rounded-md bg-slate-50 p-2 dark:bg-slate-900">
+                            <div className="flex items-center gap-2">
+                              <LucideBookOpen className="h-4 w-4 text-blue-700" />
+                              <span className="text-sm">{task}</span>
                             </div>
-                          ) : (
-                            <>
-                              <div className="flex items-center justify-between rounded-md bg-slate-50 p-2 dark:bg-slate-900">
-                                <div className="flex items-center gap-2">
-                                  <div className="rounded-full bg-blue-100 p-1 dark:bg-blue-900">
-                                    <LucideBookOpen className="h-3 w-3 text-blue-700 dark:text-blue-300" />
-                                  </div>
-                                  <span className="text-sm">
-                                    Logical Reasoning Practice
-                                  </span>
-                                </div>
-                                <span className="text-xs text-muted-foreground">
-                                  1 hr
-                                </span>
-                              </div>
-                              <div className="flex items-center justify-between rounded-md bg-slate-50 p-2 dark:bg-slate-900">
-                                <div className="flex items-center gap-2">
-                                  <div className="rounded-full bg-amber-100 p-1 dark:bg-amber-900">
-                                    <LucideBookOpen className="h-3 w-3 text-amber-700 dark:text-amber-300" />
-                                  </div>
-                                  <span className="text-sm">
-                                    Analytical Reasoning Practice
-                                  </span>
-                                </div>
-                                <span className="text-xs text-muted-foreground">
-                                  1 hr
-                                </span>
-                              </div>
-                              <div className="flex items-center justify-between rounded-md bg-slate-50 p-2 dark:bg-slate-900">
-                                <div className="flex items-center gap-2">
-                                  <div className="rounded-full bg-green-100 p-1 dark:bg-green-900">
-                                    <LucideBrain className="h-3 w-3 text-green-700 dark:text-green-300" />
-                                  </div>
-                                  <span className="text-sm">
-                                    Review Session
-                                  </span>
-                                </div>
-                                <span className="text-xs text-muted-foreground">
-                                  30 min
-                                </span>
-                              </div>
-                            </>
-                          )}
+                            <span className="text-xs text-muted-foreground">
+                              1 hr
+                            </span>
+                          </div>
                         </div>
                       </div>
                     ))}
@@ -491,60 +256,19 @@ export default function StudyPlan() {
             <TabsContent value="monthly" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <CardTitle>Monthly Study Plan</CardTitle>
-                      <CardDescription>May 2025</CardDescription>
-                    </div>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <LucideCalendar className="h-4 w-4" />
-                      <span>Month 2 of 3</span>
-                    </div>
-                  </div>
+                  <CardTitle>Monthly Study Plan</CardTitle>
+                  <CardDescription>May 2025</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-6">
-                    <div className="rounded-lg border p-4">
-                      <h3 className="mb-3 font-medium">
-                        Week 1-2: Focus on Logical Reasoning
-                      </h3>
-                      <ul className="ml-6 list-disc space-y-2 text-sm">
-                        <li>Master assumption and inference questions</li>
-                        <li>Practice identifying argument structure</li>
-                        <li>Complete 200 practice questions</li>
-                        <li>Take 2 timed sections</li>
-                      </ul>
-                    </div>
-                    <div className="rounded-lg border p-4">
-                      <h3 className="mb-3 font-medium">
-                        Week 3-4: Focus on Analytical Reasoning
-                      </h3>
-                      <ul className="ml-6 list-disc space-y-2 text-sm">
-                        <li>Master complex grouping games</li>
-                        <li>Practice hybrid games with multiple rule types</li>
-                        <li>Complete 15 full logic game sets</li>
-                        <li>Take 2 timed sections</li>
-                      </ul>
-                    </div>
-                    <div className="rounded-lg border p-4">
-                      <h3 className="mb-3 font-medium">Throughout the Month</h3>
-                      <ul className="ml-6 list-disc space-y-2 text-sm">
-                        <li>Complete 2 full practice tests</li>
-                        <li>Daily review sessions with AI coach</li>
-                        <li>Weekly progress assessments</li>
-                        <li>Targeted practice on weak areas</li>
-                      </ul>
-                    </div>
-                    <div className="rounded-lg border border-green-200 bg-green-50 p-4 dark:border-green-900/50 dark:bg-green-900/20">
-                      <h3 className="mb-3 font-medium text-green-800 dark:text-green-300">
-                        Expected Progress
-                      </h3>
-                      <p className="text-sm text-green-800 dark:text-green-300">
-                        By the end of May, you should see a 3-5 point
-                        improvement in your practice test scores, with
-                        particular gains in Analytical Reasoning.
-                      </p>
-                    </div>
+                    {studyPlan.monthly.map((task: string, index: number) => (
+                      <div key={index} className="rounded-lg border p-4">
+                        <h3 className="mb-3 font-medium">Month {index + 1}</h3>
+                        <ul className="ml-6 list-disc space-y-2 text-sm">
+                          <li>{task}</li>
+                        </ul>
+                      </div>
+                    ))}
                   </div>
                 </CardContent>
               </Card>
