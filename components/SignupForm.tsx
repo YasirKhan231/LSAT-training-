@@ -154,10 +154,10 @@ export default function SignupForm() {
   return (
     <div className="w-full">
       {error && (
-        <div className="bg-red-50 border-l-3 border-red-400 p-2.5 mb-4 rounded-r-lg animate-fadeIn">
+        <div className="bg-red-50 border-l-4 border-red-400 p-3 mb-4 rounded-lg animate-fadeIn">
           <div className="flex items-center">
             <AlertCircle className="h-4 w-4 text-red-500 mr-2 flex-shrink-0" />
-            <p className="text-xs text-red-700">{error}</p>
+            <p className="text-sm text-red-700">{error}</p>
           </div>
         </div>
       )}
@@ -171,7 +171,7 @@ export default function SignupForm() {
             <span className="text-xs text-gray-400">Optional</span>
           </div>
           <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <User className="h-4 w-4 text-gray-400" />
             </div>
             <input
@@ -181,7 +181,7 @@ export default function SignupForm() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               onBlur={() => markFieldAsTouched("name")}
-              className="w-full pl-9 pr-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200"
+              className="w-full pl-10 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
             />
           </div>
         </div>
@@ -189,12 +189,12 @@ export default function SignupForm() {
         <div>
           <label
             htmlFor="email"
-            className="block text-xs font-medium text-gray-700 mb-1"
+            className="block text-xs font-medium text-gray-700 mb-2"
           >
             Email address
           </label>
           <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <Mail className="h-4 w-4 text-gray-400" />
             </div>
             <input
@@ -205,12 +205,12 @@ export default function SignupForm() {
               onChange={(e) => setEmail(e.target.value)}
               onBlur={() => markFieldAsTouched("email")}
               required
-              className={`w-full pl-9 pr-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-1 transition-all duration-200 ${
+              className={`w-full pl-10 pr-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 transition-all duration-200 ${
                 formTouched.email && !isValidEmail && email
                   ? "border-red-300 focus:ring-red-500 focus:border-red-500"
                   : formTouched.email && isValidEmail && email
                   ? "border-green-300 focus:ring-green-500 focus:border-green-500"
-                  : "border-gray-300 focus:ring-purple-500 focus:border-purple-500"
+                  : "border-gray-300 focus:ring-blue-500 focus:border-blue-500"
               }`}
             />
             {formTouched.email && email && (
@@ -233,12 +233,12 @@ export default function SignupForm() {
         <div>
           <label
             htmlFor="password"
-            className="block text-xs font-medium text-gray-700 mb-1"
+            className="block text-xs font-medium text-gray-700 mb-2"
           >
             Password
           </label>
           <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <Lock className="h-4 w-4 text-gray-400" />
             </div>
             <input
@@ -249,12 +249,12 @@ export default function SignupForm() {
               onChange={(e) => setPassword(e.target.value)}
               onBlur={() => markFieldAsTouched("password")}
               required
-              className={`w-full pl-9 pr-10 py-2 text-sm border rounded-md focus:outline-none focus:ring-1 transition-all duration-200 ${
+              className={`w-full pl-10 pr-10 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 transition-all duration-200 ${
                 formTouched.password && !hasMinLength && password
                   ? "border-red-300 focus:ring-red-500 focus:border-red-500"
                   : formTouched.password && hasMinLength && password
                   ? "border-green-300 focus:ring-green-500 focus:border-green-500"
-                  : "border-gray-300 focus:ring-purple-500 focus:border-purple-500"
+                  : "border-gray-300 focus:ring-blue-500 focus:border-blue-500"
               }`}
             />
             <button
@@ -293,12 +293,12 @@ export default function SignupForm() {
         <div>
           <label
             htmlFor="confirmPassword"
-            className="block text-xs font-medium text-gray-700 mb-1"
+            className="block text-xs font-medium text-gray-700 mb-2"
           >
             Confirm password
           </label>
           <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <Lock className="h-4 w-4 text-gray-400" />
             </div>
             <input
@@ -309,12 +309,12 @@ export default function SignupForm() {
               onChange={(e) => setConfirmPassword(e.target.value)}
               onBlur={() => markFieldAsTouched("confirmPassword")}
               required
-              className={`w-full pl-9 pr-3 py-2 text-sm border rounded-md focus:outline-none focus:ring-1 transition-all duration-200 ${
+              className={`w-full pl-10 pr-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 transition-all duration-200 ${
                 formTouched.confirmPassword && confirmPassword
                   ? passwordsMatch
                     ? "border-green-300 focus:ring-green-500 focus:border-green-500"
                     : "border-red-300 focus:ring-red-500 focus:border-red-500"
-                  : "border-gray-300 focus:ring-purple-500 focus:border-purple-500"
+                  : "border-gray-300 focus:ring-blue-500 focus:border-blue-500"
               }`}
             />
             {formTouched.confirmPassword && confirmPassword && (
@@ -339,7 +339,7 @@ export default function SignupForm() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-2.5 px-4 text-sm font-medium rounded-md text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 shadow-sm hover:shadow transition-all duration-200"
+            className="w-full py-2.5 px-4 text-sm font-medium rounded-lg text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-sm hover:shadow transition-all duration-200"
           >
             {isLoading ? (
               <div className="flex items-center justify-center">

@@ -242,26 +242,6 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12 w-full">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center mb-8">
-            <div className="text-2xl font-bold mb-4 md:mb-0">LSAT Training</div>
-            <div className="flex space-x-6">
-              <Link href="/about">About</Link>
-              <Link href="/contact">Contact</Link>
-              <Link href="/privacy">Privacy</Link>
-              <Link href="/terms">Terms</Link>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 pt-8 text-center text-gray-400">
-            <p>
-              © {new Date().getFullYear()} LSAT Training. All rights reserved.
-            </p>
-          </div>
-        </div>
-      </footer>
     </>
   );
 }
