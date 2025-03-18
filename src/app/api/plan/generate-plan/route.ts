@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { studyPlans, StudyPlanKey } from "@/data/plan"; // Import prebuilt study plans
 
+
 export async function POST(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
@@ -69,6 +70,31 @@ export async function POST(req: NextRequest) {
     // Get the prebuilt study plan based on the plan key
     const plan = studyPlans[planKey];
 
+    // Update the current streak
+    const currentDate = new Date().toISOString().split("T")[0]; // Get current date in YYYY-MM-DD format
+    const lastRequestDate = userData.lastRequestDate || currentDate; // Default to current date if not set
+    let currentStreak = userData.currentStreak || 0;
+
+    if (lastRequestDate === currentDate) {
+      // Request is on the same day, do not increment streak
+      console.log("Request is on the same day. Streak remains unchanged.");
+    } else {
+      const lastRequestDateObj = new Date(lastRequestDate);
+      const currentDateObj = new Date(currentDate);
+      const timeDifference = currentDateObj.getTime() - lastRequestDateObj.getTime();
+      const daysDifference = timeDifference / (1000 * 3600 * 24);
+
+      if (daysDifference === 1) {
+        // Request is on the next day, increment streak by 1
+        currentStreak += 1;
+        console.log("Request is on the next day. Streak incremented to:", currentStreak);
+      } else {
+        // Request is after a gap of more than one day, reset streak to 1
+        currentStreak = 1;
+        console.log("Request is after a gap. Streak reset to:", currentStreak);
+      }
+    }
+
     // Merge existing data with the new updates
     const updatedUserData = {
       ...userData, // Preserve existing fields
@@ -82,6 +108,8 @@ export async function POST(req: NextRequest) {
       lsatPreparationMaterial: lsatPreparationMaterial || userData.lsatPreparationMaterial,
       additionalInformation: additionalInformation || userData.additionalInformation,
       plan, // Store the prebuilt plan
+      currentStreak, // Update the current streak
+      lastRequestDate: currentDate, // Update the last request date
       updatedAt: new Date().toISOString(), // Update the timestamp
     };
 

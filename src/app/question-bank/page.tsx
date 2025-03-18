@@ -18,7 +18,7 @@ export default function Home() {
             AI-Enhanced LSAT Question Bank
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            practise with adaptive questions and receive AI-powered explanations
+            practicewith adaptive questions and receive AI-powered explanations
             to improve your LSAT score.
           </p>
         </div>
@@ -34,7 +34,7 @@ export default function Home() {
             </CardHeader>
             <CardContent>
               <p className="mb-4 text-sm">
-                practise identifying assumptions, flaws, and
+                practiceidentifying assumptions, flaws, and
                 strengthening/weakening factors in arguments.
               </p>
               <Link href="/question-bank/logical-reasoning">
@@ -134,7 +134,7 @@ export default function Home() {
         <div className="text-center">
           <Link href="/question-bank/mixed">
             <Button size="lg" className="bg-blue-900 hover:bg-blue-950">
-              Start Mixed practise Session
+              Start Mixed practiceSession
             </Button>
           </Link>
         </div>

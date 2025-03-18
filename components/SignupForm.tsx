@@ -95,7 +95,7 @@ export default function SignupForm() {
           subscription: "free", // Default to free plan
 
           // Set other fields to null or default values
-          authProvider: null,
+          authProvider: "email",
           lsatTestDate: null,
           targetScore: null,
           currentScore: null,
@@ -119,13 +119,6 @@ export default function SignupForm() {
           bookmarkedQuestions: [],
           simulatedExams: [],
           logicGames: [],
-          plan: [],
-          studyPlan: {
-            today: [],
-            weekly: [],
-            monthly: [],
-            lastUpdated: null,
-          },
           specificAreas: [],
           challengingAreas: [],
           payments: [],

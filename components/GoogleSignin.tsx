@@ -58,13 +58,6 @@ export default function GoogleSignIn() {
           bookmarkedQuestions: [],
           simulatedExams: [],
           logicGames: [],
-          plan: [],
-          studyPlan: {
-            today: [],
-            weekly: [],
-            monthly: [],
-            lastUpdated: null,
-          },
           specificAreas: [],
           challengingAreas: [],
           payments: [],

@@ -11,6 +11,7 @@ export interface Question {
   explanation: string
   difficulty: "easy" | "medium" | "hard"
   tags: string[]
+  aiResponse :string
 }
 
 export interface QuestionFeedback {

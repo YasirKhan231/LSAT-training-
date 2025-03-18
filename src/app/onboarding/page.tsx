@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {
   CalendarIcon,
@@ -14,7 +14,7 @@ import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css"; // Default styling for react-day-picker
 import { useToast } from "@/hooks/use-toast";
 import { getAuth, getIdToken } from "firebase/auth"; // Firebase Auth
-
+import { onAuthStateChanged } from "firebase/auth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -51,6 +51,7 @@ export default function OnboardingForm() {
   const { toast } = useToast();
   const [step, setStep] = useState<OnboardingStep>("exam-date");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [uuid, setUuid] = useState<string | null>(null); // State to store the UUID
   const [formData, setFormData] = useState({
     examDate: undefined as Date | undefined,
     targetScore: "",
@@ -62,6 +63,21 @@ export default function OnboardingForm() {
     lsatPreparationMaterial: "",
     additionalInfo: "",
   });
+
+  // Fetch the authenticated user's UID when the component mounts
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUuid(user.uid); // Set the UUID
+      } else {
+        console.error("User not authenticated");
+        setUuid(null);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   const handleNext = () => {
     if (step === "exam-date") {
@@ -175,8 +191,8 @@ export default function OnboardingForm() {
       }
       const idToken = await getIdToken(user);
 
-      // Send data to backend
-      const response = await fetch("/api/onboarding", {
+      // Send data to backend with UUID as a query parameter
+      const response = await fetch(`/api/onboarding?uuid=${uuid}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -13,11 +13,14 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Bookmark, BookmarkCheck, ArrowRight, ArrowLeft } from "lucide-react";
-import { getQuestions } from "@/lib/questions";
+import { getQuestions } from "@/lib/questions"; // Import the getQuestions function
 import type { Question, QuestionFeedback } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { QuestionFeedbackComponent } from "@/components/question-feedback";
 import { Progress } from "@/components/ui/progress";
+import { useRouter } from "next/navigation"; // For navigation
+import { getAuth, onAuthStateChanged } from "firebase/auth"; // Import Firebase Auth
+import app from "@/lib/firebase"; // Import Firebase app
 
 interface QuestionPracticeProps {
   section: string;
@@ -31,12 +34,36 @@ export function QuestionPractice({ section }: QuestionPracticeProps) {
   const [bookmarked, setBookmarked] = useState<boolean[]>([]);
   const [feedback, setFeedback] = useState<QuestionFeedback | null>(null);
   const [showExplanation, setShowExplanation] = useState(false);
+  const [practiceCount, setPracticeCount] = useState(0); // Track practice count
+  const [responses, setResponses] = useState<
+    { questionId: string; selectedOption: string; isCorrect: boolean }[]
+  >([]); // Track user responses
+  const [startTime, setStartTime] = useState<number>(Date.now()); // Track session start time
+  const [timeTaken, setTimeTaken] = useState<number>(0); // Track time taken in seconds
+  const [uuid, setUuid] = useState<string | null>(null); // Track user UUID
+  const router = useRouter(); // For navigation
 
+  // Fetch the authenticated user's UID when the component mounts
   useEffect(() => {
-    // In a real app, this would fetch from an API
+    const auth = getAuth(app);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUuid(user.uid); // Set the UUID from Firebase Auth
+      } else {
+        console.error("User not authenticated");
+        setUuid(null);
+      }
+    });
+
+    return () => unsubscribe(); // Cleanup subscription
+  }, []);
+
+  // Fetch questions based on the section
+  useEffect(() => {
     const loadedQuestions = getQuestions(section);
     setQuestions(loadedQuestions);
     setBookmarked(new Array(loadedQuestions.length).fill(false));
+    setStartTime(Date.now()); // Start the timer when questions are loaded
   }, [section]);
 
   const currentQuestion = questions[currentIndex];
@@ -46,11 +73,23 @@ export function QuestionPractice({ section }: QuestionPracticeProps) {
 
     setIsAnswered(true);
 
-    // Generate feedback based on the answer
+    // Check if the selected answer is correct
     const isCorrect = selectedAnswer === currentQuestion.correctAnswer;
+
+    // Add the response to the responses array
+    setResponses((prev) => [
+      ...prev,
+      {
+        questionId: currentQuestion.id,
+        selectedOption: selectedAnswer,
+        isCorrect,
+      },
+    ]);
+
+    // Generate feedback based on the answer
     setFeedback({
       isCorrect,
-      correctAnswer: currentQuestion.correctAnswer, // Add this line
+      correctAnswer: currentQuestion.correctAnswer,
       explanation: currentQuestion.explanation,
       aiSuggestion: isCorrect
         ? "Great job! You've mastered this concept."
@@ -65,6 +104,7 @@ export function QuestionPractice({ section }: QuestionPracticeProps) {
       setIsAnswered(false);
       setFeedback(null);
       setShowExplanation(false);
+      setPracticeCount((prev) => prev + 1); // Increment practice count
     }
   };
 
@@ -82,6 +122,62 @@ export function QuestionPractice({ section }: QuestionPracticeProps) {
     const newBookmarked = [...bookmarked];
     newBookmarked[currentIndex] = !newBookmarked[currentIndex];
     setBookmarked(newBookmarked);
+  };
+
+  const handleExit = async () => {
+    if (!uuid) {
+      console.error("UUID is not set. User may not be authenticated.");
+      return;
+    }
+
+    // Calculate the time taken in seconds
+    const endTime = Date.now();
+    const timeTakenInSeconds = Math.floor((endTime - startTime) / 1000);
+    setTimeTaken(timeTakenInSeconds);
+
+    // Calculate the score
+    const score = responses.filter((response) => response.isCorrect).length;
+
+    // Get the list of bookmarked question IDs
+    const bookmarkedQuestionIds = questions
+      .filter((_, index) => bookmarked[index])
+      .map((q) => q.id);
+
+    // Prepare the data to send to the backend
+    const sessionData = {
+      sessionId: `sess-${Date.now()}`, // Generate a unique session ID
+      timestamp: new Date().toISOString(), // Current timestamp in ISO format
+      section,
+      questionIds: questions.map((q) => q.id), // List of all question IDs
+      responses,
+      score,
+      totalQuestions: questions.length,
+      timeTaken: timeTakenInSeconds,
+      bookmarkedQuestionIds, // Include bookmarked question IDs
+      uuid, // Include the user's UUID
+    };
+
+    // Send the data to the backend
+    try {
+      const response = await fetch(`/api/history?uuid=${uuid}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(sessionData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to save session data");
+      }
+
+      console.log("Session data saved successfully!");
+    } catch (error) {
+      console.error("Error saving session data:", error);
+    }
+
+    // Redirect to the question bank or home page
+    router.push("/question-bank");
   };
 
   if (!currentQuestion) {
@@ -114,22 +210,32 @@ export function QuestionPractice({ section }: QuestionPracticeProps) {
             <CardTitle className="text-xl">
               Question {currentIndex + 1}
             </CardTitle>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={toggleBookmark}
-              className={cn(
-                bookmarked[currentIndex]
-                  ? "text-blue-600"
-                  : "text-muted-foreground"
-              )}
-            >
-              {bookmarked[currentIndex] ? (
-                <BookmarkCheck className="h-5 w-5" />
-              ) : (
-                <Bookmark className="h-5 w-5" />
-              )}
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={toggleBookmark}
+                className={cn(
+                  bookmarked[currentIndex]
+                    ? "text-blue-600"
+                    : "text-muted-foreground"
+                )}
+              >
+                {bookmarked[currentIndex] ? (
+                  <BookmarkCheck className="h-5 w-5" />
+                ) : (
+                  <Bookmark className="h-5 w-5" />
+                )}
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleExit}
+                className="text-muted-foreground"
+              >
+                Exit
+              </Button>
+            </div>
           </div>
         </CardHeader>
         <CardContent>
@@ -190,10 +296,16 @@ export function QuestionPractice({ section }: QuestionPracticeProps) {
             >
               Submit Answer
             </Button>
+          ) : currentIndex === questions.length - 1 ? (
+            <Button
+              onClick={handleExit}
+              className="flex items-center bg-green-900 hover:bg-green-950"
+            >
+              Finish
+            </Button>
           ) : (
             <Button
               onClick={handleNextQuestion}
-              disabled={currentIndex === questions.length - 1}
               className="flex items-center bg-blue-900 hover:bg-blue-950"
             >
               Next <ArrowRight className="ml-2 h-4 w-4" />
@@ -207,6 +319,7 @@ export function QuestionPractice({ section }: QuestionPracticeProps) {
           feedback={feedback}
           showExplanation={showExplanation}
           onToggleExplanation={() => setShowExplanation(!showExplanation)}
+          aiResponse={currentQuestion.aiResponse} // Pass the AI response here
         />
       )}
     </div>

@@ -19,6 +19,18 @@ const db = getFirestore();
 
 export async function POST(request: Request) {
   try {
+    // Extract UUID from query parameters
+    const { searchParams } = new URL(request.url);
+    const uuid = searchParams.get("uuid");
+
+    if (!uuid) {
+      return NextResponse.json(
+        { error: "UUID is required in query parameters" },
+        { status: 400 }
+      );
+    }
+    console.log("processoed uui" , uuid)
+
     const data = await request.json();
 
     // Extract required fields
@@ -30,7 +42,7 @@ export async function POST(request: Request) {
       challengingAreas,
       focusAreas,
       additionalInfo,
-      lsatPreparationMaterial, // Add this field
+      lsatPreparationMaterial,
     } = data;
 
     if (
@@ -41,27 +53,13 @@ export async function POST(request: Request) {
       !challengingAreas ||
       !focusAreas ||
       !additionalInfo ||
-      !lsatPreparationMaterial // Ensure this field is required
+      !lsatPreparationMaterial
     ) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 }
       );
     }
-
-    // Verify Firebase ID token
-    const authHeader = request.headers.get("Authorization");
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return NextResponse.json(
-        { error: "Unauthorized: Missing token" },
-        { status: 401 }
-      );
-    }
-
-    const idToken = authHeader.split("Bearer ")[1];
-    const auth = getAuth();
-    const decodedToken = await auth.verifyIdToken(idToken);
-    const uid = decodedToken.uid;
 
     // Determine study plan based on currentScore
     let planKey: StudyPlanKey = "terrible";
@@ -77,11 +75,10 @@ export async function POST(request: Request) {
 
     // Get predefined study plan
     const studyPlan = studyPlans[planKey];
-    console.log(studyPlan)
+    console.log("Study Plan:", studyPlan); // Log the study plan
 
-    // Firestore references
-    const userRef = db.collection("users").doc(uid);
-    const planRef = db.collection("plans").doc(uid);
+    // Firestore reference for the user
+    const userRef = db.collection("users").doc(uuid);
 
     // Update user onboarding data
     console.log("Updating user document in Firestore...");
@@ -111,23 +108,12 @@ export async function POST(request: Request) {
         specificAreas: focusAreas,
         challengingAreas: challengingAreas,
         additionalInformation: additionalInfo,
-        lsatPreparationMaterial, // Add this field
+        lsatPreparationMaterial,
         payments: [],
       },
       { merge: true } // Use merge to avoid overwriting existing fields
     );
     console.log("User document updated successfully.");
-
-    // Create or update the plan document in the `plans` collection
-    console.log("Creating or updating plan document in Firestore...");
-    await planRef.set({
-      userId: uid,
-      planKey,
-      studyPlan,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    });
-    console.log("Plan document created or updated successfully.");
 
     return NextResponse.json({
       success: true,
@@ -148,7 +134,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("Error saving onboarding data:", error);
     return NextResponse.json(
-      { error: "Failed to save onboarding data" },
+      { error: "Failed to save onboarding data", details: error },
       { status: 500 }
     );
   }
