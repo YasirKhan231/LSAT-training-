@@ -42,7 +42,7 @@ type OnboardingStep =
   | "challenging-areas"
   | "preferred-schedule"
   | "focus-areas"
-  | "lsatPreparationMaterial"
+  | "barExamPreparationMaterial"
   | "additional-info"
   | "review";
 
@@ -53,14 +53,14 @@ export default function OnboardingForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [uuid, setUuid] = useState<string | null>(null); // State to store the UUID
   const [formData, setFormData] = useState({
-    examDate: undefined as Date | undefined,
+    barExamTestDate: undefined as Date | undefined,
     targetScore: "",
     currentScore: "",
     studyHours: "",
     challengingAreas: [] as string[],
     preferredSchedule: "",
     focusAreas: [] as string[],
-    lsatPreparationMaterial: "",
+    barExamPreparationMaterial: "",
     additionalInfo: "",
   });
 
@@ -81,7 +81,7 @@ export default function OnboardingForm() {
 
   const handleNext = () => {
     if (step === "exam-date") {
-      if (!formData.examDate) {
+      if (!formData.barExamTestDate) {
         toast("Missing information", {
           description: "Please select an exam date",
           variant: "destructive",
@@ -142,11 +142,11 @@ export default function OnboardingForm() {
         });
         return;
       }
-      setStep("lsatPreparationMaterial");
-    } else if (step === "lsatPreparationMaterial") {
-      if (!formData.lsatPreparationMaterial) {
+      setStep("barExamPreparationMaterial");
+    } else if (step === "barExamPreparationMaterial") {
+      if (!formData.barExamPreparationMaterial) {
         toast("Missing information", {
-          description: "Please select your LSAT prep lsatPreparationMaterial",
+          description: "Please select your BAR prep barExamPreparationMaterial",
           variant: "destructive",
         });
         return;
@@ -170,10 +170,10 @@ export default function OnboardingForm() {
       setStep("challenging-areas");
     } else if (step === "focus-areas") {
       setStep("preferred-schedule");
-    } else if (step === "lsatPreparationMaterial") {
+    } else if (step === "barExamPreparationMaterial") {
       setStep("focus-areas");
     } else if (step === "additional-info") {
-      setStep("lsatPreparationMaterial");
+      setStep("barExamPreparationMaterial");
     } else if (step === "review") {
       setStep("additional-info");
     }
@@ -207,7 +207,7 @@ export default function OnboardingForm() {
 
       toast("Study Plan Created Successfully!", {
         description:
-          "Your personalized LSAT study plan is now ready. You can access it from your dashboard.",
+          "Your personalized BAR study plan is now ready. You can access it from your dashboard.",
       });
 
       // Redirect to plan page after a short delay
@@ -228,11 +228,11 @@ export default function OnboardingForm() {
   const getStepTitle = () => {
     switch (step) {
       case "exam-date":
-        return "When is your LSAT exam?";
+        return "When is your BAR exam?";
       case "target-score":
-        return "What's your target LSAT score?";
+        return "What's your target BAR score?";
       case "current-score":
-        return "What's your current LSAT score?";
+        return "What's your current BAR score?";
       case "study-hours":
         return "How many hours can you study weekly?";
       case "challenging-areas":
@@ -241,8 +241,8 @@ export default function OnboardingForm() {
         return "What is your preferred study schedule?";
       case "focus-areas":
         return "Do you have any specific areas you want to focus on?";
-      case "lsatPreparationMaterial":
-        return "What LSAT prep lsatPreparationMaterial do you have access to?";
+      case "barExamPreparationMaterial":
+        return "What BAR prep barExamPreparationMaterial do you have access to?";
       case "additional-info":
         return "Any additional information you'd like to share?";
       case "review":
@@ -270,7 +270,7 @@ export default function OnboardingForm() {
               "challenging-areas",
               "preferred-schedule",
               "focus-areas",
-              "lsatPreparationMaterial",
+              "barExamPreparationMaterial",
               "additional-info",
               "review",
             ].map((s, i) => (
@@ -285,7 +285,7 @@ export default function OnboardingForm() {
                     "challenging-areas",
                     "preferred-schedule",
                     "focus-areas",
-                    "lsatPreparationMaterial",
+                    "barExamPreparationMaterial",
                     "additional-info",
                     "review",
                   ].indexOf(step) >= i
@@ -311,8 +311,8 @@ export default function OnboardingForm() {
                       id="exam-date"
                     >
                       <CalendarIcon className="mr-2 h-4 w-4" />
-                      {formData.examDate ? (
-                        formData.examDate.toLocaleDateString()
+                      {formData.barExamTestDate ? (
+                        formData.barExamTestDate.toLocaleDateString()
                       ) : (
                         <span>Select your exam date</span>
                       )}
@@ -321,11 +321,11 @@ export default function OnboardingForm() {
                   <PopoverContent className="w-auto p-0">
                     <DayPicker
                       mode="single"
-                      selected={formData.examDate}
+                      selected={formData.barExamTestDate}
                       onSelect={(date) =>
                         setFormData({
                           ...formData,
-                          examDate: date || undefined,
+                          barExamTestDate: date || undefined,
                         })
                       }
                       disabled={{ before: new Date() }} // Disable past dates
@@ -340,12 +340,12 @@ export default function OnboardingForm() {
           {step === "target-score" && (
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="target-score">Target Score (120-180)</Label>
+                <Label htmlFor="target-score">Target Score (260-400)</Label>
                 <Input
                   id="target-score"
                   type="number"
-                  min="120"
-                  max="180"
+                  min="260"
+                  max="400"
                   value={formData.targetScore}
                   onChange={(e) =>
                     setFormData({ ...formData, targetScore: e.target.value })
@@ -360,12 +360,12 @@ export default function OnboardingForm() {
           {step === "current-score" && (
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="current-score">Current Score (120-180)</Label>
+                <Label htmlFor="current-score">Current Score (260-400)</Label>
                 <Input
                   id="current-score"
                   type="number"
-                  min="120"
-                  max="180"
+                  min="260"
+                  max="400"
                   value={formData.currentScore}
                   onChange={(e) =>
                     setFormData({ ...formData, currentScore: e.target.value })
@@ -414,18 +414,43 @@ export default function OnboardingForm() {
                   }
                 >
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="logical" id="logical" />
-                    <Label htmlFor="logical">Logical Reasoning</Label>
+                    <RadioGroupItem
+                      value="Constitutional"
+                      id="Constitutional"
+                    />
+                    <Label htmlFor="Constitutional">Constitutional Law</Label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="analytical" id="analytical" />
-                    <Label htmlFor="analytical">
-                      Analytical Reasoning (Logic Games)
+                    <RadioGroupItem value="Contracts" id="Contracts" />
+                    <Label htmlFor="Contracts">Contracts</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem
+                      value="Criminal Law & Procedure"
+                      id="Criminal Law & Procedure"
+                    />
+                    <Label htmlFor="Criminal Law & Procedure">
+                      Criminal Law & Procedure
                     </Label>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="reading" id="reading" />
-                    <Label htmlFor="reading">Reading Comprehension</Label>
+                    <RadioGroupItem
+                      value="Civil Procedure"
+                      id="Civil Procedure"
+                    />
+                    <Label htmlFor="Civil Procedure">Civil Procedure</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="Evidence" id="Evidence" />
+                    <Label htmlFor="Evidence">Evidence</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="Real Property" id="Real Property" />
+                    <Label htmlFor="Real Property">Real Property</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="Torts" id="Torts" />
+                    <Label htmlFor="Torts">Torts</Label>
                   </div>
                 </RadioGroup>
               </div>
@@ -469,12 +494,13 @@ export default function OnboardingForm() {
                 </Label>
                 <div className="grid grid-cols-2 gap-2">
                   {[
-                    { id: "assumption", label: "Assumption Questions" },
-                    { id: "grouping", label: "Grouping Games" },
-                    { id: "science", label: "Science Passages" },
-                    { id: "timing", label: "Timing Strategies" },
-                    { id: "inference", label: "Inference Questions" },
-                    { id: "sequencing", label: "Sequencing Games" },
+                    { id: "constitutionalLaw", label: "Constitutional Law" },
+                    { id: "contracts", label: "Contracts" },
+                    { id: "criminalLaw", label: "Criminal Law and Procedure" },
+                    { id: "evidence", label: "Evidence" },
+                    { id: "realProperty", label: "Real Property" },
+                    { id: "torts", label: "Torts" },
+                    { id: "civilProcedure", label: "Civil Procedure" },
                   ].map((area) => (
                     <div key={area.id} className="flex items-center space-x-2">
                       <input
@@ -500,25 +526,29 @@ export default function OnboardingForm() {
             </div>
           )}
 
-          {/* Step 8: lsatPreparationMaterial */}
-          {step === "lsatPreparationMaterial" && (
+          {/* Step 8: barExamPreparationMaterial */}
+          {step === "barExamPreparationMaterial" && (
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="lsatPreparationMaterial">
-                  What LSAT prep lsatPreparationMaterial do you have access to?
+                <Label htmlFor="barExamPreparationMaterial">
+                  What BAR prep barExamPreparationMaterial do you have access
+                  to?
                 </Label>
                 <Select
-                  value={formData.lsatPreparationMaterial}
+                  value={formData.barExamPreparationMaterial}
                   onValueChange={(value) =>
-                    setFormData({ ...formData, lsatPreparationMaterial: value })
+                    setFormData({
+                      ...formData,
+                      barExamPreparationMaterial: value,
+                    })
                   }
                 >
-                  <SelectTrigger id="lsatPreparationMaterial">
-                    <SelectValue placeholder="Select lsatPreparationMaterial" />
+                  <SelectTrigger id="barExamPreparationMaterial">
+                    <SelectValue placeholder="Select barExamPreparationMaterial" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="official">
-                      Official LSAT PrepTests
+                      Official BAR PrepTests
                     </SelectItem>
                     <SelectItem value="powerscore">
                       PowerScore Bibles
@@ -560,8 +590,8 @@ export default function OnboardingForm() {
                 <div className="flex justify-between py-2 border-b">
                   <span className="text-muted-foreground">Exam Date</span>
                   <span className="font-medium">
-                    {formData.examDate
-                      ? formData.examDate.toLocaleDateString()
+                    {formData.barExamTestDate
+                      ? formData.barExamTestDate.toLocaleDateString()
                       : "Not set"}
                   </span>
                 </div>
@@ -603,10 +633,10 @@ export default function OnboardingForm() {
                 </div>
                 <div className="flex justify-between py-2 border-b">
                   <span className="text-muted-foreground">
-                    lsatPreparationMaterial
+                    barExamPreparationMaterial
                   </span>
                   <span className="font-medium">
-                    {formData.lsatPreparationMaterial}
+                    {formData.barExamPreparationMaterial}
                   </span>
                 </div>
                 <div className="flex justify-between py-2">

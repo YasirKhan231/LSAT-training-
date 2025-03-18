@@ -1,3 +1,4 @@
+// app/mixed-practice/page.tsx
 import { QuestionPractice } from "@/components/question-practise";
 
 export default function MixedPracticePage() {
@@ -6,10 +7,10 @@ export default function MixedPracticePage() {
       <div className="max-w-3xl mx-auto">
         <h1 className="text-3xl font-bold mb-6">Mixed Practice Session</h1>
         <p className="text-muted-foreground mb-6">
-          This session includes questions from all LSAT sections to help you
+          This session includes questions from all Bar Exam subjects to help you
           prepare for the full exam experience.
         </p>
-        <QuestionPractice section="mixed" />
+        <QuestionPractice subject="mixed" />
       </div>
     </div>
   );

@@ -7,7 +7,16 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
-import { BookOpen, Brain, FileText, BarChart } from "lucide-react";
+import {
+  BookOpen,
+  Brain,
+  FileText,
+  BarChart,
+  Gavel,
+  Landmark,
+  Scale,
+  ClipboardList,
+} from "lucide-react";
 
 export default function Home() {
   return (
@@ -15,79 +24,181 @@ export default function Home() {
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold tracking-tight mb-2">
-            AI-Enhanced LSAT Question Bank
+            AI-Enhanced Bar Exam Question Bank
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            practicewith adaptive questions and receive AI-powered explanations
-            to improve your LSAT score.
+            Practice with adaptive questions and receive AI-powered explanations
+            to improve your Bar Exam score.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          {/* Constitutional Law */}
           <Card className="border-2 hover:border-blue-300 transition-all shadow-md rounded-xl overflow-hidden">
             <CardHeader className="pb-2">
               <CardTitle className="flex items-center">
-                <Brain className="mr-2 h-5 w-5 text-blue-900" />
-                Logical Reasoning
+                <Landmark className="mr-2 h-5 w-5 text-blue-900" />
+                Constitutional Law
               </CardTitle>
-              <CardDescription>Evaluate and analyze arguments</CardDescription>
+              <CardDescription>
+                Master constitutional principles and cases
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <p className="mb-4 text-sm">
-                practiceidentifying assumptions, flaws, and
-                strengthening/weakening factors in arguments.
+                Practice analyzing constitutional issues, landmark cases, and
+                judicial review.
               </p>
-              <Link href="/question-bank/logical-reasoning">
+              <Link href="/question-bank/constitutional-law">
                 <Button className="w-full bg-white text-blue-900 border border-blue-300 hover:bg-blue-100">
-                  Start practise
+                  Start Practice
                 </Button>
               </Link>
             </CardContent>
           </Card>
 
+          {/* Contracts */}
           <Card className="border-2 hover:border-blue-300 transition-all shadow-md rounded-xl overflow-hidden">
             <CardHeader className="pb-2">
               <CardTitle className="flex items-center">
                 <FileText className="mr-2 h-5 w-5 text-blue-900" />
-                Analytical Reasoning
+                Contracts
               </CardTitle>
-              <CardDescription>Solve complex logic games</CardDescription>
+              <CardDescription>
+                Understand contract formation and enforcement
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <p className="mb-4 text-sm">
-                Master grouping, ordering, and assignment problems with visual
-                aids and step-by-step solutions.
+                Practice questions on offer, acceptance, consideration, and
+                breach of contract.
               </p>
-              <Link href="/question-bank/analytical-reasoning">
+              <Link href="/question-bank/contracts">
                 <Button className="w-full bg-white text-blue-900 border border-blue-300 hover:bg-blue-100">
-                  Start practise
+                  Start Practice
                 </Button>
               </Link>
             </CardContent>
           </Card>
 
+          {/* Criminal Law & Procedure */}
           <Card className="border-2 hover:border-blue-300 transition-all shadow-md rounded-xl overflow-hidden">
             <CardHeader className="pb-2">
               <CardTitle className="flex items-center">
-                <BookOpen className="mr-2 h-5 w-5 text-blue-900" />
-                Reading Comprehension
+                <Gavel className="mr-2 h-5 w-5 text-blue-900" />
+                Criminal Law & Procedure
               </CardTitle>
-              <CardDescription>Analyze complex passages</CardDescription>
+              <CardDescription>
+                Learn criminal offenses and procedures
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <p className="mb-4 text-sm">
-                Improve your ability to understand, interpret, and draw
-                conclusions from dense academic texts.
+                Practice questions on criminal liability, defenses, and
+                constitutional protections.
               </p>
-              <Link href="/question-bank/reading-compresion">
+              <Link href="/question-bank/criminal-law">
                 <Button className="w-full bg-white text-blue-900 border border-blue-300 hover:bg-blue-100">
-                  Start practise
+                  Start Practice
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+
+          {/* Civil Procedure */}
+          <Card className="border-2 hover:border-blue-300 transition-all shadow-md rounded-xl overflow-hidden">
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center">
+                <Scale className="mr-2 h-5 w-5 text-blue-900" />
+                Civil Procedure
+              </CardTitle>
+              <CardDescription>
+                Master the rules of civil litigation
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="mb-4 text-sm">
+                Practice questions on jurisdiction, pleadings, discovery, and
+                motions.
+              </p>
+              <Link href="/question-bank/civil-procedure">
+                <Button className="w-full bg-white text-blue-900 border border-blue-300 hover:bg-blue-100">
+                  Start Practice
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+
+          {/* Evidence */}
+          <Card className="border-2 hover:border-blue-300 transition-all shadow-md rounded-xl overflow-hidden">
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center">
+                <ClipboardList className="mr-2 h-5 w-5 text-blue-900" />
+                Evidence
+              </CardTitle>
+              <CardDescription>Understand rules of evidence</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="mb-4 text-sm">
+                Practice questions on relevance, hearsay, privileges, and
+                objections.
+              </p>
+              <Link href="/question-bank/evidence">
+                <Button className="w-full bg-white text-blue-900 border border-blue-300 hover:bg-blue-100">
+                  Start Practice
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+
+          {/* Real Property */}
+          <Card className="border-2 hover:border-blue-300 transition-all shadow-md rounded-xl overflow-hidden">
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center">
+                <Landmark className="mr-2 h-5 w-5 text-blue-900" />
+                Real Property
+              </CardTitle>
+              <CardDescription>Learn property law concepts</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="mb-4 text-sm">
+                Practice questions on estates, easements, mortgages, and
+                landlord-tenant law.
+              </p>
+              <Link href="/question-bank/real-property">
+                <Button className="w-full bg-white text-blue-900 border border-blue-300 hover:bg-blue-100">
+                  Start Practice
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+
+          {/* Torts */}
+          <Card className="border-2 hover:border-blue-300 transition-all shadow-md rounded-xl overflow-hidden">
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center">
+                <Scale className="mr-2 h-5 w-5 text-blue-900" />
+                Torts
+              </CardTitle>
+              <CardDescription>
+                Understand civil wrongs and liabilities
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="mb-4 text-sm">
+                Practice questions on negligence, strict liability, and
+                intentional torts.
+              </p>
+              <Link href="/question-bank/torts">
+                <Button className="w-full bg-white text-blue-900 border border-blue-300 hover:bg-blue-100">
+                  Start Practice
                 </Button>
               </Link>
             </CardContent>
           </Card>
         </div>
 
+        {/* Adaptive Learning System Section */}
         <Card className="mb-12 border-2 border-blue-200 shadow-md rounded-xl overflow-hidden">
           <CardHeader>
             <CardTitle>Adaptive Learning System</CardTitle>
@@ -131,10 +242,11 @@ export default function Home() {
           </CardContent>
         </Card>
 
+        {/* Start Mixed Practice Button */}
         <div className="text-center">
           <Link href="/question-bank/mixed">
             <Button size="lg" className="bg-blue-900 hover:bg-blue-950">
-              Start Mixed practiceSession
+              Start Mixed Practice Session
             </Button>
           </Link>
         </div>

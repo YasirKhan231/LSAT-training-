@@ -61,10 +61,10 @@ export default function SignupPage() {
             </div>
 
             <h2 className="text-3xl font-bold text-white mb-4 text-center">
-              Start Your LSAT Journey
+              Start Your BAR Journey
             </h2>
             <p className="text-lg text-blue-100 mb-6 text-center">
-              Join thousands of students who improved their LSAT scores with our
+              Join thousands of students who improved their BAR scores with our
               AI-powered learning platform.
             </p>
 
@@ -166,7 +166,7 @@ export default function SignupPage() {
             {/* Success Story */}
             <div className="bg-white bg-opacity-5 backdrop-blur-sm rounded-lg p-4 border border-white border-opacity-10 shadow-xl">
               <p className="italic text-white text-sm mb-3">
-                "LSAT Training helped me target my weaknesses and improve where
+                "BAR Training helped me target my weaknesses and improve where
                 it matters most. My score jumped from 157 to 171 in just 10
                 weeks!"
               </p>
@@ -189,12 +189,11 @@ export default function SignupPage() {
         <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 transition-all duration-300 hover:shadow-2xl">
           {/* Header with Logo */}
           <div className="mb-6 text-center">
-            
             <h1 className="text-2xl font-bold mt-6 mb-2 text-gray-800">
               Create account
             </h1>
             <p className="text-gray-500 text-sm">
-              Join our community of LSAT learners
+              Join our community of BAR learners
             </p>
           </div>
 

@@ -150,11 +150,11 @@ export default function MockExamPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <header className="py-8">
           <h1 className="text-3xl font-extrabold text-gray-900">
-            Full-Length LSAT Simulated Exams
+            Full-Length BAR Simulated Exams
           </h1>
           <p className="mt-2 text-lg text-gray-600">
-            Take realistic timed LSAT practice tests with AI-powered analysis
-            and feedback
+            Take realistic timed BAR practice tests with AI-powered analysis and
+            feedback
           </p>
 
           {!isSubscriptionActive && (

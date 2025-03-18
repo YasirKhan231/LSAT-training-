@@ -44,10 +44,10 @@ export default function SubscriptionPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-extrabold text-gray-900 mb-4">
-            Upgrade Your LSAT Preparation
+            Upgrade Your BAR Preparation
           </h1>
           <p className="max-w-3xl mx-auto text-xl text-gray-500">
-            Get unlimited access to AI-powered LSAT training tools and
+            Get unlimited access to AI-powered BAR training tools and
             personalized study plans
           </p>
         </div>
@@ -70,7 +70,7 @@ export default function SubscriptionPage() {
                 </li>
                 <li className="flex items-start">
                   <Check className="h-5 w-5 text-green-500 mr-2 shrink-0" />
-                  <span>1 simulated LSAT exam</span>
+                  <span>1 simulated BAR exam</span>
                 </li>
                 <li className="flex items-start">
                   <Check className="h-5 w-5 text-green-500 mr-2 shrink-0" />
@@ -117,7 +117,7 @@ export default function SubscriptionPage() {
                 </li>
                 <li className="flex items-start">
                   <Check className="h-5 w-5 text-green-500 mr-2 shrink-0" />
-                  <span>Unlimited simulated LSAT exams</span>
+                  <span>Unlimited simulated BAR exams</span>
                 </li>
                 <li className="flex items-start">
                   <Check className="h-5 w-5 text-green-500 mr-2 shrink-0" />
@@ -163,7 +163,7 @@ export default function SubscriptionPage() {
                 </li>
                 <li className="flex items-start">
                   <Check className="h-5 w-5 text-green-500 mr-2 shrink-0" />
-                  <span>Unlimited simulated LSAT exams</span>
+                  <span>Unlimited simulated BAR exams</span>
                 </li>
                 <li className="flex items-start">
                   <Check className="h-5 w-5 text-green-500 mr-2 shrink-0" />

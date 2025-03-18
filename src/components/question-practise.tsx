@@ -1,4 +1,4 @@
-"use client";
+"use client"; // Ensure this is a Client Component
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -23,10 +23,10 @@ import { getAuth, onAuthStateChanged } from "firebase/auth"; // Import Firebase 
 import app from "@/lib/firebase"; // Import Firebase app
 
 interface QuestionPracticeProps {
-  section: string;
+  subject: string; // Prop to specify the subject
 }
 
-export function QuestionPractice({ section }: QuestionPracticeProps) {
+export function QuestionPractice({ subject }: QuestionPracticeProps) {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
@@ -38,6 +38,9 @@ export function QuestionPractice({ section }: QuestionPracticeProps) {
   const [responses, setResponses] = useState<
     { questionId: string; selectedOption: string; isCorrect: boolean }[]
   >([]); // Track user responses
+  const [practicedQuestionIds, setPracticedQuestionIds] = useState<string[]>(
+    []
+  ); // Track practiced question IDs
   const [startTime, setStartTime] = useState<number>(Date.now()); // Track session start time
   const [timeTaken, setTimeTaken] = useState<number>(0); // Track time taken in seconds
   const [uuid, setUuid] = useState<string | null>(null); // Track user UUID
@@ -58,13 +61,13 @@ export function QuestionPractice({ section }: QuestionPracticeProps) {
     return () => unsubscribe(); // Cleanup subscription
   }, []);
 
-  // Fetch questions based on the section
+  // Fetch questions based on the subject
   useEffect(() => {
-    const loadedQuestions = getQuestions(section);
+    const loadedQuestions = getQuestions(subject); // Fetch questions for the subject
     setQuestions(loadedQuestions);
     setBookmarked(new Array(loadedQuestions.length).fill(false));
     setStartTime(Date.now()); // Start the timer when questions are loaded
-  }, [section]);
+  }, [subject]);
 
   const currentQuestion = questions[currentIndex];
 
@@ -93,12 +96,15 @@ export function QuestionPractice({ section }: QuestionPracticeProps) {
       explanation: currentQuestion.explanation,
       aiSuggestion: isCorrect
         ? "Great job! You've mastered this concept."
-        : "Consider reviewing the logical structure of conditional statements.",
+        : "Consider reviewing the relevant legal principles.",
     });
   };
 
   const handleNextQuestion = () => {
     if (currentIndex < questions.length - 1) {
+      // Add the current question ID to the practicedQuestionIds list
+      setPracticedQuestionIds((prev) => [...prev, currentQuestion.id]);
+
       setCurrentIndex(currentIndex + 1);
       setSelectedAnswer(null);
       setIsAnswered(false);
@@ -135,7 +141,7 @@ export function QuestionPractice({ section }: QuestionPracticeProps) {
     const timeTakenInSeconds = Math.floor((endTime - startTime) / 1000);
     setTimeTaken(timeTakenInSeconds);
 
-    // Calculate the score
+    // Calculate the score based on practiced questions
     const score = responses.filter((response) => response.isCorrect).length;
 
     // Get the list of bookmarked question IDs
@@ -147,11 +153,13 @@ export function QuestionPractice({ section }: QuestionPracticeProps) {
     const sessionData = {
       sessionId: `sess-${Date.now()}`, // Generate a unique session ID
       timestamp: new Date().toISOString(), // Current timestamp in ISO format
-      section,
-      questionIds: questions.map((q) => q.id), // List of all question IDs
-      responses,
+      section: subject, // Use "section" instead of "subject" to match backend expectations
+      questionIds: practicedQuestionIds, // Send only practiced question IDs
+      responses: responses.filter((response) =>
+        practicedQuestionIds.includes(response.questionId)
+      ), // Send only responses for practiced questions
       score,
-      totalQuestions: questions.length,
+      totalQuestions: practicedQuestionIds.length, // Total questions practiced
       timeTaken: timeTakenInSeconds,
       bookmarkedQuestionIds, // Include bookmarked question IDs
       uuid, // Include the user's UUID
@@ -198,7 +206,9 @@ export function QuestionPractice({ section }: QuestionPracticeProps) {
             Question {currentIndex + 1} of {questions.length}
           </span>
           <Badge variant="outline" className="bg-blue-50">
-            {section.replace("-", " ").replace(/\b\w/g, (l) => l.toUpperCase())}
+            {subject
+              .replace(/-/g, " ")
+              .replace(/\b\w/g, (l) => l.toUpperCase())}
           </Badge>
         </div>
         <Progress value={progress} className="h-2" />

@@ -1,530 +1,699 @@
 import type { Question } from "./types";
 
-export function getQuestions(section: string): Question[] {
-  const logicalReasoningQuestions: Question[] = [
+export function getQuestions(subject: string): Question[] {
+  const constitutionalLawQuestions: Question[] = [
     {
-      id: "lr-1",
-      text: "A study found that people who drink coffee live longer than those who don't. Therefore, drinking coffee causes people to live longer. Which of the following, if true, most weakens the argument?",
+      id: "cl-1",
+      text: "Which of the following powers is NOT explicitly granted to Congress under the U.S. Constitution?",
       options: [
-        { id: "A", text: "The study controlled for other factors like diet and exercise." },
-        { id: "B", text: "Coffee contains antioxidants that are known to have health benefits." },
-        { id: "C", text: "People who drink coffee tend to have higher incomes and better access to healthcare." },
-        { id: "D", text: "The study was funded by a coffee industry association." },
-        { id: "E", text: "The study found that moderate coffee drinkers live longer than heavy coffee drinkers." },
+        { id: "A", text: "The power to regulate interstate commerce." },
+        { id: "B", text: "The power to establish a national bank." },
+        { id: "C", text: "The power to declare war." },
+        { id: "D", text: "The power to tax and spend for the general welfare." },
+        { id: "E", text: "The power to coin money." },
+      ],
+      correctAnswer: "B",
+      explanation:
+        "The power to establish a national bank is not explicitly stated in the Constitution but was upheld as an implied power in McCulloch v. Maryland.",
+      difficulty: "medium",
+      tags: ["separation of powers", "Congress"],
+      aiResponse:
+        "Option B is correct because the Constitution does not explicitly grant Congress the power to establish a national bank, but the Supreme Court ruled that it is an implied power under the Necessary and Proper Clause.",
+    },
+    {
+      id: "cl-2",
+      text: "Which amendment to the U.S. Constitution guarantees the right to a speedy and public trial?",
+      options: [
+        { id: "A", text: "First Amendment" },
+        { id: "B", text: "Fourth Amendment" },
+        { id: "C", text: "Sixth Amendment" },
+        { id: "D", text: "Eighth Amendment" },
+        { id: "E", text: "Tenth Amendment" },
       ],
       correctAnswer: "C",
       explanation:
-        "Option C weakens the argument by providing an alternative explanation for the correlation between coffee drinking and longevity.",
-      difficulty: "medium",
-      tags: ["causal reasoning", "correlation vs causation"],
-      aiResponse:
-        "Option C introduces a confounding variable (higher incomes and better access to healthcare) that could explain the observed correlation.",
-    },
-    {
-      id: "lr-2",
-      text: "All cats have fur. Some animals with fur are dogs. Therefore, some cats are dogs. This argument is:",
-      options: [
-        { id: "A", text: "Valid, because the conclusion follows logically from the premises." },
-        { id: "B", text: "Invalid, because it commits the fallacy of the undistributed middle term." },
-        { id: "C", text: "Valid, but unsound because the first premise is false." },
-        { id: "D", text: "Invalid, because it confuses necessary and sufficient conditions." },
-        { id: "E", text: "Valid, because some furry animals are both cats and dogs." },
-      ],
-      correctAnswer: "B",
-      explanation: "This argument is invalid because it commits the fallacy of the undistributed middle term.",
-      difficulty: "hard",
-      tags: ["formal logic", "syllogisms"],
-      aiResponse:
-        "Option B is correct because the middle term 'animals with fur' does not establish a direct link between cats and dogs.",
-    },
-    {
-      id: "lr-3",
-      text: "If a person exercises regularly, they are likely to stay healthy. John does not exercise regularly. Which of the following conclusions follows logically?",
-      options: [
-        { id: "A", text: "John is unhealthy." },
-        { id: "B", text: "John may or may not be healthy." },
-        { id: "C", text: "People who exercise are always healthy." },
-        { id: "D", text: "Not exercising guarantees poor health." },
-        { id: "E", text: "John will definitely become unhealthy." },
-      ],
-      correctAnswer: "B",
-      explanation: "The premise states that exercise increases the likelihood of good health but does not establish it as the only factor.",
-      difficulty: "medium",
-      tags: ["conditional reasoning", "logic"],
-      aiResponse:
-        "Option B is correct because the argument does not say that not exercising always leads to poor health, just that exercise increases the chances of good health.",
-    },
-    {
-      id: "lr-4",
-      text: "If it rains, the streets get wet. The streets are wet. Therefore, it rained. This argument is an example of:",
-      options: [
-        { id: "A", text: "Valid reasoning." },
-        { id: "B", text: "The fallacy of affirming the consequent." },
-        { id: "C", text: "Sound reasoning." },
-        { id: "D", text: "A deductively valid argument." },
-        { id: "E", text: "A tautology." },
-      ],
-      correctAnswer: "B",
-      explanation: "The argument commits the fallacy of affirming the consequent by assuming that rain is the only possible cause of wet streets.",
-      difficulty: "medium",
-      tags: ["logical fallacies", "causal reasoning"],
-      aiResponse:
-        "Option B is correct because just because the streets are wet, it does not mean that rain is the only possible cause.",
-    },
-    {
-      id: "lr-5",
-      text: "Either the company will increase salaries, or employees will go on strike. Employees did not go on strike. What can be inferred?",
-      options: [
-        { id: "A", text: "The company increased salaries." },
-        { id: "B", text: "The employees are satisfied with current salaries." },
-        { id: "C", text: "The company might not have increased salaries, but employees decided not to strike." },
-        { id: "D", text: "Nothing can be inferred." },
-        { id: "E", text: "The employees changed their demands." },
-      ],
-      correctAnswer: "A",
-      explanation: "Since the statement presents a strict either-or scenario, if one condition is false, the other must be true.",
-      difficulty: "medium",
-      tags: ["logical reasoning", "deductive logic"],
-      aiResponse:
-        "Option A is correct because the argument presents a binary scenario, and if one condition is false, the other must be true.",
-    },
-    {
-      id: "lr-6",
-      text: "No fish can live without water. Goldfish are a type of fish. Therefore, goldfish cannot live without water. This argument is:",
-      options: [
-        { id: "A", text: "Valid and sound." },
-        { id: "B", text: "Invalid because of an undistributed middle term." },
-        { id: "C", text: "Invalid because it assumes the premise is true." },
-        { id: "D", text: "Valid but unsound." },
-        { id: "E", text: "An example of circular reasoning." },
-      ],
-      correctAnswer: "A",
-      explanation: "The argument is both valid and sound, as its premises are true and its logic is correct.",
+        "The Sixth Amendment guarantees the right to a speedy and public trial.",
       difficulty: "easy",
-      tags: ["formal logic", "deductive reasoning"],
+      tags: ["amendments", "rights"],
       aiResponse:
-        "Option A is correct because the premises correctly lead to the conclusion using valid deductive reasoning.",
+        "Option C is correct because the Sixth Amendment explicitly guarantees the right to a speedy and public trial.",
     },
     {
-      id: "lr-7",
-      text: "If a car is red, it is fast. John's car is fast. What can be inferred?",
+      id: "cl-3",
+      text: "What is the primary purpose of the Supremacy Clause in the U.S. Constitution?",
       options: [
-        { id: "A", text: "John's car is red." },
-        { id: "B", text: "Not all fast cars are red." },
-        { id: "C", text: "John's car is fast for another reason." },
-        { id: "D", text: "Nothing can be inferred." },
-        { id: "E", text: "The premise is incorrect." },
+        { id: "A", text: "To establish the federal government's authority over state governments." },
+        { id: "B", text: "To ensure states have equal representation in Congress." },
+        { id: "C", text: "To protect individual rights from government infringement." },
+        { id: "D", text: "To grant the President veto power over state laws." },
+        { id: "E", text: "To limit the power of the judiciary." },
+      ],
+      correctAnswer: "A",
+      explanation:
+        "The Supremacy Clause establishes that federal law takes precedence over state laws and constitutions.",
+      difficulty: "medium",
+      tags: ["federalism", "Supremacy Clause"],
+      aiResponse:
+        "Option A is correct because the Supremacy Clause ensures that federal law is the supreme law of the land, overriding conflicting state laws.",
+    },
+    {
+      id: "cl-4",
+      text: "Which clause in the U.S. Constitution prohibits states from discriminating against citizens of other states?",
+      options: [
+        { id: "A", text: "Commerce Clause" },
+        { id: "B", text: "Privileges and Immunities Clause" },
+        { id: "C", text: "Equal Protection Clause" },
+        { id: "D", text: "Due Process Clause" },
+        { id: "E", text: "Full Faith and Credit Clause" },
+      ],
+      correctAnswer: "B",
+      explanation:
+        "The Privileges and Immunities Clause prohibits states from discriminating against citizens of other states.",
+      difficulty: "medium",
+      tags: ["federalism", "Privileges and Immunities Clause"],
+      aiResponse:
+        "Option B is correct because the Privileges and Immunities Clause ensures that states cannot discriminate against citizens of other states.",
+    },
+    {
+      id: "cl-5",
+      text: "What is the significance of the Equal Protection Clause in the Fourteenth Amendment?",
+      options: [
+        { id: "A", text: "It guarantees the right to bear arms." },
+        { id: "B", text: "It ensures equal treatment under the law for all citizens." },
+        { id: "C", text: "It grants states the power to regulate commerce." },
+        { id: "D", text: "It limits the power of the federal government." },
+        { id: "E", text: "It establishes the separation of church and state." },
+      ],
+      correctAnswer: "B",
+      explanation:
+        "The Equal Protection Clause ensures that no state shall deny any person within its jurisdiction the equal protection of the laws.",
+      difficulty: "medium",
+      tags: ["amendments", "Equal Protection Clause"],
+      aiResponse:
+        "Option B is correct because the Equal Protection Clause guarantees that all citizens are treated equally under the law.",
+    },
+  ];
+
+  const contractsQuestions: Question[] = [
+    {
+      id: "co-1",
+      text: "Which of the following is required for a legally enforceable contract?",
+      options: [
+        { id: "A", text: "A written agreement." },
+        { id: "B", text: "Consideration." },
+        { id: "C", text: "A notary public's signature." },
+        { id: "D", text: "A witness to the agreement." },
+        { id: "E", text: "A seal on the contract." },
+      ],
+      correctAnswer: "B",
+      explanation:
+        "Consideration, or a bargained-for exchange, is required for a contract to be legally enforceable.",
+      difficulty: "easy",
+      tags: ["contract law", "formation"],
+      aiResponse:
+        "Option B is correct because consideration is an essential element of contract formation, meaning both parties must give something of value in exchange.",
+    },
+    {
+      id: "co-2",
+      text: "What is the legal effect of a unilateral mistake in contract formation?",
+      options: [
+        { id: "A", text: "The contract is void." },
+        { id: "B", text: "The contract is voidable by the mistaken party." },
+        { id: "C", text: "The contract is enforceable unless the other party knew of the mistake." },
+        { id: "D", text: "The contract is automatically rescinded." },
+        { id: "E", text: "The contract is unenforceable." },
+      ],
+      correctAnswer: "C",
+      explanation:
+        "A unilateral mistake does not automatically void a contract unless the other party knew or should have known of the mistake.",
+      difficulty: "medium",
+      tags: ["contract law", "mistakes"],
+      aiResponse:
+        "Option C is correct because a unilateral mistake does not invalidate a contract unless the other party was aware of the mistake.",
+    },
+    {
+      id: "co-3",
+      text: "Which of the following is an example of an implied contract?",
+      options: [
+        { id: "A", text: "A written lease agreement." },
+        { id: "B", text: "A verbal agreement to sell a car." },
+        { id: "C", text: "A handshake deal between two parties." },
+        { id: "D", text: "A contract inferred from the conduct of the parties." },
+        { id: "E", text: "A contract signed under duress." },
       ],
       correctAnswer: "D",
-      explanation: "The argument commits the fallacy of affirming the consequent; just because red cars are fast does not mean all fast cars are red.",
+      explanation:
+        "An implied contract is inferred from the conduct of the parties rather than explicit words.",
       difficulty: "medium",
-      tags: ["logical fallacies"],
+      tags: ["contract law", "implied contracts"],
       aiResponse:
-        "Option D is correct because the statement does not establish that fast cars must be red.",
+        "Option D is correct because an implied contract is created based on the actions or conduct of the parties rather than explicit terms.",
     },
     {
-      id: "lr-8",
-      text: "If a person studies hard, they will pass the exam. Sara passed the exam. What can be inferred?",
+      id: "co-4",
+      text: "What is the primary purpose of the statute of frauds?",
       options: [
-        { id: "A", text: "Sara studied hard." },
-        { id: "B", text: "Sara might have studied hard or found another way to pass." },
-        { id: "C", text: "Sara passed only because she studied." },
-        { id: "D", text: "Nothing can be inferred." },
-        { id: "E", text: "Sara cheated." },
+        { id: "A", text: "To prevent fraudulent contracts." },
+        { id: "B", text: "To require certain contracts to be in writing." },
+        { id: "C", text: "To enforce oral agreements." },
+        { id: "D", text: "To limit the duration of contracts." },
+        { id: "E", text: "To provide remedies for breach of contract." },
       ],
       correctAnswer: "B",
-      explanation: "Passing the exam does not necessarily mean Sara studied hard; she could have passed through other means.",
-      difficulty: "easy",
-      tags: ["causal reasoning"],
-      aiResponse:
-        "Option B is correct because studying hard is a sufficient condition for passing but not a necessary one.",
-    }
-  ];
-
-
-  const analyticalReasoningQuestions: Question[] = [
-    {
-      id: "ar-1",
-      text: "Seven students – J, K, L, M, N, O, and P – are to be assigned to three different classrooms – 1, 2, and 3. Each classroom must have at least one student, and no classroom can have more than three students. If J and K must be assigned to the same classroom, and L and M cannot be assigned to the same classroom, which of the following could be true?",
-      options: [
-        { id: "A", text: "Classroom 1 has J, K, and L; classroom 2 has M and N; classroom 3 has O and P." },
-        { id: "B", text: "Classroom 1 has J, K, and M; classroom 2 has L and N; classroom 3 has O and P." },
-        { id: "C", text: "Classroom 1 has L, M, and N; classroom 2 has J and K; classroom 3 has O and P." },
-        { id: "D", text: "Classroom 1 has J, K, L, and M; classroom 2 has N; classroom 3 has O and P." },
-        { id: "E", text: "Classroom 1 has J and K; classroom 2 has L, O, and P; classroom 3 has M and N." },
-      ],
-      correctAnswer: "E",
       explanation:
-        "Option E satisfies all the constraints: J and K are in the same classroom (1), L and M are in different classrooms (2 and 3), each classroom has at least one student, and no classroom has more than three students.",
+        "The statute of frauds requires certain types of contracts to be in writing to be enforceable.",
       difficulty: "medium",
-      tags: ["grouping", "distribution"],
+      tags: ["contract law", "statute of frauds"],
       aiResponse:
-        "Option E is correct because it satisfies all the given constraints. J and K are in Classroom 1, L and M are in different classrooms, and no classroom exceeds the maximum capacity of three students.",
+        "Option B is correct because the statute of frauds mandates that certain contracts must be in writing to be enforceable.",
     },
     {
-      id: "ar-2",
-      text: "A company is assigning four projects – A, B, C, and D – to three teams – X, Y, and Z. Each team must be assigned at least one project, and no team can be assigned more than two projects. If Project A and Project B cannot be assigned to the same team, which of the following could be true?",
+      id: "co-5",
+      text: "Which of the following is a valid defense to a breach of contract claim?",
       options: [
-        { id: "A", text: "Team X has A and C; Team Y has B; Team Z has D." },
-        { id: "B", text: "Team X has A and B; Team Y has C; Team Z has D." },
-        { id: "C", text: "Team X has A; Team Y has B and C; Team Z has D." },
-        { id: "D", text: "Team X has A and D; Team Y has B; Team Z has C." },
-        { id: "E", text: "Team X has A; Team Y has B and D; Team Z has C." },
+        { id: "A", text: "The contract was oral." },
+        { id: "B", text: "The contract was unfair." },
+        { id: "C", text: "The contract was impossible to perform." },
+        { id: "D", text: "The contract was not notarized." },
+        { id: "E", text: "The contract was signed under duress." },
+      ],
+      correctAnswer: "C",
+      explanation:
+        "Impossibility of performance is a valid defense to a breach of contract claim.",
+      difficulty: "medium",
+      tags: ["contract law", "defenses"],
+      aiResponse:
+        "Option C is correct because if a contract becomes impossible to perform, it may be a valid defense to a breach of contract claim.",
+    },
+  ];
+
+  const criminalLawQuestions: Question[] = [
+    {
+      id: "cr-1",
+      text: "Which of the following is an example of an inchoate crime?",
+      options: [
+        { id: "A", text: "Murder." },
+        { id: "B", text: "Robbery." },
+        { id: "C", text: "Attempted burglary." },
+        { id: "D", text: "Arson." },
+        { id: "E", text: "Embezzlement." },
+      ],
+      correctAnswer: "C",
+      explanation:
+        "An inchoate crime is an incomplete or preparatory crime, such as attempt, conspiracy, or solicitation.",
+      difficulty: "medium",
+      tags: ["criminal law", "inchoate crimes"],
+      aiResponse:
+        "Option C is correct because attempted burglary is an example of an inchoate crime, which refers to an offense that is committed in preparation for another crime.",
+    },
+    {
+      id: "cr-2",
+      text: "What is the primary purpose of the exclusionary rule in criminal law?",
+      options: [
+        { id: "A", text: "To exclude evidence obtained illegally." },
+        { id: "B", text: "To exclude hearsay evidence." },
+        { id: "C", text: "To exclude evidence that is irrelevant." },
+        { id: "D", text: "To exclude evidence that is prejudicial." },
+        { id: "E", text: "To exclude evidence that is unreliable." },
       ],
       correctAnswer: "A",
       explanation:
-        "Option A satisfies all the constraints: Project A and B are not on the same team, each team has at least one project, and no team has more than two projects.",
+        "The exclusionary rule prevents evidence obtained in violation of a defendant's constitutional rights from being used in court.",
       difficulty: "medium",
-      tags: ["grouping", "distribution"],
+      tags: ["criminal law", "exclusionary rule"],
       aiResponse:
-        "Option A is correct because it ensures Project A and B are on different teams, and all teams have at least one project without exceeding the maximum limit.",
+        "Option A is correct because the exclusionary rule is designed to deter law enforcement from violating constitutional rights by excluding illegally obtained evidence.",
     },
     {
-      id: "ar-3",
-      text: "Five friends – Alice, Bob, Carol, Dave, and Eve – are sitting in a row. Alice cannot sit next to Bob, and Carol must sit next to Dave. Which of the following seating arrangements is possible?",
+      id: "cr-3",
+      text: "Which of the following is a necessary element of a crime?",
       options: [
-        { id: "A", text: "Alice, Carol, Dave, Bob, Eve." },
-        { id: "B", text: "Alice, Bob, Carol, Dave, Eve." },
-        { id: "C", text: "Carol, Dave, Alice, Eve, Bob." },
-        { id: "D", text: "Alice, Eve, Carol, Dave, Bob." },
-        { id: "E", text: "Alice, Carol, Dave, Eve, Bob." },
+        { id: "A", text: "Motive." },
+        { id: "B", text: "Intent." },
+        { id: "C", text: "Opportunity." },
+        { id: "D", text: "Weapon." },
+        { id: "E", text: "Witnesses." },
       ],
-      correctAnswer: "C",
+      correctAnswer: "B",
       explanation:
-        "Option C satisfies all the constraints: Alice is not next to Bob, and Carol is next to Dave.",
+        "Intent, or mens rea, is a necessary element of a crime.",
       difficulty: "easy",
-      tags: ["seating arrangement"],
+      tags: ["criminal law", "elements of a crime"],
       aiResponse:
-        "Option C is correct because it ensures Alice and Bob are not adjacent, and Carol and Dave are seated together.",
+        "Option B is correct because intent (mens rea) is a required element for most crimes.",
     },
     {
-      id: "ar-4",
-      text: "A library has five books – W, X, Y, Z, and A – to be placed on a shelf. Book W cannot be placed next to Book X, and Book Y must be placed next to Book Z. Which of the following arrangements is valid?",
+      id: "cr-4",
+      text: "What is the difference between murder and manslaughter?",
       options: [
-        { id: "A", text: "W, Y, Z, X, A." },
-        { id: "B", text: "Y, Z, W, X, A." },
-        { id: "C", text: "W, X, Y, Z, A." },
-        { id: "D", text: "A, Y, Z, W, X." },
-        { id: "E", text: "Y, Z, A, W, X." },
+        { id: "A", text: "Murder requires intent, while manslaughter does not." },
+        { id: "B", text: "Murder is premeditated, while manslaughter is not." },
+        { id: "C", text: "Murder is a felony, while manslaughter is a misdemeanor." },
+        { id: "D", text: "Murder involves a weapon, while manslaughter does not." },
+        { id: "E", text: "Murder is punishable by death, while manslaughter is not." },
       ],
       correctAnswer: "A",
       explanation:
-        "Option A satisfies all the constraints: W is not next to X, and Y is next to Z.",
-      difficulty: "easy",
-      tags: ["arrangement"],
+        "Murder requires malice aforethought (intent), while manslaughter does not.",
+      difficulty: "medium",
+      tags: ["criminal law", "homicide"],
       aiResponse:
-        "Option A is correct because it ensures W and X are not adjacent, and Y and Z are placed together.",
+        "Option A is correct because murder requires intent, whereas manslaughter does not.",
     },
     {
-      id: "ar-5",
-      text: "Six people – P, Q, R, S, T, and U – are to be seated around a circular table. P cannot sit next to Q, and R must sit next to S. Which of the following seating arrangements is possible?",
+      id: "cr-5",
+      text: "Which of the following is an example of a strict liability crime?",
       options: [
-        { id: "A", text: "P, R, S, T, U, Q." },
-        { id: "B", text: "P, T, R, S, U, Q." },
-        { id: "C", text: "P, U, R, S, T, Q." },
-        { id: "D", text: "P, R, S, Q, T, U." },
-        { id: "E", text: "P, T, U, R, S, Q." },
+        { id: "A", text: "Murder." },
+        { id: "B", text: "Robbery." },
+        { id: "C", text: "Traffic violations." },
+        { id: "D", text: "Burglary." },
+        { id: "E", text: "Assault." },
+      ],
+      correctAnswer: "C",
+      explanation:
+        "Traffic violations are strict liability crimes, meaning intent is not required.",
+      difficulty: "medium",
+      tags: ["criminal law", "strict liability"],
+      aiResponse:
+        "Option C is correct because traffic violations are strict liability crimes, where intent is not a necessary element.",
+    },
+  ];
+
+  const civilProcedureQuestions: Question[] = [
+    {
+      id: "cp-1",
+      text: "Which of the following is a requirement for a federal court to hear a case based on diversity jurisdiction?",
+      options: [
+        { id: "A", text: "The parties must be from the same state." },
+        { id: "B", text: "The case must involve a constitutional issue." },
+        { id: "C", text: "The amount in controversy must exceed $75,000." },
+        { id: "D", text: "The plaintiff must be a government entity." },
+        { id: "E", text: "The defendant must consent to federal jurisdiction." },
+      ],
+      correctAnswer: "C",
+      explanation:
+        "Diversity jurisdiction requires that the parties be from different states and that the amount in controversy exceeds $75,000.",
+      difficulty: "medium",
+      tags: ["civil procedure", "jurisdiction"],
+      aiResponse:
+        "Option C is correct because federal courts have diversity jurisdiction when the amount in controversy exceeds $75,000 and the parties are from different states.",
+    },
+    {
+      id: "cp-2",
+      text: "What is the purpose of a motion to dismiss in civil procedure?",
+      options: [
+        { id: "A", text: "To request a change of venue." },
+        { id: "B", text: "To challenge the legal sufficiency of the complaint." },
+        { id: "C", text: "To request a jury trial." },
+        { id: "D", text: "To settle the case out of court." },
+        { id: "E", text: "To request additional discovery." },
       ],
       correctAnswer: "B",
       explanation:
-        "Option B satisfies all the constraints: P is not next to Q, and R is next to S.",
+        "A motion to dismiss challenges the legal sufficiency of the plaintiff's complaint.",
       difficulty: "medium",
-      tags: ["circular arrangement"],
+      tags: ["civil procedure", "motions"],
       aiResponse:
-        "Option B is correct because it ensures P and Q are not adjacent, and R and S are seated together.",
+        "Option B is correct because a motion to dismiss is used to argue that the complaint fails to state a valid legal claim.",
     },
     {
-      id: "ar-6",
-      text: "Four teams – Red, Blue, Green, and Yellow – are competing in a tournament. Each team plays every other team exactly once. If Red cannot play Blue in the first round, which of the following schedules is possible?",
+      id: "cp-3",
+      text: "Which of the following is a requirement for personal jurisdiction?",
       options: [
-        { id: "A", text: "Round 1: Red vs Green, Blue vs Yellow." },
-        { id: "B", text: "Round 1: Red vs Blue, Green vs Yellow." },
-        { id: "C", text: "Round 1: Red vs Yellow, Blue vs Green." },
-        { id: "D", text: "Round 1: Red vs Green, Blue vs Yellow; Round 2: Red vs Blue, Green vs Yellow." },
-        { id: "E", text: "Round 1: Red vs Yellow, Blue vs Green; Round 2: Red vs Blue, Green vs Yellow." },
+        { id: "A", text: "The defendant must be a resident of the state." },
+        { id: "B", text: "The defendant must have minimum contacts with the forum state." },
+        { id: "C", text: "The plaintiff must be a resident of the state." },
+        { id: "D", text: "The case must involve a federal question." },
+        { id: "E", text: "The defendant must consent to jurisdiction." },
+      ],
+      correctAnswer: "B",
+      explanation:
+        "Personal jurisdiction requires that the defendant have minimum contacts with the forum state.",
+      difficulty: "medium",
+      tags: ["civil procedure", "jurisdiction"],
+      aiResponse:
+        "Option B is correct because personal jurisdiction is established when the defendant has minimum contacts with the forum state.",
+    },
+    {
+      id: "cp-4",
+      text: "What is the purpose of discovery in civil procedure?",
+      options: [
+        { id: "A", text: "To determine the jurisdiction of the court." },
+        { id: "B", text: "To gather evidence and information relevant to the case." },
+        { id: "C", text: "To settle the case out of court." },
+        { id: "D", text: "To challenge the legal sufficiency of the complaint." },
+        { id: "E", text: "To request a jury trial." },
+      ],
+      correctAnswer: "B",
+      explanation:
+        "Discovery is the process of gathering evidence and information relevant to the case.",
+      difficulty: "easy",
+      tags: ["civil procedure", "discovery"],
+      aiResponse:
+        "Option B is correct because discovery allows parties to obtain evidence and information relevant to the case.",
+    },
+    {
+      id: "cp-5",
+      text: "Which of the following is an example of a pretrial motion?",
+      options: [
+        { id: "A", text: "Motion for summary judgment." },
+        { id: "B", text: "Motion for a new trial." },
+        { id: "C", text: "Motion for judgment notwithstanding the verdict." },
+        { id: "D", text: "Motion for a directed verdict." },
+        { id: "E", text: "Motion to dismiss." },
       ],
       correctAnswer: "A",
       explanation:
-        "Option A satisfies the constraint: Red does not play Blue in the first round.",
-      difficulty: "easy",
-      tags: ["scheduling"],
-      aiResponse:
-        "Option A is correct because it ensures Red and Blue do not play each other in the first round.",
-    },
-    {
-      id: "ar-7",
-      text: "Five tasks – A, B, C, D, and E – must be completed in a specific order. Task A must be completed before Task B, and Task C must be completed before Task D. Which of the following sequences is valid?",
-      options: [
-        { id: "A", text: "A, C, B, D, E." },
-        { id: "B", text: "C, A, D, B, E." },
-        { id: "C", text: "A, B, C, D, E." },
-        { id: "D", text: "C, D, A, B, E." },
-        { id: "E", text: "A, C, D, B, E." },
-      ],
-      correctAnswer: "E",
-      explanation:
-        "Option E satisfies all the constraints: A is before B, and C is before D.",
+        "A motion for summary judgment is a pretrial motion that asks the court to decide the case based on the evidence without a trial.",
       difficulty: "medium",
-      tags: ["sequencing"],
+      tags: ["civil procedure", "pretrial motions"],
       aiResponse:
-        "Option E is correct because it ensures A is completed before B, and C is completed before D.",
-    },
-    {
-      id: "ar-8",
-      text: "Six people – F, G, H, I, J, and K – are standing in a line. F cannot stand next to G, and H must stand next to I. Which of the following arrangements is valid?",
-      options: [
-        { id: "A", text: "F, H, I, G, J, K." },
-        { id: "B", text: "H, I, F, G, J, K." },
-        { id: "C", text: "F, J, H, I, G, K." },
-        { id: "D", text: "F, G, H, I, J, K." },
-        { id: "E", text: "H, I, J, F, G, K." },
-      ],
-      correctAnswer: "C",
-      explanation:
-        "Option C satisfies all the constraints: F is not next to G, and H is next to I.",
-      difficulty: "easy",
-      tags: ["linear arrangement"],
-      aiResponse:
-        "Option C is correct because it ensures F and G are not adjacent, and H and I are standing together.",
-    },
-    {
-      id: "ar-9",
-      text: "A committee of four members – W, X, Y, and Z – must be formed. W and X cannot be on the committee together, and Y must be included. Which of the following committees is valid?",
-      options: [
-        { id: "A", text: "W, Y, Z." },
-        { id: "B", text: "X, Y, Z." },
-        { id: "C", text: "W, X, Y." },
-        { id: "D", text: "W, X, Z." },
-        { id: "E", text: "X, Y, Z, W." },
-      ],
-      correctAnswer: "B",
-      explanation:
-        "Option B satisfies all the constraints: W and X are not together, and Y is included.",
-      difficulty: "medium",
-      tags: ["committee formation"],
-      aiResponse:
-        "Option B is correct because it ensures W and X are not on the committee together, and Y is included.",
-    },
-    {
-      id: "ar-10",
-      text: "Five cars – A, B, C, D, and E – are parked in a row. Car A cannot be next to Car B, and Car C must be next to Car D. Which of the following arrangements is valid?",
-      options: [
-        { id: "A", text: "A, C, D, B, E." },
-        { id: "B", text: "C, D, A, E, B." },
-        { id: "C", text: "A, E, C, D, B." },
-        { id: "D", text: "A, B, C, D, E." },
-        { id: "E", text: "C, D, E, A, B." },
-      ],
-      correctAnswer: "C",
-      explanation:
-        "Option C satisfies all the constraints: A is not next to B, and C is next to D.",
-      difficulty: "easy",
-      tags: ["linear arrangement"],
-      aiResponse:
-        "Option C is correct because it ensures A and B are not adjacent, and C and D are parked together.",
+        "Option A is correct because a motion for summary judgment is a pretrial motion that seeks to resolve the case without a trial.",
     },
   ];
-  
 
-  const readingComprehensionQuestions: Question[] = [
+  const evidenceQuestions: Question[] = [
     {
-      id: "rc-1",
-      text: "According to the passage, which of the following best describes the author's view on climate change legislation?",
+      id: "ev-1",
+      text: "Which of the following statements about hearsay is TRUE?",
       options: [
-        { id: "A", text: "It is unnecessary because climate change is a natural phenomenon." },
-        { id: "B", text: "It is essential but should be balanced with economic considerations." },
-        { id: "C", text: "It should be the top priority regardless of economic impact." },
-        { id: "D", text: "It should be determined by international consensus rather than individual nations." },
-        { id: "E", text: "It is ineffective because corporations will find ways to circumvent regulations." },
+        { id: "A", text: "Hearsay is always inadmissible in court." },
+        { id: "B", text: "Hearsay is an out-of-court statement offered for its truth." },
+        { id: "C", text: "Hearsay includes statements made by a party-opponent." },
+        { id: "D", text: "Hearsay is admissible if it is made under oath." },
+        { id: "E", text: "Hearsay applies only in criminal cases." },
       ],
       correctAnswer: "B",
       explanation:
-        "The passage indicates that the author believes climate change legislation is important but should be implemented in a way that considers economic impacts and provides a balanced approach.",
-      difficulty: "medium",
-      tags: ["main idea", "author's perspective"],
-      aiResponse:
-        "Option B is correct because the passage emphasizes the importance of balancing climate change legislation with economic considerations. The author supports legislation but acknowledges the need for a balanced approach.",
-    },
-    {
-      id: "rc-2",
-      text: "What is the primary purpose of the passage?",
-      options: [
-        { id: "A", text: "To argue against the use of fossil fuels." },
-        { id: "B", text: "To explain the benefits of renewable energy sources." },
-        { id: "C", text: "To discuss the challenges of transitioning to a green economy." },
-        { id: "D", text: "To criticize government policies on energy production." },
-        { id: "E", text: "To advocate for increased investment in nuclear energy." },
-      ],
-      correctAnswer: "C",
-      explanation:
-        "The passage primarily focuses on the challenges and complexities of transitioning to a green economy, including economic, technological, and social factors.",
-      difficulty: "medium",
-      tags: ["purpose", "main idea"],
-      aiResponse:
-        "Option C is correct because the passage discusses the various challenges involved in transitioning to a green economy, such as economic costs, technological limitations, and social resistance.",
-    },
-    {
-      id: "rc-3",
-      text: "Which of the following statements would the author most likely agree with?",
-      options: [
-        { id: "A", text: "Technological innovation alone can solve climate change." },
-        { id: "B", text: "Public awareness is more important than government action." },
-        { id: "C", text: "A combination of policy, technology, and public participation is necessary to address climate change." },
-        { id: "D", text: "Climate change is a problem that will resolve itself over time." },
-        { id: "E", text: "Developing countries should bear the primary responsibility for reducing emissions." },
-      ],
-      correctAnswer: "C",
-      explanation:
-        "The author emphasizes the need for a multifaceted approach, including policy, technology, and public participation, to effectively address climate change.",
-      difficulty: "medium",
-      tags: ["inference", "author's perspective"],
-      aiResponse:
-        "Option C is correct because the author highlights the importance of combining policy, technology, and public participation to tackle climate change effectively.",
-    },
-    {
-      id: "rc-4",
-      text: "According to the passage, what is the most significant barrier to adopting renewable energy?",
-      options: [
-        { id: "A", text: "Lack of public interest." },
-        { id: "B", text: "High initial costs and infrastructure challenges." },
-        { id: "C", text: "Insufficient technological advancements." },
-        { id: "D", text: "Government regulations." },
-        { id: "E", text: "Limited availability of renewable resources." },
-      ],
-      correctAnswer: "B",
-      explanation:
-        "The passage identifies high initial costs and infrastructure challenges as the most significant barriers to adopting renewable energy.",
+        "Hearsay is defined as an out-of-court statement offered to prove the truth of the matter asserted.",
       difficulty: "easy",
-      tags: ["detail", "barriers"],
+      tags: ["evidence", "hearsay"],
       aiResponse:
-        "Option B is correct because the passage explicitly mentions high initial costs and infrastructure challenges as the primary barriers to renewable energy adoption.",
+        "Option B is correct because the legal definition of hearsay is an out-of-court statement introduced to prove the truth of the assertion made.",
     },
     {
-      id: "rc-5",
-      text: "What is the author's tone in the passage?",
+      id: "ev-2",
+      text: "Which of the following is an exception to the hearsay rule?",
       options: [
-        { id: "A", text: "Optimistic and enthusiastic." },
-        { id: "B", text: "Neutral and analytical." },
-        { id: "C", text: "Pessimistic and critical." },
-        { id: "D", text: "Sarcastic and dismissive." },
-        { id: "E", text: "Emotional and urgent." },
+        { id: "A", text: "Business records." },
+        { id: "B", text: "Statements made under duress." },
+        { id: "C", text: "Opinion testimony." },
+        { id: "D", text: "Character evidence." },
+        { id: "E", text: "Prior convictions." },
+      ],
+      correctAnswer: "A",
+      explanation:
+        "Business records are an exception to the hearsay rule if they are kept in the regular course of business.",
+      difficulty: "medium",
+      tags: ["evidence", "hearsay exceptions"],
+      aiResponse:
+        "Option A is correct because business records are admissible as an exception to the hearsay rule if they meet certain requirements.",
+    },
+    {
+      id: "ev-3",
+      text: "What is the purpose of the best evidence rule?",
+      options: [
+        { id: "A", text: "To exclude hearsay evidence." },
+        { id: "B", text: "To require the original document to prove its contents." },
+        { id: "C", text: "To allow opinion testimony." },
+        { id: "D", text: "To exclude character evidence." },
+        { id: "E", text: "To allow prior convictions as evidence." },
       ],
       correctAnswer: "B",
       explanation:
-        "The author maintains a neutral and analytical tone throughout the passage, presenting facts and arguments without excessive emotion or bias.",
-      difficulty: "easy",
-      tags: ["tone", "author's perspective"],
-      aiResponse:
-        "Option B is correct because the author's tone is neutral and analytical, focusing on presenting information and arguments objectively.",
-    },
-    {
-      id: "rc-6",
-      text: "Which of the following is NOT mentioned in the passage as a benefit of renewable energy?",
-      options: [
-        { id: "A", text: "Reduction in greenhouse gas emissions." },
-        { id: "B", text: "Job creation in new industries." },
-        { id: "C", text: "Energy independence for nations." },
-        { id: "D", text: "Lower long-term energy costs." },
-        { id: "E", text: "Immediate replacement of all fossil fuel infrastructure." },
-      ],
-      correctAnswer: "E",
-      explanation:
-        "The passage discusses the benefits of renewable energy, such as emission reduction, job creation, energy independence, and lower long-term costs, but it does not claim that renewable energy can immediately replace all fossil fuel infrastructure.",
+        "The best evidence rule requires the original document to prove its contents.",
       difficulty: "medium",
-      tags: ["detail", "benefits"],
+      tags: ["evidence", "best evidence rule"],
       aiResponse:
-        "Option E is correct because the passage does not mention the immediate replacement of all fossil fuel infrastructure as a benefit of renewable energy.",
+        "Option B is correct because the best evidence rule requires the original document to prove its contents.",
     },
     {
-      id: "rc-7",
-      text: "What does the author suggest about the role of governments in addressing climate change?",
+      id: "ev-4",
+      text: "Which of the following is an example of character evidence?",
       options: [
-        { id: "A", text: "Governments should take a hands-off approach." },
-        { id: "B", text: "Governments should prioritize economic growth over environmental concerns." },
-        { id: "C", text: "Governments should implement policies that encourage sustainable practices." },
-        { id: "D", text: "Governments should rely solely on private sector initiatives." },
-        { id: "E", text: "Governments should focus on short-term solutions rather than long-term planning." },
+        { id: "A", text: "A witness's testimony about the defendant's reputation." },
+        { id: "B", text: "A business record." },
+        { id: "C", text: "A prior conviction." },
+        { id: "D", text: "An expert opinion." },
+        { id: "E", text: "A hearsay statement." },
       ],
-      correctAnswer: "C",
+      correctAnswer: "A",
       explanation:
-        "The author suggests that governments should play an active role in implementing policies that encourage sustainable practices and address climate change.",
+        "Character evidence refers to evidence of a person's character or reputation.",
       difficulty: "medium",
-      tags: ["inference", "government role"],
+      tags: ["evidence", "character evidence"],
       aiResponse:
-        "Option C is correct because the author emphasizes the importance of government policies in promoting sustainability and addressing climate change.",
+        "Option A is correct because character evidence includes testimony about a person's reputation.",
     },
     {
-      id: "rc-8",
-      text: "According to the passage, what is the main challenge of transitioning to renewable energy?",
+      id: "ev-5",
+      text: "What is the purpose of the exclusionary rule in evidence law?",
       options: [
-        { id: "A", text: "Public opposition to new technologies." },
-        { id: "B", text: "Lack of scientific research." },
-        { id: "C", text: "High upfront costs and infrastructure requirements." },
-        { id: "D", text: "Insufficient natural resources." },
-        { id: "E", text: "Government bureaucracy." },
+        { id: "A", text: "To exclude evidence obtained illegally." },
+        { id: "B", text: "To exclude hearsay evidence." },
+        { id: "C", text: "To exclude opinion testimony." },
+        { id: "D", text: "To exclude character evidence." },
+        { id: "E", text: "To exclude prior convictions." },
       ],
-      correctAnswer: "C",
+      correctAnswer: "A",
       explanation:
-        "The passage identifies high upfront costs and infrastructure requirements as the main challenges of transitioning to renewable energy.",
-      difficulty: "easy",
-      tags: ["detail", "challenges"],
-      aiResponse:
-        "Option C is correct because the passage highlights high upfront costs and infrastructure requirements as the primary challenges of transitioning to renewable energy.",
-    },
-    {
-      id: "rc-9",
-      text: "What is the author's view on the role of individuals in combating climate change?",
-      options: [
-        { id: "A", text: "Individuals have no significant role to play." },
-        { id: "B", text: "Individuals should focus on reducing their carbon footprint." },
-        { id: "C", text: "Individuals should rely on governments to take action." },
-        { id: "D", text: "Individuals should prioritize economic growth over environmental concerns." },
-        { id: "E", text: "Individuals should avoid using technology to reduce emissions." },
-      ],
-      correctAnswer: "B",
-      explanation:
-        "The author suggests that individuals can contribute to combating climate change by reducing their carbon footprint and adopting sustainable practices.",
+        "The exclusionary rule prevents evidence obtained in violation of a defendant's constitutional rights from being used in court.",
       difficulty: "medium",
-      tags: ["inference", "individual role"],
+      tags: ["evidence", "exclusionary rule"],
       aiResponse:
-        "Option B is correct because the author emphasizes the importance of individual actions, such as reducing carbon footprints, in addressing climate change.",
-    },
-    {
-      id: "rc-10",
-      text: "Which of the following best summarizes the main idea of the passage?",
-      options: [
-        { id: "A", text: "Climate change is an unsolvable problem." },
-        { id: "B", text: "Renewable energy is the only solution to climate change." },
-        { id: "C", text: "Addressing climate change requires a multifaceted approach involving policy, technology, and public participation." },
-        { id: "D", text: "Governments should prioritize economic growth over environmental concerns." },
-        { id: "E", text: "Individuals alone can solve climate change." },
-      ],
-      correctAnswer: "C",
-      explanation:
-        "The passage emphasizes that addressing climate change requires a combination of policy, technology, and public participation, rather than relying on a single solution.",
-      difficulty: "medium",
-      tags: ["main idea", "summary"],
-      aiResponse:
-        "Option C is correct because the passage highlights the need for a multifaceted approach to effectively address climate change.",
+        "Option A is correct because the exclusionary rule excludes evidence obtained illegally.",
     },
   ];
-  
 
-  // Return questions based on section
-  switch (section) {
-    case "logical-reasoning":
-      return logicalReasoningQuestions;
-    case "analytical-reasoning":
-      return analyticalReasoningQuestions;
-    case "reading-comprehension":
-      return readingComprehensionQuestions;
-    case "mixed":
-      return [
-        ...logicalReasoningQuestions.slice(0, 1),
-        ...analyticalReasoningQuestions.slice(0, 1),
-        ...readingComprehensionQuestions.slice(0, 1),
-      ];
+  const realPropertyQuestions: Question[] = [
+    {
+      id: "rp-1",
+      text: "Which of the following is a characteristic of a fee simple estate?",
+      options: [
+        { id: "A", text: "It has a limited duration." },
+        { id: "B", text: "It is subject to conditions imposed by the original grantor." },
+        { id: "C", text: "It grants the holder the maximum ownership rights allowed by law." },
+        { id: "D", text: "It automatically reverts to the state upon the owner's death." },
+        { id: "E", text: "It must be renewed every 99 years." },
+      ],
+      correctAnswer: "C",
+      explanation:
+        "A fee simple estate is the highest form of land ownership and grants the holder the maximum rights allowed under the law.",
+      difficulty: "medium",
+      tags: ["real property", "ownership"],
+      aiResponse:
+        "Option C is correct because a fee simple estate represents absolute ownership of property with the right to use, transfer, or bequeath it without restrictions.",
+    },
+    {
+      id: "rp-2",
+      text: "What is the purpose of a deed in real property law?",
+      options: [
+        { id: "A", text: "To establish a lease agreement." },
+        { id: "B", text: "To transfer ownership of real property." },
+        { id: "C", text: "To establish an easement." },
+        { id: "D", text: "To create a mortgage." },
+        { id: "E", text: "To establish a lien on the property." },
+      ],
+      correctAnswer: "B",
+      explanation:
+        "A deed is used to transfer ownership of real property from one party to another.",
+      difficulty: "easy",
+      tags: ["real property", "deeds"],
+      aiResponse:
+        "Option B is correct because a deed is a legal document used to transfer ownership of real property.",
+    },
+    {
+      id: "rp-3",
+      text: "Which of the following is an example of an easement?",
+      options: [
+        { id: "A", text: "A right to use a neighbor's driveway." },
+        { id: "B", text: "A lease agreement for a commercial property." },
+        { id: "C", text: "A mortgage on a residential property." },
+        { id: "D", text: "A lien on a property for unpaid taxes." },
+        { id: "E", text: "A deed transferring ownership of a property." },
+      ],
+      correctAnswer: "A",
+      explanation:
+        "An easement is a right to use another person's land for a specific purpose, such as a driveway.",
+      difficulty: "medium",
+      tags: ["real property", "easements"],
+      aiResponse:
+        "Option A is correct because an easement grants the right to use another person's land for a specific purpose.",
+    },
+    {
+      id: "rp-4",
+      text: "What is the purpose of a title search in real property transactions?",
+      options: [
+        { id: "A", text: "To determine the market value of the property." },
+        { id: "B", text: "To identify any liens or encumbrances on the property." },
+        { id: "C", text: "To establish the boundaries of the property." },
+        { id: "D", text: "To create a mortgage agreement." },
+        { id: "E", text: "To establish an easement." },
+      ],
+      correctAnswer: "B",
+      explanation:
+        "A title search is conducted to identify any liens, encumbrances, or other issues with the property's title.",
+      difficulty: "medium",
+      tags: ["real property", "title search"],
+      aiResponse:
+        "Option B is correct because a title search is used to identify any liens or encumbrances on the property.",
+    },
+    {
+      id: "rp-5",
+      text: "Which of the following is an example of a freehold estate?",
+      options: [
+        { id: "A", text: "A leasehold estate." },
+        { id: "B", text: "A fee simple estate." },
+        { id: "C", text: "A tenancy at will." },
+        { id: "D", text: "A tenancy for years." },
+        { id: "E", text: "A periodic tenancy." },
+      ],
+      correctAnswer: "B",
+      explanation:
+        "A fee simple estate is an example of a freehold estate, which grants the holder ownership of the property.",
+      difficulty: "medium",
+      tags: ["real property", "freehold estates"],
+      aiResponse:
+        "Option B is correct because a fee simple estate is a type of freehold estate that grants full ownership rights.",
+    },
+  ];
+
+  const tortsQuestions: Question[] = [
+    {
+      id: "to-1",
+      text: "Which of the following is an example of a strict liability tort?",
+      options: [
+        { id: "A", text: "A driver running a red light and causing an accident." },
+        { id: "B", text: "A business owner failing to warn customers of a wet floor." },
+        { id: "C", text: "A manufacturer selling a defective product that injures a customer." },
+        { id: "D", text: "A person accidentally hitting another with a golf ball at a driving range." },
+        { id: "E", text: "A newspaper publishing false statements about a public official." },
+      ],
+      correctAnswer: "C",
+      explanation:
+        "Strict liability applies in cases where a party is held responsible for damages regardless of intent or negligence, such as product liability.",
+      difficulty: "medium",
+      tags: ["torts", "strict liability"],
+      aiResponse:
+        "Option C is correct because strict liability applies when a manufacturer produces a defective product that causes harm, regardless of fault.",
+    },
+    {
+      id: "to-2",
+      text: "What is the primary purpose of compensatory damages in tort law?",
+      options: [
+        { id: "A", text: "To punish the defendant." },
+        { id: "B", text: "To compensate the plaintiff for their losses." },
+        { id: "C", text: "To deter future wrongdoing." },
+        { id: "D", text: "To establish liability." },
+        { id: "E", text: "To set a legal precedent." },
+      ],
+      correctAnswer: "B",
+      explanation:
+        "Compensatory damages are intended to compensate the plaintiff for their losses.",
+      difficulty: "easy",
+      tags: ["torts", "damages"],
+      aiResponse:
+        "Option B is correct because compensatory damages are designed to compensate the plaintiff for their losses.",
+    },
+    {
+      id: "to-3",
+      text: "Which of the following is an example of negligence?",
+      options: [
+        { id: "A", text: "A driver running a red light and causing an accident." },
+        { id: "B", text: "A manufacturer selling a defective product." },
+        { id: "C", text: "A person intentionally hitting another." },
+        { id: "D", text: "A newspaper publishing false statements about a public official." },
+        { id: "E", text: "A business owner failing to warn customers of a wet floor." },
+      ],
+      correctAnswer: "A",
+      explanation:
+        "Negligence occurs when a person fails to exercise reasonable care, resulting in harm to another.",
+      difficulty: "medium",
+      tags: ["torts", "negligence"],
+      aiResponse:
+        "Option A is correct because running a red light is an example of failing to exercise reasonable care, which constitutes negligence.",
+    },
+    {
+      id: "to-4",
+      text: "What is the purpose of punitive damages in tort law?",
+      options: [
+        { id: "A", text: "To compensate the plaintiff for their losses." },
+        { id: "B", text: "To punish the defendant and deter future wrongdoing." },
+        { id: "C", text: "To establish liability." },
+        { id: "D", text: "To set a legal precedent." },
+        { id: "E", text: "To cover the plaintiff's legal fees." },
+      ],
+      correctAnswer: "B",
+      explanation:
+        "Punitive damages are intended to punish the defendant and deter future wrongdoing.",
+      difficulty: "medium",
+      tags: ["torts", "damages"],
+      aiResponse:
+        "Option B is correct because punitive damages are designed to punish the defendant and deter future misconduct.",
+    },
+    {
+      id: "to-5",
+      text: "Which of the following is an example of an intentional tort?",
+      options: [
+        { id: "A", text: "A driver running a red light and causing an accident." },
+        { id: "B", text: "A manufacturer selling a defective product." },
+        { id: "C", text: "A person intentionally hitting another." },
+        { id: "D", text: "A business owner failing to warn customers of a wet floor." },
+        { id: "E", text: "A newspaper publishing false statements about a public official." },
+      ],
+      correctAnswer: "C",
+      explanation:
+        "An intentional tort involves intentional harm, such as battery.",
+      difficulty: "medium",
+      tags: ["torts", "intentional torts"],
+      aiResponse:
+        "Option C is correct because intentionally hitting another person is an example of an intentional tort.",
+    },
+  ];
+
+  // Combine all questions for the mixed section
+  if (subject === "mixed") {
+    const allQuestions = [
+      ...constitutionalLawQuestions,
+      ...contractsQuestions,
+      ...criminalLawQuestions,
+      ...civilProcedureQuestions,
+      ...evidenceQuestions,
+      ...realPropertyQuestions,
+      ...tortsQuestions,
+    ];
+
+    // Shuffle the questions for a mixed session
+    return shuffleArray(allQuestions);
+  }
+
+  // Return questions for specific subjects
+  switch (subject) {
+    case "Constitutional Law":
+      return constitutionalLawQuestions;
+    case "Contracts":
+      return contractsQuestions;
+    case "Criminal Law & Procedure":
+      return criminalLawQuestions;
+    case "Civil Procedure":
+      return civilProcedureQuestions;
+    case "Evidence":
+      return evidenceQuestions;
+    case "Real Property":
+      return realPropertyQuestions;
+    case "Torts":
+      return tortsQuestions;
     default:
       return [];
   }
+}
+
+// Helper function to shuffle an array
+function shuffleArray<T>(array: T[]): T[] {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
 }

@@ -139,7 +139,7 @@ export default function AuthPage() {
           <div className="text-center mb-6">
             <Link href="/">
               <div className="inline-flex bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-3 py-2 rounded-lg">
-                <span className="font-bold text-xl">LSAT Training</span>
+                <span className="font-bold text-xl">BAR Training</span>
               </div>
             </Link>
           </div>

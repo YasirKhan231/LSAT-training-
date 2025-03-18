@@ -31,8 +31,11 @@ interface UserData {
     section: string;
     score: number;
   }[];
-  lsatTestDate: string;
+  barExamTestDate: string;
   PracticeQuestions: number;
+  additionalInformation: string;
+  barExamPreparationMaterial: string;
+  targetScore: string;
 }
 
 export default function DashboardPage() {
@@ -92,11 +95,11 @@ export default function DashboardPage() {
     }
   }, [uuid]);
 
-  // Countdown timer for LSAT exam date (dynamic from user data)
+  // Countdown timer for Bar Exam date (dynamic from user data)
   useEffect(() => {
-    if (!userData?.lsatTestDate) return;
+    if (!userData?.barExamTestDate) return;
 
-    const examDate = new Date(userData.lsatTestDate).getTime();
+    const examDate = new Date(userData.barExamTestDate).getTime();
 
     const updateCountdown = () => {
       const now = new Date().getTime();
@@ -116,10 +119,14 @@ export default function DashboardPage() {
     const interval = setInterval(updateCountdown, 1000);
 
     return () => clearInterval(interval);
-  }, [userData?.lsatTestDate]);
+  }, [userData?.barExamTestDate]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
   }
 
   if (error) {
@@ -137,13 +144,15 @@ export default function DashboardPage() {
     StudyStreak = 0,
     performanceInsights = [],
     PracticeQuestions = 0,
+    barExamPreparationMaterial,
+    targetScore,
   } = userData;
 
   // Calculate the number of practice sessions completed
   const practiceCompleted = practiceHistory.length;
 
-  // Format the LSAT exam date to display the month name
-  const formatLsatTestDate = (dateString: string) => {
+  // Format the Bar Exam date to display the month name
+  const formatBarExamTestDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
       month: "long",
@@ -162,7 +171,7 @@ export default function DashboardPage() {
                 Welcome back, {userName}!
               </h1>
               <p className="mt-2 text-lg text-gray-600">
-                Track your progress and continue your LSAT preparation
+                Track your progress and continue your Bar Exam preparation
               </p>
             </div>
 
@@ -170,7 +179,7 @@ export default function DashboardPage() {
             <Card className="w-64 border-blue-100 shadow-md bg-gradient-to-r from-blue-50 to-white">
               <CardHeader className="pb-1 pt-3">
                 <CardTitle className="text-sm text-blue-700">
-                  LSAT Exam: {formatLsatTestDate(userData.lsatTestDate)}
+                  Bar Exam: {formatBarExamTestDate(userData.barExamTestDate)}
                 </CardTitle>
               </CardHeader>
               <CardContent className="pb-3">
@@ -206,19 +215,7 @@ export default function DashboardPage() {
         </header>
 
         <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-3">
-          {/* Stats Overview */}
-          {/* <Card className="border-blue-100 shadow-md">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-gray-500">
-                Practice Completed
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-semibold text-blue-600">
-                {practiceCompleted}
-              </div>
-            </CardContent>
-          </Card> */}
+          {/* Practice Questions */}
           <Card className="border-blue-100 shadow-md">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium text-gray-500">
@@ -259,8 +256,6 @@ export default function DashboardPage() {
               </div>
             </CardContent>
           </Card>
-
-          {/* Practice Questions */}
         </div>
 
         {/* Progress Tracker */}
@@ -275,7 +270,7 @@ export default function DashboardPage() {
               </div>
               <CardDescription>
                 {performanceInsights.length > 0
-                  ? "Your performance across different LSAT sections"
+                  ? "Your performance across different Bar Exam sections"
                   : "We can't fetch your performance. Please practice more."}
               </CardDescription>
             </CardHeader>
@@ -354,21 +349,19 @@ export default function DashboardPage() {
           <div className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-3">
             {[
               {
-                title: "Analytical Reasoning",
-                description:
-                  "Focus on logic games to improve your weakest section",
-                link: "/practice/analytical-reasoning",
+                title: "Constitutional Law",
+                description: "Focus on constitutional principles and cases",
+                link: "/question-bank/constitutional-law",
               },
               {
-                title: "Logical Reasoning - Assumption Questions",
-                description: "Practice identifying assumptions in arguments",
-                link: "/practice/logical-reasoning/assumptions",
+                title: "Contracts",
+                description: "Practice contract formation and enforcement",
+                link: "/question-bank/contracts",
               },
               {
-                title: "Reading Comprehension - Science Passages",
-                description:
-                  "Improve your comprehension of scientific material",
-                link: "/practice/reading-comprehension/science",
+                title: "Criminal Law & Procedure",
+                description: "Improve your understanding of criminal law",
+                link: "/question-bank/criminal-law",
               },
             ].map((item, index) => (
               <Link href={item.link} key={index} className="block">
@@ -437,14 +430,14 @@ export default function DashboardPage() {
               </div>
             </Link>
 
-            <Link href="/practice/question-bank" className="block">
+            <Link href="/question-bank" className="block">
               <div className="bg-white overflow-hidden shadow rounded-lg border border-blue-100 transition duration-150 ease-in-out transform hover:scale-105 hover:shadow-md">
                 <div className="px-4 py-5 sm:p-6">
                   <h3 className="text-lg font-medium text-gray-900">
                     Question Bank
                   </h3>
                   <p className="mt-2 text-sm text-gray-500">
-                    Practice with our extensive library of LSAT questions
+                    Practice with our extensive library of Bar Exam questions
                   </p>
                 </div>
                 <div className="bg-blue-50 px-4 py-4 sm:px-6 flex justify-end">

@@ -66,7 +66,7 @@ export default function LoginPage() {
               Prepare for Success
             </h2>
             <p className="text-lg text-blue-100 mb-6 text-center">
-              Our AI-powered platform helps you maximize your LSAT score with
+              Our AI-powered platform helps you maximize your BAR score with
               personalized study plans and advanced analytics.
             </p>
 

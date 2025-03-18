@@ -158,7 +158,7 @@ export default function ResultsPage() {
           <Card>
             <CardHeader className="pb-2">
               <CardTitle className="text-lg font-medium text-gray-700">
-                LSAT Score
+                BAR Score
               </CardTitle>
             </CardHeader>
             <CardContent>

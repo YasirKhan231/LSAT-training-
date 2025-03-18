@@ -96,20 +96,21 @@ export default function SignupForm() {
 
           // Set other fields to null or default values
           authProvider: "email",
-          lsatTestDate: null,
+          barExamTestDate: null, // Changed from lsatTestDate to barExamTestDate
           targetScore: null,
           currentScore: null,
           updatedAt: null,
+          questionDataKey: null,
           StudyStreak: 0,
           PracticeQuestions: 0,
           preferredSchedule: null,
           weeklyHours: null,
-          lsatPreparationMaterial: null,
+          barExamPreparationMaterial: null, // Changed from lsatPreparationMaterial to barExamPreparationMaterial
           additionalInformation: null,
           progress: {
-            logicalReasoning: 0,
-            analyticalReasoning: 0,
-            readingComprehension: 0,
+            constitutionalLaw: 0, // Changed from logicalReasoning to constitutionalLaw
+            contracts: 0, // Changed from analyticalReasoning to contracts
+            criminalLaw: 0, // Changed from readingComprehension to criminalLaw
             totalTimeSpent: 0,
             testAttempts: 0,
             lastUpdated: null,
@@ -118,7 +119,7 @@ export default function SignupForm() {
           practiceHistory: [],
           bookmarkedQuestions: [],
           simulatedExams: [],
-          logicGames: [],
+          essays: [], // Changed from logicGames to essays
           specificAreas: [],
           challengingAreas: [],
           payments: [],

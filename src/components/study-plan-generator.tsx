@@ -39,7 +39,7 @@ export function StudyPlanGenerator({ onClose, uuid }: StudyPlanGeneratorProps) {
   const [isGenerating, setIsGenerating] = useState(false);
 
   // State for each input field
-  const [lsatDate, setLsatDate] = useState("");
+  const [barExamDate, setBarExamDate] = useState("");
   const [targetScore, setTargetScore] = useState("");
   const [currentScore, setCurrentScore] = useState("");
   const [weeklyHours, setWeeklyHours] = useState(0);
@@ -52,7 +52,7 @@ export function StudyPlanGenerator({ onClose, uuid }: StudyPlanGeneratorProps) {
   // Check if all required fields are filled
   const isFormValid = () => {
     if (step === 1) {
-      return lsatDate && targetScore && currentScore;
+      return barExamDate && targetScore && currentScore;
     } else if (step === 2) {
       return (
         weeklyHours > 0 && challengingAreas.length > 0 && preferredSchedule
@@ -72,14 +72,14 @@ export function StudyPlanGenerator({ onClose, uuid }: StudyPlanGeneratorProps) {
       try {
         // Prepare the form data to send to the backend
         const formData = {
-          lsatDate,
+          barExamTestDate: barExamDate,
           targetScore,
           currentScore,
           weeklyHours,
           challengingAreas,
           preferredSchedule,
           specificAreas: focusAreas, // Map focusAreas to specificAreas
-          lsatPreparationMaterial: materials, // Map materials to lsatPreparationMaterial
+          barExamPreparationMaterial: materials, // Map materials to barExamPreparationMaterial
           additionalInformation: additionalInfo,
         };
 
@@ -122,29 +122,29 @@ export function StudyPlanGenerator({ onClose, uuid }: StudyPlanGeneratorProps) {
       <CardHeader>
         <CardTitle>Generate Your Personalized Study Plan</CardTitle>
         <CardDescription>
-          Answer a few questions to help the AI create a customized LSAT study
-          plan for you.
+          Answer a few questions to help the AI create a customized Bar Exam
+          study plan for you.
         </CardDescription>
       </CardHeader>
       <CardContent>
         {step === 1 && (
           <div className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="exam-date">When is your LSAT exam?</Label>
+              <Label htmlFor="exam-date">When is your Bar Exam?</Label>
               <div className="flex items-center gap-2">
                 <LucideCalendar className="h-4 w-4 text-muted-foreground" />
                 <Input
                   type="date"
                   id="exam-date"
-                  value={lsatDate}
-                  onChange={(e) => setLsatDate(e.target.value)}
+                  value={barExamDate}
+                  onChange={(e) => setBarExamDate(e.target.value)}
                 />
               </div>
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="target-score">
-                What is your target LSAT score?
+                What is your target Bar Exam score?
               </Label>
               <div className="flex items-center gap-2">
                 <LucideTarget className="h-4 w-4 text-muted-foreground" />
@@ -156,7 +156,7 @@ export function StudyPlanGenerator({ onClose, uuid }: StudyPlanGeneratorProps) {
                     <SelectValue placeholder="Select target score" />
                   </SelectTrigger>
                   <SelectContent>
-                    {Array.from({ length: 11 }, (_, i) => 165 + i).map(
+                    {Array.from({ length: 11 }, (_, i) => 280 + i * 10).map(
                       (score) => (
                         <SelectItem key={score} value={score.toString()}>
                           {score}
@@ -170,7 +170,7 @@ export function StudyPlanGenerator({ onClose, uuid }: StudyPlanGeneratorProps) {
 
             <div className="space-y-2">
               <Label htmlFor="current-score">
-                What is your current LSAT score or practice test score?
+                What is your current Bar Exam score or practice test score?
               </Label>
               <div className="flex items-center gap-2">
                 <LucideBarChart className="h-4 w-4 text-muted-foreground" />
@@ -182,10 +182,10 @@ export function StudyPlanGenerator({ onClose, uuid }: StudyPlanGeneratorProps) {
                     <SelectValue placeholder="Select current score" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="none">
+                    <SelectItem value="0">
                       I haven't taken a practice test yet
                     </SelectItem>
-                    {Array.from({ length: 31 }, (_, i) => 150 + i).map(
+                    {Array.from({ length: 11 }, (_, i) => 200 + i * 20).map(
                       (score) => (
                         <SelectItem key={score} value={score.toString()}>
                           {score}
@@ -203,7 +203,8 @@ export function StudyPlanGenerator({ onClose, uuid }: StudyPlanGeneratorProps) {
           <div className="space-y-6">
             <div className="space-y-2">
               <Label>
-                How many hours per week can you dedicate to LSAT preparation?
+                How many hours per week can you dedicate to Bar Exam
+                preparation?
               </Label>
               <div className="flex items-center gap-2">
                 <LucideClock className="h-4 w-4 text-muted-foreground" />
@@ -230,18 +231,16 @@ export function StudyPlanGenerator({ onClose, uuid }: StudyPlanGeneratorProps) {
                 onValueChange={(value) => setChallengingAreas([value])}
               >
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="logical" id="logical" />
-                  <Label htmlFor="logical">Logical Reasoning</Label>
+                  <RadioGroupItem value="constitutional" id="constitutional" />
+                  <Label htmlFor="constitutional">Constitutional Law</Label>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="analytical" id="analytical" />
-                  <Label htmlFor="analytical">
-                    Analytical Reasoning (Logic Games)
-                  </Label>
+                  <RadioGroupItem value="contracts" id="contracts" />
+                  <Label htmlFor="contracts">Contracts</Label>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="reading" id="reading" />
-                  <Label htmlFor="reading">Reading Comprehension</Label>
+                  <RadioGroupItem value="criminal" id="criminal" />
+                  <Label htmlFor="criminal">Criminal Law & Procedure</Label>
                 </div>
               </RadioGroup>
             </div>
@@ -277,12 +276,12 @@ export function StudyPlanGenerator({ onClose, uuid }: StudyPlanGeneratorProps) {
               </Label>
               <div className="grid grid-cols-2 gap-2">
                 {[
-                  { id: "assumption", label: "Assumption Questions" },
-                  { id: "grouping", label: "Grouping Games" },
-                  { id: "science", label: "Science Passages" },
-                  { id: "timing", label: "Timing Strategies" },
-                  { id: "inference", label: "Inference Questions" },
-                  { id: "sequencing", label: "Sequencing Games" },
+                  { id: "constitutional", label: "Constitutional Law" },
+                  { id: "contracts", label: "Contracts" },
+                  { id: "criminal", label: "Criminal Law & Procedure" },
+                  { id: "evidence", label: "Evidence" },
+                  { id: "realProperty", label: "Real Property" },
+                  { id: "torts", label: "Torts" },
                 ].map((area) => (
                   <div key={area.id} className="flex items-center space-x-2">
                     <input
@@ -305,7 +304,7 @@ export function StudyPlanGenerator({ onClose, uuid }: StudyPlanGeneratorProps) {
 
             <div className="space-y-2">
               <Label htmlFor="materials">
-                What LSAT prep materials do you have access to?
+                What Bar Exam prep materials do you have access to?
               </Label>
               <Select
                 value={materials}
@@ -315,13 +314,10 @@ export function StudyPlanGenerator({ onClose, uuid }: StudyPlanGeneratorProps) {
                   <SelectValue placeholder="Select materials" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="official">
-                    Official LSAT PrepTests
-                  </SelectItem>
-                  <SelectItem value="powerscore">PowerScore Bibles</SelectItem>
-                  <SelectItem value="manhattan">Manhattan Prep</SelectItem>
                   <SelectItem value="kaplan">Kaplan</SelectItem>
-                  <SelectItem value="princeton">Princeton Review</SelectItem>
+                  <SelectItem value="barbri">Barbri</SelectItem>
+                  <SelectItem value="themis">Themis</SelectItem>
+                  <SelectItem value="adaptibar">AdaptiBar</SelectItem>
                   <SelectItem value="multiple">Multiple Resources</SelectItem>
                 </SelectContent>
               </Select>

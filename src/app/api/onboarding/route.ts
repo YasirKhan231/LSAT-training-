@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { initializeApp, getApps, cert } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
-import { getAuth } from "firebase-admin/auth";
 import { studyPlans, StudyPlanKey } from "@/data/plan"; // Import StudyPlanKey
 
 // Initialize Firebase Admin if it hasn't been initialized
@@ -29,31 +28,31 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
-    console.log("processoed uui" , uuid)
+    console.log("Processed UUID:", uuid);
 
     const data = await request.json();
 
     // Extract required fields
     const {
-      examDate,
+      barExamTestDate,
       targetScore,
       studyHours,
       currentScore,
       challengingAreas,
       focusAreas,
       additionalInfo,
-      lsatPreparationMaterial,
+      barExamPreparationMaterial,
     } = data;
 
     if (
-      !examDate ||
+      !barExamTestDate ||
       !targetScore ||
       !studyHours ||
       !currentScore ||
       !challengingAreas ||
       !focusAreas ||
       !additionalInfo ||
-      !lsatPreparationMaterial
+      !barExamPreparationMaterial
     ) {
       return NextResponse.json(
         { error: "Missing required fields" },
@@ -63,13 +62,13 @@ export async function POST(request: Request) {
 
     // Determine study plan based on currentScore
     let planKey: StudyPlanKey = "terrible";
-    if (currentScore >= 170) {
+    if (currentScore >= 360) {
       planKey = "amazing";
-    } else if (currentScore >= 160) {
+    } else if (currentScore >= 320) {
       planKey = "good";
-    } else if (currentScore >= 150) {
+    } else if (currentScore >= 280) {
       planKey = "decent";
-    } else if (currentScore >= 140) {
+    } else if (currentScore >= 240) {
       planKey = "bad";
     }
 
@@ -84,16 +83,16 @@ export async function POST(request: Request) {
     console.log("Updating user document in Firestore...");
     await userRef.set(
       {
-        lsatTestDate: examDate,
+        barExamTestDate,
         targetScore,
         currentScore,
         weeklyHours: studyHours,
         onboarded: true,
         updatedAt: new Date().toISOString(),
         progress: {
-          logicalReasoning: 0,
-          analyticalReasoning: 0,
-          readingComprehension: 0,
+          constitutionalLaw: 0, // Changed from logicalReasoning to constitutionalLaw
+          contracts: 0, // Changed from analyticalReasoning to contracts
+          criminalLaw: 0, // Changed from readingComprehension to criminalLaw
           totalTimeSpent: 0,
           testAttempts: 0,
           lastUpdated: null,
@@ -104,12 +103,13 @@ export async function POST(request: Request) {
         practiceHistory: [],
         bookmarkedQuestions: [],
         simulatedExams: [],
-        logicGames: [],
+        essays: [], // Changed from logicGames to essays
         specificAreas: focusAreas,
         challengingAreas: challengingAreas,
         additionalInformation: additionalInfo,
-        lsatPreparationMaterial,
+        barExamPreparationMaterial,
         payments: [],
+        questionDataKey: planKey, // Set questionDataKey based on the study plan
       },
       { merge: true } // Use merge to avoid overwriting existing fields
     );
@@ -119,14 +119,14 @@ export async function POST(request: Request) {
       success: true,
       message: "Your study plan has been created successfully",
       data: {
-        examDate,
+        barExamTestDate,
         targetScore,
         currentScore,
         studyHours,
         challengingAreas,
         focusAreas,
         additionalInfo,
-        lsatPreparationMaterial,
+        barExamPreparationMaterial,
         studyPlan,
         completedAt: new Date().toISOString(),
       },

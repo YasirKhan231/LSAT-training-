@@ -30,7 +30,7 @@ export default function LogicGamesPage() {
             Interactive Logic Games
           </h1>
           <p className="mt-2 text-lg text-gray-600">
-            Master LSAT Analytical Reasoning with AI-powered assistance and
+            Master BAR Analytical Reasoning with AI-powered assistance and
             interactive solving tools
           </p>
         </header>
@@ -180,7 +180,7 @@ export default function LogicGamesPage() {
                 <ul className="text-sm text-blue-700 space-y-1">
                   <li>• Complex sequencing with conditional rules</li>
                   <li>• Requires tracking multiple variables simultaneously</li>
-                  <li>• Tests key deduction skills needed for the LSAT</li>
+                  <li>• Tests key deduction skills needed for the BAR</li>
                 </ul>
               </div>
             </CardContent>

@@ -29,46 +29,31 @@ export async function POST(req: NextRequest) {
 
     // Extract fields from the request body
     const {
-      lsatDate,
+      barExamTestDate,
       currentScore,
       targetScore,
       weeklyHours,
       challengingAreas,
       specificAreas,
       preferredSchedule,
-      lsatPreparationMaterial,
+      barExamPreparationMaterial,
       additionalInformation,
     } = await req.json();
 
     // Validate required fields
     if (
-      !lsatDate ||
+      !barExamTestDate ||
       !currentScore ||
       !targetScore ||
       !weeklyHours ||
       !challengingAreas ||
       !specificAreas ||
       !preferredSchedule ||
-      !lsatPreparationMaterial ||
+      !barExamPreparationMaterial ||
       !additionalInformation
     ) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
-
-    // Determine the plan key based on the current score
-    let planKey: StudyPlanKey = "terrible";
-    if (currentScore >= 170) {
-      planKey = "amazing";
-    } else if (currentScore >= 160) {
-      planKey = "good";
-    } else if (currentScore >= 150) {
-      planKey = "decent";
-    } else if (currentScore >= 140) {
-      planKey = "bad";
-    }
-
-    // Get the prebuilt study plan based on the plan key
-    const plan = studyPlans[planKey];
 
     // Update the current streak
     const currentDate = new Date().toISOString().split("T")[0]; // Get current date in YYYY-MM-DD format
@@ -98,16 +83,15 @@ export async function POST(req: NextRequest) {
     // Merge existing data with the new updates
     const updatedUserData = {
       ...userData, // Preserve existing fields
-      lsatTestDate: lsatDate || userData.lsatDate,
+      barExamTestDate: barExamTestDate || userData.barExamTestDate,
       currentScore: currentScore ?? userData.currentScore,
       targetScore: targetScore || userData.targetScore,
       weeklyHours: weeklyHours || userData.weeklyHours,
       challengingAreas: challengingAreas || userData.challengingAreas,
       specificAreas: specificAreas || userData.specificAreas,
       preferredSchedule: preferredSchedule || userData.preferredSchedule,
-      lsatPreparationMaterial: lsatPreparationMaterial || userData.lsatPreparationMaterial,
+      barExamPreparationMaterial: barExamPreparationMaterial || userData.barExamPreparationMaterial,
       additionalInformation: additionalInformation || userData.additionalInformation,
-      plan, // Store the prebuilt plan
       currentStreak, // Update the current streak
       lastRequestDate: currentDate, // Update the last request date
       updatedAt: new Date().toISOString(), // Update the timestamp
@@ -128,6 +112,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Failed to update user data" }, { status: 500 });
   }
 }
+
 
 
 export async function GET(req: NextRequest) {

@@ -45,7 +45,7 @@ export default function LandingPage() {
 
         <div className="max-w-5xl mx-auto text-center relative z-10">
           <h1 className="text-5xl md:text-7xl font-extrabold mb-8 animate-fadeIn">
-            Master the LSAT with{" "}
+            Master the BAR with{" "}
             <span className="text-blue-300">AI-Powered</span> Learning
           </h1>
           <p className="text-xl md:text-2xl mb-12 text-blue-100 animate-fadeIn animation-delay-200">
@@ -83,7 +83,7 @@ export default function LandingPage() {
       <section className="py-24 bg-white w-full">
         <div className="max-w-6xl mx-auto px-4">
           <h2 className="text-4xl font-bold text-center mb-16 text-gray-900">
-            Why Choose LSAT Training
+            Why Choose BAR Training
           </h2>
 
           <div className="grid md:grid-cols-3 gap-10">
@@ -120,7 +120,7 @@ export default function LandingPage() {
                 Full-Length Mock Exams
               </h3>
               <p className="text-gray-600 text-lg">
-                Practice with realistic simulations of the actual LSAT under
+                Practice with realistic simulations of the actual BAR under
                 timed conditions.
               </p>
               <ul className="mt-4 space-y-2">
@@ -181,8 +181,8 @@ export default function LandingPage() {
                 </div>
               </div>
               <p className="text-gray-700 text-lg italic">
-                "With LSAT Training, I improved my score by 12 points in just
-                two months. The AI feedback was like having a personal tutor
+                "With BAR Training, I improved my score by 12 points in just two
+                months. The AI feedback was like having a personal tutor
                 available 24/7. The logic games module especially helped me turn
                 my weakest section into my strongest."
               </p>
@@ -213,7 +213,7 @@ export default function LandingPage() {
       <section className="py-20 bg-gradient-to-br from-blue-700 to-indigo-800 text-white w-full">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-8">
-            Ready to Improve Your LSAT Score?
+            Ready to Improve Your BAR Score?
           </h2>
           <p className="text-xl text-blue-100 mb-10 max-w-3xl mx-auto">
             Join thousands of students who have boosted their scores with our

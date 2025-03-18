@@ -33,22 +33,23 @@ export default function GoogleSignIn() {
           name: user.displayName || "Anonymous",
           authProvider: "google", // Set authProvider to "google"
           subscription: "free", // Default to free plan
-          lsatTestDate: null,
+          barExamTestDate: null, // Changed from lsatTestDate to barExamTestDate
           targetScore: null,
           StudyStreak: 0,
           PracticeQuestions: 0,
+          questionDataKey: null,
           currentScore: null,
           createdAt: new Date().toISOString(),
           updatedAt: null,
           onboarded: false, // User has not completed onboarding yet
           preferredSchedule: null,
           weeklyHours: null,
-          lsatPreparationMaterial: null,
+          barExamPreparationMaterial: null, // Changed from lsatPreparationMaterial to barExamPreparationMaterial
           additionalInformation: null,
           progress: {
-            logicalReasoning: 0,
-            analyticalReasoning: 0,
-            readingComprehension: 0,
+            constitutionalLaw: 0, // Changed from logicalReasoning to constitutionalLaw
+            contracts: 0, // Changed from analyticalReasoning to contracts
+            criminalLaw: 0, // Changed from readingComprehension to criminalLaw
             totalTimeSpent: 0,
             testAttempts: 0,
             lastUpdated: null,
@@ -57,7 +58,7 @@ export default function GoogleSignIn() {
           practiceHistory: [],
           bookmarkedQuestions: [],
           simulatedExams: [],
-          logicGames: [],
+          essays: [], // Changed from logicGames to essays
           specificAreas: [],
           challengingAreas: [],
           payments: [],
@@ -66,7 +67,13 @@ export default function GoogleSignIn() {
         await setDoc(userRef, userData);
         router.push("/onboarding"); // Redirect new users to onboarding
       } else {
-        router.push("/dashboard"); // Redirect existing users to the dashboard
+        // Check if the user has completed onboarding
+        const userData = userSnap.data();
+        if (userData.onboarded) {
+          router.push("/dashboard"); // Redirect to dashboard if onboarded
+        } else {
+          router.push("/onboarding"); // Redirect to onboarding if not onboarded
+        }
       }
     } catch (error) {
       console.error("Google sign-in error:", error);

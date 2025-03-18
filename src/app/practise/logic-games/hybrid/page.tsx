@@ -175,9 +175,8 @@ export default function HybridGamesPage() {
               Advanced Hybrid Game Strategies
             </h3>
             <p className="text-gray-600 mb-4">
-              Master the most challenging LSAT games with advanced techniques
-              for integrating multiple game types and creating powerful
-              diagrams.
+              Master the most challenging BAR games with advanced techniques for
+              integrating multiple game types and creating powerful diagrams.
             </p>
             <div className="aspect-video bg-gray-100 rounded-md flex items-center justify-center mb-4">
               <p className="text-gray-500">

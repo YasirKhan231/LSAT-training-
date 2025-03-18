@@ -26,7 +26,6 @@ import { studyPlans, StudyPlanKey } from "@/data/plan";
 export default function Dashboard() {
   const [uuid, setUuid] = useState<string | null>(null); // State to store UUID (Firebase UID)
   const [userData, setUserData] = useState<any>(null); // State to store user data
-  const [planKey, setPlanKey] = useState<StudyPlanKey>("terrible"); // State to store plan key
   const [loading, setLoading] = useState(true); // State to handle loading
   const [error, setError] = useState<string | null>(null); // State to handle errors
   const auth = getAuth(app); // Initialize Firebase Auth
@@ -57,20 +56,6 @@ export default function Dashboard() {
       }
       const data = await response.json();
       setUserData(data); // Set user data in state
-
-      // Determine planKey based on currentScore
-      const currentScore = Number(data.currentScore);
-      if (currentScore >= 170) {
-        setPlanKey("amazing");
-      } else if (currentScore >= 160) {
-        setPlanKey("good");
-      } else if (currentScore >= 150) {
-        setPlanKey("decent");
-      } else if (currentScore >= 140) {
-        setPlanKey("bad");
-      } else {
-        setPlanKey("terrible");
-      }
     } catch (error) {
       console.error("Error fetching user data:", error);
       setError("Failed to fetch user data. Please try again.");
@@ -79,41 +64,19 @@ export default function Dashboard() {
     }
   };
 
-  // Calculate days remaining until the LSAT exam
-  const calculateDaysRemaining = (lsatTestDate: string) => {
+  // Calculate days remaining until the Bar Exam
+  const calculateDaysRemaining = (barExamTestDate: string) => {
     const today = new Date();
-    const examDate = new Date(lsatTestDate);
+    const examDate = new Date(barExamTestDate);
     const timeDiff = examDate.getTime() - today.getTime();
     return Math.ceil(timeDiff / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
   };
 
-  // Loading UI
+  // Loading UI with blue theme
   if (loading) {
     return (
-      <div className="container mx-auto p-6">
-        {/* Header Skeleton */}
-        <div className="animate-pulse mb-8">
-          <div className="h-8 bg-gray-200 rounded w-1/2 mb-2"></div>
-          <div className="h-4 bg-gray-200 rounded w-1/3"></div>
-        </div>
-
-        {/* Stats Grid Skeleton */}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-8">
-          {[1, 2, 3, 4].map((_, index) => (
-            <div key={index} className="h-32 bg-gray-200 rounded"></div>
-          ))}
-        </div>
-
-        {/* Today's Study Plan Skeleton */}
-        <div className="animate-pulse">
-          <div className="h-8 bg-gray-200 rounded w-1/3 mb-2"></div>
-          <div className="h-4 bg-gray-200 rounded w-1/4 mb-4"></div>
-          <div className="space-y-4">
-            {[1, 2, 3].map((_, index) => (
-              <div key={index} className="h-16 bg-gray-200 rounded"></div>
-            ))}
-          </div>
-        </div>
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
       </div>
     );
   }
@@ -126,8 +89,9 @@ export default function Dashboard() {
     return <div className="container mx-auto p-6">No data found.</div>;
   }
 
-  // Get the study plan based on the planKey
-  const studyPlan = studyPlans[planKey];
+  // Ensure the questionDataKey is a valid StudyPlanKey
+  const questionDataKey = userData.questionDataKey as StudyPlanKey;
+  const studyPlan = studyPlans[questionDataKey] || studyPlans["terrible"]; // Fallback to "terrible" if key is invalid
 
   return (
     <div className="container mx-auto p-6">
@@ -136,7 +100,7 @@ export default function Dashboard() {
           Welcome back, {userData.displayName}
         </h1>
         <p className="text-muted-foreground">
-          Your LSAT exam is in {calculateDaysRemaining(userData.lsatTestDate)}{" "}
+          Your Bar Exam is in {calculateDaysRemaining(userData.barExamTestDate)}{" "}
           days. Here's your progress so far.
         </p>
       </div>

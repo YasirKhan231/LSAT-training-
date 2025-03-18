@@ -488,7 +488,7 @@ export default function ExamPage() {
             <CardHeader>
               <CardTitle className="text-2xl">{examData.title}</CardTitle>
               <p className="text-gray-600">
-                You are about to start a full-length LSAT practice exam.
+                You are about to start a full-length BAR practice exam.
               </p>
             </CardHeader>
             <CardContent>
