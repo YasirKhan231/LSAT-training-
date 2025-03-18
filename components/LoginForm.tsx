@@ -49,25 +49,25 @@ export default function LoginForm() {
   return (
     <div className="w-full">
       {error && (
-        <div className="bg-red-50 border-l-3 border-red-400 p-2 mb-3 rounded-r-lg animate-fadeIn">
+        <div className="bg-red-50 border-l-4 border-red-400 p-3 mb-4 rounded-lg animate-fadeIn">
           <div className="flex items-center">
-            <AlertCircle className="h-3 w-3 text-red-500 mr-1.5 flex-shrink-0" />
-            <p className="text-xs text-red-700">{error}</p>
+            <AlertCircle className="h-4 w-4 text-red-500 mr-2 flex-shrink-0" />
+            <p className="text-sm text-red-700">{error}</p>
           </div>
         </div>
       )}
 
-      <form onSubmit={handleLogin} className="space-y-3">
+      <form onSubmit={handleLogin} className="space-y-4">
         <div>
           <label
             htmlFor="email"
-            className="block text-xs font-medium text-gray-700 mb-1"
+            className="block text-sm font-medium text-gray-700 mb-2"
           >
             Email address
           </label>
           <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
-              <Mail className="h-3.5 w-3.5 text-gray-400" />
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <Mail className="h-4 w-4 text-gray-400" />
             </div>
             <input
               id="email"
@@ -76,29 +76,29 @@ export default function LoginForm() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full pl-8 pr-3 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+              className="w-full pl-10 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
             />
           </div>
         </div>
 
         <div>
-          <div className="flex items-center justify-between mb-1">
+          <div className="flex items-center justify-between mb-2">
             <label
               htmlFor="password"
-              className="block text-xs font-medium text-gray-700"
+              className="block text-sm font-medium text-gray-700"
             >
               Password
             </label>
             <Link
               href="/forgot-password"
-              className="text-xs text-blue-600 hover:text-blue-800 transition-colors"
+              className="text-sm text-blue-600 hover:text-blue-800 transition-colors"
             >
               Forgot password?
             </Link>
           </div>
           <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-2 flex items-center pointer-events-none">
-              <Lock className="h-3.5 w-3.5 text-gray-400" />
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <Lock className="h-4 w-4 text-gray-400" />
             </div>
             <input
               id="password"
@@ -107,32 +107,32 @@ export default function LoginForm() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full pl-8 pr-8 py-1.5 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+              className="w-full pl-10 pr-10 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
             />
             <button
               type="button"
-              className="absolute inset-y-0 right-0 pr-2 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+              className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
               onClick={() => setShowPassword(!showPassword)}
             >
               {showPassword ? (
-                <EyeOff className="h-3.5 w-3.5" />
+                <EyeOff className="h-4 w-4" />
               ) : (
-                <Eye className="h-3.5 w-3.5" />
+                <Eye className="h-4 w-4" />
               )}
             </button>
           </div>
         </div>
 
-        <div className="pt-1">
+        <div className="pt-2">
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-2 px-4 text-sm font-medium rounded-md text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-sm hover:shadow transition-all duration-200"
+            className="w-full py-2.5 px-4 text-sm font-medium rounded-lg text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-sm hover:shadow transition-all duration-200"
           >
             {isLoading ? (
               <div className="flex items-center justify-center">
                 <svg
-                  className="animate-spin -ml-1 mr-2 h-3.5 w-3.5 text-white"
+                  className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"

@@ -5,9 +5,9 @@ import GoogleSignIn from "../../../components/GoogleSignin";
 
 export default function SignupPage() {
   return (
-    <div className="flex h-screen bg-gradient-to-br from-purple-50 to-indigo-50">
+    <div className="flex bg-gradient-to-br from-blue-50 to-indigo-50">
       {/* Left Panel - Background Image and Content */}
-      <div className="hidden lg:block lg:w-1/2 bg-gradient-to-br from-purple-600 to-indigo-600 overflow-hidden relative">
+      <div className="hidden lg:block lg:w-1/2 bg-gradient-to-br from-blue-600 to-indigo-600 overflow-hidden relative">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <svg
@@ -35,7 +35,7 @@ export default function SignupPage() {
         </div>
 
         {/* Abstract Shapes */}
-        <div className="absolute w-96 h-96 rounded-full bg-purple-400 blur-3xl opacity-20 -bottom-20 -left-20"></div>
+        <div className="absolute w-96 h-96 rounded-full bg-blue-400 blur-3xl opacity-20 -bottom-20 -left-20"></div>
         <div className="absolute w-96 h-96 rounded-full bg-indigo-500 blur-3xl opacity-20 top-10 -right-20"></div>
 
         {/* Content */}
@@ -63,7 +63,7 @@ export default function SignupPage() {
             <h2 className="text-3xl font-bold text-white mb-4 text-center">
               Start Your LSAT Journey
             </h2>
-            <p className="text-lg text-indigo-100 mb-6 text-center">
+            <p className="text-lg text-blue-100 mb-6 text-center">
               Join thousands of students who improved their LSAT scores with our
               AI-powered learning platform.
             </p>
@@ -71,7 +71,7 @@ export default function SignupPage() {
             <div className="grid grid-cols-2 gap-3 mb-6">
               <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-3 border border-white border-opacity-10 shadow-lg">
                 <div className="flex items-start space-x-2">
-                  <div className="h-5 w-5 rounded-full bg-purple-500 flex-shrink-0 flex items-center justify-center mt-0.5">
+                  <div className="h-5 w-5 rounded-full bg-blue-500 flex-shrink-0 flex items-center justify-center mt-0.5">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-3 w-3 text-white"
@@ -94,7 +94,7 @@ export default function SignupPage() {
               </div>
               <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-3 border border-white border-opacity-10 shadow-lg">
                 <div className="flex items-start space-x-2">
-                  <div className="h-5 w-5 rounded-full bg-purple-500 flex-shrink-0 flex items-center justify-center mt-0.5">
+                  <div className="h-5 w-5 rounded-full bg-blue-500 flex-shrink-0 flex items-center justify-center mt-0.5">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-3 w-3 text-white"
@@ -117,7 +117,7 @@ export default function SignupPage() {
               </div>
               <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-3 border border-white border-opacity-10 shadow-lg">
                 <div className="flex items-start space-x-2">
-                  <div className="h-5 w-5 rounded-full bg-purple-500 flex-shrink-0 flex items-center justify-center mt-0.5">
+                  <div className="h-5 w-5 rounded-full bg-blue-500 flex-shrink-0 flex items-center justify-center mt-0.5">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-3 w-3 text-white"
@@ -140,7 +140,7 @@ export default function SignupPage() {
               </div>
               <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-3 border border-white border-opacity-10 shadow-lg">
                 <div className="flex items-start space-x-2">
-                  <div className="h-5 w-5 rounded-full bg-purple-500 flex-shrink-0 flex items-center justify-center mt-0.5">
+                  <div className="h-5 w-5 rounded-full bg-blue-500 flex-shrink-0 flex items-center justify-center mt-0.5">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-3 w-3 text-white"
@@ -171,12 +171,12 @@ export default function SignupPage() {
                 weeks!"
               </p>
               <div className="flex items-center">
-                <div className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center font-bold text-white text-xs mr-2">
+                <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center font-bold text-white text-xs mr-2">
                   MT
                 </div>
                 <div>
                   <p className="font-medium text-white text-sm">Michael T.</p>
-                  <p className="text-indigo-200 text-xs">Columbia Law '23</p>
+                  <p className="text-blue-200 text-xs">Columbia Law '23</p>
                 </div>
               </div>
             </div>
@@ -186,24 +186,20 @@ export default function SignupPage() {
 
       {/* Right Panel - Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-4">
-        <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-5 transition-all duration-300 hover:shadow-[0_15px_35px_-15px_rgba(79,70,229,0.3)]">
+        <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 transition-all duration-300 hover:shadow-2xl">
           {/* Header with Logo */}
-          <div className="mb-4 text-center">
-            <Link href="/">
-              <div className="inline-flex bg-gradient-to-r from-purple-700 to-indigo-700 text-white p-2 rounded-lg shadow-md mx-auto hover:shadow-lg transition-shadow duration-200">
-                <span className="font-bold text-lg">LSAT Training</span>
-              </div>
-            </Link>
-            <h1 className="text-xl font-bold mt-4 mb-1 text-gray-800">
+          <div className="mb-6 text-center">
+            
+            <h1 className="text-2xl font-bold mt-6 mb-2 text-gray-800">
               Create account
             </h1>
-            <p className="text-gray-500 text-xs">
+            <p className="text-gray-500 text-sm">
               Join our community of LSAT learners
             </p>
           </div>
 
           {/* Form */}
-          <div className="space-y-4">
+          <div className="space-y-6">
             <SignupForm />
 
             <div className="relative">
@@ -218,26 +214,6 @@ export default function SignupPage() {
             </div>
 
             <GoogleSignIn />
-
-            <div className="flex items-center justify-between pt-1 text-xs">
-              <Link
-                href="/"
-                className="inline-flex items-center text-gray-500 hover:text-gray-700 transition-colors"
-              >
-                <ArrowLeft className="h-3 w-3 mr-1" />
-                <span>Back to home</span>
-              </Link>
-
-              <span className="text-gray-500">
-                Have an account?{" "}
-                <Link
-                  href="/login"
-                  className="text-indigo-600 hover:text-indigo-800 font-medium"
-                >
-                  Sign in
-                </Link>
-              </span>
-            </div>
           </div>
         </div>
       </div>
