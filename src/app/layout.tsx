@@ -18,7 +18,13 @@ export default function RootLayout({
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // List of routes where sidebar should be hidden
-  const noSidebarRoutes = ["/", "/login", "/Signup", "/subscription"];
+  const noSidebarRoutes = [
+    "/",
+    "/login",
+    "/Signup",
+    "/subscription",
+    "/onboarding",
+  ];
   const showSidebar = !noSidebarRoutes.includes(pathname);
 
   return (

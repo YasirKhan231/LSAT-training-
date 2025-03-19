@@ -36,6 +36,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     isSubscriptionActive,
     subscriptionTier,
   } = useUser();
+
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
@@ -124,24 +125,35 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
               <li key={item.href}>
                 {item.children ? (
                   <div>
-                    <button
-                      onClick={() => toggleExpand(item.href)}
+                    <div
                       className={`flex items-center justify-between w-full px-4 py-2 text-sm rounded-lg transition-colors duration-200 ${
                         pathname.startsWith(item.href)
                           ? "bg-blue-50 text-blue-700"
                           : "text-gray-700 hover:bg-gray-50"
                       }`}
                     >
-                      <div className="flex items-center">
+                      <Link
+                        href={item.href}
+                        className="flex items-center flex-1"
+                        onClick={isMobile ? onClose : undefined}
+                      >
                         <item.icon className="h-5 w-5 mr-3" />
                         <span>{item.label}</span>
-                      </div>
-                      {expandedItems.includes(item.href) ? (
-                        <ChevronDown className="h-4 w-4" />
-                      ) : (
-                        <ChevronRight className="h-4 w-4" />
-                      )}
-                    </button>
+                      </Link>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevent event bubbling
+                          toggleExpand(item.href);
+                        }}
+                        className="p-1 hover:bg-gray-100 rounded-lg"
+                      >
+                        {expandedItems.includes(item.href) ? (
+                          <ChevronDown className="h-4 w-4" />
+                        ) : (
+                          <ChevronRight className="h-4 w-4" />
+                        )}
+                      </button>
+                    </div>
                     {expandedItems.includes(item.href) && (
                       <ul className="mt-1 ml-6 space-y-1">
                         {item.children.map((child) => (
@@ -205,7 +217,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
               </div>
               <button
                 onClick={handleLogout}
-                className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg transition-colors duration-200"
+                className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-red-50 hover:text-red-700 rounded-lg transition-colors duration-200"
               >
                 <LogOut className="h-5 w-5 mr-3" />
                 <span>Sign Out</span>
@@ -231,6 +243,17 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           )}
         </div>
       </aside>
+
+      {/* Hamburger Menu Button */}
+      {!isOpen && (
+        <button
+          onClick={onClose}
+          className="fixed top-4 left-4 z-50 p-2 rounded-lg bg-blue-600 text-white md:hidden"
+          aria-label="Open sidebar"
+        >
+          <Menu className="h-6 w-6" />
+        </button>
+      )}
     </>
   );
 }

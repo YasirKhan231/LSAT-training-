@@ -1,8 +1,7 @@
 "use client";
 
 import type React from "react";
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   LucideArrowLeft,
@@ -10,6 +9,8 @@ import {
   LucideBookOpen,
   LucideSend,
 } from "lucide-react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "@/lib/firebase"; // Ensure Firebase is initialized
 
 import { Button } from "@/components/ui/button";
 import {
@@ -23,37 +24,111 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
 
+// Define the type for practice history
+interface PracticeSession {
+  section: string;
+  score: number;
+  totalQuestions: number;
+}
+
 export default function AICoach() {
   const [messages, setMessages] = useState([
     {
       role: "assistant",
-      content:
-        "Hi John! I've analyzed your recent practice sessions. Your logical reasoning score has improved by 3 points since last week. What would you like to focus on today?",
+      content: "How can I help you to clear the bar exam?",
     },
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [userData, setUserData] = useState(null);
+  const [performanceData, setPerformanceData] = useState({
+    logicalReasoning: 0,
+    analyticalReasoning: 0,
+    readingComprehension: 0,
+  });
+  const [practiceHistory, setPracticeHistory] = useState<PracticeSession[]>([]);
+  const [uuid, setUuid] = useState<string | null>(null);
+  const [userName, setUserName] = useState<string>("User");
+
+  // Set the username and UUID from Firebase Auth
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUuid(user.uid); // Set the UUID
+        setUserName(user.displayName || user.email?.split("@")[0] || "User"); // Set the username
+        fetchUserData(user.uid); // Fetch user data
+      } else {
+        console.error("User not authenticated");
+        setUuid(null);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  // Fetch user data from the backend
+  const fetchUserData = async (uid: string) => {
+    try {
+      const response = await fetch(`/api/user?uuid=${uid}`);
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch user data");
+      }
+
+      const data = await response.json();
+      setUserData(data);
+
+      // Set performance data
+      if (data.performanceInsights) {
+        setPerformanceData({
+          logicalReasoning: data.performanceInsights.logicalReasoning || 0,
+          analyticalReasoning:
+            data.performanceInsights.analyticalReasoning || 0,
+          readingComprehension:
+            data.performanceInsights.readingComprehension || 0,
+        });
+      }
+
+      // Set practice history
+      if (data.practiceHistory) {
+        setPracticeHistory(data.practiceHistory);
+      }
+    } catch (error) {
+      console.error("Failed to fetch user data:", error);
+    }
+  };
 
   const handleSend = async () => {
-    if (!input.trim()) return;
+    if (!input.trim() || !uuid) return;
 
     // Add user message
     setMessages((prev) => [...prev, { role: "user", content: input }]);
     setInput("");
     setIsLoading(true);
 
-    // Simulate AI response
-    setTimeout(() => {
+    try {
+      // Send message to the backend
+      const response = await fetch(`/api/ai-coach?uuid=${uuid}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ uuid, message: input }),
+      });
+      const data = await response.json();
+
+      // Add AI response to messages
       setMessages((prev) => [
         ...prev,
-        {
-          role: "assistant",
-          content:
-            "Based on your recent performance, I recommend focusing on strengthening your analytical reasoning skills, particularly with grouping games. I've noticed you're spending too much time setting up your diagrams. Let's work on a more efficient approach to diagramming these types of games.",
-        },
+        { role: "assistant", content: data.response },
       ]);
+    } catch (error) {
+      console.error("Failed to send message:", error);
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: "Failed to fetch response from AI" },
+      ]);
+    } finally {
       setIsLoading(false);
-    }, 1500);
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -86,66 +161,68 @@ export default function AICoach() {
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-medium">Logical Reasoning</p>
-                    <p className="text-sm font-medium">75%</p>
+                    <p className="text-sm font-medium">
+                      {performanceData.logicalReasoning}%
+                    </p>
                   </div>
-                  <Progress value={75} className="h-2" />
+                  <Progress
+                    value={performanceData.logicalReasoning}
+                    className="h-2"
+                  />
                 </div>
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-medium">Analytical Reasoning</p>
-                    <p className="text-sm font-medium">68%</p>
+                    <p className="text-sm font-medium">
+                      {performanceData.analyticalReasoning}%
+                    </p>
                   </div>
-                  <Progress value={68} className="h-2" />
+                  <Progress
+                    value={performanceData.analyticalReasoning}
+                    className="h-2"
+                  />
                 </div>
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-medium">Reading Comprehension</p>
-                    <p className="text-sm font-medium">82%</p>
+                    <p className="text-sm font-medium">
+                      {performanceData.readingComprehension}%
+                    </p>
                   </div>
-                  <Progress value={82} className="h-2" />
+                  <Progress
+                    value={performanceData.readingComprehension}
+                    className="h-2"
+                  />
                 </div>
               </div>
 
               <div className="mt-6">
                 <h3 className="mb-2 text-sm font-medium">Recent Activity</h3>
                 <div className="space-y-3">
-                  <div className="flex items-start space-x-3 rounded-md bg-slate-50 p-2 dark:bg-slate-900">
-                    <div className="mt-0.5 rounded-full bg-blue-100 p-1 dark:bg-blue-900">
-                      <LucideBookOpen className="h-3 w-3 text-blue-700 dark:text-blue-300" />
-                    </div>
-                    <div>
-                      <p className="text-xs font-medium">
-                        Logical Reasoning Practice
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        Yesterday • 15/20 correct
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-3 rounded-md bg-slate-50 p-2 dark:bg-slate-900">
-                    <div className="mt-0.5 rounded-full bg-amber-100 p-1 dark:bg-amber-900">
-                      <LucideBookOpen className="h-3 w-3 text-amber-700 dark:text-amber-300" />
-                    </div>
-                    <div>
-                      <p className="text-xs font-medium">
-                        Logic Games Practice
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        2 days ago • 12/23 correct
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-3 rounded-md bg-slate-50 p-2 dark:bg-slate-900">
-                    <div className="mt-0.5 rounded-full bg-purple-100 p-1 dark:bg-purple-900">
-                      <LucideBarChart className="h-3 w-3 text-purple-700 dark:text-purple-300" />
-                    </div>
-                    <div>
-                      <p className="text-xs font-medium">Full Practice Test</p>
-                      <p className="text-xs text-muted-foreground">
-                        5 days ago • Score: 162
-                      </p>
-                    </div>
-                  </div>
+                  {practiceHistory.length > 0 ? (
+                    practiceHistory.map((session, index) => (
+                      <div
+                        key={index}
+                        className="flex items-start space-x-3 rounded-md bg-slate-50 p-2 dark:bg-slate-900"
+                      >
+                        <div className="mt-0.5 rounded-full bg-blue-100 p-1 dark:bg-blue-900">
+                          <LucideBookOpen className="h-3 w-3 text-blue-700 dark:text-blue-300" />
+                        </div>
+                        <div>
+                          <p className="text-xs font-medium">
+                            {session.section} Practice
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {session.score}/{session.totalQuestions} correct
+                          </p>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-xs text-muted-foreground">
+                      No recent practice sessions found.
+                    </p>
+                  )}
                 </div>
               </div>
             </CardContent>
@@ -156,11 +233,8 @@ export default function AICoach() {
           <Card className="flex h-[600px] flex-col">
             <CardHeader>
               <Tabs defaultValue="chat">
-                <TabsList className="grid w-full grid-cols-2">
+                <TabsList className="grid w-full grid-cols-1">
                   <TabsTrigger value="chat">Chat with AI Coach</TabsTrigger>
-                  <TabsTrigger value="recommendations">
-                    Recommendations
-                  </TabsTrigger>
                 </TabsList>
 
                 <TabsContent
@@ -228,136 +302,6 @@ export default function AICoach() {
                     <div className="mt-2 text-xs text-muted-foreground">
                       Try asking: "What should I focus on to improve my score?"
                       or "Can you explain assumption questions?"
-                    </div>
-                  </div>
-                </TabsContent>
-
-                <TabsContent
-                  value="recommendations"
-                  className="h-full overflow-y-auto p-4 data-[state=inactive]:hidden"
-                >
-                  <div className="space-y-6">
-                    <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 dark:border-amber-900/50 dark:bg-amber-900/20">
-                      <h3 className="mb-2 font-medium text-amber-800 dark:text-amber-300">
-                        Priority Focus Area
-                      </h3>
-                      <p className="text-sm text-amber-800 dark:text-amber-300">
-                        Based on your recent performance, you should prioritize
-                        improving your Analytical Reasoning skills, particularly
-                        with grouping games.
-                      </p>
-                      <div className="mt-4">
-                        <Button
-                          variant="outline"
-                          className="text-amber-800 dark:text-amber-300"
-                        >
-                          View Recommended Exercises
-                        </Button>
-                      </div>
-                    </div>
-
-                    <div>
-                      <h3 className="mb-3 font-medium">
-                        Recommended Study Materials
-                      </h3>
-                      <div className="space-y-3">
-                        <div className="rounded-lg border p-3">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <div className="rounded-full bg-blue-100 p-1.5 dark:bg-blue-900">
-                                <LucideBookOpen className="h-4 w-4 text-blue-700 dark:text-blue-300" />
-                              </div>
-                              <h4 className="font-medium">
-                                Analytical Reasoning Mastery
-                              </h4>
-                            </div>
-                            <Button size="sm">Start</Button>
-                          </div>
-                          <p className="mt-2 text-sm text-muted-foreground">
-                            A focused module on diagramming techniques for
-                            complex grouping games.
-                          </p>
-                        </div>
-                        <div className="rounded-lg border p-3">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <div className="rounded-full bg-purple-100 p-1.5 dark:bg-purple-900">
-                                <LucideBookOpen className="h-4 w-4 text-purple-700 dark:text-purple-300" />
-                              </div>
-                              <h4 className="font-medium">
-                                Assumption Questions Deep Dive
-                              </h4>
-                            </div>
-                            <Button size="sm">Start</Button>
-                          </div>
-                          <p className="mt-2 text-sm text-muted-foreground">
-                            Strengthen your ability to identify and evaluate
-                            assumptions in logical reasoning.
-                          </p>
-                        </div>
-                        <div className="rounded-lg border p-3">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <div className="rounded-full bg-green-100 p-1.5 dark:bg-green-900">
-                                <LucideBookOpen className="h-4 w-4 text-green-700 dark:text-green-300" />
-                              </div>
-                              <h4 className="font-medium">
-                                Timed Practice Drills
-                              </h4>
-                            </div>
-                            <Button size="sm">Start</Button>
-                          </div>
-                          <p className="mt-2 text-sm text-muted-foreground">
-                            Improve your speed and accuracy with targeted timed
-                            exercises.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div>
-                      <h3 className="mb-3 font-medium">Weekly Goals</h3>
-                      <div className="space-y-3">
-                        <div className="flex items-center justify-between rounded-md bg-slate-50 p-3 dark:bg-slate-900">
-                          <div className="flex-1">
-                            <p className="text-sm font-medium">
-                              Complete 50 Analytical Reasoning questions
-                            </p>
-                            <div className="mt-2 flex items-center gap-2">
-                              <Progress value={30} className="h-2 w-32" />
-                              <span className="text-xs text-muted-foreground">
-                                15/50 completed
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="flex items-center justify-between rounded-md bg-slate-50 p-3 dark:bg-slate-900">
-                          <div className="flex-1">
-                            <p className="text-sm font-medium">
-                              Take 2 timed practice sections
-                            </p>
-                            <div className="mt-2 flex items-center gap-2">
-                              <Progress value={50} className="h-2 w-32" />
-                              <span className="text-xs text-muted-foreground">
-                                1/2 completed
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="flex items-center justify-between rounded-md bg-slate-50 p-3 dark:bg-slate-900">
-                          <div className="flex-1">
-                            <p className="text-sm font-medium">
-                              Review all incorrect answers with AI coach
-                            </p>
-                            <div className="mt-2 flex items-center gap-2">
-                              <Progress value={20} className="h-2 w-32" />
-                              <span className="text-xs text-muted-foreground">
-                                In progress
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </TabsContent>

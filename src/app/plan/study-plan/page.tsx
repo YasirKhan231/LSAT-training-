@@ -61,7 +61,7 @@ export default function StudyPlan() {
   // Fetch user data from the backend API
   const fetchUserData = async (uid: string) => {
     try {
-      const response = await fetch(`/api/plan/generate-plan?uuid=${uid}`);
+      const response = await fetch(`/api/user?uuid=${uid}`);
       if (!response.ok) {
         throw new Error("Failed to fetch user data");
       }

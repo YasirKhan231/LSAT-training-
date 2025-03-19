@@ -347,11 +347,20 @@ export default function OnboardingForm() {
                   min="260"
                   max="400"
                   value={formData.targetScore}
-                  onChange={(e) =>
-                    setFormData({ ...formData, targetScore: e.target.value })
-                  }
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setFormData({ ...formData, targetScore: value });
+                  }}
                   placeholder="Enter your target score"
                 />
+                {/* Error message for invalid target score */}
+                {formData.targetScore &&
+                  (Number(formData.targetScore) < 260 ||
+                    Number(formData.targetScore) > 400) && (
+                    <p className="text-sm text-red-500">
+                      Target score must be between 260 and 400.
+                    </p>
+                  )}
               </div>
             </div>
           )}
@@ -367,11 +376,20 @@ export default function OnboardingForm() {
                   min="260"
                   max="400"
                   value={formData.currentScore}
-                  onChange={(e) =>
-                    setFormData({ ...formData, currentScore: e.target.value })
-                  }
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setFormData({ ...formData, currentScore: value });
+                  }}
                   placeholder="Enter your current score"
                 />
+                {/* Error message for invalid current score */}
+                {formData.currentScore &&
+                  (Number(formData.currentScore) < 260 ||
+                    Number(formData.currentScore) > 400) && (
+                    <p className="text-sm text-red-500">
+                      Current score must be between 260 and 400.
+                    </p>
+                  )}
               </div>
             </div>
           )}
@@ -667,6 +685,16 @@ export default function OnboardingForm() {
               <Button
                 className="bg-blue-600 hover:bg-blue-700 text-white"
                 onClick={handleNext}
+                disabled={
+                  (step === "current-score" && // Validation for current score step
+                    (!formData.currentScore ||
+                      Number(formData.currentScore) < 260 ||
+                      Number(formData.currentScore) > 400)) ||
+                  (step === "target-score" && // Validation for target score step
+                    (!formData.targetScore ||
+                      Number(formData.targetScore) < 260 ||
+                      Number(formData.targetScore) > 400))
+                }
               >
                 Continue
               </Button>

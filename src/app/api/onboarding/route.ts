@@ -51,7 +51,6 @@ export async function POST(request: Request) {
       !currentScore ||
       !challengingAreas ||
       !focusAreas ||
-      !additionalInfo ||
       !barExamPreparationMaterial
     ) {
       return NextResponse.json(

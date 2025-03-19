@@ -54,7 +54,7 @@ export default function DashboardPage() {
   // Fetch user data from the backend
   const fetchUserData = async (uid: string) => {
     try {
-      const response = await fetch(`/api/dashboard?uuid=${uid}`);
+      const response = await fetch(`/api/user?uuid=${uid}`);
 
       if (!response.ok) {
         throw new Error("Failed to fetch user data");
@@ -401,7 +401,7 @@ export default function DashboardPage() {
             Continue your preparation
           </h2>
           <div className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-3">
-            <Link href="/practice/ai-tutor" className="block">
+            <Link href="/plan/ai-coach" className="block">
               <div className="bg-white overflow-hidden shadow rounded-lg border border-blue-100 transition duration-150 ease-in-out transform hover:scale-105 hover:shadow-md">
                 <div className="px-4 py-5 sm:p-6">
                   <h3 className="text-lg font-medium text-gray-900">
