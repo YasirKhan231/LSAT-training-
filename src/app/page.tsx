@@ -7,10 +7,13 @@ import {
   BookOpen,
   Award,
 } from "lucide-react";
+import LandingNavbar from "@/components/LandingNavbar";
 
 export default function LandingPage() {
   return (
     <>
+      <LandingNavbar />
+
       {/* Hero Section */}
       <section className="relative w-full flex flex-col items-center justify-center px-4 py-20 bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 text-white overflow-hidden">
         {/* Animated background elements */}
