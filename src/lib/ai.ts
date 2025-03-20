@@ -243,3 +243,5 @@ function generateConclusionFeedback(score: number) {
     return "Reasonable conclusion, but could be better supported.";
   return "Ensure your conclusion directly addresses the legal issue and follows from your analysis.";
 }
+
+export { openai };

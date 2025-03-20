@@ -16,23 +16,32 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
+  CardDescription,
 } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
 
-// Define the type for practice history
+interface Message {
+  role: "user" | "assistant";
+  content: string;
+}
+
 interface PracticeSession {
   section: string;
   score: number;
   totalQuestions: number;
 }
 
+interface PerformanceData {
+  logicalReasoning: number;
+  analyticalReasoning: number;
+  readingComprehension: number;
+}
+
 export default function AICoach() {
-  const [messages, setMessages] = useState([
+  const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
       content: "How can I help you to clear the bar exam?",
@@ -40,8 +49,8 @@ export default function AICoach() {
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [userData, setUserData] = useState(null);
-  const [performanceData, setPerformanceData] = useState({
+  const [userData, setUserData] = useState<any>(null);
+  const [performanceData, setPerformanceData] = useState<PerformanceData>({
     logicalReasoning: 0,
     analyticalReasoning: 0,
     readingComprehension: 0,
@@ -70,11 +79,9 @@ export default function AICoach() {
   const fetchUserData = async (uid: string) => {
     try {
       const response = await fetch(`/api/user?uuid=${uid}`);
-
       if (!response.ok) {
         throw new Error("Failed to fetch user data");
       }
-
       const data = await response.json();
       setUserData(data);
 
@@ -101,8 +108,8 @@ export default function AICoach() {
   const handleSend = async () => {
     if (!input.trim() || !uuid) return;
 
-    // Add user message
-    setMessages((prev) => [...prev, { role: "user", content: input }]);
+    const userMessage: Message = { role: "user", content: input };
+    setMessages((prev) => [...prev, userMessage]);
     setInput("");
     setIsLoading(true);
 
@@ -114,8 +121,6 @@ export default function AICoach() {
         body: JSON.stringify({ uuid, message: input }),
       });
       const data = await response.json();
-
-      // Add AI response to messages
       setMessages((prev) => [
         ...prev,
         { role: "assistant", content: data.response },
@@ -124,7 +129,7 @@ export default function AICoach() {
       console.error("Failed to send message:", error);
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: "Failed to fetch response from AI" },
+        { role: "assistant", content: "Sorry, something went wrong." },
       ]);
     } finally {
       setIsLoading(false);
@@ -139,9 +144,9 @@ export default function AICoach() {
   };
 
   return (
-    <div className="container mx-auto p-6">
+    <div className="container mx-auto p-6 min-h-screen bg-gray-100 dark:bg-gray-900">
       <div className="mb-6 flex items-center">
-        <Link href="/plain">
+        <Link href="/plan">
           <Button variant="ghost" size="icon">
             <LucideArrowLeft className="h-5 w-5" />
           </Button>
@@ -150,6 +155,7 @@ export default function AICoach() {
       </div>
 
       <div className="grid gap-6 md:grid-cols-3">
+        {/* Left Side: Performance Insights and Recent Activity */}
         <div className="md:col-span-1">
           <Card>
             <CardHeader>
@@ -229,85 +235,78 @@ export default function AICoach() {
           </Card>
         </div>
 
-        <div className="md:col-span-2">
-          <Card className="flex h-[600px] flex-col">
+        {/* Right Side: ChatGPT-like Chat UI */}
+        <div className="md:col-span-2 flex flex-col">
+          <Card className="flex flex-col h-[600px] bg-white dark:bg-gray-800 shadow-sm">
             <CardHeader>
-              <Tabs defaultValue="chat">
-                <TabsList className="grid w-full grid-cols-1">
-                  <TabsTrigger value="chat">Chat with AI Coach</TabsTrigger>
-                </TabsList>
-
-                <TabsContent
-                  value="chat"
-                  className="flex h-full flex-col data-[state=inactive]:hidden"
-                >
-                  <div className="flex-1 overflow-y-auto p-4">
-                    <div className="space-y-4">
-                      {messages.map((message, i) => (
-                        <div
-                          key={i}
-                          className={`flex ${
-                            message.role === "assistant"
-                              ? "justify-start"
-                              : "justify-end"
-                          }`}
-                        >
-                          <div
-                            className={`max-w-[80%] rounded-lg p-3 ${
-                              message.role === "assistant"
-                                ? "bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-slate-100"
-                                : "bg-blue-600 text-white dark:bg-blue-700"
-                            }`}
-                          >
-                            <p className="text-sm">{message.content}</p>
-                          </div>
-                        </div>
-                      ))}
-                      {isLoading && (
-                        <div className="flex justify-start">
-                          <div className="max-w-[80%] rounded-lg bg-slate-100 p-3 dark:bg-slate-800">
-                            <div className="flex space-x-2">
-                              <div className="h-2 w-2 animate-bounce rounded-full bg-slate-400 dark:bg-slate-500"></div>
-                              <div
-                                className="h-2 w-2 animate-bounce rounded-full bg-slate-400 dark:bg-slate-500"
-                                style={{ animationDelay: "0.2s" }}
-                              ></div>
-                              <div
-                                className="h-2 w-2 animate-bounce rounded-full bg-slate-400 dark:bg-slate-500"
-                                style={{ animationDelay: "0.4s" }}
-                              ></div>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                  <div className="border-t p-4">
-                    <div className="flex items-center space-x-2">
-                      <Textarea
-                        placeholder="Ask your AI coach a question..."
-                        value={input}
-                        onChange={(e) => setInput(e.target.value)}
-                        onKeyDown={handleKeyDown}
-                        className="min-h-[60px] flex-1 resize-none"
-                      />
-                      <Button
-                        size="icon"
-                        onClick={handleSend}
-                        disabled={isLoading || !input.trim()}
-                      >
-                        <LucideSend className="h-5 w-5" />
-                      </Button>
-                    </div>
-                    <div className="mt-2 text-xs text-muted-foreground">
-                      Try asking: "What should I focus on to improve my score?"
-                      or "Can you explain assumption questions?"
-                    </div>
-                  </div>
-                </TabsContent>
-              </Tabs>
+              <CardTitle className="text-xl">Chat with AI Coach</CardTitle>
             </CardHeader>
-            <CardContent className="flex-1 overflow-hidden p-0"></CardContent>
+            <CardContent className="flex-1 overflow-y-auto p-4">
+              <div className="space-y-4">
+                {messages.map((message, i) => (
+                  <div
+                    key={i}
+                    className={`flex ${
+                      message.role === "assistant"
+                        ? "justify-start"
+                        : "justify-end"
+                    }`}
+                  >
+                    <div
+                      className={`rounded-lg p-4 max-w-[70%] ${
+                        message.role === "assistant"
+                          ? "bg-gray-100 text-gray-900 dark:bg-gray-700 dark:text-gray-100"
+                          : "bg-blue-500 text-white"
+                      }`}
+                    >
+                      <p className="text-sm leading-relaxed">
+                        {message.content}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+                {isLoading && (
+                  <div className="flex justify-start">
+                    <div className="rounded-lg bg-gray-100 p-4 dark:bg-gray-700">
+                      <div className="flex space-x-2">
+                        <div className="h-2 w-2 animate-bounce rounded-full bg-gray-400 dark:bg-gray-500"></div>
+                        <div
+                          className="h-2 w-2 animate-bounce rounded-full bg-gray-400 dark:bg-gray-500"
+                          style={{ animationDelay: "0.2s" }}
+                        ></div>
+                        <div
+                          className="h-2 w-2 animate-bounce rounded-full bg-gray-400 dark:bg-gray-500"
+                          style={{ animationDelay: "0.4s" }}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+            <div className="border-t p-4 bg-gray-50 dark:bg-gray-900">
+              <div className="flex items-center space-x-2">
+                <Textarea
+                  placeholder="Ask your AI coach a question..."
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  className="flex-1 resize-none rounded-md border-gray-300 bg-white p-3 text-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
+                  rows={2}
+                />
+                <Button
+                  onClick={handleSend}
+                  disabled={isLoading || !input.trim()}
+                  className="rounded-md bg-blue-500 p-2 text-white hover:bg-blue-600 disabled:bg-gray-300 dark:bg-blue-600 dark:hover:bg-blue-700"
+                >
+                  <LucideSend className="h-5 w-5" />
+                </Button>
+              </div>
+              <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                Try asking: "What should I focus on?" or "Explain assumption
+                questions."
+              </p>
+            </div>
           </Card>
         </div>
       </div>

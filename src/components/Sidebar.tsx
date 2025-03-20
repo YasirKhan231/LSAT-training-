@@ -20,6 +20,8 @@ import {
   Crown,
   ChevronDown,
   ChevronRight,
+  FileText,
+  PenTool,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -65,6 +67,23 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     { href: "/dashboard", label: "Dashboard", icon: Home },
     { href: "/practise/mock-exam", label: "Mock Exams", icon: BarChart },
     { href: "/question-bank", label: "Question Bank", icon: BookOpen },
+    {
+      href: "/practise/writing",
+      label: "Writing Practice",
+      icon: PenTool,
+      children: [
+        {
+          href: "/practise/writing/essay",
+          label: "Essay Practice",
+          icon: FileText,
+        },
+        // {
+        //   href: "/practise/writing/performance-test",
+        //   label: "Performance Test",
+        //   icon: FileText,
+        // },
+      ],
+    },
     {
       href: "/case-study",
       label: "Case Studies",
@@ -211,16 +230,16 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           {userLoggedIn ? (
             <div className="space-y-3">
               <div className="px-4 py-2">
-                <p className="text-sm text-gray-600 truncate">
+                <p className="text-sm text-gray-600 truncate bg-gray-100">
                   {auth.currentUser?.email}
                 </p>
               </div>
               <button
                 onClick={handleLogout}
-                className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-red-50 hover:text-red-700 rounded-lg transition-colors duration-200"
+                className="flex items-center w-full px-4 py-2 text-center hover:bg-red-500 text-white rounded-lg transition-colors duration-200 bg-red-600 "
               >
                 <LogOut className="h-5 w-5 mr-3" />
-                <span>Sign Out</span>
+                <span className="text-center">Sign Out</span>
               </button>
             </div>
           ) : (

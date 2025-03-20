@@ -4,7 +4,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { studyPlans, StudyPlanKey } from "@/data/plan"; // Import prebuilt study plans
 
-
 export async function POST(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
@@ -52,7 +51,10 @@ export async function POST(req: NextRequest) {
       !barExamPreparationMaterial ||
       !additionalInformation
     ) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Missing required fields" },
+        { status: 400 }
+      );
     }
 
     // Update the current streak
@@ -66,13 +68,17 @@ export async function POST(req: NextRequest) {
     } else {
       const lastRequestDateObj = new Date(lastRequestDate);
       const currentDateObj = new Date(currentDate);
-      const timeDifference = currentDateObj.getTime() - lastRequestDateObj.getTime();
+      const timeDifference =
+        currentDateObj.getTime() - lastRequestDateObj.getTime();
       const daysDifference = timeDifference / (1000 * 3600 * 24);
 
       if (daysDifference === 1) {
         // Request is on the next day, increment streak by 1
         currentStreak += 1;
-        console.log("Request is on the next day. Streak incremented to:", currentStreak);
+        console.log(
+          "Request is on the next day. Streak incremented to:",
+          currentStreak
+        );
       } else {
         // Request is after a gap of more than one day, reset streak to 1
         currentStreak = 1;
@@ -90,8 +96,10 @@ export async function POST(req: NextRequest) {
       challengingAreas: challengingAreas || userData.challengingAreas,
       specificAreas: specificAreas || userData.specificAreas,
       preferredSchedule: preferredSchedule || userData.preferredSchedule,
-      barExamPreparationMaterial: barExamPreparationMaterial || userData.barExamPreparationMaterial,
-      additionalInformation: additionalInformation || userData.additionalInformation,
+      barExamPreparationMaterial:
+        barExamPreparationMaterial || userData.barExamPreparationMaterial,
+      additionalInformation:
+        additionalInformation || userData.additionalInformation,
       currentStreak, // Update the current streak
       lastRequestDate: currentDate, // Update the last request date
       updatedAt: new Date().toISOString(), // Update the timestamp
@@ -103,15 +111,22 @@ export async function POST(req: NextRequest) {
       console.log("Firestore document updated successfully.");
     } catch (error) {
       console.error("Failed to update Firestore document:", error);
-      return NextResponse.json({ error: "Failed to update Firestore document" }, { status: 500 });
+      return NextResponse.json(
+        { error: "Failed to update Firestore document" },
+        { status: 500 }
+      );
     }
 
-    return NextResponse.json(updatedUserData, { status: 200 });
+    return NextResponse.json(updatedUserData, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
   } catch (error) {
     console.error("Error updating user data:", error);
-    return NextResponse.json({ error: "Failed to update user data" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to update user data" },
+      { status: 500 }
+    );
   }
 }
-
-
-
