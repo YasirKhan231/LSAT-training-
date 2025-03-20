@@ -15,6 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { useUser } from "@/lib/context/UserContext";
 import PremiumFeature from "@/components/PremiumFeature";
 import { Crown } from "lucide-react";
+import { mockExamData } from "@/lib/mockExamQuestion"; // Import mock exam data
 
 // Define the type for an exam
 type Exam = {
@@ -28,78 +29,33 @@ type Exam = {
   isCustomizable?: boolean; // Optional property
 };
 
-// Mock data for available exams
-const availableExams: Exam[] = [
-  {
-    id: "constitutional-law",
-    title: "Constitutional Law",
-    difficulty: "Medium",
-    sections: ["Constitutional Law I", "Constitutional Law II"],
-    duration: 60,
-    questions: 100,
-    aiAssisted: true,
-  },
-  {
-    id: "contracts",
-    title: "Contracts",
-    difficulty: "Hard",
-    sections: ["Contracts I", "Contracts II"],
-    duration: 60,
-    questions: 100,
-    aiAssisted: true,
-  },
-  {
-    id: "criminal-law-procedure",
-    title: "Criminal Law & Procedure",
-    difficulty: "Hard",
-    sections: ["Criminal Law I", "Criminal Procedure I"],
-    duration: 60,
-    questions: 100,
-    aiAssisted: true,
-  },
-  {
-    id: "civil-procedure",
-    title: "Civil Procedure",
-    difficulty: "Medium",
-    sections: ["Civil Procedure I", "Civil Procedure II"],
-    duration: 60,
-    questions: 100,
-    aiAssisted: true,
-  },
-  {
-    id: "evidence",
-    title: "Evidence",
-    difficulty: "Medium",
-    sections: ["Evidence I", "Evidence II"],
-    duration: 60,
-    questions: 100,
-    aiAssisted: true,
-  },
-  {
-    id: "real-property",
-    title: "Real Property",
-    difficulty: "Medium",
-    sections: ["Real Property I", "Real Property II"],
-    duration: 60,
-    questions: 100,
-    aiAssisted: true,
-  },
-  {
-    id: "torts",
-    title: "Torts",
-    difficulty: "Medium",
-    sections: ["Torts I", "Torts II"],
-    duration: 60,
-    questions: 100,
-    aiAssisted: true,
-  },
-];
+// Generate available exams dynamically from mockExamData
+const availableExams: Exam[] = Object.entries(mockExamData).map(
+  ([id, examData]) => {
+    // Calculate total questions and duration
+    const totalQuestions = examData.sections.reduce(
+      (acc, section) => acc + section.questions.length,
+      0
+    );
+    const duration = totalQuestions * 2; // 2 minutes per question
+
+    return {
+      id,
+      title: examData.title,
+      difficulty: "Medium", // Default difficulty, can be customized
+      sections: examData.sections.map((section) => section.title),
+      duration,
+      questions: totalQuestions,
+      aiAssisted: true, // All exams are AI-assisted
+    };
+  }
+);
 
 export default function MockExamPage() {
   const { isSubscriptionActive } = useUser();
   const [selectedExam, setSelectedExam] = useState<string | null>(null);
 
-  // Free users get access to all three exams
+  // Free users get access to all exams
   const availableExamsForUser: Exam[] = isSubscriptionActive
     ? availableExams
     : availableExams;

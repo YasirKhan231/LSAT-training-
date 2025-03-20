@@ -108,7 +108,7 @@ export default function AICoach() {
 
     try {
       // Send message to the backend
-      const response = await fetch(`/api/ai-coach?uuid=${uuid}`, {
+      const response = await fetch(`/api/plan/ai-coach?uuid=${uuid}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ uuid, message: input }),

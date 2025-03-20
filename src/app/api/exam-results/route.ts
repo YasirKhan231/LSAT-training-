@@ -43,7 +43,6 @@ export async function POST(req: Request) {
       totalQuestions,
       correctAnswers,
       totalTimeMinutes,
-      sections,
     } = requestBody;
 
     // Validate required fields
@@ -51,15 +50,13 @@ export async function POST(req: Request) {
       !examId ||
       !totalQuestions ||
       correctAnswers === undefined ||
-      totalTimeMinutes === undefined ||
-      !sections
+      totalTimeMinutes === undefined
     ) {
       console.error("Error: Missing required fields in request", {
         examId,
         totalQuestions,
         correctAnswers,
         totalTimeMinutes,
-        sections,
       });
 
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -81,16 +78,6 @@ export async function POST(req: Request) {
     const incorrectAnswers = totalQuestions - correctAnswers;
     const skippedAnswers = 0; // Assuming no skipped answers for now
 
-    // Prepare section-wise performance data
-    const sectionPerformance = sections.map((section: any) => ({
-      id: section.id,
-      title: section.title,
-      correct: Math.round((correctAnswers / totalQuestions) * section.questions),
-      incorrect: Math.round((incorrectAnswers / totalQuestions) * section.questions),
-      timeSpent: section.timeSpent,
-      averageTimePerQuestion: section.timeSpent / section.questions,
-    }));
-
     // Get strengths and areas for improvement based on examId
     const strengthsAndImprovements = examStrengthsAndImprovements[examId] || {
       strengths: [],
@@ -108,7 +95,6 @@ export async function POST(req: Request) {
       skippedAnswers,
       totalTimeMinutes,
       averageTimePerQuestion,
-      sections: sectionPerformance,
       strengths: strengthsAndImprovements.strengths,
       areasForImprovement: strengthsAndImprovements.areasForImprovement,
       timestamp: new Date().toISOString(), // Current timestamp
@@ -127,34 +113,9 @@ export async function POST(req: Request) {
     // Calculate total marks
     const totalMarks = totalQuestions * 4;
 
-    // Ensure the performance array only contains the seven specific subjects
-    const performanceArray = userData.performance || [];
-    const allowedSubjects = [
-      "constitutional-law",
-      "contracts",
-      "criminal-law-procedure",
-      "civil-procedure",
-      "evidence",
-      "real-property",
-      "torts",
-    ];
-
-    // Filter out any subjects not in the allowed list
-    const filteredPerformance = performanceArray.filter((item: any) =>
-      allowedSubjects.includes(item.examId)
-    );
-
-    // Add the new exam result to the performance array
-    filteredPerformance.push(examResult);
-
-    // Ensure the performance array only contains the last 7 entries
-    if (filteredPerformance.length > 7) {
-      filteredPerformance.splice(0, filteredPerformance.length - 7);
-    }
-
     // Update the user's document with the new exam result, study streak, and total marks
     await userRef.update({
-      performance: filteredPerformance,
+      examResult, // Store the new exam result, replacing the old one
       studyStreak,
       lastStudyDate: today, // Update the last study date
       totalMarks, // Store total marks

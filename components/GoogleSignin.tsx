@@ -57,8 +57,6 @@ export default function GoogleSignIn() {
           performanceInsights: [],
           practiceHistory: [],
           bookmarkedQuestions: [],
-          simulatedExams: [],
-          essays: [], // Changed from logicGames to essays
           specificAreas: [],
           challengingAreas: [],
           payments: [],

@@ -155,15 +155,22 @@ export default function ExamPage() {
     }
 
     // Calculate total correct answers
-    const totalCorrect = Object.values(selectedAnswers).reduce(
-      (acc, answerId) => {
-        const question = examData.sections
-          .flatMap((section) => section.questions)
-          .find((q) => q.id === answerId);
-        return acc + (question?.correctAnswer === answerId ? 1 : 0);
-      },
-      0
-    );
+    let totalCorrect = 0;
+
+    // Iterate over selected answers
+    for (const [questionId, selectedAnswerId] of Object.entries(
+      selectedAnswers
+    )) {
+      // Find the question in the exam data
+      const question = examData.sections
+        .flatMap((section) => section.questions)
+        .find((q) => q.id === questionId);
+
+      // Check if the selected answer is correct
+      if (question && question.correctAnswer === selectedAnswerId) {
+        totalCorrect++;
+      }
+    }
 
     // Calculate total time spent
     const totalTimeMinutes =
@@ -175,15 +182,9 @@ export default function ExamPage() {
     // Prepare data to send to the backend
     const examResults = {
       examId,
-      totalQuestions: examData.sections.flatMap((section) => section.questions)
-        .length,
+      totalQuestions: totalAttempted, // Total questions attempted by the user
       correctAnswers: totalCorrect,
       totalTimeMinutes: Math.round(totalTimeMinutes),
-      sections: examData.sections.map((section, index) => ({
-        id: section.id,
-        title: section.title,
-        timeSpent: timeSpentPerSection[index] || 0,
-      })),
       totalAttempted, // Add total attempted questions
     };
     console.log(examResults);
