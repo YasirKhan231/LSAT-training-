@@ -1,5 +1,5 @@
 // app/constitutional-law/page.tsx
-import { QuestionPractice } from "@/components/question-practise";
+import { QuestionPractice } from "@/components/question-practice";
 
 export default function ConstitutionalLawPage() {
   return (

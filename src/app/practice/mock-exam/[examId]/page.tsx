@@ -204,7 +204,7 @@ export default function ExamPage() {
       }
 
       // Redirect to results page
-      router.push(`/practise/mock-exam/${examId}/results`);
+      router.push(`/practice/mock-exam/${examId}/results`);
     } catch (error) {
       console.log("Error submitting exam results:", error);
     }

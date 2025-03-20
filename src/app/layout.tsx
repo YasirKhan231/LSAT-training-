@@ -27,6 +27,12 @@ export default function RootLayout({
   ];
   const showSidebar = !noSidebarRoutes.includes(pathname);
 
+  // Function to open the sidebar
+  const handleOpenSidebar = () => setIsSidebarOpen(true);
+
+  // Function to close the sidebar
+  const handleCloseSidebar = () => setIsSidebarOpen(false);
+
   return (
     <html lang="en" className={inter.className}>
       <UserProvider>
@@ -35,11 +41,12 @@ export default function RootLayout({
             {showSidebar && (
               <>
                 <MobileMenuButton
-                  onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                  onClick={handleOpenSidebar} // Pass handleOpenSidebar
                 />
                 <Sidebar
                   isOpen={isSidebarOpen}
-                  onClose={() => setIsSidebarOpen(false)}
+                  onClose={handleCloseSidebar} // Pass handleCloseSidebar
+                  onOpen={handleOpenSidebar} // Pass handleOpenSidebar
                 />
               </>
             )}

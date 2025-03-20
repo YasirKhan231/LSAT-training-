@@ -219,7 +219,7 @@ export default function MockExamPage() {
                 </div>
 
                 <div className="mt-6">
-                  <Link href={`/practise/mock-exam/${selectedExam}`}>
+                  <Link href={`/practice/mock-exam/${selectedExam}`}>
                     <Button className="w-full">Start Exam</Button>
                   </Link>
                 </div>

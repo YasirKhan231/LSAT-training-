@@ -60,27 +60,27 @@ export default function Navbar() {
     },
     {
       title: "Practice",
-      href: "/practise/mock-exam",
+      href: "/practice/mock-exam",
       icon: <FileText className="h-5 w-5" />,
     },
     {
       title: "Logic Games",
-      href: "/practise/logic-games",
+      href: "/practice/logic-games",
       icon: <FileText className="h-5 w-5" />,
     },
     {
       title: "Writing Practice",
-      href: "/practise/writing",
+      href: "/practice/writing",
       icon: <PenTool className="h-5 w-5" />,
       subItems: [
         {
           title: "Essay Practice",
-          href: "/practise/writing/essay",
+          href: "/practice/writing/essay",
           icon: <FileText className="h-5 w-5" />,
         },
         {
           title: "Performance Test",
-          href: "/practise/writing/performance-test",
+          href: "/practice/writing/performance-test",
           icon: <FileText className="h-5 w-5" />,
         },
       ],

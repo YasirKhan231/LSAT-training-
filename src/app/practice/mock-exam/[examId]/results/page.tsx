@@ -146,7 +146,7 @@ export default function ResultsPage() {
                 <Download className="h-4 w-4 mr-1" />
                 Export Results
               </Button>
-              <Link href="/practise/mock-exam">
+              <Link href="/practice/mock-exam">
                 <Button size="sm">Take Another Exam</Button>
               </Link>
               <Button size="sm" onClick={() => router.push("/dashboard")}>

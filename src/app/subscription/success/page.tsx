@@ -61,7 +61,7 @@ export default function SubscriptionSuccessPage() {
           <Link href="/dashboard">
             <Button>Go to Dashboard</Button>
           </Link>
-          <Link href="/practise/mock-exam">
+          <Link href="/practice/mock-exam">
             <Button variant="outline">Take a Full-Length Exam</Button>
           </Link>
         </div>

@@ -27,9 +27,10 @@ import {
 interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
+  onOpen: () => void; // Add onOpen prop
 }
 
-export default function Sidebar({ isOpen, onClose }: SidebarProps) {
+export default function Sidebar({ isOpen, onClose, onOpen }: SidebarProps) {
   const [isMobile, setIsMobile] = useState(false);
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
   const pathname = usePathname();
@@ -65,23 +66,18 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
   const navigationItems = [
     { href: "/dashboard", label: "Dashboard", icon: Home },
-    { href: "/practise/mock-exam", label: "Mock Exams", icon: BarChart },
+    { href: "/practice/mock-exam", label: "Mock Exams", icon: BarChart },
     { href: "/question-bank", label: "Question Bank", icon: BookOpen },
     {
-      href: "/practise/writing",
+      href: "/practice/writing",
       label: "Writing Practice",
       icon: PenTool,
       children: [
         {
-          href: "/practise/writing/essay",
+          href: "/practice/writing/essay",
           label: "Essay Practice",
           icon: FileText,
         },
-        // {
-        //   href: "/practise/writing/performance-test",
-        //   label: "Performance Test",
-        //   icon: FileText,
-        // },
       ],
     },
     {
@@ -236,7 +232,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
               </div>
               <button
                 onClick={handleLogout}
-                className="flex items-center w-full px-4 py-2 text-center hover:bg-red-500 text-white rounded-lg transition-colors duration-200 bg-red-600 "
+                className="flex items-center w-full px-4 py-2 text-center bg-white-700 text-black  rounded-lg transition-colors duration-200 hover:bg-red-600 hover:text-white  shadow-sm shadow-black"
               >
                 <LogOut className="h-5 w-5 mr-3" />
                 <span className="text-center">Sign Out</span>
@@ -266,7 +262,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       {/* Hamburger Menu Button */}
       {!isOpen && (
         <button
-          onClick={onClose}
+          onClick={onOpen} // Call onOpen instead of onClose
           className="fixed top-4 left-4 z-50 p-2 rounded-lg bg-blue-600 text-white md:hidden"
           aria-label="Open sidebar"
         >
