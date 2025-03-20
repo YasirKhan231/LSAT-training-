@@ -12,7 +12,6 @@ import {
   Brain,
   GraduationCap,
   LogOut,
-  Menu,
   X,
   Scale,
   ScrollText,
@@ -22,12 +21,13 @@ import {
   ChevronRight,
   FileText,
   PenTool,
+  CreditCard,
 } from "lucide-react";
 
 interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
-  onOpen: () => void; // Add onOpen prop
+  onOpen: () => void;
 }
 
 export default function Sidebar({ isOpen, onClose, onOpen }: SidebarProps) {
@@ -80,6 +80,7 @@ export default function Sidebar({ isOpen, onClose, onOpen }: SidebarProps) {
         },
       ],
     },
+
     {
       href: "/case-study",
       label: "Case Studies",
@@ -91,11 +92,15 @@ export default function Sidebar({ isOpen, onClose, onOpen }: SidebarProps) {
           icon: ScrollText,
         },
         { href: "/case-study/analysis", label: "Legal Analysis", icon: Brain },
-        { href: "/case-study/library", label: "Case Library", icon: Gavel },
       ],
     },
     { href: "/plan", label: "Study Plan", icon: Brain },
     { href: "/plan/ai-coach", label: "AI Coach", icon: GraduationCap },
+    {
+      href: "/subscription",
+      label: "Payment",
+      icon: CreditCard,
+    },
   ];
 
   const overlay = isMobile && isOpen && (
@@ -113,25 +118,37 @@ export default function Sidebar({ isOpen, onClose, onOpen }: SidebarProps) {
           isOpen ? "translate-x-0" : "-translate-x-full"
         } md:translate-x-0 md:w-64 overflow-hidden flex flex-col`}
       >
-        <div className="flex items-center justify-between px-6 py-4 border-b">
-          <Link
-            href="/"
-            className="flex items-center space-x-2"
-            onClick={isMobile ? onClose : undefined}
-          >
-            <span className="text-xl font-bold text-blue-600">
-              BAR Training
-            </span>
-          </Link>
-          {isMobile && (
-            <button
-              onClick={onClose}
-              className="p-2 rounded-lg hover:bg-gray-100"
-              aria-label="Close sidebar"
+        {/* Sidebar Header */}
+        <div className="px-6 py-4 border-b">
+          {/* Mobile Header (hidden on md and above) */}
+          <div className="flex items-center justify-between md:hidden">
+            <Link
+              href="/"
+              className="flex items-center space-x-2"
+              onClick={isMobile ? onClose : undefined}
             >
-              <X className="h-5 w-5 text-gray-500" />
-            </button>
-          )}
+              <span className="text-xl font-bold text-blue-600">
+                BAR Training
+              </span>
+            </Link>
+            {isMobile && (
+              <button
+                onClick={onClose}
+                className="p-2 rounded-lg hover:bg-gray-100"
+                aria-label="Close sidebar"
+              >
+                <X className="h-5 w-5 text-gray-500" />
+              </button>
+            )}
+          </div>
+          {/* Desktop Header (visible on md and above) */}
+          <div className="hidden md:flex items-center">
+            <Link href="/" className="flex items-center space-x-2">
+              <span className="text-xl font-bold text-blue-600">
+                BAR Training
+              </span>
+            </Link>
+          </div>
         </div>
 
         <nav className="flex-1 overflow-y-auto p-4">
@@ -157,7 +174,7 @@ export default function Sidebar({ isOpen, onClose, onOpen }: SidebarProps) {
                       </Link>
                       <button
                         onClick={(e) => {
-                          e.stopPropagation(); // Prevent event bubbling
+                          e.stopPropagation();
                           toggleExpand(item.href);
                         }}
                         className="p-1 hover:bg-gray-100 rounded-lg"
@@ -232,7 +249,7 @@ export default function Sidebar({ isOpen, onClose, onOpen }: SidebarProps) {
               </div>
               <button
                 onClick={handleLogout}
-                className="flex items-center w-full px-4 py-2 text-center bg-white-700 text-black  rounded-lg transition-colors duration-200 hover:bg-red-600 hover:text-white  shadow-sm shadow-black"
+                className="flex items-center w-full px-4 py-2 text-center bg-white-700 text-black rounded-lg transition-colors duration-200 hover:bg-red-600 hover:text-white shadow-sm shadow-black"
               >
                 <LogOut className="h-5 w-5 mr-3" />
                 <span className="text-center">Sign Out</span>
@@ -258,17 +275,6 @@ export default function Sidebar({ isOpen, onClose, onOpen }: SidebarProps) {
           )}
         </div>
       </aside>
-
-      {/* Hamburger Menu Button */}
-      {!isOpen && (
-        <button
-          onClick={onOpen} // Call onOpen instead of onClose
-          className="fixed top-4 left-4 z-50 p-2 rounded-lg bg-blue-600 text-white md:hidden"
-          aria-label="Open sidebar"
-        >
-          <Menu className="h-6 w-6" />
-        </button>
-      )}
     </>
   );
 }

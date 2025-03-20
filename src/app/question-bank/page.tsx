@@ -22,9 +22,9 @@ export default function Home() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold tracking-tight mb-2">
-            AI-Enhanced Bar Exam Question Bank
+        <div className=" mb-12">
+          <h1 className="text-3xl font-bold tracking-tight mb-2">
+            AI-Enhanced bar exam question bank
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Practice with adaptive questions and receive AI-powered explanations

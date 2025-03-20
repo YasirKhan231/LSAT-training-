@@ -1,7 +1,5 @@
 "use client";
-import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Scale, BookOpen, Brain, ArrowRight } from "lucide-react";
 import Link from "next/link";
@@ -11,8 +9,8 @@ export default function CaseStudyPage() {
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6">Interactive Case Studies</h1>
       <p className="text-gray-600 mb-8">
-        Master legal analysis through real case studies with AI-powered feedback
-        and guidance.
+        Master legal analysis with AI-driven case briefing, hypothetical
+        questions, and personalized outlines.
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -26,8 +24,8 @@ export default function CaseStudyPage() {
           </CardHeader>
           <CardContent>
             <p className="text-gray-600 mb-4">
-              Practice analyzing legal cases and writing comprehensive case
-              briefs with AI feedback.
+              Analyze landmark cases, write structured briefs, and get real-time
+              AI feedback and model answers.
             </p>
             <Link href="/case-study/briefing">
               <Button className="w-full">
@@ -41,15 +39,15 @@ export default function CaseStudyPage() {
         {/* Legal Analysis Card */}
         <Card className="hover:shadow-lg transition-shadow">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+            <CardTitle className="flex ideas-center gap-2">
               <Brain className="h-5 w-5 text-blue-600" />
               Legal Analysis
             </CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-gray-600 mb-4">
-              Develop your legal reasoning skills with interactive hypotheticals
-              and AI guidance.
+              Apply legal reasoning to AI-generated hypotheticals with detailed
+              feedback on your analysis.
             </p>
             <Link href="/case-study/analysis">
               <Button className="w-full">
@@ -70,8 +68,8 @@ export default function CaseStudyPage() {
           </CardHeader>
           <CardContent>
             <p className="text-gray-600 mb-4">
-              Access a comprehensive library of landmark cases with detailed
-              explanations.
+              Explore landmark cases and get AI-generated outlines tailored to
+              your study needs.
             </p>
             <Link href="/case-study/library">
               <Button className="w-full">

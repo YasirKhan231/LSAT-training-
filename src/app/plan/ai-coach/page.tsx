@@ -146,12 +146,8 @@ export default function AICoach() {
   return (
     <div className="container mx-auto p-6 min-h-screen bg-gray-100 dark:bg-gray-900">
       <div className="mb-6 flex items-center">
-        <Link href="/plan">
-          <Button variant="ghost" size="icon">
-            <LucideArrowLeft className="h-5 w-5" />
-          </Button>
-        </Link>
-        <h1 className="text-3xl font-bold">AI Coach</h1>
+        
+        <h1 className="text-3xl font-bold">AI coach</h1>
       </div>
 
       <div className="grid gap-6 md:grid-cols-3">

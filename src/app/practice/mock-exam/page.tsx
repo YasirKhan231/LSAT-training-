@@ -65,7 +65,7 @@ export default function MockExamPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <header className="py-8">
           <h1 className="text-3xl font-extrabold text-gray-900">
-            Full-Length BAR Simulated Exams
+            Full-Length BAR simulated exams
           </h1>
           <p className="mt-2 text-lg text-gray-600">
             Take realistic timed BAR practice tests with AI-powered analysis and
