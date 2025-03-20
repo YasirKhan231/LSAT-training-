@@ -1,4 +1,5 @@
 "use client";
+
 import { useParams } from "next/navigation";
 import ProtectedRoute from "../../../../../../components/ProtectRoute";
 import Link from "next/link";
@@ -16,90 +17,308 @@ import {
   Download,
 } from "lucide-react";
 
-// This would come from your API in a real implementation
-const mockResults = {
-  "prep-test-71": {
+import { ExamResults } from "@/lib/types";
+
+// Mock results data
+const mockResults: Record<string, ExamResults> = {
+  "constitutional-law": {
+    title: "Constitutional Law",
     score: 157,
     percentile: 68,
     timestamp: new Date().toISOString(),
     sections: [
       {
-        id: "lr-1",
-        title: "Logical Reasoning I",
-        score: 18, // out of 25
-        timeSpent: 33, // minutes
-        correct: 18,
-        incorrect: 7,
+        id: "cl-1",
+        title: "Constitutional Law I",
+        score: 74,
+        timeSpent: 30,
+        correct: 74,
+        incorrect: 26,
         skipped: 0,
-        averageTimePerQuestion: 79, // seconds
+        averageTimePerQuestion: 72,
       },
       {
-        id: "rc",
-        title: "Reading Comprehension",
-        score: 21, // out of 27
-        timeSpent: 35, // minutes
-        correct: 21,
-        incorrect: 6,
+        id: "cl-2",
+        title: "Constitutional Law II",
+        score: 83,
+        timeSpent: 28,
+        correct: 83,
+        incorrect: 17,
         skipped: 0,
-        averageTimePerQuestion: 77, // seconds
-      },
-      {
-        id: "ar",
-        title: "Analytical Reasoning",
-        score: 16, // out of 23
-        timeSpent: 35, // minutes
-        correct: 16,
-        incorrect: 7,
-        skipped: 0,
-        averageTimePerQuestion: 91, // seconds
-      },
-      {
-        id: "lr-2",
-        title: "Logical Reasoning II",
-        score: 19, // out of 25
-        timeSpent: 34, // minutes
-        correct: 19,
-        incorrect: 6,
-        skipped: 0,
-        averageTimePerQuestion: 81, // seconds
+        averageTimePerQuestion: 68,
       },
     ],
     aiInsights: [
       {
         title: "Timing Analysis",
         content:
-          "You spent more time than average on analytical reasoning questions, particularly those involving grouping rules. Consider practicing more logic games to improve your speed in this area.",
+          "You spent more time than average on questions involving the First Amendment. Consider practicing more questions in this area to improve your speed.",
       },
       {
         title: "Error Patterns",
         content:
-          "In logical reasoning sections, you frequently missed questions involving necessary vs. sufficient conditions. This is a pattern worth addressing through targeted practice.",
+          "You frequently missed questions involving the Equal Protection Clause. This is a pattern worth addressing through targeted practice.",
+      },
+    ],
+    weaknesses: ["First Amendment - Free Speech", "Equal Protection Clause"],
+    strengths: ["Due Process Clause", "Commerce Clause"],
+  },
+  contracts: {
+    title: "Contracts",
+    score: 162,
+    percentile: 72,
+    timestamp: new Date().toISOString(),
+    sections: [
+      {
+        id: "ct-1",
+        title: "Contracts I",
+        score: 78,
+        timeSpent: 32,
+        correct: 78,
+        incorrect: 22,
+        skipped: 0,
+        averageTimePerQuestion: 75,
       },
       {
-        title: "Reading Speed",
+        id: "ct-2",
+        title: "Contracts II",
+        score: 84,
+        timeSpent: 30,
+        correct: 84,
+        incorrect: 16,
+        skipped: 0,
+        averageTimePerQuestion: 70,
+      },
+    ],
+    aiInsights: [
+      {
+        title: "Timing Analysis",
         content:
-          "Your reading speed was consistent across passages, but you could improve comprehension of science-related topics, where you had lower accuracy.",
+          "You maintained a good pace across all sections, with slightly more time spent on questions involving consideration.",
       },
       {
-        title: "Improvement Plan",
+        title: "Error Patterns",
         content:
-          "Based on your performance, I recommend focusing on analytical reasoning games with grouping rules and logical reasoning questions that test conditional logic.",
+          "You missed a few questions involving the Statute of Frauds. This is a pattern worth addressing through targeted practice.",
+      },
+    ],
+    weaknesses: ["Statute of Frauds", "Consideration"],
+    strengths: ["Offer and Acceptance", "Remedies for Breach"],
+  },
+  "criminal-law-procedure": {
+    title: "Criminal Law & Procedure",
+    score: 155,
+    percentile: 65,
+    timestamp: new Date().toISOString(),
+    sections: [
+      {
+        id: "cr-1",
+        title: "Criminal Law I",
+        score: 72,
+        timeSpent: 31,
+        correct: 72,
+        incorrect: 28,
+        skipped: 0,
+        averageTimePerQuestion: 74,
+      },
+      {
+        id: "cr-2",
+        title: "Criminal Procedure I",
+        score: 83,
+        timeSpent: 29,
+        correct: 83,
+        incorrect: 17,
+        skipped: 0,
+        averageTimePerQuestion: 69,
+      },
+    ],
+    aiInsights: [
+      {
+        title: "Timing Analysis",
+        content:
+          "You spent more time than average on questions involving the Fourth Amendment. Consider practicing more questions in this area to improve your speed.",
+      },
+      {
+        title: "Error Patterns",
+        content:
+          "You frequently missed questions involving the Fifth Amendment. This is a pattern worth addressing through targeted practice.",
       },
     ],
     weaknesses: [
-      "Analytical Reasoning - Grouping Games",
-      "Logical Reasoning - Conditional Logic",
-      "Reading Comprehension - Science Passages",
+      "Fourth Amendment - Search and Seizure",
+      "Fifth Amendment - Self-Incrimination",
     ],
-    strengths: [
-      "Logical Reasoning - Assumption Questions",
-      "Reading Comprehension - Humanities Passages",
-      "Pacing on Reading Comprehension",
+    strengths: ["Sixth Amendment - Right to Counsel", "Elements of Crimes"],
+  },
+  "civil-procedure": {
+    title: "Civil Procedure",
+    score: 160,
+    percentile: 70,
+    timestamp: new Date().toISOString(),
+    sections: [
+      {
+        id: "cp-1",
+        title: "Civil Procedure I",
+        score: 76,
+        timeSpent: 33,
+        correct: 76,
+        incorrect: 24,
+        skipped: 0,
+        averageTimePerQuestion: 76,
+      },
+      {
+        id: "cp-2",
+        title: "Civil Procedure II",
+        score: 84,
+        timeSpent: 30,
+        correct: 84,
+        incorrect: 16,
+        skipped: 0,
+        averageTimePerQuestion: 71,
+      },
     ],
+    aiInsights: [
+      {
+        title: "Timing Analysis",
+        content:
+          "You spent more time than average on questions involving jurisdiction. Consider practicing more questions in this area to improve your speed.",
+      },
+      {
+        title: "Error Patterns",
+        content:
+          "You frequently missed questions involving the Erie Doctrine. This is a pattern worth addressing through targeted practice.",
+      },
+    ],
+    weaknesses: ["Jurisdiction", "Erie Doctrine"],
+    strengths: ["Pleadings", "Discovery"],
+  },
+  evidence: {
+    title: "Evidence",
+    score: 158,
+    percentile: 69,
+    timestamp: new Date().toISOString(),
+    sections: [
+      {
+        id: "ev-1",
+        title: "Evidence I",
+        score: 75,
+        timeSpent: 32,
+        correct: 75,
+        incorrect: 25,
+        skipped: 0,
+        averageTimePerQuestion: 73,
+      },
+      {
+        id: "ev-2",
+        title: "Evidence II",
+        score: 83,
+        timeSpent: 30,
+        correct: 83,
+        incorrect: 17,
+        skipped: 0,
+        averageTimePerQuestion: 70,
+      },
+    ],
+    aiInsights: [
+      {
+        title: "Timing Analysis",
+        content:
+          "You spent more time than average on questions involving hearsay. Consider practicing more questions in this area to improve your speed.",
+      },
+      {
+        title: "Error Patterns",
+        content:
+          "You frequently missed questions involving the Best Evidence Rule. This is a pattern worth addressing through targeted practice.",
+      },
+    ],
+    weaknesses: ["Hearsay", "Best Evidence Rule"],
+    strengths: ["Relevance", "Privileges"],
+  },
+  "real-property": {
+    title: "Real Property",
+    score: 164,
+    percentile: 74,
+    timestamp: new Date().toISOString(),
+    sections: [
+      {
+        id: "rp-1",
+        title: "Real Property I",
+        score: 80,
+        timeSpent: 31,
+        correct: 80,
+        incorrect: 20,
+        skipped: 0,
+        averageTimePerQuestion: 72,
+      },
+      {
+        id: "rp-2",
+        title: "Real Property II",
+        score: 84,
+        timeSpent: 29,
+        correct: 84,
+        incorrect: 16,
+        skipped: 0,
+        averageTimePerQuestion: 68,
+      },
+    ],
+    aiInsights: [
+      {
+        title: "Timing Analysis",
+        content:
+          "You spent more time than average on questions involving easements. Consider practicing more questions in this area to improve your speed.",
+      },
+      {
+        title: "Error Patterns",
+        content:
+          "You frequently missed questions involving the Rule Against Perpetuities. This is a pattern worth addressing through targeted practice.",
+      },
+    ],
+    weaknesses: ["Easements", "Rule Against Perpetuities"],
+    strengths: ["Landlord-Tenant Law", "Deeds and Titles"],
+  },
+  torts: {
+    title: "Torts",
+    score: 159,
+    percentile: 71,
+    timestamp: new Date().toISOString(),
+    sections: [
+      {
+        id: "to-1",
+        title: "Torts I",
+        score: 77,
+        timeSpent: 32,
+        correct: 77,
+        incorrect: 23,
+        skipped: 0,
+        averageTimePerQuestion: 74,
+      },
+      {
+        id: "to-2",
+        title: "Torts II",
+        score: 82,
+        timeSpent: 30,
+        correct: 82,
+        incorrect: 18,
+        skipped: 0,
+        averageTimePerQuestion: 70,
+      },
+    ],
+    aiInsights: [
+      {
+        title: "Timing Analysis",
+        content:
+          "You spent more time than average on questions involving negligence. Consider practicing more questions in this area to improve your speed.",
+      },
+      {
+        title: "Error Patterns",
+        content:
+          "You frequently missed questions involving strict liability. This is a pattern worth addressing through targeted practice.",
+      },
+    ],
+    weaknesses: ["Negligence", "Strict Liability"],
+    strengths: ["Intentional Torts", "Defenses to Torts"],
   },
 };
-
-// Mock game data - in a real app, this would come from your database
 
 export default function ResultsPage() {
   const params = useParams();
@@ -110,13 +329,6 @@ export default function ResultsPage() {
   if (!results) {
     return <div>Results not found</div>;
   }
-
-  // const getTotalAnswered = () => {
-  //   return results.sections.reduce(
-  //     (acc, section) => acc + section.correct + section.incorrect,
-  //     0
-  //   );
-  // };
 
   const getTotalQuestions = () => {
     return results.sections.reduce(
@@ -149,7 +361,7 @@ export default function ResultsPage() {
             </div>
           </div>
           <p className="mt-2 text-lg text-gray-600">
-            AI-powered analysis of your PrepTest 71 performance
+            AI-powered analysis of your {results.title} performance
           </p>
         </header>
 
@@ -232,10 +444,6 @@ export default function ResultsPage() {
             <TabsTrigger value="overview">
               <BarChart3 className="h-4 w-4 mr-1" />
               Overview
-            </TabsTrigger>
-            <TabsTrigger value="sections">
-              <Clock className="h-4 w-4 mr-1" />
-              Sections
             </TabsTrigger>
             <TabsTrigger value="ai-analysis">
               <BrainCircuit className="h-4 w-4 mr-1" />
@@ -349,77 +557,6 @@ export default function ResultsPage() {
                   </CardContent>
                 </Card>
               </div>
-            </div>
-          </TabsContent>
-
-          {/* Sections Tab */}
-          <TabsContent value="sections">
-            <div className="space-y-6">
-              {results.sections.map((section) => (
-                <Card key={section.id}>
-                  <CardHeader>
-                    <CardTitle>{section.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <div>
-                        <h3 className="text-sm font-medium text-gray-500 mb-1">
-                          Performance
-                        </h3>
-                        <div className="flex items-baseline">
-                          <span className="text-2xl font-bold">
-                            {section.score}
-                          </span>
-                          <span className="ml-1 text-gray-500">
-                            /{" "}
-                            {section.correct +
-                              section.incorrect +
-                              section.skipped}
-                          </span>
-                        </div>
-                        <div className="flex items-center mt-2 text-sm">
-                          <span className="inline-flex items-center text-green-600 mr-3">
-                            <CheckCircle2 className="h-4 w-4 mr-1" />
-                            {section.correct} correct
-                          </span>
-                          <span className="inline-flex items-center text-red-600">
-                            <XCircle className="h-4 w-4 mr-1" />
-                            {section.incorrect} incorrect
-                          </span>
-                        </div>
-                      </div>
-
-                      <div>
-                        <h3 className="text-sm font-medium text-gray-500 mb-1">
-                          Time
-                        </h3>
-                        <div className="flex items-baseline">
-                          <span className="text-2xl font-bold">
-                            {section.timeSpent}
-                          </span>
-                          <span className="ml-1 text-gray-500">minutes</span>
-                        </div>
-                        <p className="text-sm text-gray-500 mt-2">
-                          ~{section.averageTimePerQuestion} seconds per question
-                        </p>
-                      </div>
-
-                      <div>
-                        <h3 className="text-sm font-medium text-gray-500 mb-1">
-                          AI Insight
-                        </h3>
-                        <p className="text-sm">
-                          {section.id === "ar"
-                            ? "You struggled most with grouping games. Focus on identifying rules more efficiently."
-                            : section.id === "rc"
-                            ? "Strong performance on humanities passages, but science content was challenging."
-                            : "Pay attention to conditional statements and sufficient vs. necessary conditions."}
-                        </p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
             </div>
           </TabsContent>
 

@@ -31,47 +31,67 @@ type Exam = {
 // Mock data for available exams
 const availableExams: Exam[] = [
   {
-    id: "prep-test-71",
-    title: "PrepTest 71",
+    id: "constitutional-law",
+    title: "Constitutional Law",
     difficulty: "Medium",
-    sections: [
-      "Logical Reasoning",
-      "Reading Comprehension",
-      "Analytical Reasoning",
-      "Logical Reasoning",
-    ],
-    duration: 175,
+    sections: ["Constitutional Law I", "Constitutional Law II"],
+    duration: 60,
     questions: 100,
     aiAssisted: true,
   },
   {
-    id: "prep-test-72",
-    title: "PrepTest 72",
+    id: "contracts",
+    title: "Contracts",
     difficulty: "Hard",
-    sections: [
-      "Logical Reasoning",
-      "Reading Comprehension",
-      "Analytical Reasoning",
-      "Logical Reasoning",
-    ],
-    duration: 175,
+    sections: ["Contracts I", "Contracts II"],
+    duration: 60,
     questions: 100,
     aiAssisted: true,
   },
   {
-    id: "custom-exam",
-    title: "Custom AI-Generated Exam",
-    difficulty: "Adaptive",
-    sections: [
-      "Logical Reasoning",
-      "Reading Comprehension",
-      "Analytical Reasoning",
-      "Logical Reasoning",
-    ],
-    duration: 175,
+    id: "criminal-law-procedure",
+    title: "Criminal Law & Procedure",
+    difficulty: "Hard",
+    sections: ["Criminal Law I", "Criminal Procedure I"],
+    duration: 60,
     questions: 100,
     aiAssisted: true,
-    isCustomizable: true, // Add the missing property
+  },
+  {
+    id: "civil-procedure",
+    title: "Civil Procedure",
+    difficulty: "Medium",
+    sections: ["Civil Procedure I", "Civil Procedure II"],
+    duration: 60,
+    questions: 100,
+    aiAssisted: true,
+  },
+  {
+    id: "evidence",
+    title: "Evidence",
+    difficulty: "Medium",
+    sections: ["Evidence I", "Evidence II"],
+    duration: 60,
+    questions: 100,
+    aiAssisted: true,
+  },
+  {
+    id: "real-property",
+    title: "Real Property",
+    difficulty: "Medium",
+    sections: ["Real Property I", "Real Property II"],
+    duration: 60,
+    questions: 100,
+    aiAssisted: true,
+  },
+  {
+    id: "torts",
+    title: "Torts",
+    difficulty: "Medium",
+    sections: ["Torts I", "Torts II"],
+    duration: 60,
+    questions: 100,
+    aiAssisted: true,
   },
 ];
 
@@ -79,71 +99,10 @@ export default function MockExamPage() {
   const { isSubscriptionActive } = useUser();
   const [selectedExam, setSelectedExam] = useState<string | null>(null);
 
-  // Free users only get access to one exam
+  // Free users get access to all three exams
   const availableExamsForUser: Exam[] = isSubscriptionActive
-    ? [
-        // Full list of exams for premium users
-        {
-          id: "prep-test-71",
-          title: "PrepTest 71",
-          difficulty: "Medium",
-          sections: [
-            "Logical Reasoning",
-            "Reading Comprehension",
-            "Analytical Reasoning",
-            "Logical Reasoning",
-          ],
-          duration: 175,
-          questions: 100,
-          aiAssisted: true,
-        },
-        {
-          id: "prep-test-72",
-          title: "PrepTest 72",
-          difficulty: "Hard",
-          sections: [
-            "Logical Reasoning",
-            "Reading Comprehension",
-            "Analytical Reasoning",
-            "Logical Reasoning",
-          ],
-          duration: 175,
-          questions: 100,
-          aiAssisted: true,
-        },
-        {
-          id: "custom-exam",
-          title: "Custom AI-Generated Exam",
-          difficulty: "Adaptive",
-          sections: [
-            "Logical Reasoning",
-            "Reading Comprehension",
-            "Analytical Reasoning",
-            "Logical Reasoning",
-          ],
-          duration: 175,
-          questions: 100,
-          aiAssisted: true,
-          isCustomizable: true, // Add the missing property
-        },
-      ]
-    : [
-        // Limited exams for free users
-        {
-          id: "prep-test-71",
-          title: "PrepTest 71",
-          difficulty: "Medium",
-          sections: [
-            "Logical Reasoning",
-            "Reading Comprehension",
-            "Analytical Reasoning",
-            "Logical Reasoning",
-          ],
-          duration: 175,
-          questions: 100,
-          aiAssisted: true,
-        },
-      ];
+    ? availableExams
+    : availableExams;
 
   return (
     <ProtectedRoute>
@@ -162,14 +121,14 @@ export default function MockExamPage() {
               <div className="flex">
                 <Crown className="h-5 w-5 text-amber-500 mr-2" />
                 <p className="text-amber-800">
-                  Free users get access to one practice exam.
+                  Free users get access to all practice exams.
                   <Link
                     href="/subscription"
                     className="ml-1 font-medium underline"
                   >
                     Upgrade to Premium
                   </Link>
-                  for unlimited exams and AI-powered analysis.
+                  for additional features like AI-powered analysis.
                 </p>
               </div>
             </div>

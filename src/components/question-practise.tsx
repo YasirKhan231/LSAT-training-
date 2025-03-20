@@ -13,7 +13,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Bookmark, BookmarkCheck, ArrowRight, ArrowLeft } from "lucide-react";
-import { getQuestions } from "@/lib/questions"; // Import the getQuestions function
+import { getQuestions } from "@/lib/questionsBankData"; // Import the getQuestions function
 import type { Question, QuestionFeedback } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { QuestionFeedbackComponent } from "@/components/question-feedback";

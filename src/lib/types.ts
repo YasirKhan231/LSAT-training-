@@ -27,3 +27,31 @@ export interface Section {
   description: string
 }
 
+
+// types.ts
+export type SectionResult = {
+  id: string;
+  title: string;
+  score: number;
+  timeSpent: number;
+  correct: number;
+  incorrect: number;
+  skipped: number;
+  averageTimePerQuestion: number;
+};
+
+export type AIInsight = {
+  title: string;
+  content: string;
+};
+
+export type ExamResults = {
+  title: string; // Add the title property
+  score: number;
+  percentile: number;
+  timestamp: string;
+  sections: SectionResult[];
+  aiInsights: AIInsight[];
+  weaknesses: string[];
+  strengths: string[];
+};
