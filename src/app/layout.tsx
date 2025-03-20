@@ -48,7 +48,7 @@ export default function RootLayout({
                 showSidebar ? "md:ml-64" : ""
               } min-h-screen transition-all duration-300`}
             >
-              <div className="p-4 md:p-8">{children}</div>
+              <div className="">{children}</div>
             </main>
           </div>
         </body>
