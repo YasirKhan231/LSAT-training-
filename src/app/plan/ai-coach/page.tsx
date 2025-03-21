@@ -34,10 +34,12 @@ interface PracticeSession {
   totalQuestions: number;
 }
 
-interface PerformanceData {
-  logicalReasoning: number;
-  analyticalReasoning: number;
-  readingComprehension: number;
+interface PerformanceInsight {
+  examId: string;
+  totalQuestions: number;
+  correctAnswers: number;
+  totalTimeMinutes: number;
+  timestamp: string;
 }
 
 export default function AICoach() {
@@ -48,13 +50,11 @@ export default function AICoach() {
     },
   ]);
   const [input, setInput] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isChatLoading, setIsChatLoading] = useState(false); // Separate loading state for chat
+  const [isLoading, setIsLoading] = useState(false); // Loading state for user data
   const [userData, setUserData] = useState<any>(null);
-  const [performanceData, setPerformanceData] = useState<PerformanceData>({
-    logicalReasoning: 0,
-    analyticalReasoning: 0,
-    readingComprehension: 0,
-  });
+  const [performanceInsight, setPerformanceInsight] =
+    useState<PerformanceInsight | null>(null);
   const [practiceHistory, setPracticeHistory] = useState<PracticeSession[]>([]);
   const [uuid, setUuid] = useState<string | null>(null);
   const [userName, setUserName] = useState<string>("User");
@@ -77,6 +77,7 @@ export default function AICoach() {
 
   // Fetch user data from the backend
   const fetchUserData = async (uid: string) => {
+    setIsLoading(true); // Set loading state for user data
     try {
       const response = await fetch(`/api/user?uuid=${uid}`);
       if (!response.ok) {
@@ -85,15 +86,14 @@ export default function AICoach() {
       const data = await response.json();
       setUserData(data);
 
-      // Set performance data
-      if (data.performanceInsights) {
-        setPerformanceData({
-          logicalReasoning: data.performanceInsights.logicalReasoning || 0,
-          analyticalReasoning:
-            data.performanceInsights.analyticalReasoning || 0,
-          readingComprehension:
-            data.performanceInsights.readingComprehension || 0,
-        });
+      // Set the most recent performance insight
+      if (data.performanceInsights && data.performanceInsights.length > 0) {
+        // Sort performanceInsights by timestamp to get the most recent entry
+        const sortedInsights = data.performanceInsights.sort(
+          (a: PerformanceInsight, b: PerformanceInsight) =>
+            new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+        );
+        setPerformanceInsight(sortedInsights[0]); // Set the most recent entry
       }
 
       // Set practice history
@@ -102,6 +102,8 @@ export default function AICoach() {
       }
     } catch (error) {
       console.error("Failed to fetch user data:", error);
+    } finally {
+      setIsLoading(false); // Reset loading state for user data
     }
   };
 
@@ -111,10 +113,10 @@ export default function AICoach() {
     const userMessage: Message = { role: "user", content: input };
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
-    setIsLoading(true);
+    setIsChatLoading(true); // Set loading state for chat
 
     try {
-      // Send message to the backend
+      // Send message to the backend (OpenAI or ChatGPT-like backend)
       const response = await fetch(`/api/plan/ai-coach?uuid=${uuid}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -132,7 +134,7 @@ export default function AICoach() {
         { role: "assistant", content: "Sorry, something went wrong." },
       ]);
     } finally {
-      setIsLoading(false);
+      setIsChatLoading(false); // Reset loading state for chat
     }
   };
 
@@ -146,7 +148,6 @@ export default function AICoach() {
   return (
     <div className="container mx-auto p-6 min-h-screen bg-gray-100 dark:bg-gray-900">
       <div className="mb-6 flex items-center">
-        
         <h1 className="text-3xl font-bold">AI coach</h1>
       </div>
 
@@ -160,42 +161,46 @@ export default function AICoach() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm font-medium">Logical Reasoning</p>
-                    <p className="text-sm font-medium">
-                      {performanceData.logicalReasoning}%
-                    </p>
+                {isLoading ? ( // Use `isLoading` for user data loading
+                  <div className="flex justify-center items-center">
+                    <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
                   </div>
-                  <Progress
-                    value={performanceData.logicalReasoning}
-                    className="h-2"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm font-medium">Analytical Reasoning</p>
-                    <p className="text-sm font-medium">
-                      {performanceData.analyticalReasoning}%
-                    </p>
-                  </div>
-                  <Progress
-                    value={performanceData.analyticalReasoning}
-                    className="h-2"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm font-medium">Reading Comprehension</p>
-                    <p className="text-sm font-medium">
-                      {performanceData.readingComprehension}%
-                    </p>
-                  </div>
-                  <Progress
-                    value={performanceData.readingComprehension}
-                    className="h-2"
-                  />
-                </div>
+                ) : performanceInsight &&
+                  userData?.performanceInsights?.length > 0 ? ( // Use `performanceInsight` and `userData.performanceInsights`
+                  userData.performanceInsights
+                    .slice(0, 3) // Show only the first 3 exams
+                    .map(
+                      (
+                        insight: PerformanceInsight,
+                        index: number // Add type for `insight`
+                      ) => (
+                        <div key={index} className="space-y-2">
+                          <div className="flex items-center justify-between">
+                            <p className="text-sm font-medium capitalize">
+                              {insight.examId.replace(/-/g, " ")}{" "}
+                              {/* Format examId for display */}
+                            </p>
+                            <p className="text-sm font-medium">
+                              {insight.correctAnswers}/{insight.totalQuestions}
+                            </p>
+                          </div>
+                          <Progress
+                            value={
+                              (insight.correctAnswers /
+                                insight.totalQuestions) *
+                              100
+                            }
+                            className="h-2"
+                          />
+                        </div>
+                      )
+                    )
+                ) : (
+                  // Show message if no data is available
+                  <p className="text-xs text-muted-foreground">
+                    No performance data available.
+                  </p>
+                )}
               </div>
 
               <div className="mt-6">
@@ -261,7 +266,7 @@ export default function AICoach() {
                     </div>
                   </div>
                 ))}
-                {isLoading && (
+                {isChatLoading && ( // Use `isChatLoading` for chat loading
                   <div className="flex justify-start">
                     <div className="rounded-lg bg-gray-100 p-4 dark:bg-gray-700">
                       <div className="flex space-x-2">
@@ -292,7 +297,7 @@ export default function AICoach() {
                 />
                 <Button
                   onClick={handleSend}
-                  disabled={isLoading || !input.trim()}
+                  disabled={isChatLoading || !input.trim()} // Use `isChatLoading` for chat
                   className="rounded-md bg-blue-500 p-2 text-white hover:bg-blue-600 disabled:bg-gray-300 dark:bg-blue-600 dark:hover:bg-blue-700"
                 >
                   <LucideSend className="h-5 w-5" />

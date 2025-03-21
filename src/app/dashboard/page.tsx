@@ -18,24 +18,79 @@ import { onAuthStateChanged } from "firebase/auth";
 
 // Define the type for user data
 interface UserData {
+  bookmarkedQuestions: any[];
+  payments: any[];
+  userId: string;
+  email: string;
+  name: string;
+  authProvider: string;
+  subscription: string;
+  createdAt: string;
+  preferredSchedule: string | null;
+  barExamPreparationMaterial: string;
+  onboarded: boolean;
+  additionalInformation: string;
+  weeklyHours: string;
+  currentScore: string;
+  simulatedExams: any[];
+  questionDataKey: string;
+  targetScore: string;
+  StudyStreak: number;
+  specificAreas: string[];
+  challengingAreas: string[];
+  essays: any[];
+  barExamTestDate: string;
+  lastStudyDate: string;
+  PracticeQuestions: number;
   practiceHistory: {
+    sessionId: string;
     timestamp: string;
     section: string;
+    questionIds: string[];
+    responses: {
+      questionId: string;
+      selectedOption: string;
+      isCorrect: boolean;
+    }[];
     score: number;
     totalQuestions: number;
     timeTaken: number;
   }[];
-  currentScore: string;
-  StudyStreak: number;
+  progress: {
+    constitutionalLaw: number;
+    contracts: number;
+    criminalLaw: number;
+    lastUpdated: string | null;
+    readingComprehension: number;
+    logicalReasoning: number;
+    analyticalReasoning: number;
+    testAttempts: number;
+    totalTimeSpent: number;
+  };
+  updatedAt: string;
+  studyStreak: number;
+  totalMarks: number;
+  examResult: {
+    examId: string;
+    barScore: number;
+    percentile: number;
+    totalQuestions: number;
+    correctAnswers: number;
+    incorrectAnswers: number;
+    skippedAnswers: number;
+    totalTimeMinutes: number;
+    averageTimePerQuestion: number;
+    strengths: string[];
+    areasForImprovement: string[];
+    timestamp: string;
+  };
   performanceInsights: {
-    section: string;
-    score: number;
+    examId: string;
+    totalQuestions: number;
+    correctAnswers: number;
+    totalTimeMinutes: number;
+    timestamp: string;
   }[];
-  barExamTestDate: string;
-  PracticeQuestions: number;
-  additionalInformation: string;
-  barExamPreparationMaterial: string;
-  targetScore: string;
 }
 
 export default function DashboardPage() {
@@ -227,14 +282,14 @@ export default function DashboardPage() {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle className="text-base sm:text-lg font-medium text-gray-900">
-                  Section Performance
+                  Performance Insights
                 </CardTitle>
                 <BarChart className="h-4 w-4 sm:h-5 sm:w-5 text-blue-500" />
               </div>
               <CardDescription className="text-xs sm:text-sm">
                 {performanceInsights.length > 0
-                  ? "Your performance across different Bar Exam sections"
-                  : "Practice more to see your performance."}
+                  ? "Your performance across different exams"
+                  : "No performance data available."}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -243,11 +298,20 @@ export default function DashboardPage() {
                   {performanceInsights.map((insight, index) => (
                     <div key={index} className="space-y-1">
                       <div className="flex justify-between text-xs sm:text-sm">
-                        <span>{insight.section}</span>
-                        <span className="font-medium">{insight.score}%</span>
+                        <span>{insight.examId}</span>
+                        <span className="font-medium">
+                          {Math.round(
+                            (insight.correctAnswers / insight.totalQuestions) *
+                              100
+                          )}
+                          %
+                        </span>
                       </div>
                       <Progress
-                        value={insight.score}
+                        value={
+                          (insight.correctAnswers / insight.totalQuestions) *
+                          100
+                        }
                         className="h-2 bg-blue-100"
                         indicatorClassName="bg-blue-600"
                       />

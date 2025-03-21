@@ -59,7 +59,7 @@ export default function CaseStudyPage() {
         </Card>
 
         {/* Case Library Card */}
-        <Card className="hover:shadow-lg transition-shadow">
+        {/* <Card className="hover:shadow-lg transition-shadow">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <BookOpen className="h-5 w-5 text-blue-600" />
@@ -78,7 +78,7 @@ export default function CaseStudyPage() {
               </Button>
             </Link>
           </CardContent>
-        </Card>
+        </Card> */}
       </div>
     </div>
   );

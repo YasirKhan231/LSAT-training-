@@ -113,17 +113,48 @@ export async function POST(req: Request) {
     // Calculate total marks
     const totalMarks = totalQuestions * 4;
 
-    // Update the user's document with the new exam result, study streak, and total marks
+    // Initialize performanceInsights array if it doesn't exist
+    let performanceInsights = userData.performanceInsights || [];
+
+    // Check if the examId already exists in the performanceInsights array
+    const existingExamIndex = performanceInsights.findIndex((exam: any) => exam.examId === examId);
+
+    if (existingExamIndex !== -1) {
+      // Update the existing exam result
+      performanceInsights[existingExamIndex] = {
+        ...performanceInsights[existingExamIndex],
+        totalQuestions,
+        correctAnswers,
+        totalTimeMinutes,
+        timestamp: new Date().toISOString(),
+      };
+    } else {
+      // Add new exam result to the array
+      if (performanceInsights.length >= 7) {
+        // Remove the oldest entry if the array has 7 elements
+        performanceInsights.shift();
+      }
+      performanceInsights.push({
+        examId,
+        totalQuestions,
+        correctAnswers,
+        totalTimeMinutes,
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    // Update the user's document with the new exam result, study streak, total marks, and performanceInsights
     await userRef.update({
       examResult, // Store the new exam result, replacing the old one
       studyStreak,
       lastStudyDate: today, // Update the last study date
       totalMarks, // Store total marks
+      performanceInsights, // Update performanceInsights array
     });
 
     // Return success response
     return NextResponse.json(
-      { message: "Exam results saved successfully", examResult, studyStreak, totalMarks },
+      { message: "Exam results saved successfully", examResult, studyStreak, totalMarks, performanceInsights },
       { status: 200 }
     );
   } catch (error) {
