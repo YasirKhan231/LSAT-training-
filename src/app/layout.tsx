@@ -32,16 +32,16 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.className}>
       <UserProvider>
-        <body className="min-h-screen bg-gray-50">
+        <body className="min-h-screen bg-gray-900">
           {/* Mobile Navigation Bar */}
           {showSidebar && (
-            <nav className="fixed top-0 left-0 right-0 z-50 bg-white shadow-md md:hidden flex items-center justify-between px-4 py-3">
-              <span className="text-xl font-bold text-blue-600">
+            <nav className="fixed top-0 left-0 right-0 z-50 bg-gray-800/5 shadow-md md:hidden flex items-center justify-between px-4 py-3">
+              <span className="text-xl font-bold text-indigo-400">
                 BAR Training
               </span>
               <button
                 onClick={handleOpenSidebar}
-                className="p-2 rounded-lg hover:bg-gray-100"
+                className="p-2 rounded-lg hover:bg-gray-700/10"
                 aria-label="Open sidebar"
               >
                 <svg
@@ -50,7 +50,7 @@ export default function RootLayout({
                   viewBox="0 0 24 24"
                   strokeWidth={2}
                   stroke="currentColor"
-                  className="h-6 w-6 text-gray-700"
+                  className="h-6 w-6 text-gray-400"
                 >
                   <path
                     strokeLinecap="round"
@@ -75,7 +75,7 @@ export default function RootLayout({
                 showSidebar ? "md:ml-64 pt-16 md:pt-0" : ""
               } min-h-screen transition-all duration-300`}
             >
-              <div className="">{children}</div>
+              <div className="text-gray-100">{children}</div>
             </main>
           </div>
         </body>

@@ -86,12 +86,12 @@ export default function GoogleSignIn() {
       <button
         onClick={handleGoogleSignIn}
         disabled={isLoading}
-        className="w-full flex justify-center items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        className="w-full flex justify-center items-center px-4 py-2 border border-slate-700 rounded-md shadow-sm text-sm font-medium text-slate-300 bg-slate-800 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
       >
         {isLoading ? (
           <div className="flex items-center">
             <svg
-              className="animate-spin -ml-1 mr-2 h-4 w-4 text-gray-700"
+              className="animate-spin -ml-1 mr-2 h-4 w-4 text-slate-300"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -118,7 +118,7 @@ export default function GoogleSignIn() {
       </button>
 
       {error && (
-        <div className="mt-3 text-sm text-center text-red-600">{error}</div>
+        <div className="mt-3 text-sm text-center text-red-400">{error}</div>
       )}
     </div>
   );

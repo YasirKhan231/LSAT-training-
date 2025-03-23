@@ -105,7 +105,7 @@ export default function ExamPage() {
   }, [timeRemaining, examStarted, section, currentSection]);
 
   if (!examData) {
-    return <div>Exam not found</div>;
+    return <div className="text-slate-300">Exam not found</div>;
   }
 
   const startExam = () => {
@@ -213,18 +213,22 @@ export default function ExamPage() {
   if (!examStarted) {
     return (
       <ProtectedRoute>
-        <div className="max-w-4xl mx-auto px-4 py-12">
-          <Card>
+        <div className="max-w-4xl mx-auto px-4 py-12 bg-slate-950">
+          <Card className="bg-slate-900 border-slate-800">
             <CardHeader>
-              <CardTitle className="text-2xl">{examData.title}</CardTitle>
-              <p className="text-gray-600">
+              <CardTitle className="text-2xl text-slate-100">
+                {examData.title}
+              </CardTitle>
+              <p className="text-slate-400">
                 You are about to start a full-length BAR practice exam.
               </p>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <h3 className="font-semibold">This exam includes:</h3>
-                <ul className="list-disc pl-5 space-y-2">
+                <h3 className="font-semibold text-slate-100">
+                  This exam includes:
+                </h3>
+                <ul className="list-disc pl-5 space-y-2 text-slate-300">
                   {examData.sections.map((section, index) => (
                     <li key={index}>
                       {section.title} - {section.duration} minutes
@@ -232,11 +236,11 @@ export default function ExamPage() {
                   ))}
                 </ul>
 
-                <div className="bg-amber-50 p-4 rounded-md border border-amber-200 mt-6">
-                  <h3 className="font-semibold text-amber-800">
+                <div className="bg-amber-900/20 p-4 rounded-md border border-amber-800 mt-6">
+                  <h3 className="font-semibold text-amber-300">
                     Important Information:
                   </h3>
-                  <ul className="text-amber-700 mt-2 space-y-1 text-sm">
+                  <ul className="text-amber-400 mt-2 space-y-1 text-sm">
                     <li>
                       • This is a timed exam. Each section has a strict time
                       limit.
@@ -260,7 +264,10 @@ export default function ExamPage() {
               </div>
             </CardContent>
             <CardFooter>
-              <Button className="w-full" onClick={startExam}>
+              <Button
+                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white"
+                onClick={startExam}
+              >
                 Begin Exam
               </Button>
             </CardFooter>
@@ -272,13 +279,15 @@ export default function ExamPage() {
 
   return (
     <ProtectedRoute>
-      <div className="max-w-4xl mx-auto px-4 py-6">
+      <div className="max-w-4xl mx-auto px-4 py-6 bg-slate-950">
         {/* Header with timer and progress */}
-        <div className="bg-white p-4 rounded-md shadow mb-6 sticky top-0 z-10">
+        <div className="bg-slate-900 p-4 rounded-md shadow mb-6 sticky top-0 z-10 border border-slate-800">
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="font-semibold text-lg">{section.title}</h1>
-              <div className="text-sm text-gray-500">
+              <h1 className="font-semibold text-lg text-slate-100">
+                {section.title}
+              </h1>
+              <div className="text-sm text-slate-400">
                 Question {currentQuestion + 1} of {section.questions.length}
               </div>
             </div>
@@ -286,7 +295,7 @@ export default function ExamPage() {
             <div className="flex items-center space-x-4">
               <div
                 className={`flex items-center space-x-1 ${
-                  timeRemaining < 300 ? "text-red-600" : "text-gray-700"
+                  timeRemaining < 300 ? "text-red-400" : "text-slate-300"
                 }`}
               >
                 <Clock className="h-4 w-4" />
@@ -300,7 +309,7 @@ export default function ExamPage() {
                 variant="outline"
                 size="sm"
                 onClick={handleExamCompletion}
-                className="hover:bg-blue-50 hover:text-blue-700 cursor-pointer"
+                className="bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-700"
               >
                 Exit
               </Button>
@@ -311,6 +320,7 @@ export default function ExamPage() {
                 size="sm"
                 onClick={handleRequestHint}
                 disabled={hintsUsed >= 3 || showHint}
+                className="bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-700 disabled:bg-slate-800/50 disabled:text-slate-500"
               >
                 <HelpCircle className="h-4 w-4 mr-1" />
                 Hint ({3 - hintsUsed} left)
@@ -320,23 +330,25 @@ export default function ExamPage() {
 
           <Progress
             value={(currentQuestion / section.questions.length) * 100}
-            className="mt-2"
+            className="mt-2 bg-slate-800"
           />
         </div>
 
         {/* Question */}
-        <div className="bg-white p-6 rounded-md shadow mb-6">
+        <div className="bg-slate-900 p-6 rounded-md shadow mb-6 border border-slate-800">
           {/* Reading stimulus */}
           {question.stimulus && (
-            <div className="mb-6 p-4 bg-gray-50 rounded-md border border-gray-200">
-              <p className="text-gray-800 leading-relaxed">
+            <div className="mb-6 p-4 bg-slate-800 rounded-md border border-slate-700">
+              <p className="text-slate-200 leading-relaxed">
                 {question.stimulus}
               </p>
             </div>
           )}
 
           {/* Question text */}
-          <h2 className="text-lg font-medium mb-4">{question.text}</h2>
+          <h2 className="text-lg font-medium mb-4 text-slate-100">
+            {question.text}
+          </h2>
 
           {/* Answer choices */}
           <RadioGroup
@@ -347,12 +359,16 @@ export default function ExamPage() {
             {question.choices.map((choice) => (
               <div
                 key={choice.id}
-                className="flex items-start space-x-2 p-2 rounded-md hover:bg-gray-50"
+                className="flex items-start space-x-2 p-2 rounded-md hover:bg-slate-800 border border-slate-800 hover:border-slate-700"
               >
-                <RadioGroupItem value={choice.id} id={`choice-${choice.id}`} />
+                <RadioGroupItem
+                  value={choice.id}
+                  id={`choice-${choice.id}`}
+                  className="border-slate-700"
+                />
                 <Label
                   htmlFor={`choice-${choice.id}`}
-                  className="cursor-pointer flex-1 leading-normal"
+                  className="cursor-pointer flex-1 leading-normal text-slate-200"
                 >
                   <span className="font-semibold">{choice.id}.</span>{" "}
                   {choice.text}
@@ -363,9 +379,9 @@ export default function ExamPage() {
 
           {/* AI Hint */}
           {showHint && (
-            <div className="mt-6 p-4 bg-blue-50 rounded-md border border-blue-200">
-              <h3 className="font-medium text-blue-800 mb-2">AI Hint:</h3>
-              <p className="text-blue-700 text-sm">
+            <div className="mt-6 p-4 bg-indigo-900/20 rounded-md border border-indigo-800">
+              <h3 className="font-medium text-indigo-300 mb-2">AI Hint:</h3>
+              <p className="text-indigo-400 text-sm">
                 Consider what the passage identifies as a "recent historical
                 development" and which answer choice most directly addresses
                 this central theme. Focus on the first sentence of the passage
@@ -381,6 +397,7 @@ export default function ExamPage() {
           <Button
             onClick={handleNextQuestion}
             disabled={!selectedAnswers[question.id]}
+            className="bg-indigo-600 hover:bg-indigo-700 text-white disabled:bg-slate-700 disabled:text-slate-400"
           >
             {currentQuestion < section.questions.length - 1
               ? "Next Question"

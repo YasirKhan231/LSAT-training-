@@ -9,12 +9,15 @@ import {
   LucideClock,
   LucideTarget,
   LucideBarChart,
+  LucideChevronLeft,
+  LucideChevronRight,
+  LucideCheck,
+  LucideShield,
 } from "lucide-react";
 import { DayPicker } from "react-day-picker";
-import "react-day-picker/dist/style.css"; // Default styling for react-day-picker
+import "react-day-picker/dist/style.css";
 import { useToast } from "@/hooks/use-toast";
-import { getAuth, getIdToken } from "firebase/auth"; // Firebase Auth
-import { onAuthStateChanged } from "firebase/auth";
+import { getAuth, getIdToken, onAuthStateChanged } from "firebase/auth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -32,7 +35,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Slider } from "@/components/ui/slider";
+import { cn } from "@/lib/utils";
 
 type OnboardingStep =
   | "exam-date"
@@ -51,7 +54,7 @@ export default function OnboardingForm() {
   const { toast } = useToast();
   const [step, setStep] = useState<OnboardingStep>("exam-date");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [uuid, setUuid] = useState<string | null>(null); // State to store the UUID
+  const [uuid, setUuid] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     barExamTestDate: undefined as Date | undefined,
     targetScore: "",
@@ -69,7 +72,7 @@ export default function OnboardingForm() {
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        setUuid(user.uid); // Set the UUID
+        setUuid(user.uid);
       } else {
         console.error("User not authenticated");
         setUuid(null);
@@ -146,7 +149,7 @@ export default function OnboardingForm() {
     } else if (step === "barExamPreparationMaterial") {
       if (!formData.barExamPreparationMaterial) {
         toast("Missing information", {
-          description: "Please select your BAR prep barExamPreparationMaterial",
+          description: "Please select your BAR prep material",
           variant: "destructive",
         });
         return;
@@ -196,7 +199,7 @@ export default function OnboardingForm() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${idToken}`, // Include the ID token in the request
+          Authorization: `Bearer ${idToken}`,
         },
         body: JSON.stringify(formData),
       });
@@ -242,7 +245,7 @@ export default function OnboardingForm() {
       case "focus-areas":
         return "Do you have any specific areas you want to focus on?";
       case "barExamPreparationMaterial":
-        return "What BAR prep barExamPreparationMaterial do you have access to?";
+        return "What BAR prep material do you have access to?";
       case "additional-info":
         return "Any additional information you'd like to share?";
       case "review":
@@ -252,45 +255,56 @@ export default function OnboardingForm() {
     }
   };
 
+  const getStepIcon = () => {
+    switch (step) {
+      case "exam-date":
+        return <LucideCalendar className="h-6 w-6 text-cyan-400" />;
+      case "target-score":
+        return <LucideTarget className="h-6 w-6 text-cyan-400" />;
+      case "current-score":
+        return <LucideBarChart className="h-6 w-6 text-cyan-400" />;
+      case "study-hours":
+        return <LucideClock className="h-6 w-6 text-cyan-400" />;
+      default:
+        return <LucideShield className="h-6 w-6 text-cyan-400" />;
+    }
+  };
+
+  const steps: OnboardingStep[] = [
+    "exam-date",
+    "target-score",
+    "current-score",
+    "study-hours",
+    "challenging-areas",
+    "preferred-schedule",
+    "focus-areas",
+    "barExamPreparationMaterial",
+    "additional-info",
+    "review",
+  ];
+
+  const currentStepIndex = steps.indexOf(step);
+
   return (
-    <div className="flex items-center justify-center min-h-screen p-4 bg-slate-50/50">
-      <Card className="w-full max-w-md mx-auto shadow-lg border border-blue-100">
-        <CardHeader className="pb-4 space-y-0">
-          <CardTitle className="text-xl font-medium text-center">
+    <div className="dark flex items-center justify-center min-h-screen p-4 bg-gradient-to-b from-slate-900 via-slate-900 to-black">
+      <Card className="w-full max-w-md mx-auto shadow-xl border border-slate-800 bg-gradient-to-b from-slate-900 to-slate-950 backdrop-blur-sm">
+        <CardHeader className="pb-4 space-y-2">
+          <div className="flex items-center justify-center mb-2">
+            {getStepIcon()}
+          </div>
+          <CardTitle className="text-xl font-medium text-center text-white">
             {getStepTitle()}
           </CardTitle>
 
           {/* Progress indicator */}
           <div className="flex mt-4 justify-between">
-            {[
-              "exam-date",
-              "target-score",
-              "current-score",
-              "study-hours",
-              "challenging-areas",
-              "preferred-schedule",
-              "focus-areas",
-              "barExamPreparationMaterial",
-              "additional-info",
-              "review",
-            ].map((s, i) => (
+            {steps.map((s, i) => (
               <div
                 key={s}
                 className={`h-1.5 rounded-full flex-1 mx-0.5 transition-colors ${
-                  [
-                    "exam-date",
-                    "target-score",
-                    "current-score",
-                    "study-hours",
-                    "challenging-areas",
-                    "preferred-schedule",
-                    "focus-areas",
-                    "barExamPreparationMaterial",
-                    "additional-info",
-                    "review",
-                  ].indexOf(step) >= i
-                    ? "bg-blue-500"
-                    : "bg-blue-100"
+                  currentStepIndex >= i
+                    ? "bg-gradient-to-r from-cyan-500 to-blue-500"
+                    : "bg-slate-800"
                 }`}
               />
             ))}
@@ -302,15 +316,17 @@ export default function OnboardingForm() {
           {step === "exam-date" && (
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="exam-date">Exam Date</Label>
+                <Label htmlFor="exam-date" className="text-slate-300">
+                  Exam Date
+                </Label>
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button
                       variant="outline"
-                      className="w-full justify-start text-left font-normal"
+                      className="w-full justify-start text-left font-normal border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-300"
                       id="exam-date"
                     >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      <CalendarIcon className="mr-2 h-4 w-4 text-cyan-400" />
                       {formData.barExamTestDate ? (
                         formData.barExamTestDate.toLocaleDateString()
                       ) : (
@@ -318,7 +334,7 @@ export default function OnboardingForm() {
                       )}
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0">
+                  <PopoverContent className="w-auto p-0 bg-slate-800 border-slate-700">
                     <DayPicker
                       mode="single"
                       selected={formData.barExamTestDate}
@@ -328,7 +344,16 @@ export default function OnboardingForm() {
                           barExamTestDate: date || undefined,
                         })
                       }
-                      disabled={{ before: new Date() }} // Disable past dates
+                      disabled={{ before: new Date() }}
+                      className="custom-day-picker"
+                      classNames={{
+                        day_selected: "bg-cyan-500 text-slate-900",
+                        day_today: "text-cyan-400",
+                        button: "text-slate-300 hover:bg-slate-700",
+                        caption: "text-slate-300",
+                        nav_button: "text-slate-300 hover:bg-slate-700",
+                        head_cell: "text-slate-400",
+                      }}
                     />
                   </PopoverContent>
                 </Popover>
@@ -340,7 +365,9 @@ export default function OnboardingForm() {
           {step === "target-score" && (
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="target-score">Target Score (260-400)</Label>
+                <Label htmlFor="target-score" className="text-slate-300">
+                  Target Score (260-400)
+                </Label>
                 <Input
                   id="target-score"
                   type="number"
@@ -352,12 +379,12 @@ export default function OnboardingForm() {
                     setFormData({ ...formData, targetScore: value });
                   }}
                   placeholder="Enter your target score"
+                  className="border-slate-700 bg-slate-800 text-slate-300 placeholder:text-slate-500 focus:ring-cyan-500"
                 />
-                {/* Error message for invalid target score */}
                 {formData.targetScore &&
                   (Number(formData.targetScore) < 260 ||
                     Number(formData.targetScore) > 400) && (
-                    <p className="text-sm text-red-500">
+                    <p className="text-sm text-red-400">
                       Target score must be between 260 and 400.
                     </p>
                   )}
@@ -369,7 +396,9 @@ export default function OnboardingForm() {
           {step === "current-score" && (
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="current-score">Current Score (260-400)</Label>
+                <Label htmlFor="current-score" className="text-slate-300">
+                  Current Score (260-400)
+                </Label>
                 <Input
                   id="current-score"
                   type="number"
@@ -381,12 +410,12 @@ export default function OnboardingForm() {
                     setFormData({ ...formData, currentScore: value });
                   }}
                   placeholder="Enter your current score"
+                  className="border-slate-700 bg-slate-800 text-slate-300 placeholder:text-slate-500 focus:ring-cyan-500"
                 />
-                {/* Error message for invalid current score */}
                 {formData.currentScore &&
                   (Number(formData.currentScore) < 260 ||
                     Number(formData.currentScore) > 400) && (
-                    <p className="text-sm text-red-500">
+                    <p className="text-sm text-red-400">
                       Current score must be between 260 and 400.
                     </p>
                   )}
@@ -398,17 +427,22 @@ export default function OnboardingForm() {
           {step === "study-hours" && (
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="study-hours">Weekly Study Hours</Label>
+                <Label htmlFor="study-hours" className="text-slate-300">
+                  Weekly Study Hours
+                </Label>
                 <Select
                   value={formData.studyHours}
                   onValueChange={(value) =>
                     setFormData({ ...formData, studyHours: value })
                   }
                 >
-                  <SelectTrigger id="study-hours">
+                  <SelectTrigger
+                    id="study-hours"
+                    className="border-slate-700 bg-slate-800 text-slate-300"
+                  >
                     <SelectValue placeholder="Select study hours" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-slate-800 border-slate-700 text-slate-300">
                     <SelectItem value="1-5">1-5 hours</SelectItem>
                     <SelectItem value="6-10">6-10 hours</SelectItem>
                     <SelectItem value="11-15">11-15 hours</SelectItem>
@@ -424,52 +458,45 @@ export default function OnboardingForm() {
           {step === "challenging-areas" && (
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label>Which section do you find most challenging?</Label>
+                <Label className="text-slate-300">
+                  Which section do you find most challenging?
+                </Label>
                 <RadioGroup
                   value={formData.challengingAreas[0] || ""}
                   onValueChange={(value) =>
                     setFormData({ ...formData, challengingAreas: [value] })
                   }
+                  className="space-y-2"
                 >
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem
-                      value="Constitutional"
-                      id="Constitutional"
-                    />
-                    <Label htmlFor="Constitutional">Constitutional Law</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="Contracts" id="Contracts" />
-                    <Label htmlFor="Contracts">Contracts</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem
-                      value="Criminal Law & Procedure"
-                      id="Criminal Law & Procedure"
-                    />
-                    <Label htmlFor="Criminal Law & Procedure">
-                      Criminal Law & Procedure
-                    </Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem
-                      value="Civil Procedure"
-                      id="Civil Procedure"
-                    />
-                    <Label htmlFor="Civil Procedure">Civil Procedure</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="Evidence" id="Evidence" />
-                    <Label htmlFor="Evidence">Evidence</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="Real Property" id="Real Property" />
-                    <Label htmlFor="Real Property">Real Property</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="Torts" id="Torts" />
-                    <Label htmlFor="Torts">Torts</Label>
-                  </div>
+                  {[
+                    { value: "Constitutional", label: "Constitutional Law" },
+                    { value: "Contracts", label: "Contracts" },
+                    {
+                      value: "Criminal Law & Procedure",
+                      label: "Criminal Law & Procedure",
+                    },
+                    { value: "Civil Procedure", label: "Civil Procedure" },
+                    { value: "Evidence", label: "Evidence" },
+                    { value: "Real Property", label: "Real Property" },
+                    { value: "Torts", label: "Torts" },
+                  ].map((item) => (
+                    <div
+                      key={item.value}
+                      className="flex items-center space-x-2 p-2 rounded-md hover:bg-slate-800 transition-colors"
+                    >
+                      <RadioGroupItem
+                        value={item.value}
+                        id={item.value}
+                        className="border-slate-600 text-cyan-400"
+                      />
+                      <Label
+                        htmlFor={item.value}
+                        className="text-slate-300 cursor-pointer w-full"
+                      >
+                        {item.label}
+                      </Label>
+                    </div>
+                  ))}
                 </RadioGroup>
               </div>
             </div>
@@ -479,25 +506,38 @@ export default function OnboardingForm() {
           {step === "preferred-schedule" && (
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label>What is your preferred study schedule?</Label>
+                <Label className="text-slate-300">
+                  What is your preferred study schedule?
+                </Label>
                 <RadioGroup
                   value={formData.preferredSchedule}
                   onValueChange={(value) =>
                     setFormData({ ...formData, preferredSchedule: value })
                   }
+                  className="space-y-2"
                 >
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="weekday" id="weekday" />
-                    <Label htmlFor="weekday">Weekdays (Monday-Friday)</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="weekend" id="weekend" />
-                    <Label htmlFor="weekend">Weekends (Saturday-Sunday)</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="everyday" id="everyday" />
-                    <Label htmlFor="everyday">Every day</Label>
-                  </div>
+                  {[
+                    { value: "weekday", label: "Weekdays (Monday-Friday)" },
+                    { value: "weekend", label: "Weekends (Saturday-Sunday)" },
+                    { value: "everyday", label: "Every day" },
+                  ].map((item) => (
+                    <div
+                      key={item.value}
+                      className="flex items-center space-x-2 p-2 rounded-md hover:bg-slate-800 transition-colors"
+                    >
+                      <RadioGroupItem
+                        value={item.value}
+                        id={item.value}
+                        className="border-slate-600 text-cyan-400"
+                      />
+                      <Label
+                        htmlFor={item.value}
+                        className="text-slate-300 cursor-pointer w-full"
+                      >
+                        {item.label}
+                      </Label>
+                    </div>
+                  ))}
                 </RadioGroup>
               </div>
             </div>
@@ -507,10 +547,10 @@ export default function OnboardingForm() {
           {step === "focus-areas" && (
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label>
+                <Label className="text-slate-300">
                   Do you have any specific areas you want to focus on?
                 </Label>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 gap-2">
                   {[
                     { id: "constitutionalLaw", label: "Constitutional Law" },
                     { id: "contracts", label: "Contracts" },
@@ -520,23 +560,41 @@ export default function OnboardingForm() {
                     { id: "torts", label: "Torts" },
                     { id: "civilProcedure", label: "Civil Procedure" },
                   ].map((area) => (
-                    <div key={area.id} className="flex items-center space-x-2">
-                      <input
-                        type="checkbox"
-                        id={area.id}
-                        checked={formData.focusAreas.includes(area.id)}
-                        onChange={(e) => {
-                          const updatedAreas = e.target.checked
-                            ? [...formData.focusAreas, area.id]
-                            : formData.focusAreas.filter((a) => a !== area.id);
-                          setFormData({
-                            ...formData,
-                            focusAreas: updatedAreas,
-                          });
-                        }}
-                        className="rounded border-gray-300"
-                      />
-                      <Label htmlFor={area.id}>{area.label}</Label>
+                    <div
+                      key={area.id}
+                      className={cn(
+                        "flex items-center space-x-2 p-3 rounded-md transition-colors cursor-pointer",
+                        formData.focusAreas.includes(area.id)
+                          ? "bg-slate-800 border border-cyan-500/50"
+                          : "hover:bg-slate-800/50 border border-slate-800"
+                      )}
+                      onClick={() => {
+                        const updatedAreas = formData.focusAreas.includes(
+                          area.id
+                        )
+                          ? formData.focusAreas.filter((a) => a !== area.id)
+                          : [...formData.focusAreas, area.id];
+                        setFormData({
+                          ...formData,
+                          focusAreas: updatedAreas,
+                        });
+                      }}
+                    >
+                      <div
+                        className={cn(
+                          "w-5 h-5 flex items-center justify-center rounded border",
+                          formData.focusAreas.includes(area.id)
+                            ? "bg-cyan-500 border-cyan-500 text-slate-900"
+                            : "border-slate-600"
+                        )}
+                      >
+                        {formData.focusAreas.includes(area.id) && (
+                          <LucideCheck className="h-3.5 w-3.5" />
+                        )}
+                      </div>
+                      <Label className="text-slate-300 cursor-pointer">
+                        {area.label}
+                      </Label>
                     </div>
                   ))}
                 </div>
@@ -548,9 +606,11 @@ export default function OnboardingForm() {
           {step === "barExamPreparationMaterial" && (
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="barExamPreparationMaterial">
-                  What BAR prep barExamPreparationMaterial do you have access
-                  to?
+                <Label
+                  htmlFor="barExamPreparationMaterial"
+                  className="text-slate-300"
+                >
+                  What BAR prep material do you have access to?
                 </Label>
                 <Select
                   value={formData.barExamPreparationMaterial}
@@ -561,10 +621,13 @@ export default function OnboardingForm() {
                     })
                   }
                 >
-                  <SelectTrigger id="barExamPreparationMaterial">
-                    <SelectValue placeholder="Select barExamPreparationMaterial" />
+                  <SelectTrigger
+                    id="barExamPreparationMaterial"
+                    className="border-slate-700 bg-slate-800 text-slate-300"
+                  >
+                    <SelectValue placeholder="Select material" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-slate-800 border-slate-700 text-slate-300">
                     <SelectItem value="official">
                       Official BAR PrepTests
                     </SelectItem>
@@ -585,13 +648,13 @@ export default function OnboardingForm() {
           {step === "additional-info" && (
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="additional">
+                <Label htmlFor="additional" className="text-slate-300">
                   Any additional information you'd like to share?
                 </Label>
-                <Input
+                <textarea
                   id="additional"
                   placeholder="E.g., specific challenges, learning style, etc."
-                  className="h-20"
+                  className="w-full h-32 px-3 py-2 rounded-md border border-slate-700 bg-slate-800 text-slate-300 placeholder:text-slate-500 focus:ring-cyan-500 focus:border-cyan-500 focus:outline-none resize-none"
                   value={formData.additionalInfo}
                   onChange={(e) =>
                     setFormData({ ...formData, additionalInfo: e.target.value })
@@ -604,65 +667,53 @@ export default function OnboardingForm() {
           {/* Step 10: Review */}
           {step === "review" && (
             <div className="space-y-4">
-              <div className="space-y-3 text-sm rounded-md border p-4 bg-slate-50">
-                <div className="flex justify-between py-2 border-b">
-                  <span className="text-muted-foreground">Exam Date</span>
-                  <span className="font-medium">
-                    {formData.barExamTestDate
+              <div className="space-y-3 text-sm rounded-md border border-slate-700 p-4 bg-slate-800/50">
+                {[
+                  {
+                    label: "Exam Date",
+                    value: formData.barExamTestDate
                       ? formData.barExamTestDate.toLocaleDateString()
-                      : "Not set"}
-                  </span>
-                </div>
-                <div className="flex justify-between py-2 border-b">
-                  <span className="text-muted-foreground">Target Score</span>
-                  <span className="font-medium">{formData.targetScore}</span>
-                </div>
-                <div className="flex justify-between py-2 border-b">
-                  <span className="text-muted-foreground">Current Score</span>
-                  <span className="font-medium">{formData.currentScore}</span>
-                </div>
-                <div className="flex justify-between py-2 border-b">
-                  <span className="text-muted-foreground">
-                    Weekly Study Hours
-                  </span>
-                  <span className="font-medium">{formData.studyHours}</span>
-                </div>
-                <div className="flex justify-between py-2 border-b">
-                  <span className="text-muted-foreground">
-                    Challenging Areas
-                  </span>
-                  <span className="font-medium">
-                    {formData.challengingAreas.join(", ")}
-                  </span>
-                </div>
-                <div className="flex justify-between py-2 border-b">
-                  <span className="text-muted-foreground">
-                    Preferred Schedule
-                  </span>
-                  <span className="font-medium">
-                    {formData.preferredSchedule}
-                  </span>
-                </div>
-                <div className="flex justify-between py-2 border-b">
-                  <span className="text-muted-foreground">Focus Areas</span>
-                  <span className="font-medium">
-                    {formData.focusAreas.join(", ")}
-                  </span>
-                </div>
-                <div className="flex justify-between py-2 border-b">
-                  <span className="text-muted-foreground">
-                    barExamPreparationMaterial
-                  </span>
-                  <span className="font-medium">
-                    {formData.barExamPreparationMaterial}
-                  </span>
-                </div>
-                <div className="flex justify-between py-2">
-                  <span className="text-muted-foreground">
-                    Additional Information
-                  </span>
-                  <span className="font-medium">{formData.additionalInfo}</span>
-                </div>
+                      : "Not set",
+                  },
+                  { label: "Target Score", value: formData.targetScore },
+                  { label: "Current Score", value: formData.currentScore },
+                  { label: "Weekly Study Hours", value: formData.studyHours },
+                  {
+                    label: "Challenging Areas",
+                    value: formData.challengingAreas.join(", "),
+                  },
+                  {
+                    label: "Preferred Schedule",
+                    value: formData.preferredSchedule,
+                  },
+                  {
+                    label: "Focus Areas",
+                    value: formData.focusAreas.join(", "),
+                  },
+                  {
+                    label: "BAR Prep Material",
+                    value: formData.barExamPreparationMaterial,
+                  },
+                  {
+                    label: "Additional Information",
+                    value: formData.additionalInfo || "None provided",
+                  },
+                ].map((item, index, array) => (
+                  <div
+                    key={item.label}
+                    className={cn(
+                      "flex justify-between py-2",
+                      index !== array.length - 1
+                        ? "border-b border-slate-700"
+                        : ""
+                    )}
+                  >
+                    <span className="text-slate-400">{item.label}</span>
+                    <span className="font-medium text-slate-200">
+                      {item.value}
+                    </span>
+                  </div>
+                ))}
               </div>
             </div>
           )}
@@ -672,9 +723,10 @@ export default function OnboardingForm() {
             {step !== "exam-date" ? (
               <Button
                 variant="outline"
-                className="border-blue-200 text-blue-700 hover:bg-blue-50"
+                className="border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-300"
                 onClick={handleBack}
               >
+                <LucideChevronLeft className="mr-2 h-4 w-4" />
                 Back
               </Button>
             ) : (
@@ -683,34 +735,38 @@ export default function OnboardingForm() {
 
             {step !== "review" ? (
               <Button
-                className="bg-blue-600 hover:bg-blue-700 text-white"
+                className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white"
                 onClick={handleNext}
                 disabled={
-                  (step === "current-score" && // Validation for current score step
+                  (step === "current-score" &&
                     (!formData.currentScore ||
                       Number(formData.currentScore) < 260 ||
                       Number(formData.currentScore) > 400)) ||
-                  (step === "target-score" && // Validation for target score step
+                  (step === "target-score" &&
                     (!formData.targetScore ||
                       Number(formData.targetScore) < 260 ||
                       Number(formData.targetScore) > 400))
                 }
               >
                 Continue
+                <LucideChevronRight className="ml-2 h-4 w-4" />
               </Button>
             ) : (
               <Button
-                className="bg-blue-600 hover:bg-blue-700 text-white"
+                className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white"
                 onClick={handleSubmit}
                 disabled={isSubmitting}
               >
                 {isSubmitting ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Saving...
+                    Creating Plan...
                   </>
                 ) : (
-                  "Create Study Plan"
+                  <>
+                    Create Study Plan
+                    <LucideShield className="ml-2 h-4 w-4" />
+                  </>
                 )}
               </Button>
             )}

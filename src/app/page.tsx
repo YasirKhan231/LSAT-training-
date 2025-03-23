@@ -1,162 +1,203 @@
+"use client";
+
 import Link from "next/link";
 import {
   ArrowRight,
-  Brain,
   CheckCircle,
   BarChart,
   BookOpen,
-  Award,
+  Shield,
+  Star,
+  Menu,
 } from "lucide-react";
-import LandingNavbar from "@/components/LandingNavbar";
+import { useEffect, useState } from "react";
 
 export default function LandingPage() {
+  const [text, setText] = useState("");
+  const texts = [
+    "Ace Your Bar Exam",
+    "Master Legal Concepts",
+    "Pass with Confidence",
+  ];
+  const [index, setIndex] = useState(0);
+  const [textIndex, setTextIndex] = useState(0);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (index < texts[textIndex].length) {
+      const timeout = setTimeout(() => {
+        setText((prev) => prev + texts[textIndex][index]);
+        setIndex(index + 1);
+      }, 100);
+
+      return () => clearTimeout(timeout);
+    } else {
+      // After completing the text, wait for 2 seconds, then reset and move to the next text
+      const timeout = setTimeout(() => {
+        setText("");
+        setIndex(0);
+        setTextIndex((prev) => (prev + 1) % texts.length);
+      }, 2000);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [index, textIndex, texts]);
+
   return (
-    <>
-      <LandingNavbar />
-
-      {/* Hero Section */}
-      <section className="relative pt-32 w-full flex flex-col items-center justify-center px-4 py-20 bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 text-white overflow-hidden">
-        {/* Animated background elements */}
-        <div className="absolute inset-0">
-          <div className="absolute w-96 h-96 bg-blue-500 rounded-full opacity-10 -top-20 -right-20 animate-pulse"></div>
-          <div className="absolute w-96 h-96 bg-indigo-500 rounded-full opacity-10 bottom-10 -left-20 animate-pulse animation-delay-1000"></div>
-          <div className="absolute inset-0 opacity-10">
-            <svg
-              className="w-full h-full"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 100 100"
+    <div className="min-h-screen bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] text-white">
+      {/* Navbar */}
+      <nav className="bg-transparent py-4 px-4 absolute top-0 left-0 right-0 z-50">
+        <div className="max-w-6xl mx-auto flex items-center justify-between">
+          <Link href="/" className="text-white text-lg font-bold">
+            BarExamPrep
+          </Link>
+          <div className="hidden md:flex space-x-6">
+            <Link href="/login" className="text-gray-300 hover:text-white">
+              Login
+            </Link>
+            <Link
+              href="/subscription"
+              className="text-gray-300 hover:text-white"
             >
-              <defs>
-                <pattern
-                  id="grid"
-                  width="10"
-                  height="10"
-                  patternUnits="userSpaceOnUse"
-                >
-                  <path
-                    d="M 10 0 L 0 0 0 10"
-                    fill="none"
-                    stroke="white"
-                    strokeWidth="0.5"
-                  />
-                </pattern>
-              </defs>
-              <rect width="100" height="100" fill="url(#grid)" />
-            </svg>
-          </div>
-        </div>
-
-        <div className="max-w-5xl mx-auto text-center relative z-10">
-          <h1 className="text-5xl md:text-7xl font-extrabold mb-8 animate-fadeIn">
-            Master the BAR with{" "}
-            <span className="text-blue-300">AI-Powered</span> Learning
-          </h1>
-          <p className="text-xl md:text-2xl mb-12 text-blue-100 animate-fadeIn animation-delay-200">
-            Personalized study plans, interactive practice, and real-time
-            feedback to help you achieve your best score.
-          </p>
-          <div className="animate-fadeIn animation-delay-400">
-            <Link href="/login">
-              <button className="bg-white text-blue-700 hover:bg-blue-50 px-8 py-5 rounded-xl text-xl font-medium transition-all duration-300 transform hover:scale-105 hover:shadow-2xl flex items-center mx-auto shadow-lg">
-                Get Started
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </button>
+              Pricing
             </Link>
           </div>
+          <button
+            className="md:hidden text-white"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            <Menu className="h-6 w-6" />
+          </button>
+        </div>
+        {mobileMenuOpen && (
+          <div className="md:hidden bg-black/90 backdrop-blur-sm mt-2 p-4 rounded-md">
+            <div className="flex flex-col space-y-3">
+              <Link href="/login" className="text-gray-300 hover:text-white">
+                Login
+              </Link>
+              <Link
+                href="/subscription"
+                className="text-gray-300 hover:text-white"
+              >
+                Pricing
+              </Link>
+            </div>
+          </div>
+        )}
+      </nav>
 
-          {/* Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 animate-slideUp animation-delay-600">
-            <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-xl p-5 border border-white border-opacity-20 shadow-lg">
-              <div className="text-4xl font-bold mb-2">93%</div>
-              <p className="text-blue-200">Students improved their scores</p>
-            </div>
-            <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-xl p-5 border border-white border-opacity-20 shadow-lg">
-              <div className="text-4xl font-bold mb-2">10+</div>
-              <p className="text-blue-200">Average point improvement</p>
-            </div>
-            <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-xl p-5 border border-white border-opacity-20 shadow-lg">
-              <div className="text-4xl font-bold mb-2">5,000+</div>
-              <p className="text-blue-200">Practice questions</p>
-            </div>
+      {/* Hero Section */}
+      <section className="pt-32 pb-20 px-4 text-center relative">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(40,40,45,0.5)_0%,rgba(10,10,15,0)_70%)]"></div>
+        <div className="max-w-3xl mx-auto relative z-10">
+          <div className="inline-block bg-white/10 backdrop-blur-sm rounded-full px-6 py-2 mb-6">
+            <p className="text-sm uppercase tracking-wider text-gray-300">
+              Bar Exam Preparation
+            </p>
+          </div>
+          <h1 className="text-5xl md:text-6xl font-bold mb-4 leading-tight">
+            The Ultimate Guide to
+            <br />
+            <span className="text-gray-400">Bar Exam Success</span>
+          </h1>
+          <p className="text-lg mb-2 h-8 text-gray-200 font-medium">
+            {text}
+            <span className="animate-pulse">|</span>
+          </p>
+          <p className="text-sm md:text-base text-gray-400 mb-10 max-w-2xl mx-auto">
+            Comprehensive study materials, practice exams, and expert guidance
+            to help you achieve your best score on the bar exam.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link href="/login">
+              <button className="bg-white text-black hover:bg-gray-200 px-6 py-3 rounded-md text-sm font-medium flex items-center justify-center">
+                Get Started
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </button>
+            </Link>
+            <Link href="/subscription">
+              <button className="border border-gray-700 text-white hover:bg-white/10 px-6 py-3 rounded-md text-sm font-medium">
+                View Pricing
+              </button>
+            </Link>
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-24 bg-white w-full">
-        <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-16 text-gray-900">
-            Why Choose BAR Training
+      <section className="py-16 px-4 bg-gradient-to-b from-[#0a0a0f] to-[#121218]">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-2xl font-bold mb-12 text-center">
+            Advanced Study Features
           </h2>
-
-          <div className="grid md:grid-cols-3 gap-10">
+          <div className="grid md:grid-cols-3 gap-6">
             {/* Feature 1 */}
-            <div className="bg-gray-50 p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-              <div className="w-14 h-14 bg-blue-100 rounded-lg flex items-center justify-center mb-6">
-                <Brain className="h-8 w-8 text-blue-700" />
+            <div className="bg-black/40 backdrop-blur-sm p-6 rounded-lg border border-gray-800">
+              <div className="mb-4">
+                <Shield className="h-6 w-6 text-gray-300" />
               </div>
-              <h3 className="text-2xl font-semibold mb-4 text-gray-900">
-                AI-Powered Coaching
+              <h3 className="text-lg font-semibold mb-3">
+                Comprehensive Study Plans
               </h3>
-              <p className="text-gray-600 text-lg">
-                Receive personalized feedback and strategies tailored to your
-                strengths and weaknesses.
+              <p className="text-gray-400 text-sm">
+                Tailored study plans designed to cover all areas of the bar
+                exam, ensuring you're fully prepared for every section.
               </p>
               <ul className="mt-4 space-y-2">
-                <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 mt-1 flex-shrink-0" />
-                  <span>Adaptive question selection</span>
+                <li className="flex items-start text-sm text-gray-400">
+                  <CheckCircle className="h-4 w-4 text-gray-300 mr-2 mt-1 flex-shrink-0" />
+                  <span>Customized schedules</span>
                 </li>
-                <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 mt-1 flex-shrink-0" />
-                  <span>Smart error analysis</span>
+                <li className="flex items-start text-sm text-gray-400">
+                  <CheckCircle className="h-4 w-4 text-gray-300 mr-2 mt-1 flex-shrink-0" />
+                  <span>Progress tracking</span>
                 </li>
               </ul>
             </div>
 
             {/* Feature 2 */}
-            <div className="bg-gray-50 p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-              <div className="w-14 h-14 bg-blue-100 rounded-lg flex items-center justify-center mb-6">
-                <BarChart className="h-8 w-8 text-blue-700" />
+            <div className="bg-black/40 backdrop-blur-sm p-6 rounded-lg border border-gray-800">
+              <div className="mb-4">
+                <BarChart className="h-6 w-6 text-gray-300" />
               </div>
-              <h3 className="text-2xl font-semibold mb-4 text-gray-900">
+              <h3 className="text-lg font-semibold mb-3">
                 Full-Length Mock Exams
               </h3>
-              <p className="text-gray-600 text-lg">
-                Practice with realistic simulations of the actual BAR under
-                timed conditions.
+              <p className="text-gray-400 text-sm">
+                Practice with realistic simulations of the actual bar exam under
+                timed conditions with high-quality questions.
               </p>
               <ul className="mt-4 space-y-2">
-                <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 mt-1 flex-shrink-0" />
-                  <span>Section-by-section timing</span>
+                <li className="flex items-start text-sm text-gray-400">
+                  <CheckCircle className="h-4 w-4 text-gray-300 mr-2 mt-1 flex-shrink-0" />
+                  <span>Timed practice sessions</span>
                 </li>
-                <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 mt-1 flex-shrink-0" />
+                <li className="flex items-start text-sm text-gray-400">
+                  <CheckCircle className="h-4 w-4 text-gray-300 mr-2 mt-1 flex-shrink-0" />
                   <span>Detailed performance analytics</span>
                 </li>
               </ul>
             </div>
 
             {/* Feature 3 */}
-            <div className="bg-gray-50 p-8 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-              <div className="w-14 h-14 bg-blue-100 rounded-lg flex items-center justify-center mb-6">
-                <BookOpen className="h-8 w-8 text-blue-700" />
+            <div className="bg-black/40 backdrop-blur-sm p-6 rounded-lg border border-gray-800">
+              <div className="mb-4">
+                <BookOpen className="h-6 w-6 text-gray-300" />
               </div>
-              <h3 className="text-2xl font-semibold mb-4 text-gray-900">
-                Interactive Logic Games
+              <h3 className="text-lg font-semibold mb-3">
+                Interactive Legal Modules
               </h3>
-              <p className="text-gray-600 text-lg">
-                Master the most challenging section with our visual, interactive
-                game interface.
+              <p className="text-gray-400 text-sm">
+                Master challenging legal concepts with our visual, interactive
+                learning modules designed by experts.
               </p>
               <ul className="mt-4 space-y-2">
-                <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 mt-1 flex-shrink-0" />
-                  <span>Visual game boards</span>
+                <li className="flex items-start text-sm text-gray-400">
+                  <CheckCircle className="h-4 w-4 text-gray-300 mr-2 mt-1 flex-shrink-0" />
+                  <span>Visual case studies</span>
                 </li>
-                <li className="flex items-start">
-                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 mt-1 flex-shrink-0" />
+                <li className="flex items-start text-sm text-gray-400">
+                  <CheckCircle className="h-4 w-4 text-gray-300 mr-2 mt-1 flex-shrink-0" />
                   <span>Step-by-step explanations</span>
                 </li>
               </ul>
@@ -165,47 +206,182 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="py-20 bg-gradient-to-br from-blue-50 to-indigo-50 w-full">
-        <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-16 text-gray-900">
-            Success Stories
+      {/* How It Works Section */}
+      <section className="py-16 px-4 border-t border-gray-800 bg-gradient-to-b from-[#121218] to-[#0a0a0f]">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-2xl font-bold mb-12 text-center">
+            How Our Bar Prep Works
           </h2>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-white p-8 rounded-2xl shadow-lg">
-              <div className="flex items-center mb-6">
-                <div className="w-14 h-14 bg-blue-600 rounded-full mr-4 flex items-center justify-center text-xl font-bold text-white">
+          <div className="flex justify-center mb-8">
+            <div className="flex flex-wrap justify-center gap-4 md:gap-8">
+              <div className="flex items-center">
+                <div className="w-6 h-6 rounded-full bg-white text-black flex items-center justify-center text-xs">
+                  1
+                </div>
+                <span className="ml-2 text-sm">Assessment</span>
+              </div>
+              <div className="flex items-center">
+                <div className="w-6 h-6 rounded-full bg-gray-700 flex items-center justify-center text-xs">
+                  2
+                </div>
+                <span className="ml-2 text-sm">Training</span>
+              </div>
+              <div className="flex items-center">
+                <div className="w-6 h-6 rounded-full bg-gray-700 flex items-center justify-center text-xs">
+                  3
+                </div>
+                <span className="ml-2 text-sm">Practice</span>
+              </div>
+              <div className="flex items-center">
+                <div className="w-6 h-6 rounded-full bg-gray-700 flex items-center justify-center text-xs">
+                  4
+                </div>
+                <span className="ml-2 text-sm">Results</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-black/40 backdrop-blur-sm p-6 rounded-lg border border-gray-800">
+              <h3 className="text-lg font-semibold mb-3">
+                Personalized Assessment
+              </h3>
+              <p className="text-gray-400 text-sm">
+                Start with a diagnostic test to identify your strengths and
+                weaknesses in bar exam subjects.
+              </p>
+            </div>
+            <div className="bg-black/40 backdrop-blur-sm p-6 rounded-lg border border-gray-800">
+              <h3 className="text-lg font-semibold mb-3">Targeted Training</h3>
+              <p className="text-gray-400 text-sm">
+                Focus on areas that need improvement with tailored study
+                materials and expert guidance.
+              </p>
+            </div>
+            <div className="bg-black/40 backdrop-blur-sm p-6 rounded-lg border border-gray-800">
+              <h3 className="text-lg font-semibold mb-3">Practice & Review</h3>
+              <p className="text-gray-400 text-sm">
+                Take full-length practice exams and review detailed explanations
+                to reinforce your learning.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="py-16 px-4 border-t border-gray-800 bg-gradient-to-b from-[#0a0a0f] to-[#121218]">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-2xl font-bold mb-12 text-center">
+            What Our Users Say
+          </h2>
+          <p className="text-center text-gray-400 mb-10 text-sm">
+            Join thousands of aspiring lawyers who trust BarExamPrep to help
+            them pass the bar exam.
+          </p>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="bg-black/40 backdrop-blur-sm p-6 rounded-lg border border-gray-800">
+              <div className="flex mb-4">
+                <Star className="h-4 w-4 text-yellow-400" />
+                <Star className="h-4 w-4 text-yellow-400" />
+                <Star className="h-4 w-4 text-yellow-400" />
+                <Star className="h-4 w-4 text-yellow-400" />
+                <Star className="h-4 w-4 text-yellow-400" />
+              </div>
+              <p className="text-gray-300 text-sm mb-4">
+                "BarExamPrep has been a game changer for my studies. The
+                comprehensive study materials and mock exams helped me pass the
+                bar exam on my first attempt!"
+              </p>
+              <div className="flex items-center">
+                <div className="w-8 h-8 bg-gray-700 rounded-full mr-3 flex items-center justify-center text-xs font-bold">
                   JD
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold">Jamie D.</h3>
-                  <p className="text-gray-500">Harvard Law '24</p>
+                  <h3 className="text-sm font-semibold">James D.</h3>
+                  <p className="text-xs text-gray-400">Harvard Law '24</p>
                 </div>
               </div>
-              <p className="text-gray-700 text-lg italic">
-                "With BAR Training, I improved my score by 12 points in just two
-                months. The AI feedback was like having a personal tutor
-                available 24/7. The logic games module especially helped me turn
-                my weakest section into my strongest."
+            </div>
+
+            <div className="bg-black/40 backdrop-blur-sm p-6 rounded-lg border border-gray-800">
+              <div className="flex mb-4">
+                <Star className="h-4 w-4 text-yellow-400" />
+                <Star className="h-4 w-4 text-yellow-400" />
+                <Star className="h-4 w-4 text-yellow-400" />
+                <Star className="h-4 w-4 text-yellow-400" />
+                <Star className="h-4 w-4 text-yellow-400" />
+              </div>
+              <p className="text-gray-300 text-sm mb-4">
+                "The practice exams were incredibly realistic and helped me
+                build the confidence I needed to succeed. I highly recommend
+                BarExamPrep to anyone preparing for the bar exam."
+              </p>
+              <div className="flex items-center">
+                <div className="w-8 h-8 bg-gray-700 rounded-full mr-3 flex items-center justify-center text-xs font-bold">
+                  SK
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold">Sarah K.</h3>
+                  <p className="text-xs text-gray-400">Columbia Law '23</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-16 px-4 border-t border-gray-800 bg-gradient-to-b from-[#121218] to-[#0a0a0f]">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-2xl font-bold mb-12 text-center">
+            Frequently Asked Questions
+          </h2>
+          <p className="text-center text-gray-400 mb-10 text-sm">
+            Everything you need to know about our service
+          </p>
+
+          <div className="space-y-6">
+            <div className="border-b border-gray-800 pb-6">
+              <h3 className="text-lg font-medium mb-2">
+                Is this service legal?
+              </h3>
+              <p className="text-gray-400 text-sm">
+                Yes, our service is completely legal. We provide study materials
+                and practice exams to help you prepare for the bar exam.
               </p>
             </div>
 
-            <div className="bg-white p-8 rounded-2xl shadow-lg">
-              <div className="flex items-center mb-6">
-                <div className="w-14 h-14 bg-indigo-600 rounded-full mr-4 flex items-center justify-center text-xl font-bold text-white">
-                  MT
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold">Michael T.</h3>
-                  <p className="text-gray-500">Columbia Law '23</p>
-                </div>
-              </div>
-              <p className="text-gray-700 text-lg italic">
-                "The personalized study plan adapted to my progress and focused
-                on my weak areas. The practice exams felt just like the real
-                thing, and the detailed analytics helped me understand exactly
-                where I needed to improve."
+            <div className="border-b border-gray-800 pb-6">
+              <h3 className="text-lg font-medium mb-2">
+                How effective are your study materials?
+              </h3>
+              <p className="text-gray-400 text-sm">
+                Our study materials are designed by legal experts and have
+                helped thousands of students pass the bar exam on their first
+                attempt.
+              </p>
+            </div>
+
+            <div className="border-b border-gray-800 pb-6">
+              <h3 className="text-lg font-medium mb-2">
+                Can I access the materials on multiple devices?
+              </h3>
+              <p className="text-gray-400 text-sm">
+                Yes, you can access your study materials on any device with an
+                internet connection.
+              </p>
+            </div>
+
+            <div className="border-b border-gray-800 pb-6">
+              <h3 className="text-lg font-medium mb-2">
+                Is my payment information secure?
+              </h3>
+              <p className="text-gray-400 text-sm">
+                We use industry-standard encryption to protect your payment
+                information and ensure your data is secure.
               </p>
             </div>
           </div>
@@ -213,38 +389,56 @@ export default function LandingPage() {
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-blue-700 to-indigo-800 text-white w-full">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8">
-            Ready to Improve Your BAR Score?
-          </h2>
-          <p className="text-xl text-blue-100 mb-10 max-w-3xl mx-auto">
-            Join thousands of students who have boosted their scores with our
-            AI-powered platform. Start your journey today.
+      <section className="py-16 px-4 border-t border-gray-800 text-center bg-gradient-to-b from-[#0a0a0f] to-[#000000]">
+        <div className="max-w-3xl mx-auto">
+          <p className="text-xs uppercase tracking-wider mb-2 text-gray-400">
+            THE FUTURE OF BAR EXAM PREP
           </p>
-          <Link href="/login">
-            <button className="bg-white text-blue-700 hover:bg-blue-50 px-8 py-4 rounded-xl text-xl font-medium transition-all duration-300 transform hover:scale-105 shadow-lg flex items-center mx-auto">
-              Start Your Preparation
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </button>
-          </Link>
+          <h2 className="text-3xl font-bold mb-6">
+            Ready to pass the bar exam
+            <br />
+            with confidence?
+          </h2>
+          <p className="text-gray-400 text-sm mb-8">
+            Join thousands of aspiring lawyers who trust BarExamPrep to help
+            them achieve their goals.
+          </p>
 
-          <div className="mt-12 flex justify-center space-x-8">
-            <div className="flex items-center">
-              <Award className="h-6 w-6 text-blue-300 mr-2" />
-              <span>10-point guarantee</span>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            <Link href="/login">
+              <button className="bg-white text-black hover:bg-gray-200 px-6 py-3 rounded-md text-sm font-medium">
+                Get Started Now
+              </button>
+            </Link>
+            <Link href="/subscription">
+              <button className="border border-gray-700 text-white hover:bg-white/10 px-6 py-3 rounded-md text-sm font-medium">
+                View Pricing Plans
+              </button>
+            </Link>
+          </div>
+
+          <div className="flex items-center justify-center">
+            <div className="mr-2">
+              <Shield className="h-5 w-5 text-gray-400" />
             </div>
-            <div className="flex items-center">
-              <Award className="h-6 w-6 text-blue-300 mr-2" />
-              <span>30-day free trial</span>
-            </div>
-            <div className="flex items-center">
-              <Award className="h-6 w-6 text-blue-300 mr-2" />
-              <span>24/7 support</span>
-            </div>
+            <p className="text-sm text-gray-400">
+              BarExamPrep is the ultimate tool for bar exam success.
+            </p>
           </div>
         </div>
       </section>
-    </>
+
+      {/* Footer */}
+      <footer className="py-6 px-4 border-t border-gray-800 text-xs text-gray-500">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center">
+          <div>© 2024 BarExamPrep - All rights reserved</div>
+          <div className="flex space-x-6 mt-4 md:mt-0">
+            <Link href="/privacy">Privacy Policy</Link>
+            <Link href="/terms">Terms of Service</Link>
+            <Link href="/contact">Contact Us</Link>
+          </div>
+        </div>
+      </footer>
+    </div>
   );
 }
