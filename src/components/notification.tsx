@@ -10,8 +10,10 @@ const notificationVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-slate-900 border border-slate-800 text-slate-200",
-        success: "bg-indigo-900/30 border border-indigo-800 text-indigo-300",
+        default:
+          "bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] border border-[#1a1a1f] text-white",
+        success:
+          "bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] border border-[#1a1a1f] text-white",
         error: "bg-red-900/30 border border-red-800 text-red-300",
       },
     },
@@ -51,9 +53,7 @@ export function Notification({
 
   return (
     <div className={cn(notificationVariants({ variant }))}>
-      {variant === "success" && (
-        <CheckCircle className="h-5 w-5 text-indigo-400" />
-      )}
+      {variant === "success" && <CheckCircle className="h-5 w-5 text-white" />}
       <div className="flex-1">
         <h3 className="font-medium">{title}</h3>
         <p className="text-sm opacity-90">{message}</p>
@@ -63,7 +63,7 @@ export function Notification({
           setIsVisible(false);
           if (onClose) onClose();
         }}
-        className="rounded-full p-1 hover:bg-slate-800"
+        className="rounded-full p-1 hover:bg-[#1a1a1f]"
       >
         <X className="h-4 w-4" />
       </button>

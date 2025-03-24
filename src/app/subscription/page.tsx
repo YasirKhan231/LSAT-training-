@@ -42,13 +42,13 @@ export default function SubscriptionPage() {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-black text-slate-300 px-4 sm:px-6 lg:px-8 py-12">
+      <div className="min-h-screen bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] text-white px-4 sm:px-6 lg:px-8 py-12">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-extrabold text-white mb-4">
               Upgrade Your BAR Preparation
             </h1>
-            <p className="max-w-3xl mx-auto text-xl text-slate-400">
+            <p className="max-w-3xl mx-auto text-xl text-white">
               Get unlimited access to AI-powered BAR training tools and
               personalized study plans
             </p>
@@ -56,7 +56,7 @@ export default function SubscriptionPage() {
 
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {/* Free Plan */}
-            <Card className="border-slate-800 shadow-xl bg-gradient-to-b from-slate-900 to-slate-950 backdrop-blur-sm">
+            <Card className="border-[#1a1a1f] shadow-xl bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="text-xl text-white">Free</CardTitle>
                 <div className="mt-2">
@@ -67,18 +67,18 @@ export default function SubscriptionPage() {
               <CardContent className="space-y-4">
                 <ul className="space-y-2">
                   <li className="flex items-start">
-                    <Check className="h-5 w-5 text-indigo-400 mr-2 shrink-0" />
-                    <span className="text-slate-300">
+                    <Check className="h-5 w-5 text-white mr-2 shrink-0" />
+                    <span className="text-white">
                       Limited question bank access
                     </span>
                   </li>
                   <li className="flex items-start">
-                    <Check className="h-5 w-5 text-indigo-400 mr-2 shrink-0" />
-                    <span className="text-slate-300">1 simulated BAR exam</span>
+                    <Check className="h-5 w-5 text-white mr-2 shrink-0" />
+                    <span className="text-white">1 simulated BAR exam</span>
                   </li>
                   <li className="flex items-start">
-                    <Check className="h-5 w-5 text-indigo-400 mr-2 shrink-0" />
-                    <span className="text-slate-300">
+                    <Check className="h-5 w-5 text-white mr-2 shrink-0" />
+                    <span className="text-white">
                       Basic performance tracking
                     </span>
                   </li>
@@ -99,7 +99,7 @@ export default function SubscriptionPage() {
               <CardFooter>
                 <Button
                   variant="outline"
-                  className="w-full border-slate-700 bg-slate-800/50 text-slate-400"
+                  className="w-full border-[#1a1a1f] bg-[#121218]/50 text-white"
                   disabled
                 >
                   Current Plan
@@ -108,9 +108,9 @@ export default function SubscriptionPage() {
             </Card>
 
             {/* Weekly Plan */}
-            <Card className="border-indigo-500/50 shadow-xl bg-gradient-to-b from-slate-900 to-slate-950 backdrop-blur-sm relative">
+            <Card className="border-[#1a1a1f]/50 shadow-xl bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] backdrop-blur-sm relative">
               <div className="absolute top-0 right-0 -mt-2 -mr-2">
-                <Badge className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white border-none">
+                <Badge className="bg-gradient-to-r from-[#121218] to-[#1a1a1f] text-white border-none">
                   POPULAR
                 </Badge>
               </div>
@@ -126,40 +126,38 @@ export default function SubscriptionPage() {
               <CardContent className="space-y-4">
                 <ul className="space-y-2">
                   <li className="flex items-start">
-                    <Check className="h-5 w-5 text-indigo-400 mr-2 shrink-0" />
-                    <span className="text-slate-300">
+                    <Check className="h-5 w-5 text-white mr-2 shrink-0" />
+                    <span className="text-white">
                       Full question bank access
                     </span>
                   </li>
                   <li className="flex items-start">
-                    <Check className="h-5 w-5 text-indigo-400 mr-2 shrink-0" />
-                    <span className="text-slate-300">
+                    <Check className="h-5 w-5 text-white mr-2 shrink-0" />
+                    <span className="text-white">
                       Unlimited simulated BAR exams
                     </span>
                   </li>
                   <li className="flex items-start">
-                    <Check className="h-5 w-5 text-indigo-400 mr-2 shrink-0" />
-                    <span className="text-slate-300">
+                    <Check className="h-5 w-5 text-white mr-2 shrink-0" />
+                    <span className="text-white">
                       Advanced analytics & progress tracking
                     </span>
                   </li>
                   <li className="flex items-start">
-                    <Check className="h-5 w-5 text-indigo-400 mr-2 shrink-0" />
-                    <span className="text-slate-300">
+                    <Check className="h-5 w-5 text-white mr-2 shrink-0" />
+                    <span className="text-white">
                       AI explanations and tutoring
                     </span>
                   </li>
                   <li className="flex items-start">
-                    <Check className="h-5 w-5 text-indigo-400 mr-2 shrink-0" />
-                    <span className="text-slate-300">
-                      Personalized study plans
-                    </span>
+                    <Check className="h-5 w-5 text-white mr-2 shrink-0" />
+                    <span className="text-white">Personalized study plans</span>
                   </li>
                 </ul>
               </CardContent>
               <CardFooter>
                 <Button
-                  className="w-full bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white border-none"
+                  className="w-full bg-gradient-to-r from-[#121218] to-[#1a1a1f] hover:from-[#1a1a1f] hover:to-[#1a1a1f] text-white border-none"
                   onClick={() => handleSubscribe("weekly")}
                   disabled={isProcessing}
                 >
@@ -171,7 +169,7 @@ export default function SubscriptionPage() {
             </Card>
 
             {/* One-time Plan */}
-            <Card className="border-slate-800 shadow-xl bg-gradient-to-b from-slate-900 to-slate-950 backdrop-blur-sm">
+            <Card className="border-[#1a1a1f] shadow-xl bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="text-xl text-white">
                   Full Access
@@ -184,38 +182,36 @@ export default function SubscriptionPage() {
               <CardContent className="space-y-4">
                 <ul className="space-y-2">
                   <li className="flex items-start">
-                    <Check className="h-5 w-5 text-indigo-400 mr-2 shrink-0" />
-                    <span className="text-slate-300">
+                    <Check className="h-5 w-5 text-white mr-2 shrink-0" />
+                    <span className="text-white">
                       Full question bank access
                     </span>
                   </li>
                   <li className="flex items-start">
-                    <Check className="h-5 w-5 text-indigo-400 mr-2 shrink-0" />
-                    <span className="text-slate-300">
+                    <Check className="h-5 w-5 text-white mr-2 shrink-0" />
+                    <span className="text-white">
                       Unlimited simulated BAR exams
                     </span>
                   </li>
                   <li className="flex items-start">
-                    <Check className="h-5 w-5 text-indigo-400 mr-2 shrink-0" />
-                    <span className="text-slate-300">
+                    <Check className="h-5 w-5 text-white mr-2 shrink-0" />
+                    <span className="text-white">
                       Advanced analytics & progress tracking
                     </span>
                   </li>
                   <li className="flex items-start">
-                    <Check className="h-5 w-5 text-indigo-400 mr-2 shrink-0" />
-                    <span className="text-slate-300">
+                    <Check className="h-5 w-5 text-white mr-2 shrink-0" />
+                    <span className="text-white">
                       AI explanations and tutoring
                     </span>
                   </li>
                   <li className="flex items-start">
-                    <Check className="h-5 w-5 text-indigo-400 mr-2 shrink-0" />
-                    <span className="text-slate-300">
-                      Personalized study plans
-                    </span>
+                    <Check className="h-5 w-5 text-white mr-2 shrink-0" />
+                    <span className="text-white">Personalized study plans</span>
                   </li>
                   <li className="flex items-start">
-                    <Check className="h-5 w-5 text-indigo-400 mr-2 shrink-0" />
-                    <span className="font-medium text-indigo-300">
+                    <Check className="h-5 w-5 text-white mr-2 shrink-0" />
+                    <span className="font-medium text-white">
                       Lifetime access
                     </span>
                   </li>
@@ -223,7 +219,7 @@ export default function SubscriptionPage() {
               </CardContent>
               <CardFooter>
                 <Button
-                  className="w-full bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white border-none"
+                  className="w-full bg-gradient-to-r from-[#121218] to-[#1a1a1f] hover:from-[#1a1a1f] hover:to-[#1a1a1f] text-white border-none"
                   onClick={() => handleSubscribe("one-time")}
                   disabled={isProcessing}
                 >
@@ -239,7 +235,7 @@ export default function SubscriptionPage() {
             <h2 className="text-2xl font-bold text-white mb-4">
               100% Satisfaction Guarantee
             </h2>
-            <p className="text-slate-400">
+            <p className="text-white">
               If you're not satisfied with your subscription within the first 7
               days, we'll provide a full refund. No questions asked.
             </p>

@@ -7,9 +7,9 @@ import GoogleSignIn from "../../../components/GoogleSignin";
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen flex bg-[#0c0e14]">
+    <div className="min-h-screen flex bg-[#0a0a0f]">
       {/* Left Panel - Branding & Features */}
-      <div className="hidden lg:flex lg:w-1/2 relative bg-gradient-to-br from-[#0f1219] to-[#171b29]">
+      <div className="hidden lg:flex lg:w-1/2 relative bg-gradient-to-br from-[#0a0a0f] via-[#121218] to-[#0a0a0f]">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-5">
           <svg
@@ -37,14 +37,14 @@ export default function LoginPage() {
         </div>
 
         {/* Abstract Shapes */}
-        <div className="absolute w-96 h-96 rounded-full bg-purple-800 blur-3xl opacity-10 -bottom-20 -left-20 animate-pulse"></div>
-        <div className="absolute w-96 h-96 rounded-full bg-blue-700 blur-3xl opacity-10 top-10 -right-20 animate-pulse"></div>
+        <div className="absolute w-96 h-96 rounded-full bg-gray-800 blur-3xl opacity-10 -bottom-20 -left-20 animate-pulse"></div>
+        <div className="absolute w-96 h-96 rounded-full bg-gray-700 blur-3xl opacity-10 top-10 -right-20 animate-pulse"></div>
 
         {/* Content */}
         <div className="relative flex flex-col justify-center p-12 text-white">
           {/* Logo */}
           <div className="flex items-center mb-12">
-            <div className="h-12 w-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+            <div className="h-12 w-12 rounded-full bg-gradient-to-br from-gray-500 to-gray-600 flex items-center justify-center">
               <Shield className="h-6 w-6 text-white" />
             </div>
             <span className="ml-4 text-3xl font-bold">BAR Training</span>
@@ -84,11 +84,11 @@ export default function LoginPage() {
 
       {/* Right Panel - Login Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-4">
-        <div className="w-full max-w-md bg-[#13151f] rounded-2xl shadow-xl p-8 transition-all duration-300 hover:shadow-2xl animate-fadeIn border border-gray-800">
+        <div className="w-full max-w-md bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] rounded-2xl shadow-xl p-8 transition-all duration-300 hover:shadow-2xl animate-fadeIn border border-[#1a1a1f]">
           {/* Mobile Logo */}
           <div className="lg:hidden flex justify-center mb-6">
             <Link href="/" className="flex items-center">
-              <Shield className="h-8 w-8 text-blue-500" />
+              <Shield className="h-8 w-8 text-gray-500" />
               <span className="ml-2 text-2xl font-bold text-white">
                 BAR Training
               </span>
@@ -108,10 +108,10 @@ export default function LoginPage() {
 
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-800"></div>
+              <div className="w-full border-t border-[#1a1a1f]"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-[#13151f] text-gray-400">
+              <span className="px-2 bg-[#121218] text-gray-400">
                 Or continue with
               </span>
             </div>
@@ -130,7 +130,7 @@ export default function LoginPage() {
               Need an account?{" "}
               <Link
                 href="/Signup"
-                className="font-medium text-blue-400 hover:text-blue-300 transition-colors"
+                className="font-medium text-gray-400 hover:text-gray-300 transition-colors"
               >
                 Sign up
               </Link>

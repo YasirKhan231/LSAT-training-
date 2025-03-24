@@ -8,7 +8,8 @@ import Link from "next/link";
 
 export default function LegalAnalysisPage() {
   const [analysis, setAnalysis] = useState("");
-  const [feedback, setFeedback] = useState<string | null>(null);
+  const [feedback, setFeedback] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const hypothetical = {
     title: "Contract Formation Scenario",
@@ -20,10 +21,31 @@ export default function LegalAnalysisPage() {
   };
 
   const handleSubmitAnalysis = async () => {
-    // Implement AI analysis logic here
-    setFeedback(
-      "Your analysis demonstrates good understanding of contract formation elements..."
-    );
+    setIsLoading(true);
+    try {
+      const response = await fetch("/api/analyze", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          caseData: hypothetical,
+          userAnalysis: analysis,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch analysis");
+      }
+
+      const data = await response.json();
+      setFeedback(data);
+    } catch (error) {
+      console.error("Error submitting analysis:", error);
+      setFeedback({ error: "Failed to get feedback. Please try again." });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -79,9 +101,10 @@ export default function LegalAnalysisPage() {
               <Button
                 className="w-full mt-4 bg-indigo-600 hover:bg-indigo-700 text-white"
                 onClick={handleSubmitAnalysis}
+                disabled={isLoading}
               >
                 <Brain className="mr-2 h-4 w-4" />
-                Analyze Response
+                {isLoading ? "Analyzing..." : "Analyze Response"}
               </Button>
             </CardContent>
           </Card>
@@ -92,7 +115,106 @@ export default function LegalAnalysisPage() {
                 <CardTitle className="text-slate-100">AI Feedback</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-slate-400">{feedback}</p>
+                {feedback.error ? (
+                  <p className="text-red-500">{feedback.error}</p>
+                ) : (
+                  <div className="space-y-4">
+                    <div>
+                      <h3 className="font-medium mb-2 text-slate-100">
+                        Score:
+                      </h3>
+                      <p className="text-slate-400">
+                        {feedback.analysisScore * 100}%
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="font-medium mb-2 text-slate-100">
+                        Feedback:
+                      </h3>
+                      <p className="text-slate-400">
+                        {feedback.analysisFeedback}
+                      </p>
+                    </div>
+                    <div>
+                      <h3 className="font-medium mb-2 text-slate-100">
+                        Suggestions:
+                      </h3>
+                      <ul className="list-disc list-inside text-slate-400">
+                        {feedback.suggestions.map(
+                          (suggestion: string, index: number) => (
+                            <li key={index}>{suggestion}</li>
+                          )
+                        )}
+                      </ul>
+                    </div>
+                    <div>
+                      <h3 className="font-medium mb-2 text-slate-100">
+                        Model Analysis:
+                      </h3>
+                      <div className="space-y-3 text-slate-400">
+                        <div>
+                          <h4 className="font-medium text-slate-300">Facts:</h4>
+                          <ul className="list-disc list-inside pl-5">
+                            {feedback.modelAnalysis.facts
+                              .split(". ")
+                              .filter((point: string) => point.trim() !== "")
+                              .map((point: string, index: number) => (
+                                <li key={index}>{point.trim()}</li>
+                              ))}
+                          </ul>
+                        </div>
+                        <div>
+                          <h4 className="font-medium text-slate-300">Issue:</h4>
+                          <ul className="list-disc list-inside pl-5">
+                            {feedback.modelAnalysis.issue
+                              .split(". ")
+                              .filter((point: string) => point.trim() !== "")
+                              .map((point: string, index: number) => (
+                                <li key={index}>{point.trim()}</li>
+                              ))}
+                          </ul>
+                        </div>
+                        <div>
+                          <h4 className="font-medium text-slate-300">Rule:</h4>
+                          <ul className="list-disc list-inside pl-5">
+                            {feedback.modelAnalysis.rule
+                              .split(". ")
+                              .filter((point: string) => point.trim() !== "")
+                              .map((point: string, index: number) => (
+                                <li key={index}>{point.trim()}</li>
+                              ))}
+                          </ul>
+                        </div>
+                        <div>
+                          <h4 className="font-medium text-slate-300">
+                            Application:
+                          </h4>
+                          <ul className="list-disc list-inside pl-5">
+                            {feedback.modelAnalysis.application
+                              .split(". ")
+                              .filter((point: string) => point.trim() !== "")
+                              .map((point: string, index: number) => (
+                                <li key={index}>{point.trim()}</li>
+                              ))}
+                          </ul>
+                        </div>
+                        <div>
+                          <h4 className="font-medium text-slate-300">
+                            Conclusion:
+                          </h4>
+                          <ul className="list-disc list-inside pl-5">
+                            {feedback.modelAnalysis.conclusion
+                              .split(". ")
+                              .filter((point: string) => point.trim() !== "")
+                              .map((point: string, index: number) => (
+                                <li key={index}>{point.trim()}</li>
+                              ))}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </CardContent>
             </Card>
           )}

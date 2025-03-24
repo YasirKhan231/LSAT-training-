@@ -68,18 +68,10 @@ export default function Sidebar({ isOpen, onClose, onOpen }: SidebarProps) {
     { href: "/practice/mock-exam", label: "Mock Exams", icon: BarChart },
     { href: "/question-bank", label: "Question Bank", icon: BookOpen },
     {
-      href: "/practice/writing",
+      href: "/practice/writing", // Direct link to Writing Practice
       label: "Writing Practice",
       icon: PenTool,
-      children: [
-        {
-          href: "/practice/writing/essay",
-          label: "Essay Practice",
-          icon: FileText,
-        },
-      ],
     },
-
     {
       href: "/case-study",
       label: "Case Studies",
@@ -113,12 +105,12 @@ export default function Sidebar({ isOpen, onClose, onOpen }: SidebarProps) {
     <>
       {overlay}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-[280px] bg-slate-900 shadow-lg transform transition-transform duration-300 ease-in-out ${
+        className={`fixed inset-y-0 left-0 z-50 w-[280px] bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] shadow-lg transform transition-transform duration-300 ease-in-out ${
           isOpen ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0 md:w-64 overflow-hidden flex flex-col border-r border-slate-800`}
+        } md:translate-x-0 md:w-64 overflow-hidden flex flex-col border-r border-[#1a1a1f]`}
       >
         {/* Sidebar Header */}
-        <div className="px-6 py-4 border-b border-slate-800">
+        <div className="px-6 py-4 border-b border-[#1a1a1f]">
           {/* Mobile Header (hidden on md and above) */}
           <div className="flex items-center justify-between md:hidden">
             <Link
@@ -126,26 +118,22 @@ export default function Sidebar({ isOpen, onClose, onOpen }: SidebarProps) {
               className="flex items-center space-x-2"
               onClick={isMobile ? onClose : undefined}
             >
-              <span className="text-xl font-bold text-indigo-400">
-                BAR Training
-              </span>
+              <span className="text-xl font-bold text-white">BAR Training</span>
             </Link>
             {isMobile && (
               <button
                 onClick={onClose}
-                className="p-2 rounded-lg hover:bg-slate-800"
+                className="p-2 rounded-lg hover:bg-[#1a1a1f]"
                 aria-label="Close sidebar"
               >
-                <X className="h-5 w-5 text-slate-400" />
+                <X className="h-5 w-5 text-gray-400" />
               </button>
             )}
           </div>
           {/* Desktop Header (visible on md and above) */}
           <div className="hidden md:flex items-center">
             <Link href="/" className="flex items-center space-x-2">
-              <span className="text-xl font-bold text-indigo-400">
-                BAR Training
-              </span>
+              <span className="text-xl font-bold text-white">BAR Training</span>
             </Link>
           </div>
         </div>
@@ -159,8 +147,8 @@ export default function Sidebar({ isOpen, onClose, onOpen }: SidebarProps) {
                     <div
                       className={`flex items-center justify-between w-full px-4 py-2 text-sm rounded-lg transition-colors duration-200 ${
                         pathname.startsWith(item.href)
-                          ? "bg-indigo-900/30 text-indigo-300"
-                          : "text-slate-300 hover:bg-slate-800"
+                          ? "bg-[#1a1a1f] text-white"
+                          : "text-gray-300 hover:bg-[#1a1a1f]"
                       }`}
                     >
                       <Link
@@ -176,7 +164,7 @@ export default function Sidebar({ isOpen, onClose, onOpen }: SidebarProps) {
                           e.stopPropagation();
                           toggleExpand(item.href);
                         }}
-                        className="p-1 hover:bg-slate-800 rounded-lg"
+                        className="p-1 hover:bg-[#1a1a1f] rounded-lg"
                       >
                         {expandedItems.includes(item.href) ? (
                           <ChevronDown className="h-4 w-4" />
@@ -193,8 +181,8 @@ export default function Sidebar({ isOpen, onClose, onOpen }: SidebarProps) {
                               href={child.href}
                               className={`flex items-center px-4 py-2 text-sm rounded-lg transition-colors duration-200 ${
                                 pathname === child.href
-                                  ? "bg-indigo-900/30 text-indigo-300"
-                                  : "text-slate-300 hover:bg-slate-800"
+                                  ? "bg-[#1a1a1f] text-white"
+                                  : "text-gray-300 hover:bg-[#1a1a1f]"
                               }`}
                               onClick={isMobile ? onClose : undefined}
                             >
@@ -211,8 +199,8 @@ export default function Sidebar({ isOpen, onClose, onOpen }: SidebarProps) {
                     href={item.href}
                     className={`flex items-center px-4 py-2 text-sm rounded-lg transition-colors duration-200 ${
                       pathname === item.href
-                        ? "bg-indigo-900/30 text-indigo-300"
-                        : "text-slate-300 hover:bg-slate-800"
+                        ? "bg-[#1a1a1f] text-white"
+                        : "text-gray-300 hover:bg-[#1a1a1f]"
                     }`}
                     onClick={isMobile ? onClose : undefined}
                   >
@@ -225,12 +213,12 @@ export default function Sidebar({ isOpen, onClose, onOpen }: SidebarProps) {
           </ul>
         </nav>
 
-        <div className="border-t border-slate-800 p-4">
+        <div className="border-t border-[#1a1a1f] p-4">
           {isSubscriptionActive && (
             <div className="mb-4">
-              <div className="flex items-center px-4 py-2 bg-amber-900/20 rounded-lg border border-amber-800">
+              <div className="flex items-center px-4 py-2 bg-[#1a1a1f] rounded-lg border border-[#2a2a2f]">
                 <Crown className="h-5 w-5 text-amber-500 mr-2" />
-                <span className="text-sm font-medium text-amber-300">
+                <span className="text-sm font-medium text-white">
                   {subscriptionTier === "one-time"
                     ? "Premium"
                     : "Weekly Premium"}
@@ -242,13 +230,13 @@ export default function Sidebar({ isOpen, onClose, onOpen }: SidebarProps) {
           {userLoggedIn ? (
             <div className="space-y-3">
               <div className="px-4 py-2">
-                <p className="text-sm text-slate-400 truncate bg-slate-800 p-2 rounded">
+                <p className="text-sm text-gray-400 truncate bg-[#1a1a1f] p-2 rounded">
                   {auth.currentUser?.email}
                 </p>
               </div>
               <button
                 onClick={handleLogout}
-                className="flex items-center w-full px-4 py-2 text-center bg-slate-800 text-slate-200 rounded-lg transition-colors duration-200 hover:bg-red-900 hover:text-white border border-slate-700"
+                className="flex items-center w-full px-4 py-2 text-center bg-[#1a1a1f] text-white rounded-lg transition-colors duration-200 hover:bg-red-900 hover:text-white border border-[#2a2a2f]"
               >
                 <LogOut className="h-5 w-5 mr-3" />
                 <span className="text-center">Sign Out</span>
@@ -258,14 +246,14 @@ export default function Sidebar({ isOpen, onClose, onOpen }: SidebarProps) {
             <div className="space-y-2">
               <Link
                 href="/login"
-                className="block w-full px-4 py-2 text-sm text-center text-indigo-400 bg-slate-800 border border-slate-700 rounded-lg hover:bg-slate-700 transition-colors duration-200"
+                className="block w-full px-4 py-2 text-sm text-center text-white bg-[#1a1a1f] border border-[#2a2a2f] rounded-lg hover:bg-[#2a2a2f] transition-colors duration-200"
                 onClick={isMobile ? onClose : undefined}
               >
                 Login
               </Link>
               <Link
                 href="/Signup"
-                className="block w-full px-4 py-2 text-sm text-center text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors duration-200"
+                className="block w-full px-4 py-2 text-sm text-center text-white bg-[#1a1a1f] rounded-lg hover:bg-[#2a2a2f] transition-colors duration-200"
                 onClick={isMobile ? onClose : undefined}
               >
                 Sign Up

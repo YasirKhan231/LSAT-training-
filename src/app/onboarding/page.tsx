@@ -258,15 +258,15 @@ export default function OnboardingForm() {
   const getStepIcon = () => {
     switch (step) {
       case "exam-date":
-        return <LucideCalendar className="h-6 w-6 text-cyan-400" />;
+        return <LucideCalendar className="h-6 w-6 text-gray-400" />;
       case "target-score":
-        return <LucideTarget className="h-6 w-6 text-cyan-400" />;
+        return <LucideTarget className="h-6 w-6 text-gray-400" />;
       case "current-score":
-        return <LucideBarChart className="h-6 w-6 text-cyan-400" />;
+        return <LucideBarChart className="h-6 w-6 text-gray-400" />;
       case "study-hours":
-        return <LucideClock className="h-6 w-6 text-cyan-400" />;
+        return <LucideClock className="h-6 w-6 text-gray-400" />;
       default:
-        return <LucideShield className="h-6 w-6 text-cyan-400" />;
+        return <LucideShield className="h-6 w-6 text-gray-400" />;
     }
   };
 
@@ -286,8 +286,8 @@ export default function OnboardingForm() {
   const currentStepIndex = steps.indexOf(step);
 
   return (
-    <div className="dark flex items-center justify-center min-h-screen p-4 bg-gradient-to-b from-slate-900 via-slate-900 to-black">
-      <Card className="w-full max-w-md mx-auto shadow-xl border border-slate-800 bg-gradient-to-b from-slate-900 to-slate-950 backdrop-blur-sm">
+    <div className="dark flex items-center justify-center min-h-screen p-4 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]">
+      <Card className="w-full max-w-md mx-auto shadow-xl border border-[#1a1a1f] bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] backdrop-blur-sm">
         <CardHeader className="pb-4 space-y-2">
           <div className="flex items-center justify-center mb-2">
             {getStepIcon()}
@@ -303,8 +303,8 @@ export default function OnboardingForm() {
                 key={s}
                 className={`h-1.5 rounded-full flex-1 mx-0.5 transition-colors ${
                   currentStepIndex >= i
-                    ? "bg-gradient-to-r from-cyan-500 to-blue-500"
-                    : "bg-slate-800"
+                    ? "bg-gradient-to-r from-[#1a1a1f] to-[#2a2a2f]"
+                    : "bg-[#1a1a1f]"
                 }`}
               />
             ))}
@@ -316,17 +316,17 @@ export default function OnboardingForm() {
           {step === "exam-date" && (
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="exam-date" className="text-slate-300">
+                <Label htmlFor="exam-date" className="text-white">
                   Exam Date
                 </Label>
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button
                       variant="outline"
-                      className="w-full justify-start text-left font-normal border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-300"
+                      className="w-full justify-start text-left font-normal border-[#2a2a2f] bg-[#1a1a1f] hover:bg-[#2a2a2f] text-white"
                       id="exam-date"
                     >
-                      <CalendarIcon className="mr-2 h-4 w-4 text-cyan-400" />
+                      <CalendarIcon className="mr-2 h-4 w-4 text-gray-400" />
                       {formData.barExamTestDate ? (
                         formData.barExamTestDate.toLocaleDateString()
                       ) : (
@@ -334,7 +334,7 @@ export default function OnboardingForm() {
                       )}
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0 bg-slate-800 border-slate-700">
+                  <PopoverContent className="w-auto p-0 bg-[#1a1a1f] border-[#2a2a2f]">
                     <DayPicker
                       mode="single"
                       selected={formData.barExamTestDate}
@@ -347,12 +347,12 @@ export default function OnboardingForm() {
                       disabled={{ before: new Date() }}
                       className="custom-day-picker"
                       classNames={{
-                        day_selected: "bg-cyan-500 text-slate-900",
-                        day_today: "text-cyan-400",
-                        button: "text-slate-300 hover:bg-slate-700",
-                        caption: "text-slate-300",
-                        nav_button: "text-slate-300 hover:bg-slate-700",
-                        head_cell: "text-slate-400",
+                        day_selected: "bg-[#2a2a2f] text-white",
+                        day_today: "text-gray-400",
+                        button: "text-white hover:bg-[#2a2a2f]",
+                        caption: "text-white",
+                        nav_button: "text-white hover:bg-[#2a2a2f]",
+                        head_cell: "text-gray-400",
                       }}
                     />
                   </PopoverContent>
@@ -365,7 +365,7 @@ export default function OnboardingForm() {
           {step === "target-score" && (
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="target-score" className="text-slate-300">
+                <Label htmlFor="target-score" className="text-white">
                   Target Score (260-400)
                 </Label>
                 <Input
@@ -379,7 +379,7 @@ export default function OnboardingForm() {
                     setFormData({ ...formData, targetScore: value });
                   }}
                   placeholder="Enter your target score"
-                  className="border-slate-700 bg-slate-800 text-slate-300 placeholder:text-slate-500 focus:ring-cyan-500"
+                  className="border-[#2a2a2f] bg-[#1a1a1f] text-white placeholder:text-gray-500 focus:ring-[#2a2a2f]"
                 />
                 {formData.targetScore &&
                   (Number(formData.targetScore) < 260 ||
@@ -396,7 +396,7 @@ export default function OnboardingForm() {
           {step === "current-score" && (
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="current-score" className="text-slate-300">
+                <Label htmlFor="current-score" className="text-white">
                   Current Score (260-400)
                 </Label>
                 <Input
@@ -410,7 +410,7 @@ export default function OnboardingForm() {
                     setFormData({ ...formData, currentScore: value });
                   }}
                   placeholder="Enter your current score"
-                  className="border-slate-700 bg-slate-800 text-slate-300 placeholder:text-slate-500 focus:ring-cyan-500"
+                  className="border-[#2a2a2f] bg-[#1a1a1f] text-white placeholder:text-gray-500 focus:ring-[#2a2a2f]"
                 />
                 {formData.currentScore &&
                   (Number(formData.currentScore) < 260 ||
@@ -427,7 +427,7 @@ export default function OnboardingForm() {
           {step === "study-hours" && (
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="study-hours" className="text-slate-300">
+                <Label htmlFor="study-hours" className="text-white">
                   Weekly Study Hours
                 </Label>
                 <Select
@@ -438,11 +438,11 @@ export default function OnboardingForm() {
                 >
                   <SelectTrigger
                     id="study-hours"
-                    className="border-slate-700 bg-slate-800 text-slate-300"
+                    className="border-[#2a2a2f] bg-[#1a1a1f] text-white"
                   >
                     <SelectValue placeholder="Select study hours" />
                   </SelectTrigger>
-                  <SelectContent className="bg-slate-800 border-slate-700 text-slate-300">
+                  <SelectContent className="bg-[#1a1a1f] border-[#2a2a2f] text-white">
                     <SelectItem value="1-5">1-5 hours</SelectItem>
                     <SelectItem value="6-10">6-10 hours</SelectItem>
                     <SelectItem value="11-15">11-15 hours</SelectItem>
@@ -458,7 +458,7 @@ export default function OnboardingForm() {
           {step === "challenging-areas" && (
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label className="text-slate-300">
+                <Label className="text-white">
                   Which section do you find most challenging?
                 </Label>
                 <RadioGroup
@@ -482,16 +482,16 @@ export default function OnboardingForm() {
                   ].map((item) => (
                     <div
                       key={item.value}
-                      className="flex items-center space-x-2 p-2 rounded-md hover:bg-slate-800 transition-colors"
+                      className="flex items-center space-x-2 p-2 rounded-md hover:bg-[#1a1a1f] transition-colors"
                     >
                       <RadioGroupItem
                         value={item.value}
                         id={item.value}
-                        className="border-slate-600 text-cyan-400"
+                        className="border-[#2a2a2f] text-gray-400"
                       />
                       <Label
                         htmlFor={item.value}
-                        className="text-slate-300 cursor-pointer w-full"
+                        className="text-white cursor-pointer w-full"
                       >
                         {item.label}
                       </Label>
@@ -506,7 +506,7 @@ export default function OnboardingForm() {
           {step === "preferred-schedule" && (
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label className="text-slate-300">
+                <Label className="text-white">
                   What is your preferred study schedule?
                 </Label>
                 <RadioGroup
@@ -523,16 +523,16 @@ export default function OnboardingForm() {
                   ].map((item) => (
                     <div
                       key={item.value}
-                      className="flex items-center space-x-2 p-2 rounded-md hover:bg-slate-800 transition-colors"
+                      className="flex items-center space-x-2 p-2 rounded-md hover:bg-[#1a1a1f] transition-colors"
                     >
                       <RadioGroupItem
                         value={item.value}
                         id={item.value}
-                        className="border-slate-600 text-cyan-400"
+                        className="border-[#2a2a2f] text-gray-400"
                       />
                       <Label
                         htmlFor={item.value}
-                        className="text-slate-300 cursor-pointer w-full"
+                        className="text-white cursor-pointer w-full"
                       >
                         {item.label}
                       </Label>
@@ -547,7 +547,7 @@ export default function OnboardingForm() {
           {step === "focus-areas" && (
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label className="text-slate-300">
+                <Label className="text-white">
                   Do you have any specific areas you want to focus on?
                 </Label>
                 <div className="grid grid-cols-1 gap-2">
@@ -565,8 +565,8 @@ export default function OnboardingForm() {
                       className={cn(
                         "flex items-center space-x-2 p-3 rounded-md transition-colors cursor-pointer",
                         formData.focusAreas.includes(area.id)
-                          ? "bg-slate-800 border border-cyan-500/50"
-                          : "hover:bg-slate-800/50 border border-slate-800"
+                          ? "bg-[#1a1a1f] border border-[#2a2a2f]/50"
+                          : "hover:bg-[#1a1a1f]/50 border border-[#1a1a1f]"
                       )}
                       onClick={() => {
                         const updatedAreas = formData.focusAreas.includes(
@@ -584,15 +584,15 @@ export default function OnboardingForm() {
                         className={cn(
                           "w-5 h-5 flex items-center justify-center rounded border",
                           formData.focusAreas.includes(area.id)
-                            ? "bg-cyan-500 border-cyan-500 text-slate-900"
-                            : "border-slate-600"
+                            ? "bg-[#2a2a2f] border-[#2a2a2f] text-white"
+                            : "border-[#2a2a2f]"
                         )}
                       >
                         {formData.focusAreas.includes(area.id) && (
                           <LucideCheck className="h-3.5 w-3.5" />
                         )}
                       </div>
-                      <Label className="text-slate-300 cursor-pointer">
+                      <Label className="text-white cursor-pointer">
                         {area.label}
                       </Label>
                     </div>
@@ -608,7 +608,7 @@ export default function OnboardingForm() {
               <div className="space-y-2">
                 <Label
                   htmlFor="barExamPreparationMaterial"
-                  className="text-slate-300"
+                  className="text-white"
                 >
                   What BAR prep material do you have access to?
                 </Label>
@@ -623,11 +623,11 @@ export default function OnboardingForm() {
                 >
                   <SelectTrigger
                     id="barExamPreparationMaterial"
-                    className="border-slate-700 bg-slate-800 text-slate-300"
+                    className="border-[#2a2a2f] bg-[#1a1a1f] text-white"
                   >
                     <SelectValue placeholder="Select material" />
                   </SelectTrigger>
-                  <SelectContent className="bg-slate-800 border-slate-700 text-slate-300">
+                  <SelectContent className="bg-[#1a1a1f] border-[#2a2a2f] text-white">
                     <SelectItem value="official">
                       Official BAR PrepTests
                     </SelectItem>
@@ -648,13 +648,13 @@ export default function OnboardingForm() {
           {step === "additional-info" && (
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="additional" className="text-slate-300">
+                <Label htmlFor="additional" className="text-white">
                   Any additional information you'd like to share?
                 </Label>
                 <textarea
                   id="additional"
                   placeholder="E.g., specific challenges, learning style, etc."
-                  className="w-full h-32 px-3 py-2 rounded-md border border-slate-700 bg-slate-800 text-slate-300 placeholder:text-slate-500 focus:ring-cyan-500 focus:border-cyan-500 focus:outline-none resize-none"
+                  className="w-full h-32 px-3 py-2 rounded-md border border-[#2a2a2f] bg-[#1a1a1f] text-white placeholder:text-gray-500 focus:ring-[#2a2a2f] focus:border-[#2a2a2f] focus:outline-none resize-none"
                   value={formData.additionalInfo}
                   onChange={(e) =>
                     setFormData({ ...formData, additionalInfo: e.target.value })
@@ -667,7 +667,7 @@ export default function OnboardingForm() {
           {/* Step 10: Review */}
           {step === "review" && (
             <div className="space-y-4">
-              <div className="space-y-3 text-sm rounded-md border border-slate-700 p-4 bg-slate-800/50">
+              <div className="space-y-3 text-sm rounded-md border border-[#2a2a2f] p-4 bg-[#1a1a1f]/50">
                 {[
                   {
                     label: "Exam Date",
@@ -704,14 +704,12 @@ export default function OnboardingForm() {
                     className={cn(
                       "flex justify-between py-2",
                       index !== array.length - 1
-                        ? "border-b border-slate-700"
+                        ? "border-b border-[#2a2a2f]"
                         : ""
                     )}
                   >
-                    <span className="text-slate-400">{item.label}</span>
-                    <span className="font-medium text-slate-200">
-                      {item.value}
-                    </span>
+                    <span className="text-gray-400">{item.label}</span>
+                    <span className="font-medium text-white">{item.value}</span>
                   </div>
                 ))}
               </div>
@@ -723,7 +721,7 @@ export default function OnboardingForm() {
             {step !== "exam-date" ? (
               <Button
                 variant="outline"
-                className="border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-300"
+                className="border-[#2a2a2f] bg-[#1a1a1f] hover:bg-[#2a2a2f] text-white"
                 onClick={handleBack}
               >
                 <LucideChevronLeft className="mr-2 h-4 w-4" />
@@ -735,7 +733,7 @@ export default function OnboardingForm() {
 
             {step !== "review" ? (
               <Button
-                className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white"
+                className="bg-[#1a1a1f] hover:bg-[#2a2a2f] text-white"
                 onClick={handleNext}
                 disabled={
                   (step === "current-score" &&
@@ -753,7 +751,7 @@ export default function OnboardingForm() {
               </Button>
             ) : (
               <Button
-                className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white"
+                className="bg-[#1a1a1f] hover:bg-[#2a2a2f] text-white"
                 onClick={handleSubmit}
                 disabled={isSubmitting}
               >

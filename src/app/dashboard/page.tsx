@@ -165,22 +165,22 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen bg-gray-900">
-        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-indigo-500"></div>
+      <div className="flex justify-center items-center h-screen bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]">
+        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-white"></div>
       </div>
     );
   }
 
   if (error)
     return (
-      <div className="text-center p-4 text-red-400 bg-gray-900">
+      <div className="text-center p-4 text-red-400 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]">
         Error: {error}
       </div>
     );
 
   if (!userData)
     return (
-      <div className="text-center p-4 text-gray-300 bg-gray-900">
+      <div className="text-center p-4 text-gray-300 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]">
         No user data found.
       </div>
     );
@@ -208,7 +208,7 @@ export default function DashboardPage() {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800/5 to-black px-4 py-6 sm:px-6 lg:px-8 text-gray-300">
+      <div className="min-h-screen bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] px-4 py-6 sm:px-6 lg:px-8 text-gray-300">
         <header className="py-6">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start space-y-4 sm:space-y-0">
             <div>
@@ -219,9 +219,9 @@ export default function DashboardPage() {
                 Track your progress and continue your Bar Exam prep
               </p>
             </div>
-            <Card className="w-full sm:w-64 border-gray-800 shadow-xl bg-gradient-to-r from-gray-800/5 to-gray-900 backdrop-blur-sm">
+            <Card className="w-full sm:w-64 border-[#1E293B] shadow-xl bg-gradient-to-r from-[#0a0a0f] to-[#121218] backdrop-blur-sm">
               <CardHeader className="pb-1 pt-3">
-                <CardTitle className="text-xs sm:text-sm text-indigo-400">
+                <CardTitle className="text-xs sm:text-sm text-white">
                   Bar Exam: {formatBarExamTestDate(userData.barExamTestDate)}
                 </CardTitle>
               </CardHeader>
@@ -230,12 +230,12 @@ export default function DashboardPage() {
                   {["days", "hours", "minutes", "seconds"].map((unit, idx) => (
                     <div
                       key={idx}
-                      className="bg-gray-800/50 p-1 sm:p-2 rounded-md shadow-sm border border-gray-700"
+                      className="bg-[#1E293B] p-1 sm:p-2 rounded-md shadow-sm border border-[#334155]"
                     >
-                      <div className="text-base sm:text-lg font-bold text-indigo-400">
+                      <div className="text-base sm:text-lg font-bold text-white">
                         {timeRemaining[unit as keyof typeof timeRemaining]}
                       </div>
-                      <div className="text-xs text-gray-500">
+                      <div className="text-xs text-[#64748B]">
                         {unit.slice(0, 3)}
                       </div>
                     </div>
@@ -247,38 +247,38 @@ export default function DashboardPage() {
         </header>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <Card className="border-gray-800 shadow-xl bg-gradient-to-b from-gray-800/5 to-gray-900 backdrop-blur-sm">
+          <Card className="border-[#1E293B] shadow-xl bg-gradient-to-b from-[#0a0a0f] to-[#121218] backdrop-blur-sm">
             <CardHeader className="pb-2">
-              <CardTitle className="text-xs sm:text-sm font-medium text-gray-400">
+              <CardTitle className="text-xs sm:text-sm font-medium text-[#64748B]">
                 Practice Questions
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl sm:text-3xl font-semibold text-indigo-400">
+              <div className="text-2xl sm:text-3xl font-semibold text-white">
                 {PracticeQuestions}
               </div>
             </CardContent>
           </Card>
-          <Card className="border-gray-800 shadow-xl bg-gradient-to-b from-gray-800/5 to-gray-900 backdrop-blur-sm">
+          <Card className="border-[#1E293B] shadow-xl bg-gradient-to-b from-[#0a0a0f] to-[#121218] backdrop-blur-sm">
             <CardHeader className="pb-2">
-              <CardTitle className="text-xs sm:text-sm font-medium text-gray-400">
+              <CardTitle className="text-xs sm:text-sm font-medium text-[#64748B]">
                 Current Score
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl sm:text-3xl font-semibold text-indigo-400">
+              <div className="text-2xl sm:text-3xl font-semibold text-white">
                 {currentScore}
               </div>
             </CardContent>
           </Card>
-          <Card className="border-gray-800 shadow-xl bg-gradient-to-b from-gray-800/5 to-gray-900 backdrop-blur-sm">
+          <Card className="border-[#1E293B] shadow-xl bg-gradient-to-b from-[#0a0a0f] to-[#121218] backdrop-blur-sm">
             <CardHeader className="pb-2">
-              <CardTitle className="text-xs sm:text-sm font-medium text-gray-400">
+              <CardTitle className="text-xs sm:text-sm font-medium text-[#64748B]">
                 Current Streak
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl sm:text-3xl font-semibold text-indigo-400">
+              <div className="text-2xl sm:text-3xl font-semibold text-white">
                 {StudyStreak} days
               </div>
             </CardContent>
@@ -286,15 +286,15 @@ export default function DashboardPage() {
         </div>
 
         <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <Card className="border-gray-800 shadow-xl bg-gradient-to-b from-gray-800/5 to-gray-900 backdrop-blur-sm">
+          <Card className="border-[#1E293B] shadow-xl bg-gradient-to-b from-[#0a0a0f] to-[#121218] backdrop-blur-sm">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle className="text-base sm:text-lg font-medium text-white">
                   Performance Insights
                 </CardTitle>
-                <BarChart className="h-4 w-4 sm:h-5 sm:w-5 text-indigo-400" />
+                <BarChart className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
               </div>
-              <CardDescription className="text-xs sm:text-sm text-gray-400">
+              <CardDescription className="text-xs sm:text-sm text-[#64748B]">
                 {performanceInsights.length > 0
                   ? "Your performance across different exams"
                   : "No performance data available."}
@@ -307,7 +307,7 @@ export default function DashboardPage() {
                     <div key={index} className="space-y-1">
                       <div className="flex justify-between text-xs sm:text-sm">
                         <span className="text-gray-300">{insight.examId}</span>
-                        <span className="font-medium text-indigo-400">
+                        <span className="font-medium text-white">
                           {Math.round(
                             (insight.correctAnswers / insight.totalQuestions) *
                               100
@@ -320,28 +320,28 @@ export default function DashboardPage() {
                           (insight.correctAnswers / insight.totalQuestions) *
                           100
                         }
-                        className="h-2 bg-gray-800"
-                        indicatorClassName="bg-gradient-to-r from-indigo-500 to-purple-500"
+                        className="h-2 bg-[#1E293B]"
+                        indicatorClassName="bg-gradient-to-r from-white to-[#FFFFFF]"
                       />
                     </div>
                   ))}
                 </div>
               ) : (
-                <p className="text-xs sm:text-sm text-gray-500">
+                <p className="text-xs sm:text-sm text-[#64748B]">
                   No performance data available.
                 </p>
               )}
             </CardContent>
           </Card>
-          <Card className="border-gray-800 shadow-xl bg-gradient-to-b from-gray-800/5 to-gray-900 backdrop-blur-sm">
+          <Card className="border-[#1E293B] shadow-xl bg-gradient-to-b from-[#0a0a0f] to-[#121218] backdrop-blur-sm">
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle className="text-base sm:text-lg font-medium text-white">
                   Practice History
                 </CardTitle>
-                <LineChart className="h-4 w-4 sm:h-5 sm:w-5 text-indigo-400" />
+                <LineChart className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
               </div>
-              <CardDescription className="text-xs sm:text-sm text-gray-400">
+              <CardDescription className="text-xs sm:text-sm text-[#64748B]">
                 Your progress over the last {practiceHistory.length} sessions
               </CardDescription>
             </CardHeader>
@@ -350,10 +350,10 @@ export default function DashboardPage() {
                 {practiceHistory.map((session, index) => (
                   <div
                     key={index}
-                    className="flex items-center justify-between border-b border-gray-800 pb-2 text-xs sm:text-sm"
+                    className="flex items-center justify-between border-b border-[#1E293B] pb-2 text-xs sm:text-sm"
                   >
                     <div className="flex items-center space-x-2 sm:space-x-3">
-                      <div className="w-12 sm:w-10 text-gray-500">
+                      <div className="w-12 sm:w-10 text-[#64748B]">
                         {new Date(session.timestamp).toLocaleDateString(
                           "en-US",
                           {
@@ -396,19 +396,19 @@ export default function DashboardPage() {
               },
             ].map((item, index) => (
               <Link href={item.link} key={index} className="block">
-                <Card className="h-full border-gray-800 shadow-xl bg-gradient-to-b from-gray-800/5 to-gray-900 backdrop-blur-sm transition transform hover:scale-105 hover:shadow-lg hover:border-indigo-900/50">
+                <Card className="h-full border-[#1E293B] shadow-xl bg-gradient-to-b from-[#0a0a0f] to-[#121218] backdrop-blur-sm transition transform hover:scale-105 hover:shadow-lg hover:border-white/50">
                   <CardHeader className="pb-2">
                     <CardTitle className="text-base sm:text-lg font-medium text-white">
                       {item.title}
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-xs sm:text-sm text-gray-400">
+                    <p className="text-xs sm:text-sm text-[#64748B]">
                       {item.description}
                     </p>
                   </CardContent>
-                  <CardFooter className="bg-gray-800/30 flex justify-end">
-                    <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-indigo-400" />
+                  <CardFooter className="bg-[#1E293B]/30 flex justify-end">
+                    <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                   </CardFooter>
                 </Card>
               </Link>
@@ -439,17 +439,17 @@ export default function DashboardPage() {
               },
             ].map((item, index) => (
               <Link href={item.link} key={index} className="block">
-                <div className="bg-gradient-to-b from-gray-800/5 to-gray-900 backdrop-blur-sm shadow-xl rounded-lg border border-gray-800 transition transform hover:scale-105 hover:shadow-md hover:border-indigo-900/50">
+                <div className="bg-gradient-to-b from-[#0a0a0f] to-[#121218] backdrop-blur-sm shadow-xl rounded-lg border border-[#1E293B] transition transform hover:scale-105 hover:shadow-md hover:border-white/50">
                   <div className="px-4 py-4 sm:px-6 sm:py-5">
                     <h3 className="text-base sm:text-lg font-medium text-white">
                       {item.title}
                     </h3>
-                    <p className="mt-2 text-xs sm:text-sm text-gray-400">
+                    <p className="mt-2 text-xs sm:text-sm text-[#64748B]">
                       {item.description}
                     </p>
                   </div>
-                  <div className="bg-gray-800/30 px-4 py-3 sm:px-6 flex justify-end">
-                    <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-indigo-400" />
+                  <div className="bg-[#1E293B]/30 px-4 py-3 sm:px-6 flex justify-end">
+                    <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                   </div>
                 </div>
               </Link>

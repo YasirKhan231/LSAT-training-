@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -43,23 +44,23 @@ export default function CaseBriefing({ caseData }: CaseBriefingProps) {
 
   return (
     <div className="space-y-6">
-      <Card className="bg-slate-900 border-slate-800">
+      <Card className="bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] border-[#1a1a1f]">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-slate-100">
-            <Brain className="h-5 w-5 text-indigo-400" />
+          <CardTitle className="flex items-center gap-2 text-white">
+            <Brain className="h-5 w-5 text-white" />
             {caseData.title}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             <div>
-              <h3 className="font-medium mb-2 text-slate-100">Case Facts</h3>
-              <p className="text-slate-400">{caseData.facts}</p>
+              <h3 className="font-medium mb-2 text-white">Case Facts</h3>
+              <p className="text-white">{caseData.facts}</p>
             </div>
 
             <div className="space-y-4">
               <div>
-                <label className="block font-medium mb-2 text-slate-100">
+                <label className="block font-medium mb-2 text-white">
                   Issue
                 </label>
                 <Textarea
@@ -68,12 +69,12 @@ export default function CaseBriefing({ caseData }: CaseBriefingProps) {
                   onChange={(e) =>
                     setUserBrief({ ...userBrief, issue: e.target.value })
                   }
-                  className="h-24 bg-slate-800 border-slate-700 text-slate-100 placeholder:text-slate-500"
+                  className="h-24 bg-[#121218] border-[#1a1a1f] text-white placeholder:text-slate-500"
                 />
               </div>
 
               <div>
-                <label className="block font-medium mb-2 text-slate-100">
+                <label className="block font-medium mb-2 text-white">
                   Rule
                 </label>
                 <Textarea
@@ -82,12 +83,12 @@ export default function CaseBriefing({ caseData }: CaseBriefingProps) {
                   onChange={(e) =>
                     setUserBrief({ ...userBrief, rule: e.target.value })
                   }
-                  className="h-24 bg-slate-800 border-slate-700 text-slate-100 placeholder:text-slate-500"
+                  className="h-24 bg-[#121218] border-[#1a1a1f] text-white placeholder:text-slate-500"
                 />
               </div>
 
               <div>
-                <label className="block font-medium mb-2 text-slate-100">
+                <label className="block font-medium mb-2 text-white">
                   Analysis
                 </label>
                 <Textarea
@@ -96,12 +97,12 @@ export default function CaseBriefing({ caseData }: CaseBriefingProps) {
                   onChange={(e) =>
                     setUserBrief({ ...userBrief, analysis: e.target.value })
                   }
-                  className="h-32 bg-slate-800 border-slate-700 text-slate-100 placeholder:text-slate-500"
+                  className="h-32 bg-[#121218] border-[#1a1a1f] text-white placeholder:text-slate-500"
                 />
               </div>
 
               <div>
-                <label className="block font-medium mb-2 text-slate-100">
+                <label className="block font-medium mb-2 text-white">
                   Conclusion
                 </label>
                 <Textarea
@@ -110,7 +111,7 @@ export default function CaseBriefing({ caseData }: CaseBriefingProps) {
                   onChange={(e) =>
                     setUserBrief({ ...userBrief, conclusion: e.target.value })
                   }
-                  className="h-24 bg-slate-800 border-slate-700 text-slate-100 placeholder:text-slate-500"
+                  className="h-24 bg-[#121218] border-[#1a1a1f] text-white placeholder:text-slate-500"
                 />
               </div>
             </div>
@@ -118,7 +119,7 @@ export default function CaseBriefing({ caseData }: CaseBriefingProps) {
             <Button
               onClick={handleAnalyze}
               disabled={isAnalyzing}
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white"
+              className="w-full bg-[#121218] hover:bg-[#1a1a1f] text-white border border-[#1a1a1f]"
             >
               {isAnalyzing ? "Analyzing..." : "Analyze Brief"}
             </Button>
@@ -138,10 +139,8 @@ export default function CaseBriefing({ caseData }: CaseBriefingProps) {
                     <AlertCircle className="h-5 w-5 text-amber-500 mt-1" />
                   )}
                   <div>
-                    <h4 className="font-medium mb-1 text-slate-100">
-                      AI Feedback
-                    </h4>
-                    <p className="text-sm text-slate-300">{feedback}</p>
+                    <h4 className="font-medium mb-1 text-white">AI Feedback</h4>
+                    <p className="text-sm text-white">{feedback}</p>
                   </div>
                 </div>
               </div>

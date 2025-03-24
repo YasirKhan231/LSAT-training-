@@ -62,12 +62,12 @@ export default function MockExamPage() {
 
   return (
     <ProtectedRoute>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-slate-950">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]">
         <header className="py-8">
-          <h1 className="text-3xl font-extrabold text-slate-100">
+          <h1 className="text-3xl font-extrabold text-white">
             Full-Length BAR simulated exams
           </h1>
-          <p className="mt-2 text-lg text-slate-400">
+          <p className="mt-2 text-lg text-white">
             Take realistic timed BAR practice tests with AI-powered analysis and
             feedback
           </p>
@@ -75,8 +75,8 @@ export default function MockExamPage() {
           {!isSubscriptionActive && (
             <div className="mt-4 bg-amber-900/20 border border-amber-800 rounded-md p-4">
               <div className="flex">
-                <Crown className="h-5 w-5 text-amber-500 mr-2" />
-                <p className="text-amber-300">
+                <Crown className="h-5 w-5 text-white mr-2" />
+                <p className="text-white">
                   Free users get access to all practice exams.
                   <Link
                     href="/subscription"
@@ -93,35 +93,33 @@ export default function MockExamPage() {
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 mt-8">
           <div>
-            <h2 className="text-xl font-bold text-slate-100 mb-4">
+            <h2 className="text-xl font-bold text-white mb-4">
               Available Practice Tests
             </h2>
             <div className="space-y-4">
               {availableExamsForUser.map((exam) => (
                 <Card
                   key={exam.id}
-                  className={`transition-all cursor-pointer bg-slate-900 border-slate-800 ${
-                    selectedExam === exam.id ? "ring-2 ring-indigo-600" : ""
+                  className={`transition-all cursor-pointer bg-[#121218] border-[#1a1a1f] ${
+                    selectedExam === exam.id ? "ring-2 ring-[#1a1a1f]" : ""
                   }`}
                   onClick={() => setSelectedExam(exam.id)}
                 >
                   <CardHeader className="pb-2">
                     <div className="flex justify-between items-center">
-                      <CardTitle className="text-slate-100">
-                        {exam.title}
-                      </CardTitle>
+                      <CardTitle className="text-white">{exam.title}</CardTitle>
                       <Badge
                         variant={
                           exam.difficulty === "Hard" ? "destructive" : "default"
                         }
-                        className="bg-slate-800 text-slate-200 border-slate-700"
+                        className="bg-[#121218] text-white border-[#1a1a1f]"
                       >
                         {exam.difficulty}
                       </Badge>
                     </div>
                   </CardHeader>
                   <CardContent className="pb-2">
-                    <div className="text-sm text-slate-400">
+                    <div className="text-sm text-white">
                       <p>
                         {exam.questions} questions •{" "}
                         {Math.floor(exam.duration / 60)}h {exam.duration % 60}m
@@ -136,7 +134,7 @@ export default function MockExamPage() {
                       {exam.aiAssisted && (
                         <Badge
                           variant="outline"
-                          className="text-indigo-400 border-indigo-800 bg-indigo-900/20"
+                          className="text-white border-[#1a1a1f] bg-[#121218]/20"
                         >
                           AI-Assisted
                         </Badge>
@@ -144,7 +142,7 @@ export default function MockExamPage() {
                       {exam.isCustomizable && (
                         <Badge
                           variant="outline"
-                          className="text-purple-400 border-purple-800 bg-purple-900/20"
+                          className="text-white border-[#1a1a1f] bg-[#121218]/20"
                         >
                           Customizable
                         </Badge>
@@ -157,12 +155,10 @@ export default function MockExamPage() {
           </div>
 
           <div>
-            <h2 className="text-xl font-bold text-slate-100 mb-4">
-              Exam Details
-            </h2>
+            <h2 className="text-xl font-bold text-white mb-4">Exam Details</h2>
             {selectedExam ? (
-              <div className="bg-slate-900 p-6 rounded-lg shadow-md border border-slate-800">
-                <h3 className="text-lg font-semibold text-slate-100 mb-4">
+              <div className="bg-[#121218] p-6 rounded-lg shadow-md border border-[#1a1a1f]">
+                <h3 className="text-lg font-semibold text-white mb-4">
                   {
                     availableExamsForUser.find((e) => e.id === selectedExam)
                       ?.title
@@ -171,10 +167,8 @@ export default function MockExamPage() {
 
                 <div className="space-y-4">
                   <div>
-                    <h4 className="text-sm font-medium text-slate-400">
-                      Features
-                    </h4>
-                    <ul className="mt-1 list-disc list-inside text-slate-300">
+                    <h4 className="text-sm font-medium text-white">Features</h4>
+                    <ul className="mt-1 list-disc list-inside text-white">
                       <li>Realistic exam conditions with timed sections</li>
                       <li>AI-powered performance analysis</li>
                       <li>Instant scoring and feedback</li>
@@ -184,22 +178,17 @@ export default function MockExamPage() {
                   </div>
 
                   <div>
-                    <h4 className="text-sm font-medium text-slate-400">
-                      Settings
-                    </h4>
+                    <h4 className="text-sm font-medium text-white">Settings</h4>
                     <div className="mt-2 space-y-2">
                       {/* These could be real controls in the full implementation */}
                       <div className="flex items-center">
                         <input
                           type="checkbox"
                           id="timing"
-                          className="mr-2 bg-slate-800 border-slate-700"
+                          className="mr-2 bg-[#121218] border-[#1a1a1f]"
                           defaultChecked
                         />
-                        <label
-                          htmlFor="timing"
-                          className="text-sm text-slate-300"
-                        >
+                        <label htmlFor="timing" className="text-sm text-white">
                           Enable strict timing
                         </label>
                       </div>
@@ -207,12 +196,12 @@ export default function MockExamPage() {
                         <input
                           type="checkbox"
                           id="ai-hints"
-                          className="mr-2 bg-slate-800 border-slate-700"
+                          className="mr-2 bg-[#121218] border-[#1a1a1f]"
                           defaultChecked
                         />
                         <label
                           htmlFor="ai-hints"
-                          className="text-sm text-slate-300"
+                          className="text-sm text-white"
                         >
                           Enable AI hints (limited to 3 per section)
                         </label>
@@ -223,15 +212,15 @@ export default function MockExamPage() {
 
                 <div className="mt-6">
                   <Link href={`/practice/mock-exam/${selectedExam}`}>
-                    <Button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white">
+                    <Button className="w-full bg-[#121218] hover:bg-[#1a1a1f] text-white border border-[#1a1a1f]">
                       Start Exam
                     </Button>
                   </Link>
                 </div>
               </div>
             ) : (
-              <div className="bg-slate-800 p-6 rounded-lg border border-dashed border-slate-700 text-center">
-                <p className="text-slate-400">
+              <div className="bg-[#121218] p-6 rounded-lg border border-dashed border-[#1a1a1f] text-center">
+                <p className="text-white">
                   Select an exam to view details and start
                 </p>
               </div>
@@ -242,18 +231,18 @@ export default function MockExamPage() {
         {/* Premium feature: Custom Exam Creation */}
         <PremiumFeature
           fallback={
-            <div className="mt-12 bg-slate-800 rounded-lg p-6 border border-slate-700">
-              <h2 className="text-xl font-bold text-slate-100 mb-2">
+            <div className="mt-12 bg-[#121218] rounded-lg p-6 border border-[#1a1a1f]">
+              <h2 className="text-xl font-bold text-white mb-2">
                 AI-Powered Exam Creation
               </h2>
-              <p className="text-slate-400 mb-4">
+              <p className="text-white mb-4">
                 Upgrade to premium to create custom exams tailored to your
                 specific needs and weaknesses
               </p>
               <Link href="/subscription">
                 <Button
                   variant="outline"
-                  className="bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-700"
+                  className="bg-[#121218] border-[#1a1a1f] text-white hover:bg-[#1a1a1f]"
                 >
                   Upgrade to Premium
                 </Button>
@@ -261,17 +250,17 @@ export default function MockExamPage() {
             </div>
           }
         >
-          <div className="mt-12 bg-indigo-900/20 rounded-lg p-6 border border-indigo-800">
-            <h2 className="text-xl font-bold text-indigo-300 mb-2">
+          <div className="mt-12 bg-[#121218]/20 rounded-lg p-6 border border-[#1a1a1f]">
+            <h2 className="text-xl font-bold text-white mb-2">
               AI-Powered Exam Creation
             </h2>
-            <p className="text-indigo-400 mb-4">
+            <p className="text-white mb-4">
               Create a custom exam tailored to your specific needs and
               weaknesses
             </p>
             <Button
               variant="outline"
-              className="bg-slate-800 border-indigo-700 text-indigo-300 hover:bg-slate-700"
+              className="bg-[#121218] border-[#1a1a1f] text-white hover:bg-[#1a1a1f]"
             >
               Create Custom Exam
             </Button>

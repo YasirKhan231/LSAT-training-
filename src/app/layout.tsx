@@ -32,16 +32,16 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.className}>
       <UserProvider>
-        <body className="min-h-screen bg-gray-900">
+        <body className="min-h-screen bg-gradient-to-b from-[#0a0a0f] to-[#121218]">
           {/* Mobile Navigation Bar */}
           {showSidebar && (
-            <nav className="fixed top-0 left-0 right-0 z-50 bg-gray-800/5 shadow-md md:hidden flex items-center justify-between px-4 py-3">
+            <nav className="fixed top-0 left-0 right-0 z-50 bg-[#121218]/50 backdrop-blur-md shadow-md md:hidden flex items-center justify-between px-4 py-3">
               <span className="text-xl font-bold text-indigo-400">
                 BAR Training
               </span>
               <button
                 onClick={handleOpenSidebar}
-                className="p-2 rounded-lg hover:bg-gray-700/10"
+                className="p-2 rounded-lg hover:bg-[#0a0a0f]/10"
                 aria-label="Open sidebar"
               >
                 <svg
