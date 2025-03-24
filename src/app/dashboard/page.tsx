@@ -392,7 +392,7 @@ export default function DashboardPage() {
               {
                 title: "Criminal Law",
                 description: "Improve criminal law understanding",
-                link: "/question-bank/criminal-law",
+                link: "/question-bank/criminal-law-and-procedure",
               },
             ].map((item, index) => (
               <Link href={item.link} key={index} className="block">

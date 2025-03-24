@@ -17,9 +17,15 @@ import {
 import { z } from "zod";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { Clock, HelpCircle, ArrowRight } from "lucide-react";
+import {
+  Clock,
+  HelpCircle,
+  ArrowRight,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { mockExamData } from "@/lib/mockExamQuestion"; // Import the mock exam data
-
+import { cn } from "@/lib/utils";
 const formSchema = z.object({
   questions: z.number().min(1).max(10),
 });
@@ -46,6 +52,8 @@ export default function ExamPage() {
   const [examStarted, setExamStarted] = useState(false);
   const [uuid, setUuid] = useState<string | null>(null); // Track user UUID
   const [timeSpentPerSection, setTimeSpentPerSection] = useState<number[]>([]); // Track time spent per section
+  const [currentPage, setCurrentPage] = useState(0); // Track current page of question numbers
+  const questionsPerPage = 10; // Number of question numbers to show per page
 
   const examData = mockExamData[examId]; // Use the imported mock exam data
   const section = examData?.sections[currentSection];
@@ -225,6 +233,38 @@ export default function ExamPage() {
     }
   };
 
+  // Function to navigate to a specific question
+  const goToQuestion = (index: number) => {
+    setCurrentQuestion(index);
+    setShowHint(false);
+  };
+
+  // Calculate total pages for pagination
+  const totalPages = Math.ceil(section.questions.length / questionsPerPage);
+
+  // Get current page of question numbers
+  const getCurrentPageQuestions = () => {
+    const startIdx = currentPage * questionsPerPage;
+    const endIdx = Math.min(
+      startIdx + questionsPerPage,
+      section.questions.length
+    );
+    return Array.from({ length: endIdx - startIdx }, (_, i) => startIdx + i);
+  };
+
+  // Handle pagination
+  const nextPage = () => {
+    if (currentPage < totalPages - 1) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
   if (!examStarted) {
     return (
       <ProtectedRoute>
@@ -280,7 +320,7 @@ export default function ExamPage() {
             </CardContent>
             <CardFooter>
               <Button
-                className="w-full bg-[#121218] hover:bg-[#1a1a1f] text-white border border-[#1a1a1f]"
+                className="w-full bg-white hover:bg-white text-black border border-[#1a1a1f]"
                 onClick={startExam}
               >
                 Begin Exam
@@ -348,7 +388,6 @@ export default function ExamPage() {
             className="mt-2 bg-[#1a1a1f]"
           />
         </div>
-
         {/* Question */}
         <div className="bg-[#121218] p-6 rounded-md shadow mb-6 border border-[#1a1a1f]">
           {/* Reading stimulus */}
@@ -404,35 +443,66 @@ export default function ExamPage() {
           )}
         </div>
 
-        {/* Navigation */}
-        <div className="flex justify-between items-center mt-4">
-          <div className="bg-[#121218] p-3 rounded-md border border-[#1a1a1f]">
-            <h3 className="text-white text-sm mb-2">Question Navigation</h3>
-            <div className="flex flex-wrap gap-2 max-w-[300px]">
-              {section.questions.map((q, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentQuestion(index)}
-                  className={`w-8 h-8 flex items-center justify-center rounded-md text-sm border ${
-                    currentQuestion === index
-                      ? "bg-[#1a1a1f] text-white border-[#2a2a2f]"
-                      : "bg-[#121218] text-white border-[#1a1a1f] hover:bg-[#1a1a1f]"
-                  } ${selectedAnswers[q.id] ? "font-bold" : ""}`}
-                >
-                  {index + 1}
-                </button>
-              ))}
-            </div>
-          </div>
+        {/* Next Button */}
+        <div className="mb-4">
           <Button
             onClick={handleNextQuestion}
-            className="bg-[#121218] hover:bg-[#1a1a1f] text-white border border-[#1a1a1f]"
+            className="w-full bg-[#121218] hover:bg-[#1a1a1f] text-white border border-[#1a1a1f]"
           >
             {currentQuestion < section.questions.length - 1
               ? "Next Question"
               : "Next Section"}
             <ArrowRight className="ml-1 h-4 w-4" />
           </Button>
+        </div>
+
+        {/* Question Navigation Menu */}
+        <div className="w-full border border-slate-700 rounded-md bg-slate-800 p-3 mb-6">
+          <div className="flex justify-between items-center mb-2">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={prevPage}
+              disabled={currentPage === 0}
+              className="text-slate-400 hover:text-slate-200 hover:bg-slate-700 p-1 h-8"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </Button>
+            <span className="text-sm text-slate-400">
+              Questions {currentPage * questionsPerPage + 1}-
+              {Math.min(
+                (currentPage + 1) * questionsPerPage,
+                section.questions.length
+              )}
+            </span>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={nextPage}
+              disabled={currentPage >= totalPages - 1}
+              className="text-slate-400 hover:text-slate-200 hover:bg-slate-700 p-1 h-8"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </Button>
+          </div>
+          <div className="flex flex-wrap gap-2 justify-center">
+            {getCurrentPageQuestions().map((idx) => (
+              <button
+                key={idx}
+                onClick={() => goToQuestion(idx)}
+                className={cn(
+                  "w-8 h-8 flex items-center justify-center rounded-md text-sm border",
+                  currentQuestion === idx
+                    ? "bg-indigo-600 text-white border-indigo-700"
+                    : selectedAnswers[section.questions[idx]?.id]
+                    ? "bg-slate-700 text-slate-200 border-slate-600"
+                    : "bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700"
+                )}
+              >
+                {idx + 1}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </ProtectedRoute>

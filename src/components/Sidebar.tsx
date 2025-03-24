@@ -20,7 +20,7 @@ import {
   ChevronRight,
   FileText,
   PenTool,
-  CreditCard,
+  Settings,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -87,11 +87,7 @@ export default function Sidebar({ isOpen, onClose, onOpen }: SidebarProps) {
     },
     { href: "/plan", label: "Study Plan", icon: Brain },
     { href: "/plan/ai-coach", label: "AI Coach", icon: GraduationCap },
-    {
-      href: "/subscription",
-      label: "Payment",
-      icon: CreditCard,
-    },
+    { href: "/setting", label: "Settings", icon: Settings }, // Added Settings
   ];
 
   const overlay = isMobile && isOpen && (

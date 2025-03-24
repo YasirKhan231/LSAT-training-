@@ -19,6 +19,8 @@ import {
   ArrowLeft,
   CheckCircle,
   AlertCircle,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { getQuestions } from "@/lib/questionsBankData"; // Import the getQuestions function
 import type { Question, QuestionFeedback } from "@/lib/types";
@@ -52,6 +54,8 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
   const [uuid, setUuid] = useState<string | null>(null); // Track user UUID
   const router = useRouter(); // For navigation
   const [isCompleted, setIsCompleted] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0); // Track current page of question numbers
+  const questionsPerPage = 10; // Number of question numbers to show per page
 
   // Fetch the authenticated user's UID when the component mounts
   useEffect(() => {
@@ -192,6 +196,38 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
       console.log("Session data saved successfully!");
     } catch (error) {
       console.error("Error saving session data:", error);
+    }
+  };
+
+  // Function to navigate to a specific question
+  const goToQuestion = (index: number) => {
+    setCurrentIndex(index);
+    setSelectedAnswer(null);
+    setIsAnswered(false);
+    setFeedback(null);
+    setShowExplanation(false);
+  };
+
+  // Calculate total pages for pagination
+  const totalPages = Math.ceil(questions.length / questionsPerPage);
+
+  // Get current page of question numbers
+  const getCurrentPageQuestions = () => {
+    const startIdx = currentPage * questionsPerPage;
+    const endIdx = Math.min(startIdx + questionsPerPage, questions.length);
+    return Array.from({ length: endIdx - startIdx }, (_, i) => startIdx + i);
+  };
+
+  // Handle pagination
+  const nextPage = () => {
+    if (currentPage < totalPages - 1) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
     }
   };
 
@@ -349,39 +385,92 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
             </RadioGroup>
           </div>
         </CardContent>
-        <CardFooter className="flex justify-between">
-          <Button
-            variant="outline"
-            onClick={handlePrevQuestion}
-            disabled={currentIndex === 0}
-            className="flex items-center bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-700"
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" /> Previous
-          </Button>
+        <CardFooter className="flex flex-col gap-4">
+          <div className="w-full flex justify-between items-center">
+            <Button
+              variant="outline"
+              onClick={handlePrevQuestion}
+              disabled={currentIndex === 0}
+              className="flex items-center bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-700"
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" /> Previous
+            </Button>
 
-          {!isAnswered ? (
-            <Button
-              onClick={handleAnswerSubmit}
-              disabled={!selectedAnswer}
-              className="bg-indigo-600 hover:bg-indigo-700 text-white"
-            >
-              Submit Answer
-            </Button>
-          ) : currentIndex === questions.length - 1 ? (
-            <Button
-              onClick={handleNextQuestion}
-              className="flex items-center bg-green-600 hover:bg-green-700 text-white"
-            >
-              Finish
-            </Button>
-          ) : (
-            <Button
-              onClick={handleNextQuestion}
-              className="flex items-center bg-indigo-600 hover:bg-indigo-700 text-white"
-            >
-              Next <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          )}
+            {!isAnswered ? (
+              <Button
+                onClick={handleAnswerSubmit}
+                disabled={!selectedAnswer}
+                className="bg-indigo-600 hover:bg-indigo-700 text-white"
+              >
+                Submit Answer
+              </Button>
+            ) : currentIndex === questions.length - 1 ? (
+              <Button
+                onClick={handleNextQuestion}
+                className="flex items-center bg-green-600 hover:bg-green-700 text-white"
+              >
+                Finish
+              </Button>
+            ) : (
+              <Button
+                onClick={handleNextQuestion}
+                className="flex items-center bg-indigo-600 hover:bg-indigo-700 text-white"
+              >
+                Next <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            )}
+          </div>
+
+          {/* Question Navigation Menu */}
+          <div className="w-full border border-slate-700 rounded-md bg-slate-800 p-3">
+            <div className="flex justify-between items-center mb-2">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={prevPage}
+                disabled={currentPage === 0}
+                className="text-slate-400 hover:text-slate-200 hover:bg-slate-700 p-1 h-8"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </Button>
+              <span className="text-sm text-slate-400">
+                Questions {currentPage * questionsPerPage + 1}-
+                {Math.min(
+                  (currentPage + 1) * questionsPerPage,
+                  questions.length
+                )}
+              </span>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={nextPage}
+                disabled={currentPage >= totalPages - 1}
+                className="text-slate-400 hover:text-slate-200 hover:bg-slate-700 p-1 h-8"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </Button>
+            </div>
+            <div className="flex flex-wrap gap-2 justify-center">
+              {getCurrentPageQuestions().map((idx) => (
+                <button
+                  key={idx}
+                  onClick={() => goToQuestion(idx)}
+                  className={cn(
+                    "w-8 h-8 flex items-center justify-center rounded-md text-sm border",
+                    currentIndex === idx
+                      ? "bg-indigo-600 text-white border-indigo-700"
+                      : responses.some(
+                          (r) => r.questionId === questions[idx]?.id
+                        )
+                      ? "bg-slate-700 text-slate-200 border-slate-600"
+                      : "bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700"
+                  )}
+                >
+                  {idx + 1}
+                </button>
+              ))}
+            </div>
+          </div>
         </CardFooter>
       </Card>
 

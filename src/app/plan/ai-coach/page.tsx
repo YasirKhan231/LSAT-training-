@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react"; // Added useRef
 import Link from "next/link";
 import { ArrowLeft, BookOpen, Send } from "lucide-react";
 import { onAuthStateChanged } from "firebase/auth";
@@ -53,6 +53,16 @@ export default function AICoach() {
   const [practiceHistory, setPracticeHistory] = useState<PracticeSession[]>([]);
   const [uuid, setUuid] = useState<string | null>(null);
   const [userName, setUserName] = useState<string>("User");
+
+  const chatContainerRef = useRef<HTMLDivElement>(null); // Ref for chat container
+
+  // Auto-scroll to the bottom when messages change
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   // Set the username and UUID from Firebase Auth
   useEffect(() => {
@@ -249,7 +259,10 @@ export default function AICoach() {
                   Chat with AI Coach
                 </CardTitle>
               </CardHeader>
-              <CardContent className="flex-1 overflow-y-auto p-4">
+              <CardContent
+                ref={chatContainerRef} // Attach ref for auto-scroll
+                className="flex-1 overflow-y-auto p-4"
+              >
                 <div className="space-y-4">
                   {messages.map((message, i) => (
                     <div

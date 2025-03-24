@@ -4,7 +4,14 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { getAuth, onAuthStateChanged } from "firebase/auth"; // Firebase Auth
 import app from "@/lib/firebase"; // Initialize Firebase app
-import { ArrowRight, BookOpen, BarChart, Clock, Zap } from "lucide-react";
+import {
+  ArrowRight,
+  BookOpen,
+  BarChart,
+  Clock,
+  Zap,
+  Check,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -23,6 +30,7 @@ export default function Dashboard() {
   const [userData, setUserData] = useState<any>(null); // State to store user data
   const [loading, setLoading] = useState(true); // State to handle loading
   const [error, setError] = useState<string | null>(null); // State to handle errors
+  const [tasks, setTasks] = useState<string[]>([]); // State to manage tasks
   const auth = getAuth(app); // Initialize Firebase Auth
 
   // Fetch the authenticated user's UID when the component mounts
@@ -51,12 +59,22 @@ export default function Dashboard() {
       }
       const data = await response.json();
       setUserData(data); // Set user data in state
+
+      // Initialize tasks from the study plan
+      const questionDataKey = data.questionDataKey as StudyPlanKey;
+      const studyPlan = studyPlans[questionDataKey] || studyPlans["terrible"];
+      setTasks(studyPlan.today); // Set tasks for the day
     } catch (error) {
       console.error("Error fetching user data:", error);
       setError("Failed to fetch user data. Please try again.");
     } finally {
       setLoading(false); // Set loading to false after fetching data
     }
+  };
+
+  // Handle task completion
+  const handleTaskCompletion = (index: number) => {
+    setTasks((prevTasks) => prevTasks.filter((_, i) => i !== index)); // Remove the task from the list
   };
 
   // Calculate days remaining until the Bar Exam
@@ -91,10 +109,6 @@ export default function Dashboard() {
       </div>
     );
   }
-
-  // Ensure the questionDataKey is a valid StudyPlanKey
-  const questionDataKey = userData.questionDataKey as StudyPlanKey;
-  const studyPlan = studyPlans[questionDataKey] || studyPlans["terrible"]; // Fallback to "terrible" if key is invalid
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] text-gray-300 p-6">
@@ -192,16 +206,18 @@ export default function Dashboard() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {studyPlan.today.map((task: string, index: number) => (
-                  <div key={index} className="flex items-start space-x-4">
-                    <div className="mt-0.5 rounded-full bg-[#1a1a1f]/30 p-1 border border-[#2a2a2f]/30">
-                      <BookOpen className="h-4 w-4 text-gray-400" />
-                    </div>
-                    <div className="flex-1 space-y-1">
-                      <p className="font-medium text-gray-300 leading-none">
-                        {task}
-                      </p>
-                    </div>
+                {tasks.map((task: string, index: number) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between p-3 rounded-lg bg-[#1a1a1f]/30 border border-[#2a2a2f]/30"
+                  >
+                    <p className="font-medium text-gray-300">{task}</p>
+                    <button
+                      onClick={() => handleTaskCompletion(index)}
+                      className="p-1 rounded-full border border-[#2a2a2f] hover:bg-[#2a2a2f] transition-colors"
+                    >
+                      <div className="h-4 w-4 border border-gray-400 rounded-sm"></div>
+                    </button>
                   </div>
                 ))}
               </div>

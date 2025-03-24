@@ -22,16 +22,18 @@ export default function Home() {
   return (
     <div className="container mx-auto px-4 py-8 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] text-white">
       <div className="max-w-5xl mx-auto">
+        {/* Heading Section */}
         <div className="mb-12">
-          <h1 className="text-3xl font-bold tracking-tight mb-2 text-white">
+          <h1 className="text-3xl font-bold tracking-tight mb-4 text-white">
             AI-Enhanced bar exam question bank
           </h1>
-          <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-400 max-w-2xl ml-8">
             Practice with adaptive questions and receive AI-powered explanations
             to improve your Bar Exam score.
           </p>
         </div>
 
+        {/* Rest of the code remains unchanged */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           {/* Constitutional Law */}
           <Card className="border-2 border-[#1a1a1f] hover:border-gray-600 transition-all shadow-md rounded-xl overflow-hidden bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]">

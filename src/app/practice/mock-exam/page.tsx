@@ -212,7 +212,7 @@ export default function MockExamPage() {
 
                 <div className="mt-6">
                   <Link href={`/practice/mock-exam/${selectedExam}`}>
-                    <Button className="w-full bg-[#121218] hover:bg-[#1a1a1f] text-white border border-[#1a1a1f]">
+                    <Button className="w-full  hover:bg-[#1a1a1f] bg-white text-black  border border-[#1a1a1f]">
                       Start Exam
                     </Button>
                   </Link>

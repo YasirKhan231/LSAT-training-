@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -12,6 +12,7 @@ export default function EssayPracticePage() {
   const [timeRemaining, setTimeRemaining] = useState(60 * 60); // 60 minutes in seconds
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [feedback, setFeedback] = useState<any>(null);
+  const [isTimerRunning, setIsTimerRunning] = useState(false);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -43,6 +44,27 @@ export default function EssayPracticePage() {
     }
     setIsSubmitting(false);
   };
+
+  // Start the timer when the user starts typing
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setEssay(e.target.value);
+    if (!isTimerRunning) {
+      setIsTimerRunning(true); // Start the timer only once
+    }
+  };
+
+  // Automatically submit the essay when the timer reaches zero
+  useEffect(() => {
+    if (isTimerRunning && timeRemaining > 0) {
+      const timer = setInterval(() => {
+        setTimeRemaining((prev) => prev - 1);
+      }, 1000);
+
+      return () => clearInterval(timer);
+    } else if (timeRemaining === 0) {
+      handleSubmit();
+    }
+  }, [isTimerRunning, timeRemaining]);
 
   return (
     <div className="container mx-auto px-4 py-8 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]">
@@ -77,7 +99,7 @@ export default function EssayPracticePage() {
               placeholder="Write your essay here..."
               className="min-h-[400px] p-4 bg-[#1a1a1f] border-[#2a2a2f] text-white placeholder:text-gray-500"
               value={essay}
-              onChange={(e) => setEssay(e.target.value)}
+              onChange={handleInputChange}
             />
           </CardContent>
         </Card>
