@@ -160,7 +160,7 @@ export default function StudyPlan() {
       <div className="container mx-auto">
         <div className="mb-6 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Link href="/plan">
+            <Link href="/dashboard">
               <Button
                 variant="ghost"
                 size="icon"

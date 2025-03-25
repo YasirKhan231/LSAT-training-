@@ -1,11 +1,11 @@
 "use client";
 
 import type React from "react";
-import { useState, useEffect, useRef } from "react"; // Added useRef
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { ArrowLeft, BookOpen, Send } from "lucide-react";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "@/lib/firebase"; // Ensure Firebase is initialized
+import { auth } from "@/lib/firebase";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -45,8 +45,8 @@ export default function AICoach() {
     },
   ]);
   const [input, setInput] = useState("");
-  const [isChatLoading, setIsChatLoading] = useState(false); // Separate loading state for chat
-  const [isLoading, setIsLoading] = useState(false); // Loading state for user data
+  const [isChatLoading, setIsChatLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [userData, setUserData] = useState<any>(null);
   const [performanceInsight, setPerformanceInsight] =
     useState<PerformanceInsight | null>(null);
@@ -54,9 +54,8 @@ export default function AICoach() {
   const [uuid, setUuid] = useState<string | null>(null);
   const [userName, setUserName] = useState<string>("User");
 
-  const chatContainerRef = useRef<HTMLDivElement>(null); // Ref for chat container
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
-  // Auto-scroll to the bottom when messages change
   useEffect(() => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop =
@@ -64,13 +63,12 @@ export default function AICoach() {
     }
   }, [messages]);
 
-  // Set the username and UUID from Firebase Auth
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        setUuid(user.uid); // Set the UUID
-        setUserName(user.displayName || user.email?.split("@")[0] || "User"); // Set the username
-        fetchUserData(user.uid); // Fetch user data
+        setUuid(user.uid);
+        setUserName(user.displayName || user.email?.split("@")[0] || "User");
+        fetchUserData(user.uid);
       } else {
         console.error("User not authenticated");
         setUuid(null);
@@ -80,9 +78,8 @@ export default function AICoach() {
     return () => unsubscribe();
   }, []);
 
-  // Fetch user data from the backend
   const fetchUserData = async (uid: string) => {
-    setIsLoading(true); // Set loading state for user data
+    setIsLoading(true);
     try {
       const response = await fetch(`/api/user?uuid=${uid}`);
       if (!response.ok) {
@@ -91,24 +88,21 @@ export default function AICoach() {
       const data = await response.json();
       setUserData(data);
 
-      // Set the most recent performance insight
       if (data.performanceInsights && data.performanceInsights.length > 0) {
-        // Sort performanceInsights by timestamp to get the most recent entry
         const sortedInsights = data.performanceInsights.sort(
           (a: PerformanceInsight, b: PerformanceInsight) =>
             new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
         );
-        setPerformanceInsight(sortedInsights[0]); // Set the most recent entry
+        setPerformanceInsight(sortedInsights[0]);
       }
 
-      // Set practice history
       if (data.practiceHistory) {
         setPracticeHistory(data.practiceHistory);
       }
     } catch (error) {
       console.error("Failed to fetch user data:", error);
     } finally {
-      setIsLoading(false); // Reset loading state for user data
+      setIsLoading(false);
     }
   };
 
@@ -118,10 +112,9 @@ export default function AICoach() {
     const userMessage: Message = { role: "user", content: input };
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
-    setIsChatLoading(true); // Set loading state for chat
+    setIsChatLoading(true);
 
     try {
-      // Send message to the backend (OpenAI or ChatGPT-like backend)
       const response = await fetch(`/api/plan/ai-coach?uuid=${uuid}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -139,7 +132,7 @@ export default function AICoach() {
         { role: "assistant", content: "Sorry, something went wrong." },
       ]);
     } finally {
-      setIsChatLoading(false); // Reset loading state for chat
+      setIsChatLoading(false);
     }
   };
 
@@ -151,14 +144,14 @@ export default function AICoach() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] text-[#64748B] p-6">
-      <div className="container mx-auto">
+    <div className="min-h-screen bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] text-[#64748B] px-3 py-6">
+      <div className="mx-auto max-w-[1800px]">
         <div className="mb-6 flex items-center">
           <Link href="/dashboard">
             <Button
               variant="ghost"
               size="icon"
-              className="mr-2 text-[#64748B] hover:text-white hover:bg-[#1E293B]"
+              className="mr-2 text-[#64748B] hover:text-white hover:bg-gradient-to-b hover:from-[#0a0a0f] hover:via-[#121218] hover:to-[#0a0a0f]"
             >
               <ArrowLeft className="h-5 w-5" />
             </Button>
@@ -169,7 +162,7 @@ export default function AICoach() {
         <div className="grid gap-6 md:grid-cols-3">
           {/* Left Side: Performance Insights and Recent Activity */}
           <div className="md:col-span-1">
-            <Card className="border-[#1E293B] shadow-xl bg-gradient-to-b from-[#0a0a0f] to-[#121218] backdrop-blur-sm">
+            <Card className="border-[#1E293B] shadow-xl bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="text-white">
                   Performance Insights
@@ -187,7 +180,7 @@ export default function AICoach() {
                   ) : performanceInsight &&
                     userData?.performanceInsights?.length > 0 ? (
                     userData.performanceInsights
-                      .slice(0, 3) // Show only the first 3 exams
+                      .slice(0, 3)
                       .map((insight: PerformanceInsight, index: number) => (
                         <div key={index} className="space-y-2">
                           <div className="flex items-center justify-between">
@@ -205,7 +198,7 @@ export default function AICoach() {
                               100
                             }
                             className="h-2 bg-[#1E293B]"
-                            indicatorClassName="bg-gradient-to-r from-[#4F46E5] to-[#9333EA]"
+                            indicatorClassName="bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]"
                           />
                         </div>
                       ))
@@ -225,7 +218,7 @@ export default function AICoach() {
                       practiceHistory.map((session, index) => (
                         <div
                           key={index}
-                          className="flex items-start space-x-3 rounded-md bg-[#1E293B]/30 p-2 border border-[#334155]/50"
+                          className="flex items-start space-x-3 rounded-md bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] p-2 border border-[#334155]/50"
                         >
                           <div className="mt-0.5 rounded-full bg-[#4F46E5]/30 p-1 border border-[#4F46E5]/30">
                             <BookOpen className="h-3 w-3 text-[#4F46E5]" />
@@ -253,14 +246,14 @@ export default function AICoach() {
 
           {/* Right Side: ChatGPT-like Chat UI */}
           <div className="md:col-span-2 flex flex-col">
-            <Card className="flex flex-col h-[calc(100vh-130px)] border-[#1E293B] shadow-xl bg-gradient-to-b from-[#0a0a0f] to-[#121218] backdrop-blur-sm">
+            <Card className="flex flex-col h-[calc(100vh-130px)] border-[#1E293B] shadow-xl bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="text-xl text-white">
                   Chat with AI Coach
                 </CardTitle>
               </CardHeader>
               <CardContent
-                ref={chatContainerRef} // Attach ref for auto-scroll
+                ref={chatContainerRef}
                 className="flex-1 overflow-y-auto p-4"
               >
                 <div className="space-y-4">
@@ -277,7 +270,7 @@ export default function AICoach() {
                         className={`rounded-lg p-4 max-w-[70%] ${
                           message.role === "assistant"
                             ? "bg-[#1E293B] text-[#CBD5E1] border border-[#334155]/50"
-                            : "bg-gradient-to-r from-[#4F46E5] to-[#9333EA] text-white"
+                            : "bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] text-white shadow-[0_0_10px_2px_rgba(255,255,255,0.3)]"
                         }`}
                       >
                         <p className="text-sm leading-relaxed">
@@ -290,13 +283,13 @@ export default function AICoach() {
                     <div className="flex justify-start">
                       <div className="rounded-lg bg-[#1E293B] p-4 border border-[#334155]/50">
                         <div className="flex space-x-2">
-                          <div className="h-2 w-2 animate-bounce rounded-full bg-[#4F46E5]"></div>
+                          <div className="h-2 w-2 animate-bounce rounded-full bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]"></div>
                           <div
-                            className="h-2 w-2 animate-bounce rounded-full bg-[#4F46E5]"
+                            className="h-2 w-2 animate-bounce rounded-full bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]"
                             style={{ animationDelay: "0.2s" }}
                           ></div>
                           <div
-                            className="h-2 w-2 animate-bounce rounded-full bg-[#4F46E5]"
+                            className="h-2 w-2 animate-bounce rounded-full bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]"
                             style={{ animationDelay: "0.4s" }}
                           ></div>
                         </div>
@@ -305,20 +298,20 @@ export default function AICoach() {
                   )}
                 </div>
               </CardContent>
-              <div className="border-t border-[#1E293B] p-4 bg-[#0a0a0f]">
+              <div className="border-t border-[#1E293B] p-4 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]">
                 <div className="flex items-center space-x-2">
                   <Textarea
                     placeholder="Ask your AI coach a question..."
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    className="flex-1 resize-none rounded-md border-[#334155] bg-[#1E293B]/50 p-3 text-sm focus:border-[#4F46E5] focus:ring-[#4F46E5] text-[#CBD5E1] placeholder:text-[#64748B]"
+                    className="flex-1 resize-none rounded-md border-[#334155] bg-[#1E293B]/50 p-3 text-sm focus:border-[#4F46E5] focus:ring-[#4F46E5] text-[#CBD5E1] placeholder:text-[#64748B] shadow-[0_0_8px_1px_rgba(255,255,255,0.2)] focus:shadow-[0_0_10px_2px_rgba(255,255,255,0.3)] transition-shadow"
                     rows={2}
                   />
                   <Button
                     onClick={handleSend}
                     disabled={isChatLoading || !input.trim()}
-                    className="rounded-md bg-gradient-to-r from-[#4F46E5] to-[#9333EA] p-2 text-white hover:from-[#4F46E6] hover:to-[#9333EB] disabled:opacity-50"
+                    className="rounded-md bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] p-2 text-white hover:opacity-90 disabled:opacity-50 shadow-[0_0_8px_1px_rgba(255,255,255,0.2)] hover:shadow-[0_0_10px_2px_rgba(255,255,255,0.3)] transition-shadow"
                   >
                     <Send className="h-5 w-5" />
                   </Button>

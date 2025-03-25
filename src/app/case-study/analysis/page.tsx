@@ -49,57 +49,55 @@ export default function LegalAnalysisPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 bg-slate-950">
+    <div className="container mx-auto px-4 py-8 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] min-h-screen">
       <div className="mb-6 flex items-center gap-4">
         <Link href="/case-study">
           <Button
             variant="ghost"
             size="icon"
-            className="text-slate-300 hover:bg-slate-800 hover:text-slate-100"
+            className="text-gray-400 hover:bg-[#1a1a1f] hover:text-white"
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
         </Link>
-        <h1 className="text-3xl font-bold text-slate-100">
+        <h1 className="text-3xl font-bold text-white">
           Legal Analysis Practice
         </h1>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="bg-slate-900 border-slate-800">
+        <Card className="bg-[#121218] border-[#1a1a1f]">
           <CardHeader>
-            <CardTitle className="text-slate-100">
-              {hypothetical.title}
-            </CardTitle>
+            <CardTitle className="text-white">{hypothetical.title}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <div>
-                <h3 className="font-medium mb-2 text-slate-100">Facts:</h3>
-                <p className="text-slate-400">{hypothetical.facts}</p>
+                <h3 className="font-medium mb-2 text-white">Facts:</h3>
+                <p className="text-gray-400">{hypothetical.facts}</p>
               </div>
               <div>
-                <h3 className="font-medium mb-2 text-slate-100">Question:</h3>
-                <p className="text-slate-400">{hypothetical.question}</p>
+                <h3 className="font-medium mb-2 text-white">Question:</h3>
+                <p className="text-gray-400">{hypothetical.question}</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
         <div className="space-y-6">
-          <Card className="bg-slate-900 border-slate-800">
+          <Card className="bg-[#121218] border-[#1a1a1f]">
             <CardHeader>
-              <CardTitle className="text-slate-100">Your Analysis</CardTitle>
+              <CardTitle className="text-white">Your Analysis</CardTitle>
             </CardHeader>
             <CardContent>
               <Textarea
                 value={analysis}
                 onChange={(e) => setAnalysis(e.target.value)}
                 placeholder="Enter your legal analysis here..."
-                className="min-h-[200px] bg-slate-800 border-slate-700 text-slate-100 placeholder:text-slate-500"
+                className="min-h-[200px] bg-[#0a0a0f] border-[#1a1a1f] text-white placeholder:text-gray-500"
               />
               <Button
-                className="w-full mt-4 bg-indigo-600 hover:bg-indigo-700 text-white"
+                className="w-full mt-4 bg-[#1a1a1f] hover:bg-[#2a2a2f] text-white"
                 onClick={handleSubmitAnalysis}
                 disabled={isLoading}
               >
@@ -110,9 +108,9 @@ export default function LegalAnalysisPage() {
           </Card>
 
           {feedback && (
-            <Card className="bg-slate-900 border-slate-800">
+            <Card className="bg-[#121218] border-[#1a1a1f]">
               <CardHeader>
-                <CardTitle className="text-slate-100">AI Feedback</CardTitle>
+                <CardTitle className="text-white">AI Feedback</CardTitle>
               </CardHeader>
               <CardContent>
                 {feedback.error ? (
@@ -120,26 +118,22 @@ export default function LegalAnalysisPage() {
                 ) : (
                   <div className="space-y-4">
                     <div>
-                      <h3 className="font-medium mb-2 text-slate-100">
-                        Score:
-                      </h3>
-                      <p className="text-slate-400">
+                      <h3 className="font-medium mb-2 text-white">Score:</h3>
+                      <p className="text-gray-400">
                         {feedback.analysisScore * 100}%
                       </p>
                     </div>
                     <div>
-                      <h3 className="font-medium mb-2 text-slate-100">
-                        Feedback:
-                      </h3>
-                      <p className="text-slate-400">
+                      <h3 className="font-medium mb-2 text-white">Feedback:</h3>
+                      <p className="text-gray-400">
                         {feedback.analysisFeedback}
                       </p>
                     </div>
                     <div>
-                      <h3 className="font-medium mb-2 text-slate-100">
+                      <h3 className="font-medium mb-2 text-white">
                         Suggestions:
                       </h3>
-                      <ul className="list-disc list-inside text-slate-400">
+                      <ul className="list-disc list-inside text-gray-400">
                         {feedback.suggestions.map(
                           (suggestion: string, index: number) => (
                             <li key={index}>{suggestion}</li>
@@ -148,12 +142,12 @@ export default function LegalAnalysisPage() {
                       </ul>
                     </div>
                     <div>
-                      <h3 className="font-medium mb-2 text-slate-100">
+                      <h3 className="font-medium mb-2 text-white">
                         Model Analysis:
                       </h3>
-                      <div className="space-y-3 text-slate-400">
+                      <div className="space-y-3 text-gray-400">
                         <div>
-                          <h4 className="font-medium text-slate-300">Facts:</h4>
+                          <h4 className="font-medium text-gray-300">Facts:</h4>
                           <ul className="list-disc list-inside pl-5">
                             {feedback.modelAnalysis.facts
                               .split(". ")
@@ -164,7 +158,7 @@ export default function LegalAnalysisPage() {
                           </ul>
                         </div>
                         <div>
-                          <h4 className="font-medium text-slate-300">Issue:</h4>
+                          <h4 className="font-medium text-gray-300">Issue:</h4>
                           <ul className="list-disc list-inside pl-5">
                             {feedback.modelAnalysis.issue
                               .split(". ")
@@ -175,7 +169,7 @@ export default function LegalAnalysisPage() {
                           </ul>
                         </div>
                         <div>
-                          <h4 className="font-medium text-slate-300">Rule:</h4>
+                          <h4 className="font-medium text-gray-300">Rule:</h4>
                           <ul className="list-disc list-inside pl-5">
                             {feedback.modelAnalysis.rule
                               .split(". ")
@@ -186,7 +180,7 @@ export default function LegalAnalysisPage() {
                           </ul>
                         </div>
                         <div>
-                          <h4 className="font-medium text-slate-300">
+                          <h4 className="font-medium text-gray-300">
                             Application:
                           </h4>
                           <ul className="list-disc list-inside pl-5">
@@ -199,7 +193,7 @@ export default function LegalAnalysisPage() {
                           </ul>
                         </div>
                         <div>
-                          <h4 className="font-medium text-slate-300">
+                          <h4 className="font-medium text-gray-300">
                             Conclusion:
                           </h4>
                           <ul className="list-disc list-inside pl-5">

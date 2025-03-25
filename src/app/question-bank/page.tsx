@@ -22,12 +22,12 @@ export default function Home() {
   return (
     <div className="container mx-auto px-4 py-8 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] text-white">
       <div className="max-w-5xl mx-auto">
-        {/* Heading Section */}
+        {/* Heading Section - Updated alignment */}
         <div className="mb-12">
           <h1 className="text-3xl font-bold tracking-tight mb-4 text-white">
             AI-Enhanced bar exam question bank
           </h1>
-          <p className="text-lg text-gray-400 max-w-2xl ml-8">
+          <p className="text-lg text-gray-400 max-w-2xl">
             Practice with adaptive questions and receive AI-powered explanations
             to improve your Bar Exam score.
           </p>

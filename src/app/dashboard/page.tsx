@@ -12,9 +12,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { BarChart, LineChart, ChevronRight } from "lucide-react";
+import { BarChart, LineChart, ChevronRight, ArrowRight } from "lucide-react";
 import { onAuthStateChanged } from "firebase/auth";
+
+// Import hardcoded study plan data
+import { studyPlans, type StudyPlanKey } from "@/data/plan";
 
 // Define the type for user data
 interface UserData {
@@ -105,6 +109,7 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [uuid, setUuid] = useState<string | null>(null);
+  const [tasks, setTasks] = useState<string[]>([]);
 
   // Fetch user data from the backend
   const fetchUserData = async (uid: string) => {
@@ -113,6 +118,11 @@ export default function DashboardPage() {
       if (!response.ok) throw new Error("Failed to fetch user data");
       const data = await response.json();
       setUserData(data);
+
+      // Initialize tasks from the study plan
+      const questionDataKey = data.questionDataKey as StudyPlanKey;
+      const studyPlan = studyPlans[questionDataKey] || studyPlans["terrible"];
+      setTasks(studyPlan.today);
     } catch (err) {
       setError(
         err instanceof Error ? err.message : "An unknown error occurred"
@@ -163,6 +173,11 @@ export default function DashboardPage() {
     return () => clearInterval(interval);
   }, [userData?.barExamTestDate]);
 
+  // Handle task completion
+  const handleTaskCompletion = (index: number) => {
+    setTasks((prevTasks) => prevTasks.filter((_, i) => i !== index));
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]">
@@ -192,7 +207,7 @@ export default function DashboardPage() {
     performanceInsights = [],
     PracticeQuestions = 0,
     barExamPreparationMaterial,
-    targetScore,
+    targetScore = "0",
   } = userData;
 
   const practiceCompleted = practiceHistory.length;
@@ -246,7 +261,7 @@ export default function DashboardPage() {
           </div>
         </header>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <Card className="border-[#1E293B] shadow-xl bg-gradient-to-b from-[#0a0a0f] to-[#121218] backdrop-blur-sm">
             <CardHeader className="pb-2">
               <CardTitle className="text-xs sm:text-sm font-medium text-[#64748B]">
@@ -274,12 +289,69 @@ export default function DashboardPage() {
           <Card className="border-[#1E293B] shadow-xl bg-gradient-to-b from-[#0a0a0f] to-[#121218] backdrop-blur-sm">
             <CardHeader className="pb-2">
               <CardTitle className="text-xs sm:text-sm font-medium text-[#64748B]">
+                Target Score
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl sm:text-3xl font-semibold text-white">
+                {targetScore}
+              </div>
+              <div className="text-xs text-[#64748B] mt-1">
+                {Number(targetScore) - Number(currentScore)} points to go
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="border-[#1E293B] shadow-xl bg-gradient-to-b from-[#0a0a0f] to-[#121218] backdrop-blur-sm">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-xs sm:text-sm font-medium text-[#64748B]">
                 Current Streak
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl sm:text-3xl font-semibold text-white">
                 {StudyStreak} days
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="mt-6">
+          <Card className="border-[#1E293B] shadow-xl bg-gradient-to-b from-[#0a0a0f] to-[#121218] backdrop-blur-sm">
+            <CardHeader>
+              <CardTitle className="text-base sm:text-lg font-medium text-white">
+                Today's Study Plan
+              </CardTitle>
+              <CardDescription className="text-xs sm:text-sm text-[#64748B]">
+                Your personalized study schedule for today
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {tasks.map((task, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between p-3 rounded-md bg-[#1E293B]/30 border border-[#334155]/30"
+                  >
+                    <p className="text-sm font-medium text-gray-300">{task}</p>
+                    <button
+                      onClick={() => handleTaskCompletion(index)}
+                      className="p-1 rounded-full border border-[#334155] hover:bg-[#334155] transition-colors"
+                    >
+                      <div className="h-4 w-4 border border-gray-400 rounded-sm"></div>
+                    </button>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-4">
+                <Link href="/plan/study-plan">
+                  <Button
+                    variant="outline"
+                    className="w-full border-[#334155] bg-[#1E293B]/50 hover:bg-[#334155] text-gray-300"
+                  >
+                    View Full Study Plan
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
               </div>
             </CardContent>
           </Card>

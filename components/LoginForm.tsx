@@ -76,7 +76,7 @@ export default function LoginForm() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full pl-10 pr-3 py-2 text-sm bg-[#1a1d2a] border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-white"
+              className="w-full pl-10 pr-3 py-2 text-sm bg-[#1a1d2a] border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#121218] focus:border-[#121218] transition-all duration-200 text-white"
             />
           </div>
         </div>
@@ -91,7 +91,7 @@ export default function LoginForm() {
             </label>
             <Link
               href="/forgot-password"
-              className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
+              className="text-sm text-gray-400 hover:text-gray-300 transition-colors"
             >
               Forgot password?
             </Link>
@@ -107,7 +107,7 @@ export default function LoginForm() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full pl-10 pr-10 py-2 text-sm bg-[#1a1d2a] border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-white"
+              className="w-full pl-10 pr-10 py-2 text-sm bg-[#1a1d2a] border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#121218] focus:border-[#121218] transition-all duration-200 text-white"
             />
             <button
               type="button"
@@ -127,7 +127,7 @@ export default function LoginForm() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-2.5 px-4 text-sm font-medium rounded-lg text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 shadow-sm hover:shadow transition-all duration-200 border border-blue-700/30"
+            className="w-full py-2.5 px-4 text-sm font-medium rounded-lg text-white bg-gradient-to-r from-[#0a0a0f] via-[#121218] to-[#0a0a0f] hover:from-[#0a0a0f] hover:via-[#181820] hover:to-[#1a0a0f] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#121218] shadow-sm hover:shadow transition-all duration-200 border border-gray-700/30"
           >
             {isLoading ? (
               <div className="flex items-center justify-center">

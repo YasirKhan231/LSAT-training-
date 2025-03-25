@@ -96,7 +96,7 @@ export default function SignupForm() {
 
           // Set other fields to null or default values
           authProvider: "email",
-          barExamTestDate: null, // Changed from lsatTestDate to barExamTestDate
+          barExamTestDate: null,
           targetScore: null,
           currentScore: null,
           updatedAt: null,
@@ -105,12 +105,12 @@ export default function SignupForm() {
           PracticeQuestions: 0,
           preferredSchedule: null,
           weeklyHours: null,
-          barExamPreparationMaterial: null, // Changed from lsatPreparationMaterial to barExamPreparationMaterial
+          barExamPreparationMaterial: null,
           additionalInformation: null,
           progress: {
-            constitutionalLaw: 0, // Changed from logicalReasoning to constitutionalLaw
-            contracts: 0, // Changed from analyticalReasoning to contracts
-            criminalLaw: 0, // Changed from readingComprehension to criminalLaw
+            constitutionalLaw: 0,
+            contracts: 0,
+            criminalLaw: 0,
             totalTimeSpent: 0,
             testAttempts: 0,
             lastUpdated: null,
@@ -119,7 +119,7 @@ export default function SignupForm() {
           practiceHistory: [],
           bookmarkedQuestions: [],
           simulatedExams: [],
-          essays: [], // Changed from logicGames to essays
+          essays: [],
           specificAreas: [],
           challengingAreas: [],
           payments: [],
@@ -159,17 +159,14 @@ export default function SignupForm() {
       <form onSubmit={handleSignup} className="space-y-4">
         <div>
           <div className="flex items-center justify-between mb-1">
-            <label
-              htmlFor="name"
-              className="text-xs font-medium text-slate-300"
-            >
+            <label htmlFor="name" className="text-xs font-medium text-gray-300">
               Full name
             </label>
-            <span className="text-xs text-slate-400">Optional</span>
+            <span className="text-xs text-gray-400">Optional</span>
           </div>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <User className="h-4 w-4 text-slate-400" />
+              <User className="h-4 w-4 text-gray-500" />
             </div>
             <input
               id="name"
@@ -178,7 +175,7 @@ export default function SignupForm() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               onBlur={() => markFieldAsTouched("name")}
-              className="w-full pl-10 pr-3 py-2 text-sm border border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 bg-slate-800 text-slate-100"
+              className="w-full pl-10 pr-3 py-2 text-sm border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#121218] focus:border-[#121218] transition-all duration-200 bg-[#1a1d2a] text-white"
             />
           </div>
         </div>
@@ -186,13 +183,13 @@ export default function SignupForm() {
         <div>
           <label
             htmlFor="email"
-            className="block text-xs font-medium text-slate-300 mb-2"
+            className="block text-xs font-medium text-gray-300 mb-2"
           >
             Email address
           </label>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Mail className="h-4 w-4 text-slate-400" />
+              <Mail className="h-4 w-4 text-gray-500" />
             </div>
             <input
               id="email"
@@ -202,12 +199,12 @@ export default function SignupForm() {
               onChange={(e) => setEmail(e.target.value)}
               onBlur={() => markFieldAsTouched("email")}
               required
-              className={`w-full pl-10 pr-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 transition-all duration-200 bg-slate-800 text-slate-100 ${
+              className={`w-full pl-10 pr-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 transition-all duration-200 bg-[#1a1d2a] text-white ${
                 formTouched.email && !isValidEmail && email
                   ? "border-red-400 focus:ring-red-500 focus:border-red-500"
                   : formTouched.email && isValidEmail && email
                   ? "border-green-400 focus:ring-green-500 focus:border-green-500"
-                  : "border-slate-700 focus:ring-indigo-500 focus:border-indigo-500"
+                  : "border-gray-700 focus:ring-[#121218] focus:border-[#121218]"
               }`}
             />
             {formTouched.email && email && (
@@ -230,13 +227,13 @@ export default function SignupForm() {
         <div>
           <label
             htmlFor="password"
-            className="block text-xs font-medium text-slate-300 mb-2"
+            className="block text-xs font-medium text-gray-300 mb-2"
           >
             Password
           </label>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Lock className="h-4 w-4 text-slate-400" />
+              <Lock className="h-4 w-4 text-gray-500" />
             </div>
             <input
               id="password"
@@ -246,17 +243,17 @@ export default function SignupForm() {
               onChange={(e) => setPassword(e.target.value)}
               onBlur={() => markFieldAsTouched("password")}
               required
-              className={`w-full pl-10 pr-10 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 transition-all duration-200 bg-slate-800 text-slate-100 ${
+              className={`w-full pl-10 pr-10 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 transition-all duration-200 bg-[#1a1d2a] text-white ${
                 formTouched.password && !hasMinLength && password
                   ? "border-red-400 focus:ring-red-500 focus:border-red-500"
                   : formTouched.password && hasMinLength && password
                   ? "border-green-400 focus:ring-green-500 focus:border-green-500"
-                  : "border-slate-700 focus:ring-indigo-500 focus:border-indigo-500"
+                  : "border-gray-700 focus:ring-[#121218] focus:border-[#121218]"
               }`}
             />
             <button
               type="button"
-              className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-300 transition-colors"
+              className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-300 transition-colors"
               onClick={() => setShowPassword(!showPassword)}
             >
               {showPassword ? (
@@ -274,7 +271,7 @@ export default function SignupForm() {
                   ? "text-green-400"
                   : formTouched.password
                   ? "text-red-400"
-                  : "text-slate-400"
+                  : "text-gray-400"
               }`}
             >
               {hasMinLength ? (
@@ -290,13 +287,13 @@ export default function SignupForm() {
         <div>
           <label
             htmlFor="confirmPassword"
-            className="block text-xs font-medium text-slate-300 mb-2"
+            className="block text-xs font-medium text-gray-300 mb-2"
           >
             Confirm password
           </label>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Lock className="h-4 w-4 text-slate-400" />
+              <Lock className="h-4 w-4 text-gray-500" />
             </div>
             <input
               id="confirmPassword"
@@ -306,12 +303,12 @@ export default function SignupForm() {
               onChange={(e) => setConfirmPassword(e.target.value)}
               onBlur={() => markFieldAsTouched("confirmPassword")}
               required
-              className={`w-full pl-10 pr-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 transition-all duration-200 bg-slate-800 text-slate-100 ${
+              className={`w-full pl-10 pr-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 transition-all duration-200 bg-[#1a1d2a] text-white ${
                 formTouched.confirmPassword && confirmPassword
                   ? passwordsMatch
                     ? "border-green-400 focus:ring-green-500 focus:border-green-500"
                     : "border-red-400 focus:ring-red-500 focus:border-red-500"
-                  : "border-slate-700 focus:ring-indigo-500 focus:border-indigo-500"
+                  : "border-gray-700 focus:ring-[#121218] focus:border-[#121218]"
               }`}
             />
             {formTouched.confirmPassword && confirmPassword && (
@@ -336,7 +333,7 @@ export default function SignupForm() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-2.5 px-4 text-sm font-medium rounded-lg text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow-sm hover:shadow transition-all duration-200"
+            className="w-full py-2.5 px-4 text-sm font-medium rounded-lg text-white bg-gradient-to-r from-[#0a0a0f] via-[#121218] to-[#0a0a0f] hover:from-[#0a0a0f] hover:via-[#181820] hover:to-[#0a0a0f] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#121218] shadow-sm hover:shadow transition-all duration-200 border border-gray-700/30"
           >
             {isLoading ? (
               <div className="flex items-center justify-center">
@@ -368,11 +365,11 @@ export default function SignupForm() {
           </button>
         </div>
       </form>
-      <p className="mt-6 text-center text-sm text-slate-400">
+      <p className="mt-6 text-center text-sm text-gray-400">
         Already have an account?{" "}
         <Link
           href="/login"
-          className="font-medium text-indigo-400 hover:text-indigo-300"
+          className="font-medium text-gray-300 hover:text-white"
         >
           Sign in
         </Link>

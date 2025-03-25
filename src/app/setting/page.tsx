@@ -134,7 +134,7 @@ export default function SettingsPage() {
               </p>
               <Button
                 onClick={handleSubscriptionRedirect}
-                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white"
+                className="w-full bg-[#1a1a1f] hover:bg-[#2a2a2f] text-white"
               >
                 View Subscription Plans
               </Button>

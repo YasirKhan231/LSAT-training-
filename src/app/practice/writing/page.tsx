@@ -1,180 +1,130 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Progress } from "@/components/ui/progress";
-import { Clock, Send } from "lucide-react";
+import { ArrowRight, BookOpen } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
-export default function EssayPracticePage() {
-  const [essay, setEssay] = useState("");
-  const [timeRemaining, setTimeRemaining] = useState(60 * 60); // 60 minutes in seconds
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [feedback, setFeedback] = useState<any>(null);
-  const [isTimerRunning, setIsTimerRunning] = useState(false);
+// Sample essay questions data
+const essayQuestions = [
+  {
+    id: "constitutional-law",
+    title: "Constitutional Law Analysis",
+    prompt:
+      "Analyze the following constitutional law issue: The state of Jefferson has passed a law requiring all social media companies to verify the age of their users and prohibit access to anyone under 18. Discuss the constitutional implications of this law.",
+    category: "Constitutional Law",
+    difficulty: "Advanced",
+    timeLimit: 60, // minutes
+  },
+  {
+    id: "contract-law",
+    title: "Contract Law Scenario",
+    prompt:
+      "A software company offers a 'free trial' of their product but requires users to provide credit card information. The terms state that users will be automatically charged after 30 days unless they cancel. Many users report they were unaware of the automatic renewal. Analyze the contract law issues presented.",
+    category: "Contract Law",
+    difficulty: "Intermediate",
+    timeLimit: 45, // minutes
+  },
+  {
+    id: "criminal-law",
+    title: "Criminal Law Case Study",
+    prompt:
+      "A defendant is charged with burglary after entering an unlocked garage and taking a bicycle. The defendant claims they believed the bicycle was abandoned property. Analyze the elements of burglary and whether the prosecution can prove their case.",
+    category: "Criminal Law",
+    difficulty: "Intermediate",
+    timeLimit: 50, // minutes
+  },
+  {
+    id: "international-law",
+    title: "International Law Dispute",
+    prompt:
+      "Two neighboring countries dispute ownership of an island that emerged in a river that forms their border due to geological activity. Analyze this territorial dispute under international law principles.",
+    category: "International Law",
+    difficulty: "Advanced",
+    timeLimit: 60, // minutes
+  },
+];
 
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, "0")}`;
-  };
+export default function EssayPracticeIndex() {
+  const router = useRouter();
+  const [selectedQuestion, setSelectedQuestion] = useState<string | null>(null);
 
-  const handleSubmit = async () => {
-    setIsSubmitting(true);
-    try {
-      const response = await fetch("/api/essay", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          content: essay,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to analyze essay");
-      }
-
-      const data = await response.json();
-      setFeedback(data);
-    } catch (error) {
-      console.error("Error submitting essay:", error);
+  const handleStartPractice = () => {
+    if (selectedQuestion) {
+      router.push(`/practice/writing/${selectedQuestion}`);
     }
-    setIsSubmitting(false);
   };
-
-  // Start the timer when the user starts typing
-  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setEssay(e.target.value);
-    if (!isTimerRunning) {
-      setIsTimerRunning(true); // Start the timer only once
-    }
-  };
-
-  // Automatically submit the essay when the timer reaches zero
-  useEffect(() => {
-    if (isTimerRunning && timeRemaining > 0) {
-      const timer = setInterval(() => {
-        setTimeRemaining((prev) => prev - 1);
-      }, 1000);
-
-      return () => clearInterval(timer);
-    } else if (timeRemaining === 0) {
-      handleSubmit();
-    }
-  }, [isTimerRunning, timeRemaining]);
 
   return (
-    <div className="container mx-auto px-4 py-8 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]">
+    <div className="container mx-auto px-4 py-8 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] min-h-screen">
       <div className="max-w-4xl mx-auto">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold text-white">Essay Practice</h1>
-          <div className="flex items-center space-x-2">
-            <Clock className="h-5 w-5 text-gray-400" />
-            <span className="font-mono text-white">
-              {formatTime(timeRemaining)}
-            </span>
-          </div>
+        <div className="mb-8 text-center">
+          <h1 className="text-4xl font-bold text-white mb-4">Essay Practice</h1>
+          <p className="text-gray-400 max-w-2xl mx-auto">
+            Select an essay question below to practice your legal writing
+            skills. Each question has a time limit to simulate exam conditions.
+          </p>
         </div>
 
-        <Card className="mb-6 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] border-[#1a1a1f]">
-          <CardHeader>
-            <CardTitle className="text-white">Prompt</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-gray-400">
-              Analyze the following constitutional law issue: The state of
-              Jefferson has passed a law requiring all social media companies to
-              verify the age of their users and prohibit access to anyone under
-              18. Discuss the constitutional implications of this law.
-            </p>
-          </CardContent>
-        </Card>
+        <div className="grid gap-6 mb-8">
+          {essayQuestions.map((question) => (
+            <Card
+              key={question.id}
+              className={`bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] border-[#1a1a1f] cursor-pointer transition-all ${
+                selectedQuestion === question.id
+                  ? "ring-2 ring-[#3a3a4f] border-[#3a3a4f]"
+                  : "hover:border-[#2a2a3f]"
+              }`}
+              onClick={() => setSelectedQuestion(question.id)}
+            >
+              <CardContent className="p-6">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h2 className="text-xl font-semibold text-white mb-2">
+                      {question.title}
+                    </h2>
+                    <div className="flex gap-3 mb-3">
+                      <span className="inline-block px-2 py-1 text-xs rounded-full bg-[#1a1a1f] text-gray-300">
+                        {question.category}
+                      </span>
+                      <span className="inline-block px-2 py-1 text-xs rounded-full bg-[#1a1a1f] text-gray-300">
+                        {question.difficulty}
+                      </span>
+                      <span className="inline-block px-2 py-1 text-xs rounded-full bg-[#1a1a1f] text-gray-300">
+                        {question.timeLimit} minutes
+                      </span>
+                    </div>
+                    <p className="text-gray-400 line-clamp-2">
+                      {question.prompt}
+                    </p>
+                  </div>
+                  <div className="ml-4">
+                    <Link
+                      href={`/essay-practice/${question.id}`}
+                      className="text-[#7a7a9f] hover:text-[#9a9abf]"
+                    >
+                      <BookOpen className="h-5 w-5" />
+                    </Link>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
 
-        <Card className="mb-6 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] border-[#1a1a1f]">
-          <CardContent className="p-4">
-            <Textarea
-              placeholder="Write your essay here..."
-              className="min-h-[400px] p-4 bg-[#1a1a1f] border-[#2a2a2f] text-white placeholder:text-gray-500"
-              value={essay}
-              onChange={handleInputChange}
-            />
-          </CardContent>
-        </Card>
-
-        <div className="flex justify-end">
+        <div className="flex justify-center">
           <Button
-            onClick={handleSubmit}
-            disabled={isSubmitting || !essay.trim()}
-            className="flex items-center bg-[#1a1a1f] hover:bg-[#2a2a2f] text-white"
+            onClick={handleStartPractice}
+            disabled={!selectedQuestion}
+            className="flex items-center bg-gradient-to-r from-[#3a3a4f] to-[#2a2a3f] hover:from-[#4a4a5f] hover:to-[#3a3a4f] text-white px-6 py-2"
+            size="lg"
           >
-            <Send className="mr-2 h-4 w-4" />
-            {isSubmitting ? "Analyzing..." : "Submit for Analysis"}
+            Start Practice
+            <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </div>
-
-        {feedback && (
-          <Card className="mt-6 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] border-[#1a1a1f]">
-            <CardHeader>
-              <CardTitle className="text-white">AI Analysis</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div>
-                  <h3 className="font-medium mb-2 text-white">Structure</h3>
-                  <Progress
-                    value={feedback.structure * 100}
-                    className="mb-2 bg-[#1a1a1f]"
-                  />
-                  <p className="text-sm text-gray-400">
-                    {feedback.structureFeedback}
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className="font-medium mb-2 text-white">
-                    Legal Analysis
-                  </h3>
-                  <Progress
-                    value={feedback.legalAnalysis * 100}
-                    className="mb-2 bg-[#1a1a1f]"
-                  />
-                  <p className="text-sm text-gray-400">
-                    {feedback.legalAnalysisFeedback}
-                  </p>
-                </div>
-
-                <div>
-                  <h3 className="font-medium mb-2 text-white">
-                    Writing Quality
-                  </h3>
-                  <Progress
-                    value={feedback.writingQuality * 100}
-                    className="mb-2 bg-[#1a1a1f]"
-                  />
-                  <p className="text-sm text-gray-400">
-                    {feedback.writingQualityFeedback}
-                  </p>
-                </div>
-
-                <div className="bg-[#1a1a1f]/50 p-4 rounded-lg border border-[#2a2a2f]">
-                  <h3 className="font-medium mb-2 text-white">
-                    Improvement Suggestions
-                  </h3>
-                  <ul className="list-disc list-inside text-gray-300 space-y-1">
-                    {feedback.suggestions.map(
-                      (suggestion: string, index: number) => (
-                        <li key={index}>{suggestion}</li>
-                      )
-                    )}
-                  </ul>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )}
       </div>
     </div>
   );
