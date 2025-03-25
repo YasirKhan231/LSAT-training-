@@ -110,6 +110,7 @@ export default function DashboardPage() {
   const [error, setError] = useState<string | null>(null);
   const [uuid, setUuid] = useState<string | null>(null);
   const [tasks, setTasks] = useState<string[]>([]);
+  const [completedTasks, setCompletedTasks] = useState<number[]>([]);
 
   // Fetch user data from the backend
   const fetchUserData = async (uid: string) => {
@@ -175,7 +176,9 @@ export default function DashboardPage() {
 
   // Handle task completion
   const handleTaskCompletion = (index: number) => {
-    setTasks((prevTasks) => prevTasks.filter((_, i) => i !== index));
+    setCompletedTasks((prev) =>
+      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
+    );
   };
 
   if (loading) {
@@ -330,14 +333,51 @@ export default function DashboardPage() {
                 {tasks.map((task, index) => (
                   <div
                     key={index}
-                    className="flex items-center justify-between p-3 rounded-md bg-[#1E293B]/30 border border-[#334155]/30"
+                    className={`flex items-center justify-between p-3 rounded-md bg-[#1E293B]/30 border transition-all duration-300 ${
+                      completedTasks.includes(index)
+                        ? "opacity-50 border-dashed border-[#334155]/50"
+                        : "border-[#334155]/30"
+                    }`}
                   >
-                    <p className="text-sm font-medium text-gray-300">{task}</p>
+                    <p
+                      className={`text-sm font-medium ${
+                        completedTasks.includes(index)
+                          ? "text-gray-400 line-through"
+                          : "text-gray-300"
+                      }`}
+                    >
+                      {task}
+                    </p>
                     <button
                       onClick={() => handleTaskCompletion(index)}
-                      className="p-1 rounded-full border border-[#334155] hover:bg-[#334155] transition-colors"
+                      className={`p-1 rounded-full border transition-colors ${
+                        completedTasks.includes(index)
+                          ? "border-[#334155]/50 bg-[#334155]/30"
+                          : "border-[#334155] hover:bg-[#334155]"
+                      }`}
                     >
-                      <div className="h-4 w-4 border border-gray-400 rounded-sm"></div>
+                      <div
+                        className={`h-4 w-4 border rounded-sm flex items-center justify-center ${
+                          completedTasks.includes(index)
+                            ? "bg-[#334155]/70 border-gray-500"
+                            : "border-gray-400"
+                        }`}
+                      >
+                        {completedTasks.includes(index) && (
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-3 w-3 text-white"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        )}
+                      </div>
                     </button>
                   </div>
                 ))}
