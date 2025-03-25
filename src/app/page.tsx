@@ -109,13 +109,13 @@ export default function LandingPage() {
             to help you achieve your best score on the bar exam.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/login">
+            <Link href="/login" className="flex justify-center">
               <button className="bg-white text-black hover:bg-gray-200 px-6 py-3 rounded-md text-sm font-medium flex items-center justify-center">
                 Get Started
                 <ArrowRight className="ml-2 h-4 w-4" />
               </button>
             </Link>
-            <Link href="/subscription">
+            <Link href="/subscription" className="flex justify-center">
               <button className="border border-gray-700 text-white hover:bg-white/10 px-6 py-3 rounded-md text-sm font-medium">
                 View Pricing
               </button>

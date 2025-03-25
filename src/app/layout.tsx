@@ -21,16 +21,12 @@ export default function RootLayout({
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
-      // Close sidebar when switching to mobile view if it was open
-      if (window.innerWidth < 768 && isSidebarOpen) {
-        setIsSidebarOpen(false);
-      }
     };
 
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
-  }, [isSidebarOpen]);
+  }, []);
 
   const noSidebarRoutes = [
     "/",
@@ -46,12 +42,9 @@ export default function RootLayout({
   };
 
   const handleCloseSidebar = () => {
-    if (isMobile) {
-      setIsSidebarOpen(false);
-    }
+    setIsSidebarOpen(false);
   };
 
-  // Close sidebar when route changes on mobile
   useEffect(() => {
     if (isMobile) {
       handleCloseSidebar();
@@ -78,11 +71,11 @@ export default function RootLayout({
             </nav>
           )}
 
-          {/* Desktop Toggle Button - Fixed position with higher z-index */}
+          {/* Desktop Toggle Button */}
           {showSidebar && !isMobile && (
             <button
               onClick={toggleSidebar}
-              className="fixed z-50 top-4 left-4 p-2 rounded-lg bg-[#1a1a1f] text-gray-300 hover:bg-[#2a2a2f] transition-colors duration-200 shadow-lg"
+              className="fixed z-50 top-4 left-4 p-2 rounded-lg bg-[#1a1a1f] text-gray-300 hover:bg-[#2a2a2f] transition-colors duration-200"
               aria-label="Toggle sidebar"
             >
               <Menu className="h-5 w-5" />
@@ -94,9 +87,13 @@ export default function RootLayout({
               <Sidebar isOpen={isSidebarOpen} onClose={handleCloseSidebar} />
             )}
             <main
-              className={`flex-1 ${
-                showSidebar ? "md:ml-64 pt-16 md:pt-0" : ""
-              } min-h-screen transition-all duration-300`}
+              className={`flex-1 transition-all duration-300 ${
+                showSidebar && isSidebarOpen && !isMobile
+                  ? "md:ml-64" // When sidebar is open
+                  : showSidebar && !isMobile
+                  ? "md:ml-[50px]" // When sidebar is closed (50px margin)
+                  : "" // No sidebar routes
+              } ${showSidebar ? "pt-16 md:pt-0" : ""} min-h-screen`}
             >
               <div className="text-gray-100">{children}</div>
             </main>

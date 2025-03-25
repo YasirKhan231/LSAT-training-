@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "firebase/auth";
@@ -48,7 +48,17 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       setShowLogoutConfirm(false);
     }
   };
+  // Add this to your Sidebar component
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose?.();
+      }
+    };
 
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [onClose]);
   const toggleExpand = (href: string) => {
     setExpandedItems((prev) =>
       prev.includes(href)
@@ -89,15 +99,23 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       {isOpen && (
         <div
           className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden"
-          onClick={onClose}
+          onClick={(e) => {
+            e.preventDefault();
+            onClose();
+          }}
         />
       )}
 
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-[280px] bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] shadow-lg transform transition-transform duration-300 ease-in-out ${
+        className={`fixed inset-y-0 left-0 z-50 w-[280px] bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] shadow-lg ${
           isOpen ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0 md:w-64 overflow-hidden flex flex-col border-r border-[#1a1a1f]`}
+        } transition-transform duration-300 ease-in-out md:translate-x-0 md:w-64 overflow-hidden flex flex-col border-r border-[#1a1a1f]`}
+        style={{
+          // Force re-render by adding a unique key based on isOpen
+          // This is a nuclear option if transitions aren't working
+          display: isOpen ? "flex" : "none",
+        }}
       >
         {/* Sidebar Header */}
         <div className="px-6 py-4 border-b border-[#1a1a1f] flex items-center justify-between">
@@ -106,8 +124,10 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           </Link>
           <button
             onClick={(e) => {
+              e.preventDefault();
               e.stopPropagation();
-              onClose();
+              console.log("Close button clicked"); // Debugging
+              onClose?.(); // Safe call
             }}
             className="p-1 rounded-lg text-gray-400 hover:bg-[#1a1a1f] hover:text-white transition-colors"
             aria-label="Close sidebar"
