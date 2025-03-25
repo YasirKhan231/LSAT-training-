@@ -138,7 +138,7 @@ export default function StudyPlan() {
 
   if (error) {
     return (
-      <div className="container mx-auto p-6 text-red-400 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]">
+      <div className="container mx-auto px-4 py-6 text-red-400 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]">
         {error}
       </div>
     );
@@ -146,7 +146,7 @@ export default function StudyPlan() {
 
   if (!userData) {
     return (
-      <div className="container mx-auto p-6 text-white bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]">
+      <div className="container mx-auto px-4 py-6 text-white bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]">
         No user data found.
       </div>
     );
@@ -156,8 +156,8 @@ export default function StudyPlan() {
   const studyPlan = studyPlans[planKey];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] text-white p-6">
-      <div className="container mx-auto">
+    <div className="min-h-screen bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] text-white px-4 py-6">
+      <div className="mx-auto w-full max-w-6xl">
         <div className="mb-6 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Link href="/dashboard">
@@ -169,7 +169,7 @@ export default function StudyPlan() {
                 <ArrowLeft className="h-5 w-5" />
               </Button>
             </Link>
-            <h1 className="text-3xl font-bold text-white">
+            <h1 className="text-2xl sm:text-3xl font-bold text-white">
               Bar Exam Study Plan
             </h1>
           </div>
@@ -178,7 +178,8 @@ export default function StudyPlan() {
             className="bg-gradient-to-r from-[#121218] to-[#1a1a1f] hover:from-[#1a1a1f] hover:to-[#1a1a1f] text-white border-none"
           >
             <Edit className="mr-2 h-4 w-4" />
-            Adjust Plan
+            <span className="hidden sm:inline">Adjust Plan</span>
+            <span className="sm:hidden">Adjust</span>
           </Button>
         </div>
 
@@ -202,12 +203,12 @@ export default function StudyPlan() {
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-medium text-white">
-                    Target Score:{" "}
+                    Target:{" "}
                     <span className="text-white">{userData.targetScore}</span>
                   </span>
                   <span className="text-sm font-medium text-slate-500">|</span>
                   <span className="text-sm font-medium text-white">
-                    Current Score:{" "}
+                    Current:{" "}
                     <span className="text-white">{userData.currentScore}</span>
                   </span>
                 </div>
@@ -218,28 +219,28 @@ export default function StudyPlan() {
               <TabsList className="mb-6 grid w-full grid-cols-3 bg-[#121218] p-1">
                 <TabsTrigger
                   value="daily"
-                  className="data-[state=active]:bg-[#1a1a1f] data-[state=active]:text-white"
+                  className="data-[state=active]:bg-[#1a1a1f] data-[state=active]:text-white text-xs sm:text-sm"
                 >
-                  Daily View
+                  Daily
                 </TabsTrigger>
                 <TabsTrigger
                   value="weekly"
-                  className="data-[state=active]:bg-[#1a1a1f] data-[state=active]:text-white"
+                  className="data-[state=active]:bg-[#1a1a1f] data-[state=active]:text-white text-xs sm:text-sm"
                 >
-                  Weekly View
+                  Weekly
                 </TabsTrigger>
                 <TabsTrigger
                   value="monthly"
-                  className="data-[state=active]:bg-[#1a1a1f] data-[state=active]:text-white"
+                  className="data-[state=active]:bg-[#1a1a1f] data-[state=active]:text-white text-xs sm:text-sm"
                 >
-                  Monthly View
+                  Monthly
                 </TabsTrigger>
               </TabsList>
 
               <TabsContent value="daily" className="space-y-6">
                 <Card className="border-[#1a1a1f] shadow-xl bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] backdrop-blur-sm">
                   <CardHeader>
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                       <div>
                         <CardTitle className="text-white">
                           Today's Study Plan
@@ -261,7 +262,7 @@ export default function StudyPlan() {
                           key={index}
                           className="rounded-lg border border-[#1a1a1f] p-4 bg-[#121218]/20"
                         >
-                          <div className="mb-2 flex items-center justify-between">
+                          <div className="mb-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                             <div className="flex items-center gap-2">
                               <div className="rounded-full bg-[#121218]/30 p-1.5 border border-[#1a1a1f]/30">
                                 <BookOpen className="h-4 w-4 text-white" />
@@ -305,7 +306,7 @@ export default function StudyPlan() {
                             <h3 className="mb-3 font-medium text-white">
                               Week {index + 1}
                             </h3>
-                            <ul className="ml-6 list-disc space-y-2">
+                            <ul className="ml-4 sm:ml-6 list-disc space-y-2">
                               {tasks.map((task, taskIndex) => (
                                 <li
                                   key={taskIndex}
@@ -344,7 +345,7 @@ export default function StudyPlan() {
                             <h3 className="mb-3 font-medium text-white">
                               Month {index + 1}
                             </h3>
-                            <ul className="ml-6 list-disc space-y-2">
+                            <ul className="ml-4 sm:ml-6 list-disc space-y-2">
                               {tasks.map((task, taskIndex) => (
                                 <li
                                   key={taskIndex}
