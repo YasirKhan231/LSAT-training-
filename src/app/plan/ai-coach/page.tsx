@@ -180,7 +180,11 @@ export default function AICoach() {
                     <div className="space-y-4">
                       {isLoading ? (
                         <div className="flex justify-center items-center">
-                          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#4F46E5]"></div>
+                          <div
+                            className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 
+                                       border-t-[#0a0a0f] border-b-[#0a0a0f]
+                                       bg-gradient-to-r from-[#0a0a0f] via-[#121218] to-[#0a0a0f]"
+                          ></div>
                         </div>
                       ) : performanceInsight &&
                         userData?.performanceInsights?.length > 0 ? (

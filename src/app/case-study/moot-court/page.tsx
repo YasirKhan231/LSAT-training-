@@ -168,15 +168,23 @@ export default function MootCourtPage() {
                   </CardContent>
                 </Card>
               ))}
-              <div className="mt-4">
-                <p className="text-sm text-gray-400 mb-2">
+              <div className="mt-4 space-y-2">
+                <p className="text-sm text-gray-400">
                   Or enter your own case scenario:
                 </p>
+                <div className="p-3 bg-[#1a1a1f]/50 border border-[#2a2a2f] rounded-md mb-3">
+                  <p className="text-xs text-gray-400 italic">
+                    Example: A small coffee shop named 'Moonbucks Coffee' with a
+                    similar logo to a major coffee chain has been sued for
+                    trademark infringement. The small business argues their
+                    branding is parody and protected under fair use.
+                  </p>
+                </div>
                 <Textarea
                   value={caseScenario}
                   onChange={(e) => setCaseScenario(e.target.value)}
                   placeholder="Describe the legal scenario..."
-                  className="bg-[#1a1a1f] border-[#2a2a2f] text-white placeholder:text-gray-500"
+                  className="min-h-[120px] bg-[#1a1a1f] border-[#2a2a2f] text-white placeholder:text-gray-500"
                 />
               </div>
             </div>

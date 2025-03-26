@@ -57,6 +57,51 @@ const essayQuestions = [
     difficulty: "Advanced",
     timeLimit: 60, // minutes
   },
+  {
+    id: "torts",
+    title: "Torts Problem Question",
+    prompt:
+      "A grocery store fails to clean up a spilled liquid for over an hour despite multiple employees walking past it. A customer slips and suffers serious injuries. Analyze the potential tort claims against the grocery store and possible defenses.",
+    category: "Torts",
+    difficulty: "Intermediate",
+    timeLimit: 45, // minutes
+  },
+  {
+    id: "property-law",
+    title: "Property Law Dispute",
+    prompt:
+      "Two neighbors dispute ownership of a strip of land between their properties. One neighbor has maintained the land (mowing grass, planting flowers) for 15 years but never had formal title. The other neighbor holds the deed to the property. Analyze the adverse possession claim.",
+    category: "Property Law",
+    difficulty: "Advanced",
+    timeLimit: 55, // minutes
+  },
+  {
+    id: "civil-procedure",
+    title: "Civil Procedure Analysis",
+    prompt:
+      "A plaintiff files a lawsuit in federal court based on diversity jurisdiction. The defendant moves to dismiss for improper venue. The plaintiff argues the venue is proper because a substantial part of the events occurred there. Analyze the venue requirements and how the court should rule.",
+    category: "Civil Procedure",
+    difficulty: "Advanced",
+    timeLimit: 50, // minutes
+  },
+  {
+    id: "evidence",
+    title: "Evidence Problem",
+    prompt:
+      "In a criminal trial, the prosecution wants to introduce the defendant's prior conviction for the same offense from 10 years ago. The defense objects. Analyze whether the evidence should be admitted under the Federal Rules of Evidence.",
+    category: "Evidence",
+    difficulty: "Intermediate",
+    timeLimit: 40, // minutes
+  },
+  {
+    id: "professional-responsibility",
+    title: "Legal Ethics Scenario",
+    prompt:
+      "A lawyer discovers their client intends to commit perjury during an upcoming deposition. The client refuses to change their testimony. Analyze the lawyer's ethical obligations under the Model Rules of Professional Conduct.",
+    category: "Professional Responsibility",
+    difficulty: "Intermediate",
+    timeLimit: 45, // minutes
+  },
 ];
 
 export default function EssayPracticePage() {

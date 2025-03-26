@@ -13,7 +13,6 @@ import {
   CheckCircle2,
   AlertCircle,
   BrainCircuit,
-  Download,
 } from "lucide-react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import app from "@/lib/firebase"; // Import your Firebase app instance
@@ -148,14 +147,6 @@ export default function ResultsPage() {
               Exam Results & Analysis
             </h1>
             <div className="flex space-x-3">
-              <Button
-                variant="outline"
-                size="sm"
-                className="bg-[#121218] border-[#1a1a1f] text-white hover:bg-[#1a1a1f]"
-              >
-                <Download className="h-4 w-4 mr-1" />
-                Export Results
-              </Button>
               <Link href="/practice/mock-exam">
                 <Button
                   size="sm"
@@ -207,7 +198,7 @@ export default function ResultsPage() {
             </CardHeader>
             <CardContent>
               <div className="flex items-baseline">
-                <span className="text-5xl font-bold text-green-500">
+                <span className="text-5xl font-bold text-[#6366f1]">
                   {results.correctAnswers}
                 </span>
                 <span className="ml-2 text-white">
@@ -288,6 +279,7 @@ export default function ResultsPage() {
                           100
                         }
                         className="h-2 bg-[#1a1a1f]"
+                        indicatorClassName="bg-[#6366f1]"
                       />
                     </div>
 
@@ -306,6 +298,7 @@ export default function ResultsPage() {
                           100
                         }
                         className="h-2 bg-[#1a1a1f]"
+                        indicatorClassName="bg-[#6366f1]"
                       />
                     </div>
 
@@ -324,6 +317,7 @@ export default function ResultsPage() {
                           100
                         }
                         className="h-2 bg-[#1a1a1f]"
+                        indicatorClassName="bg-[#6366f1]"
                       />
                     </div>
                   </div>
@@ -339,7 +333,7 @@ export default function ResultsPage() {
                     <ul className="space-y-2">
                       {results.strengths.map((strength, index) => (
                         <li key={index} className="flex items-start">
-                          <CheckCircle2 className="h-5 w-5 text-green-500 mr-2 shrink-0 mt-0.5" />
+                          <CheckCircle2 className="h-5 w-5 text-[#6366f1] mr-2 shrink-0 mt-0.5" />
                           <span className="text-white">{strength}</span>
                         </li>
                       ))}
@@ -357,7 +351,7 @@ export default function ResultsPage() {
                     <ul className="space-y-2">
                       {results.areasForImprovement.map((area, index) => (
                         <li key={index} className="flex items-start">
-                          <AlertCircle className="h-5 w-5 text-amber-500 mr-2 shrink-0 mt-0.5" />
+                          <AlertCircle className="h-5 w-5 text-[#6366f1] mr-2 shrink-0 mt-0.5" />
                           <span className="text-white">{area}</span>
                         </li>
                       ))}

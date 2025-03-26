@@ -146,7 +146,8 @@ export default function LegalResearchPage() {
                   value={researchQuery}
                   onChange={(e) => setResearchQuery(e.target.value)}
                   placeholder="Enter research question..."
-                  className="bg-[#1a1a1f] border-[#2a2a2f] text-white placeholder:text-gray-500"
+                  className="bg-[#1a1a1f] border-[#2a2a2f] text-white placeholder:text-gray-500 
+             w-full px-3 py-2 overflow-x-auto whitespace-nowrap"
                 />
               </div>
             </div>

@@ -37,6 +37,15 @@ const essayQuestions = [
     timeLimit: 50, // minutes
   },
   {
+    id: "international-law",
+    title: "International Law Dispute",
+    prompt:
+      "Two neighboring countries dispute ownership of an island that emerged in a river that forms their border due to geological activity. Analyze this territorial dispute under international law principles.",
+    category: "International Law",
+    difficulty: "Advanced",
+    timeLimit: 60, // minutes
+  },
+  {
     id: "torts",
     title: "Torts Problem Question",
     prompt:
