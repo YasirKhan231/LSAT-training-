@@ -131,7 +131,7 @@ export default function LegalAnalysisPage() {
           setProblem(selectedProblem);
         } else {
           // Handle case where problem doesn't exist
-          router.push("/");
+          router.push("/case-study/analysis");
         }
       } catch (error) {
         console.error("Error fetching problem:", error);

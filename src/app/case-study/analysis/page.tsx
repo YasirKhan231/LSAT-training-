@@ -96,7 +96,9 @@ export default function HomePage() {
           <Card
             key={problem.id}
             className={`bg-[#121218] border-[#1a1a1f] hover:bg-[#1a1a1f] transition-colors cursor-pointer h-full ${
-              selectedProblem === problem.id ? "ring-2 ring-primary" : ""
+              selectedProblem === problem.id
+                ? "ring-2 ring-[#2a2a32] dark:ring-[#3a3a42]"
+                : ""
             }`}
             onClick={() => handleSelectProblem(problem.id)}
           >
@@ -117,7 +119,7 @@ export default function HomePage() {
         <div className="mt-8 flex justify-center">
           <Button
             onClick={handleStartAnalysis}
-            className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-lg"
+            className="bg-[#1a1a1f] hover:bg-[#2a2a2f] text-white border border-[#2a2a32] px-8 py-6 text-lg transition-colors duration-300"
           >
             <PlayCircle className="mr-2 h-5 w-5" />
             Start Analysis
