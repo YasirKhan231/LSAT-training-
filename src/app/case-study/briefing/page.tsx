@@ -168,11 +168,14 @@ export default function CaseBriefingPage() {
   const handleGenerateHypothetical = async () => {
     if (!selectedCase) return;
     try {
-      const response = await fetch("/api/case-briefing/hypothetical", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ caseId: selectedCase }),
-      });
+      const response = await fetch(
+        "/api/case-study/case-briefing/hypothetical",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ caseId: selectedCase }),
+        }
+      );
       const data = await response.json();
       setHypothetical(data.hypothetical);
       setHypoResponse("");

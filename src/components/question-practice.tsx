@@ -277,7 +277,7 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
   if (isCompleted) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]">
-        <Card className="w-full max-w-2xl border-2 border-slate-800 shadow-md rounded-xl overflow-hidden bg-slate-900">
+        <Card className="w-full max-w-2xl border-2 border-[#121218] shadow-md rounded-xl overflow-hidden bg-[#0a0a0f]">
           <CardHeader className="pb-3">
             <CardTitle className="text-xl text-slate-100 text-center">
               Congratulations!
@@ -288,7 +288,7 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
               <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
               <p className="text-lg text-slate-200">
                 You have successfully completed the question bank for{" "}
-                <span className="font-bold text-indigo-400">
+                <span className="font-bold text-[#6366f1]">
                   {subject
                     .replace(/-/g, " ")
                     .replace(/\b\w/g, (l) => l.toUpperCase())}
@@ -304,13 +304,13 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
           <CardFooter className="flex justify-center gap-4">
             <Button
               onClick={() => router.push("/dashboard")}
-              className="bg-indigo-600 hover:bg-indigo-700 text-white"
+              className="bg-[#121218] hover:bg-[#1a1a23] text-white border border-[#24242e]"
             >
               Go to Dashboard
             </Button>
             <Button
               onClick={() => router.push("/question-bank")}
-              className="bg-green-600 hover:bg-green-700 text-white"
+              className="bg-[#121218] hover:bg-[#1a1a23] text-white border border-[#24242e]"
             >
               Take Another Practice
             </Button>
@@ -329,17 +329,21 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
           </span>
           <Badge
             variant="outline"
-            className="bg-slate-800 text-slate-200 border-slate-700"
+            className="bg-[#121218] text-slate-200 border-[#24242e]"
           >
             {subject
               .replace(/-/g, " ")
               .replace(/\b\w/g, (l) => l.toUpperCase())}
           </Badge>
         </div>
-        <Progress value={progress} className="h-2 bg-slate-800" />
+        <Progress
+          value={progress}
+          className="h-2 bg-[#121218]"
+          indicatorClassName="bg-[#6366f1]"
+        />
       </div>
 
-      <Card className="mb-6 border-2 border-slate-800 shadow-md rounded-xl overflow-hidden bg-slate-900">
+      <Card className="mb-6 border-2 border-[#121218] shadow-md rounded-xl overflow-hidden bg-[#0a0a0f]">
         <CardHeader className="pb-3">
           <div className="flex justify-between">
             <CardTitle className="text-xl text-slate-100">
@@ -351,9 +355,7 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
                 size="icon"
                 onClick={toggleBookmark}
                 className={cn(
-                  bookmarked[currentIndex]
-                    ? "text-indigo-400"
-                    : "text-slate-500"
+                  bookmarked[currentIndex] ? "text-[#6366f1]" : "text-slate-500"
                 )}
               >
                 {bookmarked[currentIndex] ? (
@@ -366,7 +368,7 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
                 variant="ghost"
                 size="sm"
                 onClick={handleExit}
-                className="text-slate-400 hover:text-slate-200 hover:bg-slate-800"
+                className="text-slate-400 hover:text-slate-200 hover:bg-[#121218]"
               >
                 Exit
               </Button>
@@ -398,14 +400,17 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
                       option.id !== currentQuestion.correctAnswer &&
                       "border-red-600 bg-red-900/20",
                     !isAnswered &&
-                      "hover:border-indigo-600 hover:shadow-sm border-slate-700",
-                    "my-2 bg-slate-800 text-slate-200"
+                      selectedAnswer === option.id &&
+                      "border-[#6366f1] bg-[#121218]",
+                    !isAnswered &&
+                      "hover:border-[#6366f1] hover:shadow-sm border-[#24242e]",
+                    "my-2 bg-[#121218] text-slate-200"
                   )}
                 >
                   <RadioGroupItem
                     value={option.id}
                     id={option.id}
-                    className="border-slate-600"
+                    className="border-[#24242e] text-[#6366f1]"
                   />
                   <Label
                     htmlFor={option.id}
@@ -424,7 +429,7 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
               variant="outline"
               onClick={handlePrevQuestion}
               disabled={currentIndex === 0}
-              className="flex items-center bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-700"
+              className="flex items-center bg-[#121218] border-[#24242e] text-slate-200 hover:bg-[#1a1a23]"
             >
               <ArrowLeft className="mr-2 h-4 w-4" /> Previous
             </Button>
@@ -433,21 +438,21 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
               <Button
                 onClick={handleAnswerSubmit}
                 disabled={!selectedAnswer}
-                className="bg-indigo-600 hover:bg-indigo-700 text-white"
+                className="bg-[#6366f1] hover:bg-[#4f46e5] text-white"
               >
                 Submit Answer
               </Button>
             ) : currentIndex === questions.length - 1 ? (
               <Button
                 onClick={handleNextQuestion}
-                className="flex items-center bg-green-600 hover:bg-green-700 text-white"
+                className="flex items-center bg-[#6366f1] hover:bg-[#4f46e5] text-white"
               >
                 Finish
               </Button>
             ) : (
               <Button
                 onClick={handleNextQuestion}
-                className="flex items-center bg-indigo-600 hover:bg-indigo-700 text-white"
+                className="flex items-center bg-[#6366f1] hover:bg-[#4f46e5] text-white"
               >
                 Next <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
@@ -455,14 +460,14 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
           </div>
 
           {/* Question Navigation Menu */}
-          <div className="w-full border border-slate-700 rounded-md bg-slate-800 p-3">
+          <div className="w-full border border-[#24242e] rounded-md bg-[#121218] p-3">
             <div className="flex justify-between items-center mb-2">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={prevPage}
                 disabled={currentPage === 0}
-                className="text-slate-400 hover:text-slate-200 hover:bg-slate-700 p-1 h-8"
+                className="text-slate-400 hover:text-slate-200 hover:bg-[#1a1a23] p-1 h-8"
               >
                 <ChevronLeft className="h-5 w-5" />
               </Button>
@@ -478,7 +483,7 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
                 size="sm"
                 onClick={nextPage}
                 disabled={currentPage >= totalPages - 1}
-                className="text-slate-400 hover:text-slate-200 hover:bg-slate-700 p-1 h-8"
+                className="text-slate-400 hover:text-slate-200 hover:bg-[#1a1a23] p-1 h-8"
               >
                 <ChevronRight className="h-5 w-5" />
               </Button>
@@ -491,12 +496,12 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
                   className={cn(
                     "w-8 h-8 flex items-center justify-center rounded-md text-sm border",
                     currentIndex === idx
-                      ? "bg-indigo-600 text-white border-indigo-700"
+                      ? "bg-[#6366f1] text-white border-[#4f46e5]"
                       : responses.some(
                           (r) => r.questionId === questions[idx]?.id
                         )
-                      ? "bg-slate-700 text-slate-200 border-slate-600"
-                      : "bg-slate-800 text-slate-300 border-slate-700 hover:bg-slate-700"
+                      ? "bg-[#1a1a23] text-slate-200 border-[#24242e]"
+                      : "bg-[#121218] text-slate-300 border-[#24242e] hover:bg-[#1a1a23]"
                   )}
                 >
                   {idx + 1}
@@ -508,7 +513,7 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
       </Card>
 
       {feedback && (
-        <Card className="border-slate-800 bg-slate-900">
+        <Card className="border-[#121218] bg-[#0a0a0f]">
           <CardContent className="pt-6">
             <div className="space-y-4">
               <div
@@ -542,12 +547,12 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
                 <Button
                   onClick={() => setShowExplanation(!showExplanation)}
                   variant="outline"
-                  className="w-full bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-700"
+                  className="w-full bg-[#121218] border-[#24242e] text-slate-200 hover:bg-[#1a1a23]"
                 >
                   {showExplanation ? "Hide Explanation" : "Show Explanation"}
                 </Button>
                 {showExplanation && (
-                  <div className="mt-4 p-4 rounded-lg bg-slate-800 border border-slate-700">
+                  <div className="mt-4 p-4 rounded-lg bg-[#121218] border border-[#24242e]">
                     <h4 className="font-medium mb-2 text-slate-100">
                       Explanation
                     </h4>

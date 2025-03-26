@@ -154,7 +154,7 @@ export default function LegalAnalysisPage() {
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 9000); // 9 seconds
 
-      const response = await fetch("/api/analyze", {
+      const response = await fetch("/api/case-study/analyze", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

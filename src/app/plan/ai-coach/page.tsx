@@ -226,8 +226,8 @@ export default function AICoach() {
                               key={index}
                               className="flex items-start space-x-3 rounded-md bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] p-2 border border-[#334155]/50"
                             >
-                              <div className="mt-0.5 rounded-full bg-[#4F46E5]/30 p-1 border border-[#4F46E5]/30">
-                                <BookOpen className="h-3 w-3 text-[#4F46E5]" />
+                              <div className="mt-0.5 rounded-full bg-[#0a0a0f]/30 p-1 border border-[#4F46E5]/30">
+                                <BookOpen className="h-3 w-3 " />
                               </div>
                               <div>
                                 <p className="text-xs font-medium text-[#CBD5E1]">
@@ -305,28 +305,24 @@ export default function AICoach() {
                       )}
                     </div>
                   </CardContent>
-                  <div className="border-t border-[#1E293B] p-4 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]">
+                  <div className="border-t border-[#1E293B] p-3 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]">
                     <div className="flex items-center space-x-2">
                       <Textarea
                         placeholder="Ask your AI coach a question..."
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         onKeyDown={handleKeyDown}
-                        className="flex-1 resize-none rounded-md border-[#334155] bg-[#1E293B]/50 p-3 text-sm focus:border-[#4F46E5] focus:ring-[#4F46E5] text-[#CBD5E1] placeholder:text-[#64748B] shadow-[0_0_8px_1px_rgba(255,255,255,0.2)] focus:shadow-[0_0_10px_2px_rgba(255,255,255,0.3)] transition-shadow"
-                        rows={2}
+                        className="flex-1 resize-none rounded-md border-[#2a2a3f] bg-[#121218] p-2 text-sm focus:border-[#3a3a4f] focus:ring-0 text-[#CBD5E1] placeholder:text-[#64748B] focus:shadow-[0_0_0_1px_rgba(255,255,255,0.1)] transition-all"
+                        rows={1}
                       />
                       <Button
                         onClick={handleSend}
                         disabled={isChatLoading || !input.trim()}
-                        className="rounded-md bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] p-2 text-white hover:opacity-90 disabled:opacity-50 shadow-[0_0_8px_1px_rgba(255,255,255,0.2)] hover:shadow-[0_0_10px_2px_rgba(255,255,255,0.3)] transition-shadow"
+                        className="rounded-md bg-[#1a1a1f] border border-[#2a2a3f] p-2 text-white hover:bg-[#2a2a3f] hover:border-[#3a3a4f] disabled:opacity-50 transition-colors"
                       >
                         <Send className="h-5 w-5" />
                       </Button>
                     </div>
-                    <p className="mt-2 text-xs text-[#64748B]">
-                      Try asking: "What should I focus on?" or "Explain
-                      assumption questions."
-                    </p>
                   </div>
                 </Card>
               </div>
@@ -401,13 +397,13 @@ export default function AICoach() {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  className="flex-1 resize-none rounded-md border-[#334155] bg-[#1E293B]/50 p-2 text-sm focus:border-[#4F46E5] focus:ring-[#4F46E5] text-[#CBD5E1] placeholder:text-[#64748B] shadow-[0_0_8px_1px_rgba(255,255,255,0.2)] focus:shadow-[0_0_10px_2px_rgba(255,255,255,0.3)] transition-shadow"
+                  className="flex-1 resize-none rounded-md border-[#2a2a3f] bg-[#121218] p-2 text-sm focus:border-[#3a3a4f] focus:ring-0 text-[#CBD5E1] placeholder:text-[#64748B] focus:shadow-[0_0_0_1px_rgba(255,255,255,0.1)] transition-all"
                   rows={1}
                 />
                 <Button
                   onClick={handleSend}
                   disabled={isChatLoading || !input.trim()}
-                  className="rounded-md bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] p-2 text-white hover:opacity-90 disabled:opacity-50 shadow-[0_0_8px_1px_rgba(255,255,255,0.2)] hover:shadow-[0_0_10px_2px_rgba(255,255,255,0.3)] transition-shadow"
+                  className="rounded-md bg-[#1a1a1f] border border-[#2a2a3f] p-2 text-white hover:bg-[#2a2a3f] hover:border-[#3a3a4f] disabled:opacity-50 transition-colors"
                 >
                   <Send className="h-5 w-5" />
                 </Button>

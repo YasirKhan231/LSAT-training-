@@ -4,8 +4,8 @@
 
 @layer base {
   :root {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 240 10% 4%; /* Dark background */
+    --foreground: 0 0% 98%; /* Light text */
 
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
@@ -13,8 +13,8 @@
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 186 100% 50%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 240 5% 26%; /* Dark slate color */
+    --primary-foreground: 0 0% 98%; /* Light text */
 
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
@@ -30,9 +30,26 @@
 
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 186 100% 50%;
+     --ring: 240 5% 26%;
 
     --radius: 0.5rem;
+  }
+}
+@layer base {
+  input[type="checkbox"] {
+    @apply appearance-none h-4 w-4 rounded border border-[#1a1a1f] bg-[#121218] relative;
+  }
+
+  input[type="checkbox"]:checked {
+    @apply bg-[#121218];
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='%23a1a1aa' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+
+  input[type="checkbox"]:focus {
+    @apply outline-none ring-2 ring-[#3a3a4f] ring-offset-2 ring-offset-[#121218];
   }
 }
 
