@@ -204,7 +204,7 @@ export default function LegalAnalysisPage() {
   return (
     <div className="container mx-auto px-4 py-8 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] min-h-screen">
       <div className="mb-6 flex items-center gap-4">
-        <Link href="/">
+        <Link href="/case-study/analysis">
           <Button
             variant="ghost"
             size="icon"

@@ -112,18 +112,30 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
   };
 
   const handleNextQuestion = () => {
-    if (currentIndex < questions.length - 1) {
-      // Add the current question ID to the practicedQuestionIds list
+    // Add the current question to practiced and responses if not already there
+    if (!practicedQuestionIds.includes(currentQuestion.id)) {
       setPracticedQuestionIds((prev) => [...prev, currentQuestion.id]);
 
+      if (selectedAnswer) {
+        setResponses((prev) => [
+          ...prev,
+          {
+            questionId: currentQuestion.id,
+            selectedOption: selectedAnswer,
+            isCorrect: selectedAnswer === currentQuestion.correctAnswer,
+          },
+        ]);
+      }
+    }
+
+    if (currentIndex < questions.length - 1) {
       setCurrentIndex(currentIndex + 1);
       setSelectedAnswer(null);
       setIsAnswered(false);
       setFeedback(null);
       setShowExplanation(false);
-      setPracticeCount((prev) => prev + 1); // Increment practice count
+      setPracticeCount((prev) => prev + 1);
     } else {
-      // If all questions are completed, show the completion screen
       setIsCompleted(true);
     }
   };
@@ -155,8 +167,31 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
     const timeTakenInSeconds = Math.floor((endTime - startTime) / 1000);
     setTimeTaken(timeTakenInSeconds);
 
-    // Calculate the score based on practiced questions
-    const score = responses.filter((response) => response.isCorrect).length;
+    // Include the current question if it hasn't been added yet
+    const allPracticedIds = [
+      ...practicedQuestionIds,
+      ...(practicedQuestionIds.includes(currentQuestion.id)
+        ? []
+        : [currentQuestion.id]),
+    ];
+
+    const allResponses = [
+      ...responses,
+      ...(responses.some((r) => r.questionId === currentQuestion.id)
+        ? []
+        : selectedAnswer
+        ? [
+            {
+              questionId: currentQuestion.id,
+              selectedOption: selectedAnswer,
+              isCorrect: selectedAnswer === currentQuestion.correctAnswer,
+            },
+          ]
+        : []),
+    ];
+
+    // Calculate the score based on all responses
+    const score = allResponses.filter((response) => response.isCorrect).length;
 
     // Get the list of bookmarked question IDs
     const bookmarkedQuestionIds = questions
@@ -167,16 +202,13 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
     const sessionData = {
       sessionId: `sess-${Date.now()}`, // Generate a unique session ID
       timestamp: new Date().toISOString(), // Current timestamp in ISO format
-      section: subject, // Use "section" instead of "subject" to match backend expectations
-      questionIds: practicedQuestionIds, // Send only practiced question IDs
-      responses: responses.filter((response) =>
-        practicedQuestionIds.includes(response.questionId)
-      ), // Send only responses for practiced questions
+      section: subject,
+      questionIds: allPracticedIds,
+      responses: allResponses,
       score,
-      totalQuestions: practicedQuestionIds.length, // Total questions practiced
+      totalQuestions: allPracticedIds.length,
       timeTaken: timeTakenInSeconds,
-      bookmarkedQuestionIds, // Include bookmarked question IDs
-      uuid, // Include the user's UUID
+      bookmarkedQuestionIds,
     };
 
     // Send the data to the backend
@@ -194,6 +226,7 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
       }
 
       console.log("Session data saved successfully!");
+      router.push("/dashboard"); // Redirect after saving
     } catch (error) {
       console.error("Error saving session data:", error);
     }
