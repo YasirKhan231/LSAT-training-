@@ -16,10 +16,10 @@ interface LegalProblem {
 }
 
 interface FeedbackData {
-  analysisScore: number;
-  analysisFeedback: string;
+  score: number;
+  feedback: string;
   suggestions: string[];
-  modelAnalysis: {
+  analysis: {
     facts: string;
     issue: string;
     rule: string;
@@ -144,20 +144,33 @@ export default function LegalAnalysisPage() {
   }, [id, router]);
 
   const handleSubmitAnalysis = async () => {
-    if (!problem) return;
+    if (!problem || !analysis.trim()) return;
 
     setIsLoading(true);
+    setFeedback(null);
+
     try {
+      // Add timeout to the fetch request
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 9000); // 9 seconds
+
       const response = await fetch("/api/analyze", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          caseData: problem,
-          userAnalysis: analysis,
+          caseData: {
+            title: problem.title.substring(0, 100),
+            facts: problem.facts.substring(0, 300),
+            question: problem.question.substring(0, 150),
+          },
+          userAnalysis: analysis.substring(0, 500),
         }),
+        signal: controller.signal,
       });
+
+      clearTimeout(timeout);
 
       if (!response.ok) {
         throw new Error("Failed to fetch analysis");
@@ -165,14 +178,17 @@ export default function LegalAnalysisPage() {
 
       const data = await response.json();
       setFeedback(data);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error submitting analysis:", error);
       setFeedback({
-        error: "Failed to get feedback. Please try again.",
-        analysisScore: 0,
-        analysisFeedback: "",
+        error:
+          error.name === "AbortError"
+            ? "Analysis took too long. Please try a shorter response."
+            : "Failed to get feedback. Please try again.",
+        score: 0,
+        feedback: "",
         suggestions: [],
-        modelAnalysis: {
+        analysis: {
           facts: "",
           issue: "",
           rule: "",
@@ -259,7 +275,6 @@ export default function LegalAnalysisPage() {
               </Button>
             </CardContent>
           </Card>
-
           {feedback && (
             <Card className="bg-[#121218] border-[#1a1a1f]">
               <CardHeader>
@@ -272,15 +287,11 @@ export default function LegalAnalysisPage() {
                   <div className="space-y-4">
                     <div>
                       <h3 className="font-medium mb-2 text-white">Score:</h3>
-                      <p className="text-gray-400">
-                        {feedback.analysisScore * 100}%
-                      </p>
+                      <p className="text-gray-400">{feedback.score * 100}%</p>
                     </div>
                     <div>
                       <h3 className="font-medium mb-2 text-white">Feedback:</h3>
-                      <p className="text-gray-400">
-                        {feedback.analysisFeedback}
-                      </p>
+                      <p className="text-gray-400">{feedback.feedback}</p>
                     </div>
                     <div>
                       <h3 className="font-medium mb-2 text-white">
@@ -301,62 +312,37 @@ export default function LegalAnalysisPage() {
                       <div className="space-y-3 text-gray-400">
                         <div>
                           <h4 className="font-medium text-gray-300">Facts:</h4>
-                          <ul className="list-disc list-inside pl-5">
-                            {feedback.modelAnalysis.facts
-                              .split(". ")
-                              .filter((point: string) => point.trim() !== "")
-                              .map((point: string, index: number) => (
-                                <li key={index}>{point.trim()}</li>
-                              ))}
-                          </ul>
+                          <p className="text-gray-400">
+                            {feedback.analysis.facts}
+                          </p>
                         </div>
                         <div>
                           <h4 className="font-medium text-gray-300">Issue:</h4>
-                          <ul className="list-disc list-inside pl-5">
-                            {feedback.modelAnalysis.issue
-                              .split(". ")
-                              .filter((point: string) => point.trim() !== "")
-                              .map((point: string, index: number) => (
-                                <li key={index}>{point.trim()}</li>
-                              ))}
-                          </ul>
+                          <p className="text-gray-400">
+                            {feedback.analysis.issue}
+                          </p>
                         </div>
                         <div>
                           <h4 className="font-medium text-gray-300">Rule:</h4>
-                          <ul className="list-disc list-inside pl-5">
-                            {feedback.modelAnalysis.rule
-                              .split(". ")
-                              .filter((point: string) => point.trim() !== "")
-                              .map((point: string, index: number) => (
-                                <li key={index}>{point.trim()}</li>
-                              ))}
-                          </ul>
+                          <p className="text-gray-400">
+                            {feedback.analysis.rule}
+                          </p>
                         </div>
                         <div>
                           <h4 className="font-medium text-gray-300">
                             Application:
                           </h4>
-                          <ul className="list-disc list-inside pl-5">
-                            {feedback.modelAnalysis.application
-                              .split(". ")
-                              .filter((point: string) => point.trim() !== "")
-                              .map((point: string, index: number) => (
-                                <li key={index}>{point.trim()}</li>
-                              ))}
-                          </ul>
+                          <p className="text-gray-400">
+                            {feedback.analysis.application}
+                          </p>
                         </div>
                         <div>
                           <h4 className="font-medium text-gray-300">
                             Conclusion:
                           </h4>
-                          <ul className="list-disc list-inside pl-5">
-                            {feedback.modelAnalysis.conclusion
-                              .split(". ")
-                              .filter((point: string) => point.trim() !== "")
-                              .map((point: string, index: number) => (
-                                <li key={index}>{point.trim()}</li>
-                              ))}
-                          </ul>
+                          <p className="text-gray-400">
+                            {feedback.analysis.conclusion}
+                          </p>
                         </div>
                       </div>
                     </div>

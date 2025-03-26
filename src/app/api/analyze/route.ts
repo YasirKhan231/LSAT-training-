@@ -5,79 +5,74 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+export const maxDuration = 10; // Vercel timeout limit
+
 export async function POST(request: Request) {
   try {
     const { caseData, userAnalysis } = await request.json();
 
     if (!caseData || !userAnalysis) {
       return NextResponse.json(
-        { error: "Case data and user analysis are required" },
+        { error: "Case data and analysis required" },
         { status: 400 }
       );
     }
 
-    const prompt = `
-      You are an expert legal educator. Analyze the following user-submitted legal analysis against the hypothetical case data and provide detailed feedback in this JSON format:
-      {
-        "analysisScore": <score from 0 to 1>,
-        "analysisFeedback": "<feedback on the analysis>",
-        "suggestions": ["<suggestion 1>", "<suggestion 2>", ...],
-        "modelAnalysis": {
-          "facts": "<model facts analysis>",
-          "issue": "<model issue analysis>",
-          "rule": "<model rule analysis>",
-          "application": "<model application analysis>",
-          "conclusion": "<model conclusion analysis>"
-        }
-      }
+    // Shortened prompt with strict formatting
+    const prompt = `Provide concise legal feedback in this JSON format:
+{
+  "score": 0.85,
+  "feedback": "Brief paragraph feedback",
+  "suggestions": ["Short suggestion"],
+  "analysis": {
+    "facts": "1-2 sentence summary",
+    "issue": "1 sentence",
+    "rule": "1 sentence",
+    "application": "2 sentences",
+    "conclusion": "1 sentence"
+  }
+}
 
-      Hypothetical Case Data:
-      - Title: ${caseData.title}
-      - Facts: ${caseData.facts}
-      - Issue: ${caseData.question}
+Case: ${caseData.title.substring(0, 100)}
+Facts: ${caseData.facts.substring(0, 300)}
+Question: ${caseData.question.substring(0, 150)}
 
-      User Analysis:
-      ${userAnalysis}
-
-      Ensure your response is valid JSON without markdown code blocks or extra text.
-    `;
+User Analysis: ${userAnalysis.substring(0, 500)}`;
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-4",
+      model: "gpt-3.5-turbo", // Faster than GPT-4
       messages: [
-        { role: "system", content: "You are a legal education expert." },
+        { 
+          role: "system", 
+          content: "Provide very concise legal feedback. Keep all responses extremely brief." 
+        },
         { role: "user", content: prompt },
       ],
-      max_tokens: 1500,
+      max_tokens: 400, // Reduced from 1500
       temperature: 0.7,
+      response_format: { type: "json_object" },
     });
 
-    const responseText = completion.choices[0].message.content;
-    const cleanedResponse =
-      responseText?.trim().replace(/^```json\s*|\s*```$/g, "") || "{}";
-    let feedback;
+    const response = completion.choices[0]?.message?.content || '{}';
+    return NextResponse.json(JSON.parse(response), { status: 200 });
 
-    try {
-      feedback = JSON.parse(cleanedResponse);
-    } catch (parseError) {
-      console.error(
-        "Failed to parse OpenAI response:",
-        parseError,
-        "Raw:",
-        responseText
-      );
-      return NextResponse.json(
-        { error: "Failed to process feedback from AI" },
-        { status: 500 }
-      );
-    }
-
-    return NextResponse.json(feedback, { status: 200 });
   } catch (error) {
-    console.error("Error in legal analysis:", error);
+    console.error("Error:", error);
     return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
+      { 
+        error: "Brief analysis failed",
+        score: 0,
+        feedback: "Please try a shorter analysis",
+        suggestions: ["Keep under 300 words"],
+        analysis: {
+          facts: "",
+          issue: "",
+          rule: "",
+          application: "",
+          conclusion: ""
+        }
+      },
+      { status: 200 }
     );
   }
 }
