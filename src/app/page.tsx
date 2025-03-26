@@ -52,7 +52,7 @@ export default function LandingPage() {
       <nav className="py-5 px-4 md:px-8 border-b border-gray-800/40">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <Link href="/" className="text-white text-xl font-semibold">
-            BarExamPrep
+            Prep For Law
           </Link>
           <div className="hidden md:flex items-center space-x-8">
             <Link
@@ -357,7 +357,7 @@ export default function LandingPage() {
             What Our Users Say
           </h2>
           <p className="text-center text-gray-400 mb-16 max-w-3xl mx-auto">
-            Join thousands of aspiring lawyers who trust BarExamPrep to help
+            Join thousands of aspiring lawyers who trust Prep For Law to help
             them pass the bar exam
           </p>
 
@@ -371,7 +371,7 @@ export default function LandingPage() {
                 <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
               </div>
               <p className="text-gray-300 text-sm mb-6">
-                "BarExamPrep has been a game changer for my studies. The
+                "Prep For Law has been a game changer for my studies. The
                 comprehensive study materials and mock exams helped me pass the
                 bar exam on my first attempt!"
               </p>
@@ -401,7 +401,7 @@ export default function LandingPage() {
               <p className="text-gray-300 text-sm mb-6">
                 "The practice exams were incredibly realistic and helped me
                 build the confidence I needed to succeed. I highly recommend
-                BarExamPrep to anyone preparing for the bar exam."
+                Prep For Law to anyone preparing for the bar exam."
               </p>
               <div className="flex items-center">
                 <div className="w-10 h-10 rounded-full mr-3 overflow-hidden">
@@ -428,7 +428,7 @@ export default function LandingPage() {
               </div>
               <p className="text-gray-300 text-sm mb-6">
                 "As a working professional, I needed a flexible study solution.
-                BarExamPrep provided exactly what I needed with their on-demand
+                Prep For Law provided exactly what I needed with their on-demand
                 resources and personalized study plan."
               </p>
               <div className="flex items-center">
@@ -516,7 +516,7 @@ export default function LandingPage() {
             with confidence?
           </h2>
           <p className="text-gray-400 text-sm mb-8">
-            Join thousands of aspiring lawyers who trust BarExamPrep to help
+            Join thousands of aspiring lawyers who trust Prep For Law to help
             them achieve their goals.
           </p>
 
@@ -541,7 +541,7 @@ export default function LandingPage() {
           <div className="flex flex-col md:flex-row justify-between items-center mb-8">
             <div className="mb-6 md:mb-0">
               <Link href="/" className="text-white text-xl font-semibold">
-                BarExamPrep
+                Prep For Law
               </Link>
               <p className="text-gray-400 text-xs mt-2 max-w-xs">
                 A comprehensive bar exam preparation platform designed to help
@@ -607,7 +607,7 @@ export default function LandingPage() {
           </div>
           <div className="border-t border-gray-800/40 pt-8 flex flex-col md:flex-row justify-between items-center">
             <div className="text-xs text-gray-500">
-              © 2024 BarExamPrep - All rights reserved
+              © 2024 Prep For Law - All rights reserved
             </div>
             <div className="flex space-x-6 mt-4 md:mt-0 text-xs text-gray-500">
               <Link href="/privacy" className="hover:text-gray-400">

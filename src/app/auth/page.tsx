@@ -43,7 +43,10 @@ export default function AuthPage() {
       setTimeout(() => router.push("/dashboard"), 1000);
     } catch (error: any) {
       let errorMessage = "Failed to sign in";
-      if (error.code === "auth/user-not-found" || error.code === "auth/wrong-password")
+      if (
+        error.code === "auth/user-not-found" ||
+        error.code === "auth/wrong-password"
+      )
         errorMessage = "Invalid email or password";
       else if (error.code === "auth/too-many-requests")
         errorMessage = "Too many failed attempts. Try again later";
@@ -61,10 +64,24 @@ export default function AuthPage() {
       <div className="hidden lg:flex lg:w-1/2 relative bg-gradient-to-br from-blue-600 to-indigo-800">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
-          <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+          <svg
+            className="w-full h-full"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 100 100"
+          >
             <defs>
-              <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
-                <path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" strokeWidth="0.5" />
+              <pattern
+                id="grid"
+                width="10"
+                height="10"
+                patternUnits="userSpaceOnUse"
+              >
+                <path
+                  d="M 10 0 L 0 0 0 10"
+                  fill="none"
+                  stroke="white"
+                  strokeWidth="0.5"
+                />
               </pattern>
             </defs>
             <rect width="100" height="100" fill="url(#grid)" />
@@ -82,13 +99,16 @@ export default function AuthPage() {
               <div className="p-2 bg-white rounded-xl">
                 <Brain className="h-8 w-8 text-blue-600" />
               </div>
-              <span className="ml-3 text-3xl font-bold">BAR Training</span>
+              <span className="ml-3 text-3xl font-bold">Prep For Law</span>
             </Link>
           </div>
 
-          <h2 className="text-4xl font-bold mb-6 animate-slideRight">Welcome Back!</h2>
+          <h2 className="text-4xl font-bold mb-6 animate-slideRight">
+            Welcome Back!
+          </h2>
           <p className="text-xl text-blue-100 mb-12 animate-slideRight animation-delay-200">
-            Continue your journey to master the BAR exam with our AI-powered platform.
+            Continue your journey to master the BAR exam with our AI-powered
+            platform.
           </p>
 
           <div className="grid gap-6 animate-slideUp animation-delay-400">
@@ -127,13 +147,17 @@ export default function AuthPage() {
           <div className="lg:hidden flex justify-center mb-6">
             <Link href="/" className="flex items-center">
               <Brain className="h-8 w-8 text-blue-600" />
-              <span className="ml-2 text-2xl font-bold text-gray-900">BAR Training</span>
+              <span className="ml-2 text-2xl font-bold text-gray-900">
+                BAR Training
+              </span>
             </Link>
           </div>
 
           <div className="text-center mb-8">
             <h1 className="text-2xl font-bold text-gray-900">Welcome back</h1>
-            <p className="text-gray-500 mt-2">Sign in to your account to continue</p>
+            <p className="text-gray-500 mt-2">
+              Sign in to your account to continue
+            </p>
           </div>
 
           {error && (
@@ -151,7 +175,10 @@ export default function AuthPage() {
           <form onSubmit={handleSignIn} className="space-y-6">
             {/* Email Input */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Email address
               </label>
               <div className="relative">
@@ -173,7 +200,10 @@ export default function AuthPage() {
             {/* Password Input */}
             <div>
               <div className="flex items-center justify-between mb-1">
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Password
                 </label>
                 <Link
@@ -201,7 +231,11 @@ export default function AuthPage() {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
                 >
-                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                  {showPassword ? (
+                    <EyeOff className="h-5 w-5" />
+                  ) : (
+                    <Eye className="h-5 w-5" />
+                  )}
                 </button>
               </div>
             </div>
@@ -215,7 +249,10 @@ export default function AuthPage() {
                 onChange={(e) => setRememberMe(e.target.checked)}
                 className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
               />
-              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
+              <label
+                htmlFor="remember-me"
+                className="ml-2 block text-sm text-gray-700"
+              >
                 Remember me
               </label>
             </div>

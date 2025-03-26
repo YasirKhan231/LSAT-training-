@@ -101,7 +101,7 @@ export default function Navbar() {
         <div className="flex justify-between h-16">
           <div className="flex">
             <Link href="/" className="flex items-center">
-              <span className="text-xl font-bold text-white">BAR Training</span>
+              <span className="text-xl font-bold text-white">Prep For Law</span>
             </Link>
             {userLoggedIn && (
               <div className="hidden sm:ml-6 sm:flex sm:space-x-8">

@@ -47,7 +47,7 @@ export default function LoginPage() {
             <div className="h-12 w-12 rounded-full bg-gradient-to-br from-gray-500 to-gray-600 flex items-center justify-center">
               <Shield className="h-6 w-6 text-white" />
             </div>
-            <span className="ml-4 text-3xl font-bold">BAR Training</span>
+            <span className="ml-4 text-3xl font-bold">Prep For Law</span>
           </div>
 
           <h2 className="text-4xl font-bold mb-6 animate-fadeIn">
@@ -90,7 +90,7 @@ export default function LoginPage() {
             <Link href="/" className="flex items-center">
               <Shield className="h-8 w-8 text-gray-500" />
               <span className="ml-2 text-2xl font-bold text-white">
-                BAR Training
+                Prep For Law
               </span>
             </Link>
           </div>

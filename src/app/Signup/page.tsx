@@ -46,7 +46,7 @@ export default function SignupPage() {
               <div className="p-2 bg-[#1a1a1f] rounded-xl">
                 <Brain className="h-8 w-8 text-gray-400" />
               </div>
-              <span className="ml-3 text-3xl font-bold">BAR Training</span>
+              <span className="ml-3 text-3xl font-bold">Prep For Law</span>
             </Link>
           </div>
 
@@ -90,7 +90,7 @@ export default function SignupPage() {
             <Link href="/" className="flex items-center">
               <Brain className="h-8 w-8 text-gray-400" />
               <span className="ml-2 text-2xl font-bold text-white">
-                BAR Training
+                Prep For Law
               </span>
             </Link>
           </div>

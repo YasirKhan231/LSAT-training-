@@ -120,7 +120,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         {/* Sidebar Header */}
         <div className="px-6 py-4 border-b border-[#1a1a1f] flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-2">
-            <span className="text-xl font-bold text-white">BAR Training</span>
+            <span className="text-xl font-bold text-white">Prep For Law</span>
           </Link>
           <button
             onClick={(e) => {
