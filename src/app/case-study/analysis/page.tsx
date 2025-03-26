@@ -1,219 +1,129 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { ArrowLeft, Brain } from "lucide-react";
-import Link from "next/link";
+import { ArrowRight, Scale, PlayCircle } from "lucide-react";
 
-export default function LegalAnalysisPage() {
-  const [analysis, setAnalysis] = useState("");
-  const [feedback, setFeedback] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(false);
+export default function HomePage() {
+  const router = useRouter();
+  const [selectedProblem, setSelectedProblem] = useState<string | null>(null);
 
-  const hypothetical = {
-    title: "Contract Formation Scenario",
-    facts: `A small business owner sends an email to a supplier requesting a quote for 100 units of a product. 
-    The supplier responds with a detailed price quote. The business owner replies "Looks good, please proceed." 
-    The supplier never ships the products, and prices have since increased significantly.`,
-    question:
-      "Analyze whether a valid contract was formed and what remedies might be available.",
+  // Sample legal analysis problems - expanded list
+  const legalProblems = [
+    {
+      id: "contract-formation",
+      title: "Contract Formation Scenario",
+      summary:
+        "Analyze whether a valid contract was formed between a business owner and supplier.",
+    },
+    {
+      id: "negligence-case",
+      title: "Negligence Case Study",
+      summary:
+        "Evaluate the elements of negligence in a personal injury scenario.",
+    },
+    {
+      id: "property-dispute",
+      title: "Property Boundary Dispute",
+      summary:
+        "Analyze legal rights in a property boundary disagreement between neighbors.",
+    },
+    {
+      id: "intellectual-property",
+      title: "Copyright Infringement Analysis",
+      summary: "Determine if a creative work violates copyright protection.",
+    },
+    {
+      id: "employment-law",
+      title: "Wrongful Termination Case",
+      summary:
+        "Analyze whether an employee was wrongfully terminated under employment law.",
+    },
+    {
+      id: "family-law",
+      title: "Child Custody Dispute",
+      summary:
+        "Evaluate factors in determining the best interests of the child in a custody case.",
+    },
+    {
+      id: "criminal-law",
+      title: "Self-Defense Claim",
+      summary:
+        "Analyze whether a defendant's actions qualify as self-defense in a criminal case.",
+    },
+    {
+      id: "environmental-law",
+      title: "Corporate Pollution Liability",
+      summary:
+        "Evaluate a corporation's liability for environmental damage under regulatory law.",
+    },
+    {
+      id: "constitutional-law",
+      title: "First Amendment Analysis",
+      summary:
+        "Analyze whether a government action violates free speech protections.",
+    },
+  ];
+
+  const handleSelectProblem = (id: string) => {
+    setSelectedProblem(id === selectedProblem ? null : id);
   };
 
-  const handleSubmitAnalysis = async () => {
-    setIsLoading(true);
-    try {
-      const response = await fetch("/api/analyze", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          caseData: hypothetical,
-          userAnalysis: analysis,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch analysis");
-      }
-
-      const data = await response.json();
-      setFeedback(data);
-    } catch (error) {
-      console.error("Error submitting analysis:", error);
-      setFeedback({ error: "Failed to get feedback. Please try again." });
-    } finally {
-      setIsLoading(false);
+  const handleStartAnalysis = () => {
+    if (selectedProblem) {
+      router.push(`/case-study/analysis/${selectedProblem}`);
     }
   };
 
   return (
     <div className="container mx-auto px-4 py-8 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] min-h-screen">
-      <div className="mb-6 flex items-center gap-4">
-        <Link href="/case-study">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-gray-400 hover:bg-[#1a1a1f] hover:text-white"
-          >
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
-        </Link>
-        <h1 className="text-3xl font-bold text-white">
+      <div className="mb-12 text-center">
+        <div className="flex justify-center mb-4">
+          <Scale className="h-12 w-12 text-white" />
+        </div>
+        <h1 className="text-4xl font-bold text-white mb-4">
           Legal Analysis Practice
         </h1>
+        <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+          Improve your legal reasoning skills by analyzing hypothetical
+          scenarios and receiving AI-powered feedback.
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="bg-[#121218] border-[#1a1a1f]">
-          <CardHeader>
-            <CardTitle className="text-white">{hypothetical.title}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div>
-                <h3 className="font-medium mb-2 text-white">Facts:</h3>
-                <p className="text-gray-400">{hypothetical.facts}</p>
-              </div>
-              <div>
-                <h3 className="font-medium mb-2 text-white">Question:</h3>
-                <p className="text-gray-400">{hypothetical.question}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <div className="space-y-6">
-          <Card className="bg-[#121218] border-[#1a1a1f]">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {legalProblems.map((problem) => (
+          <Card
+            key={problem.id}
+            className={`bg-[#121218] border-[#1a1a1f] hover:bg-[#1a1a1f] transition-colors cursor-pointer h-full ${
+              selectedProblem === problem.id ? "ring-2 ring-primary" : ""
+            }`}
+            onClick={() => handleSelectProblem(problem.id)}
+          >
             <CardHeader>
-              <CardTitle className="text-white">Your Analysis</CardTitle>
+              <CardTitle className="text-white">{problem.title}</CardTitle>
             </CardHeader>
             <CardContent>
-              <Textarea
-                value={analysis}
-                onChange={(e) => setAnalysis(e.target.value)}
-                placeholder="Enter your legal analysis here..."
-                className="min-h-[200px] bg-[#0a0a0f] border-[#1a1a1f] text-white placeholder:text-gray-500"
-              />
-              <Button
-                className="w-full mt-4 bg-[#1a1a1f] hover:bg-[#2a2a2f] text-white"
-                onClick={handleSubmitAnalysis}
-                disabled={isLoading}
-              >
-                <Brain className="mr-2 h-4 w-4" />
-                {isLoading ? "Analyzing..." : "Analyze Response"}
-              </Button>
+              <p className="text-gray-400">{problem.summary}</p>
+              <div className="flex justify-end mt-4">
+                <ArrowRight className="h-5 w-5 text-gray-400" />
+              </div>
             </CardContent>
           </Card>
-
-          {feedback && (
-            <Card className="bg-[#121218] border-[#1a1a1f]">
-              <CardHeader>
-                <CardTitle className="text-white">AI Feedback</CardTitle>
-              </CardHeader>
-              <CardContent>
-                {feedback.error ? (
-                  <p className="text-red-500">{feedback.error}</p>
-                ) : (
-                  <div className="space-y-4">
-                    <div>
-                      <h3 className="font-medium mb-2 text-white">Score:</h3>
-                      <p className="text-gray-400">
-                        {feedback.analysisScore * 100}%
-                      </p>
-                    </div>
-                    <div>
-                      <h3 className="font-medium mb-2 text-white">Feedback:</h3>
-                      <p className="text-gray-400">
-                        {feedback.analysisFeedback}
-                      </p>
-                    </div>
-                    <div>
-                      <h3 className="font-medium mb-2 text-white">
-                        Suggestions:
-                      </h3>
-                      <ul className="list-disc list-inside text-gray-400">
-                        {feedback.suggestions.map(
-                          (suggestion: string, index: number) => (
-                            <li key={index}>{suggestion}</li>
-                          )
-                        )}
-                      </ul>
-                    </div>
-                    <div>
-                      <h3 className="font-medium mb-2 text-white">
-                        Model Analysis:
-                      </h3>
-                      <div className="space-y-3 text-gray-400">
-                        <div>
-                          <h4 className="font-medium text-gray-300">Facts:</h4>
-                          <ul className="list-disc list-inside pl-5">
-                            {feedback.modelAnalysis.facts
-                              .split(". ")
-                              .filter((point: string) => point.trim() !== "")
-                              .map((point: string, index: number) => (
-                                <li key={index}>{point.trim()}</li>
-                              ))}
-                          </ul>
-                        </div>
-                        <div>
-                          <h4 className="font-medium text-gray-300">Issue:</h4>
-                          <ul className="list-disc list-inside pl-5">
-                            {feedback.modelAnalysis.issue
-                              .split(". ")
-                              .filter((point: string) => point.trim() !== "")
-                              .map((point: string, index: number) => (
-                                <li key={index}>{point.trim()}</li>
-                              ))}
-                          </ul>
-                        </div>
-                        <div>
-                          <h4 className="font-medium text-gray-300">Rule:</h4>
-                          <ul className="list-disc list-inside pl-5">
-                            {feedback.modelAnalysis.rule
-                              .split(". ")
-                              .filter((point: string) => point.trim() !== "")
-                              .map((point: string, index: number) => (
-                                <li key={index}>{point.trim()}</li>
-                              ))}
-                          </ul>
-                        </div>
-                        <div>
-                          <h4 className="font-medium text-gray-300">
-                            Application:
-                          </h4>
-                          <ul className="list-disc list-inside pl-5">
-                            {feedback.modelAnalysis.application
-                              .split(". ")
-                              .filter((point: string) => point.trim() !== "")
-                              .map((point: string, index: number) => (
-                                <li key={index}>{point.trim()}</li>
-                              ))}
-                          </ul>
-                        </div>
-                        <div>
-                          <h4 className="font-medium text-gray-300">
-                            Conclusion:
-                          </h4>
-                          <ul className="list-disc list-inside pl-5">
-                            {feedback.modelAnalysis.conclusion
-                              .split(". ")
-                              .filter((point: string) => point.trim() !== "")
-                              .map((point: string, index: number) => (
-                                <li key={index}>{point.trim()}</li>
-                              ))}
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          )}
-        </div>
+        ))}
       </div>
+
+      {selectedProblem && (
+        <div className="mt-8 flex justify-center">
+          <Button
+            onClick={handleStartAnalysis}
+            className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-6 text-lg"
+          >
+            <PlayCircle className="mr-2 h-5 w-5" />
+            Start Analysis
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

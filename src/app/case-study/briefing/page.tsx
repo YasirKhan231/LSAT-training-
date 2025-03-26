@@ -207,12 +207,43 @@ export default function CaseBriefingPage() {
       const response = await fetch("/api/case-briefing/outline", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: "user123" }), // Replace with actual user ID from auth
+        body: JSON.stringify({ userId: "user123" }),
       });
-      const data = await response.json();
-      setOutline(data.outline);
-    } catch (error) {
-      console.error("Error generating outline:", error);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      // First get the response as text
+      const responseText = await response.text();
+      console.log("Raw response text:", responseText);
+
+      // Try to parse it as JSON
+      let responseData;
+      try {
+        responseData = JSON.parse(responseText);
+      } catch (e) {
+        console.error("Failed to parse JSON:", e);
+        // If parsing fails, use the raw text
+        setOutline(responseText);
+        return;
+      }
+
+      console.log("Parsed response data:", responseData);
+
+      // Handle different response formats
+      if (typeof responseData === "string") {
+        setOutline(responseData);
+      } else if (responseData.outline) {
+        setOutline(responseData.outline);
+      } else if (responseData.message) {
+        setOutline(responseData.message);
+      } else {
+        setOutline(JSON.stringify(responseData, null, 2));
+      }
+    } catch (error: any) {
+      console.error("Error in handleGenerateOutline:", error);
+      setOutline(`Error: ${error.message}`);
     } finally {
       setIsLoadingOutline(false);
     }

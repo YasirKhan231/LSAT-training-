@@ -12,7 +12,9 @@ import {
   Menu,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-
+import Kyle from "../../public/Kyle.png";
+import gabriele from "../../public/gabriele.png";
+import Benjamin from "../../public/benjamin.png";
 export default function LandingPage() {
   const [text, setText] = useState("");
   const texts = [
@@ -201,15 +203,15 @@ export default function LandingPage() {
             Comprehensive study materials, practice exams, and expert guidance
             to help you achieve your best score on the bar exam.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link href="/login">
-              <button className="bg-[#1a1f2e] hover:bg-[#252b3d] border border-gray-700 text-white px-6 py-3 rounded-md text-sm font-medium flex items-center justify-center group">
+              <button className="bg-[#1a1f2e] hover:bg-[#252b3d] border border-gray-700 text-white px-6 py-3 rounded-md text-sm font-medium flex items-center justify-center group w-full sm:w-auto">
                 Get Started
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </button>
             </Link>
             <Link href="/subscription">
-              <button className="border border-gray-700 text-white hover:bg-white/5 px-6 py-3 rounded-md text-sm font-medium">
+              <button className="border border-gray-700 text-white hover:bg-white/5 px-6 py-3 rounded-md text-sm font-medium w-full sm:w-auto">
                 View Pricing
               </button>
             </Link>
@@ -362,11 +364,11 @@ export default function LandingPage() {
           <div className="grid md:grid-cols-3 gap-6">
             <div className="bg-[#0e1018] p-8 rounded-lg border border-gray-800/40">
               <div className="flex mb-4">
-                <Star className="h-4 w-4 text-yellow-400" />
-                <Star className="h-4 w-4 text-yellow-400" />
-                <Star className="h-4 w-4 text-yellow-400" />
-                <Star className="h-4 w-4 text-yellow-400" />
-                <Star className="h-4 w-4 text-yellow-400" />
+                <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
               </div>
               <p className="text-gray-300 text-sm mb-6">
                 "BarExamPrep has been a game changer for my studies. The
@@ -374,11 +376,15 @@ export default function LandingPage() {
                 bar exam on my first attempt!"
               </p>
               <div className="flex items-center">
-                <div className="w-10 h-10 bg-[#1a1f2e] rounded-full mr-3 flex items-center justify-center text-xs font-bold">
-                  JD
+                <div className="w-10 h-10 rounded-full mr-3 overflow-hidden">
+                  <img
+                    src={Benjamin.src}
+                    alt="Benjamin Chen"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold">James D.</h3>
+                  <h3 className="text-sm font-semibold">Benjamin Chen</h3>
                   <p className="text-xs text-gray-400">Harvard Law '24</p>
                 </div>
               </div>
@@ -386,11 +392,11 @@ export default function LandingPage() {
 
             <div className="bg-[#0e1018] p-8 rounded-lg border border-gray-800/40">
               <div className="flex mb-4">
-                <Star className="h-4 w-4 text-yellow-400" />
-                <Star className="h-4 w-4 text-yellow-400" />
-                <Star className="h-4 w-4 text-yellow-400" />
-                <Star className="h-4 w-4 text-yellow-400" />
-                <Star className="h-4 w-4 text-yellow-400" />
+                <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
               </div>
               <p className="text-gray-300 text-sm mb-6">
                 "The practice exams were incredibly realistic and helped me
@@ -398,11 +404,15 @@ export default function LandingPage() {
                 BarExamPrep to anyone preparing for the bar exam."
               </p>
               <div className="flex items-center">
-                <div className="w-10 h-10 bg-[#1a1f2e] rounded-full mr-3 flex items-center justify-center text-xs font-bold">
-                  SK
+                <div className="w-10 h-10 rounded-full mr-3 overflow-hidden">
+                  <img
+                    src={gabriele.src}
+                    alt="Gabriele Muratori"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold">Sarah K.</h3>
+                  <h3 className="text-sm font-semibold">Gabriele Muratori</h3>
                   <p className="text-xs text-gray-400">Columbia Law '23</p>
                 </div>
               </div>
@@ -410,11 +420,11 @@ export default function LandingPage() {
 
             <div className="bg-[#0e1018] p-8 rounded-lg border border-gray-800/40">
               <div className="flex mb-4">
-                <Star className="h-4 w-4 text-yellow-400" />
-                <Star className="h-4 w-4 text-yellow-400" />
-                <Star className="h-4 w-4 text-yellow-400" />
-                <Star className="h-4 w-4 text-yellow-400" />
-                <Star className="h-4 w-4 text-yellow-400" />
+                <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
               </div>
               <p className="text-gray-300 text-sm mb-6">
                 "As a working professional, I needed a flexible study solution.
@@ -422,11 +432,15 @@ export default function LandingPage() {
                 resources and personalized study plan."
               </p>
               <div className="flex items-center">
-                <div className="w-10 h-10 bg-[#1a1f2e] rounded-full mr-3 flex items-center justify-center text-xs font-bold">
-                  MT
+                <div className="w-10 h-10 rounded-full mr-3 overflow-hidden">
+                  <img
+                    src={Kyle.src}
+                    alt="Kyle"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold">Michael T.</h3>
+                  <h3 className="text-sm font-semibold">Kyle</h3>
                   <p className="text-xs text-gray-400">NYU Law '23</p>
                 </div>
               </div>

@@ -75,7 +75,8 @@ export default function SettingsPage() {
               <Input
                 id="email"
                 defaultValue={user.email || ""}
-                className="bg-[#0a0a0f] border-[#1a1a1f] text-white"
+                readOnly
+                className="bg-[#0a0a0f] border-[#1a1a1f] text-white cursor-default opacity-70"
               />
             </div>
             <Separator className="my-4 bg-[#1a1a1f]" />
