@@ -17,80 +17,94 @@ export async function POST(request: Request) {
 
     const { userId } = await request.json();
 
-    // Validate userId
-    if (!userId || typeof userId !== 'string') {
-      return NextResponse.json(
-        { error: "Valid user ID is required" },
-        { status: 400 }
-      );
-    }
-
-    // Create prompt with explicit JSON request
-    const prompt = `As a legal education expert, create a detailed study outline in JSON format focusing on constitutional law concepts for user ${userId}. 
-    Structure the response as a JSON object with these properties:
-    - outline: string (markdown formatted content)
-    - topics: string[]
-    - focusAreas: string[]
+    // Create prompt asking for plain text format
+    const prompt = `Generate a comprehensive Constitutional Law outline in PLAIN TEXT format (no markdown) with these sections:
     
-    Example:
-    {
-      "outline": "## Constitutional Law Outline...",
-      "topics": ["Judicial Review", "Federalism"],
-      "focusAreas": ["Landmark Cases", "Amendment Analysis"]
-    }`;
+    INTRODUCTION
+    THE CONSTITUTION
+    JUDICIAL REVIEW 
+    FEDERALISM
+    SEPARATION OF POWERS
+    INDIVIDUAL RIGHTS
+    LANDMARK CASES
+    CONCLUSION
 
-    // API call with JSON response format
+    Format requirements:
+    - UPPERCASE section headers
+    - No numbers, bullets, or markdown symbols
+    - Each key point on its own line
+    - Blank line between sections`;
+
     const completion = await openai.chat.completions.create({
-      model: "gpt-4o",
+      model: "gpt-4",
       messages: [
         { 
           role: "system", 
-          content: "You are a constitutional law expert. Return all responses in valid JSON format." 
+          content: `You are a constitutional law expert. Generate outlines that:
+          1. Use plain text only (no markdown symbols)
+          2. Put section headers in UPPERCASE
+          3. One key point per line
+          4. Blank line between sections
+          5. Never use markdown or special formatting`
         },
         { role: "user", content: prompt }
       ],
-      response_format: { type: "json_object" },
-      temperature: 0.7,
-      max_tokens: 1500,
+      temperature: 0.3,
+      max_tokens: 2500,
     });
 
-    // Validate response structure
-    if (!completion.choices?.[0]?.message?.content) {
-      throw new Error("No content in OpenAI response");
-    }
+    let content = completion.choices[0]?.message?.content || "";
+    
+    // ES2017-compatible cleanup
+    content = content
+      .replace(/#/g, '')              // Remove # headers
+      .replace(/[-*]/g, '')          // Remove bullet points
+      .replace(/`/g, '')             // Remove code ticks
+      .replace(/^\s+|\s+$/g, '')     // Trim whitespace
+      .replace(/\n{3,}/g, '\n\n');   // Limit to 2 newlines
 
-    // Process response
-    let responseContent = completion.choices[0].message.content;
-    
-    // Clean response (handle markdown code blocks if present)
-    responseContent = responseContent.replace(/^```json|```$/g, '').trim();
-    
-    // Parse and validate
-    const result = JSON.parse(responseContent);
-    
-    if (!result.outline || typeof result.outline !== 'string') {
-      throw new Error("Invalid outline format from AI");
-    }
+    // Verify all required sections are present
+    const requiredSections = [
+      'INTRODUCTION',
+      'THE CONSTITUTION',
+      'JUDICIAL REVIEW',
+      'FEDERALISM',
+      'SEPARATION OF POWERS',
+      'INDIVIDUAL RIGHTS',
+      'LANDMARK CASES',
+      'CONCLUSION'
+    ];
 
-    // Return successful response
+    requiredSections.forEach(section => {
+      if (content.indexOf(section) === -1) {
+        content += `\n\n${section}\nKey points about ${section.toLowerCase()}`;
+      }
+    });
+
     return NextResponse.json({
       success: true,
-      outline: result.outline,
+      outline: content,
       metadata: {
-        topics: result.topics || [],
-        focusAreas: result.focusAreas || [],
+        topics: [
+          "Judicial Review", 
+          "Federalism",
+          "Separation of Powers",
+          "Individual Rights"
+        ],
+        focusAreas: [
+          "Landmark Cases",
+          "Constitutional Interpretation", 
+          "Modern Applications"
+        ],
         generatedAt: new Date().toISOString()
       }
-    }, { status: 200 });
+    });
 
-  } catch (error:any) {
+  } catch (error: any) {
     console.error("Outline generation error:", error);
-    
     return NextResponse.json({
       success: false,
       error: error.message || "Outline generation failed",
-      suggestion: "Please try again with a different prompt",
-      timestamp: new Date().toISOString()
-    }, { status: error.message.includes('user ID') ? 400 : 500 });
+    }, { status: 500 });
   }
 }

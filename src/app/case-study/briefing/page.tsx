@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
 import { ArrowLeft, Send, Brain, Scale } from "lucide-react";
 import Link from "next/link";
+import { sampleCases } from "@/lib/sampleCases";
 
 interface CaseData {
   id: string;
@@ -40,6 +41,12 @@ interface BriefFeedback {
   modelBrief: Brief;
 }
 
+interface OutlineData {
+  outline: string;
+  topics: string[];
+  focusAreas: string[];
+}
+
 interface HypotheticalFeedback {
   issueSpottingScore: number;
   reasoningScore: number;
@@ -55,6 +62,7 @@ interface HypotheticalFeedback {
 
 export default function CaseBriefingPage() {
   const [selectedCase, setSelectedCase] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
   const [brief, setBrief] = useState<Brief>({
     facts: "",
     issue: "",
@@ -71,72 +79,14 @@ export default function CaseBriefingPage() {
   const [hypoFeedback, setHypoFeedback] = useState<HypotheticalFeedback | null>(
     null
   );
+  const [outlineData, setOutlineData] = useState<OutlineData | null>(null);
   const [isSubmittingHypo, setIsSubmittingHypo] = useState(false);
-  const [outline, setOutline] = useState<string | null>(null);
   const [isLoadingOutline, setIsLoadingOutline] = useState(false);
 
-  const sampleCases: CaseData[] = [
-    {
-      id: "case1",
-      title: "Brown v. Board of Education (1954)",
-      facts:
-        "In the early 1950s, African American students in Topeka, Kansas, were forced to attend segregated schools under a state law permitting 'separate but equal' facilities. Oliver Brown, a parent, sued the Topeka Board of Education, arguing that the segregated schools were inherently unequal and denied his daughter equal educational opportunities. The case consolidated several similar lawsuits from other states challenging racial segregation in public schools.",
-      issue:
-        "Does the racial segregation of children in public schools, under the doctrine of 'separate but equal,' violate the Equal Protection Clause of the Fourteenth Amendment?",
-      holding:
-        "Yes, the Supreme Court unanimously ruled that segregated public schools are inherently unequal and thus violate the Equal Protection Clause.",
-      reasoning:
-        "The Court, led by Chief Justice Earl Warren, reasoned that segregation in education generated a feeling of inferiority among African American children that undermined their educational opportunities. Relying on psychological evidence, the Court overturned Plessy v. Ferguson (1896), which had upheld 'separate but equal,' declaring that separate educational facilities could never be equal due to the psychological and social harm caused by segregation.",
-    },
-    {
-      id: "case2",
-      title: "Marbury v. Madison (1803)",
-      facts:
-        "In the final days of President John Adams' administration, William Marbury was appointed as a justice of the peace but did not receive his commission due to a clerical oversight by the outgoing Secretary of State. Under the new administration of Thomas Jefferson, Secretary of State James Madison refused to deliver the commission. Marbury sued, asking the Supreme Court to issue a writ of mandamus to compel Madison to act.",
-      issue:
-        "Does the Supreme Court have the authority to review acts of Congress and declare them unconstitutional, and can it issue a writ of mandamus under the Judiciary Act of 1789?",
-      holding:
-        "Yes, the Supreme Court has the power of judicial review, but it cannot issue the writ because the relevant section of the Judiciary Act of 1789 is unconstitutional.",
-      reasoning:
-        "Chief Justice John Marshall held that the Constitution is the supreme law of the land and that the judiciary must enforce it over conflicting statutes. The Court found that the Judiciary Act's expansion of original jurisdiction exceeded Congress's authority under Article III, establishing judicial review while denying Marbury's request due to lack of jurisdiction.",
-    },
-    {
-      id: "case3",
-      title: "Gideon v. Wainwright (1963)",
-      facts:
-        "Clarence Earl Gideon was charged with felony breaking and entering in Florida. Unable to afford an attorney, he requested a court-appointed lawyer, but the state court denied his request, citing that free counsel was only provided in capital cases. Gideon represented himself, was convicted, and later appealed to the Supreme Court from prison, arguing his right to counsel was violated.",
-      issue:
-        "Does the Sixth Amendment's right to counsel, incorporated through the Fourteenth Amendment, require states to provide free legal counsel to indigent defendants in felony cases?",
-      holding:
-        "Yes, the Supreme Court unanimously ruled that states must provide counsel to indigent defendants in felony cases.",
-      reasoning:
-        "Justice Hugo Black wrote that the right to counsel is fundamental to a fair trial, and its denial violates due process under the Fourteenth Amendment. The Court overruled Betts v. Brady (1942), holding that the Sixth Amendment's guarantee of counsel applies to the states, ensuring equal justice regardless of financial status.",
-    },
-    {
-      id: "case4",
-      title: "Roe v. Wade (1973)",
-      facts:
-        "Norma McCorvey (under the pseudonym Jane Roe) challenged a Texas law prohibiting abortion except to save the mother's life. Pregnant and unable to obtain a legal abortion, she sued Henry Wade, the Dallas County District Attorney, arguing that the law violated her constitutional rights. The case escalated to the Supreme Court as a test of abortion restrictions nationwide.",
-      issue:
-        "Does a state law banning abortion except to save the mother's life violate a woman's constitutional right to privacy under the Fourteenth Amendment?",
-      holding:
-        "Yes, the Supreme Court ruled 7-2 that the right to privacy includes a woman's decision to have an abortion, but this right is not absolute and must be balanced against state interests.",
-      reasoning:
-        "Justice Harry Blackmun's majority opinion held that the right to privacy, derived from the Due Process Clause, encompasses a woman's choice to terminate a pregnancy. The Court established a trimester framework: during the first trimester, the decision is left to the woman and her doctor; in the second, states may regulate to protect maternal health; in the third, states may ban abortion to protect fetal life, except when the mother's life or health is at risk.",
-    },
-    {
-      id: "case5",
-      title: "Miranda v. Arizona (1966)",
-      facts:
-        "Ernesto Miranda was arrested in Phoenix, Arizona, for kidnapping and rape. During a prolonged interrogation without being informed of his rights, he confessed to the crimes. His confession was used against him at trial, leading to a conviction. Miranda appealed, arguing that his confession was coerced and that he was not informed of his right to remain silent or to have an attorney present.",
-      issue:
-        "Does the Fifth Amendment's protection against self-incrimination require law enforcement to inform suspects of their rights to remain silent and to an attorney before interrogation?",
-      holding:
-        "Yes, the Supreme Court ruled 5-4 that suspects must be informed of their rights before custodial interrogation.",
-      reasoning:
-        "Chief Justice Earl Warren wrote the majority opinion, emphasizing that the coercive nature of custodial interrogation requires safeguards to protect against self-incrimination. The Court established the 'Miranda rights,' requiring police to inform suspects of their right to silence, that anything they say can be used against them, and their right to an attorney. Without these warnings, confessions obtained are inadmissible in court.",
-    },
-  ];
+  const filteredCases = sampleCases.filter((caseItem) =>
+    caseItem.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   const handleBriefChange = (field: keyof Brief, value: string) => {
     setBrief((prev) => ({ ...prev, [field]: value }));
   };
@@ -213,40 +163,34 @@ export default function CaseBriefingPage() {
         body: JSON.stringify({ userId: "user123" }),
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      if (!response.ok) throw new Error("Failed to generate outline");
+
+      const data = await response.json();
+
+      if (!data.outline) {
+        throw new Error("Received empty outline");
       }
 
-      // First get the response as text
-      const responseText = await response.text();
-      console.log("Raw response text:", responseText);
+      let cleanOutline = data.outline
+        .replace(/^```markdown|```$/g, "")
+        .replace(/\n\n+/g, "\n\n")
+        .trim();
 
-      // Try to parse it as JSON
-      let responseData;
-      try {
-        responseData = JSON.parse(responseText);
-      } catch (e) {
-        console.error("Failed to parse JSON:", e);
-        // If parsing fails, use the raw text
-        setOutline(responseText);
-        return;
+      if (!cleanOutline.endsWith(".")) {
+        cleanOutline += "\n\n[Outline complete]";
       }
 
-      console.log("Parsed response data:", responseData);
-
-      // Handle different response formats
-      if (typeof responseData === "string") {
-        setOutline(responseData);
-      } else if (responseData.outline) {
-        setOutline(responseData.outline);
-      } else if (responseData.message) {
-        setOutline(responseData.message);
-      } else {
-        setOutline(JSON.stringify(responseData, null, 2));
-      }
+      setOutlineData({
+        outline: cleanOutline,
+        topics: data.metadata?.topics || [],
+        focusAreas: data.metadata?.focusAreas || [],
+      });
     } catch (error: any) {
-      console.error("Error in handleGenerateOutline:", error);
-      setOutline(`Error: ${error.message}`);
+      setOutlineData({
+        outline: `Error generating outline: ${error.message}`,
+        topics: [],
+        focusAreas: [],
+      });
     } finally {
       setIsLoadingOutline(false);
     }
@@ -277,22 +221,61 @@ export default function CaseBriefingPage() {
           <CardHeader>
             <CardTitle className="text-white">Available Cases</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              {sampleCases.map((caseItem) => (
-                <Button
-                  key={caseItem.id}
-                  variant={selectedCase === caseItem.id ? "default" : "outline"}
-                  className={`w-full justify-start ${
-                    selectedCase === caseItem.id
-                      ? "bg-[#1a1a1f] hover:bg-[#2a2a2f] text-white"
-                      : "bg-[#1a1a1f] border-[#2a2a2f] text-gray-200 hover:bg-[#2a2a2f]"
-                  }`}
-                  onClick={() => setSelectedCase(caseItem.id)}
+          <CardContent className="space-y-4">
+            {/* In the Case Selection card */}
+            <div className="relative mb-4">
+              <input
+                type="text"
+                placeholder="Search cases..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full bg-[#1a1a1f] border border-[#2a2a2f] rounded-lg px-4 py-2.5 text-gray-200 placeholder-gray-500 focus:outline-none focus:border-[#3a3a3f] focus:ring-1 focus:ring-[#3a3a3f] transition-colors"
+              />
+              {searchTerm && (
+                <button
+                  onClick={() => setSearchTerm("")}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
                 >
-                  {caseItem.title}
-                </Button>
-              ))}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </button>
+              )}
+            </div>
+
+            {/* Updated responsive height version */}
+            <div className="space-y-2 h-[40vh] md:h-[calc(100vh-300px)] overflow-y-auto pr-1">
+              {filteredCases.length > 0 ? (
+                filteredCases.map((caseItem) => (
+                  <Button
+                    key={caseItem.id}
+                    variant={
+                      selectedCase === caseItem.id ? "default" : "outline"
+                    }
+                    className={`w-full justify-start text-left truncate ${
+                      selectedCase === caseItem.id
+                        ? "bg-[#1a1a1f] hover:bg-[#2a2a2f] text-white"
+                        : "bg-[#1a1a1f] border-[#2a2a2f] text-gray-200 hover:bg-[#2a2a2f]"
+                    }`}
+                    onClick={() => setSelectedCase(caseItem.id)}
+                  >
+                    <span className="truncate">{caseItem.title}</span>
+                  </Button>
+                ))
+              ) : (
+                <p className="text-gray-400 text-center py-4">No cases found</p>
+              )}
             </div>
           </CardContent>
         </Card>
@@ -409,7 +392,7 @@ export default function CaseBriefingPage() {
                     <CardContent className="space-y-4">
                       <div>
                         <h3 className="font-medium text-white">
-                          Facts ({briefFeedback.factsScore * 100}%)
+                          Facts ({(briefFeedback.factsScore * 100).toFixed(0)}%)
                         </h3>
                         <Progress
                           value={briefFeedback.factsScore * 100}
@@ -421,7 +404,7 @@ export default function CaseBriefingPage() {
                       </div>
                       <div>
                         <h3 className="font-medium text-white">
-                          Issue ({briefFeedback.issueScore * 100}%)
+                          Issue ({(briefFeedback.issueScore * 100).toFixed(0)}%)
                         </h3>
                         <Progress
                           value={briefFeedback.issueScore * 100}
@@ -433,7 +416,7 @@ export default function CaseBriefingPage() {
                       </div>
                       <div>
                         <h3 className="font-medium text-white">
-                          Rule ({briefFeedback.ruleScore * 100}%)
+                          Rule ({(briefFeedback.ruleScore * 100).toFixed(0)}%)
                         </h3>
                         <Progress
                           value={briefFeedback.ruleScore * 100}
@@ -445,7 +428,8 @@ export default function CaseBriefingPage() {
                       </div>
                       <div>
                         <h3 className="font-medium text-white">
-                          Application ({briefFeedback.applicationScore * 100}%)
+                          Application (
+                          {(briefFeedback.applicationScore * 100).toFixed(0)}%)
                         </h3>
                         <Progress
                           value={briefFeedback.applicationScore * 100}
@@ -457,7 +441,8 @@ export default function CaseBriefingPage() {
                       </div>
                       <div>
                         <h3 className="font-medium text-white">
-                          Conclusion ({briefFeedback.conclusionScore * 100}%)
+                          Conclusion (
+                          {(briefFeedback.conclusionScore * 100).toFixed(0)}%)
                         </h3>
                         <Progress
                           value={briefFeedback.conclusionScore * 100}
@@ -554,7 +539,7 @@ export default function CaseBriefingPage() {
                       <div>
                         <h3 className="font-medium text-white">
                           Issue Spotting (
-                          {hypoFeedback.issueSpottingScore * 100}%)
+                          {(hypoFeedback.issueSpottingScore * 100).toFixed(0)}%)
                         </h3>
                         <Progress
                           value={hypoFeedback.issueSpottingScore * 100}
@@ -566,7 +551,8 @@ export default function CaseBriefingPage() {
                       </div>
                       <div>
                         <h3 className="font-medium text-white">
-                          Reasoning ({hypoFeedback.reasoningScore * 100}%)
+                          Reasoning (
+                          {(hypoFeedback.reasoningScore * 100).toFixed(0)}%)
                         </h3>
                         <Progress
                           value={hypoFeedback.reasoningScore * 100}
@@ -578,7 +564,8 @@ export default function CaseBriefingPage() {
                       </div>
                       <div>
                         <h3 className="font-medium text-white">
-                          Precedent ({hypoFeedback.precedentScore * 100}%)
+                          Precedent (
+                          {(hypoFeedback.precedentScore * 100).toFixed(0)}%)
                         </h3>
                         <Progress
                           value={hypoFeedback.precedentScore * 100}
@@ -590,7 +577,8 @@ export default function CaseBriefingPage() {
                       </div>
                       <div>
                         <h3 className="font-medium text-white">
-                          Clarity ({hypoFeedback.clarityScore * 100}%)
+                          Clarity (
+                          {(hypoFeedback.clarityScore * 100).toFixed(0)}%)
                         </h3>
                         <Progress
                           value={hypoFeedback.clarityScore * 100}
@@ -628,15 +616,15 @@ export default function CaseBriefingPage() {
                 <Card className="bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] border-[#1a1a1f]">
                   <CardHeader>
                     <CardTitle className="text-white">
-                      Personalized Outline
+                      Constitutional Law Outline
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    {!outline ? (
+                    {!outlineData ? (
                       <Button
                         onClick={handleGenerateOutline}
                         disabled={isLoadingOutline}
-                        className="w-full bg-[#1a1a1f] hover:bg-[#2a2a2f] text-white disabled:bg-[#1a1a1f] disabled:text-gray-400"
+                        className="w-full bg-[#1a1a1f] hover:bg-[#2a2a2f] text-white"
                       >
                         <Scale className="mr-2 h-4 w-4" />
                         {isLoadingOutline
@@ -644,12 +632,69 @@ export default function CaseBriefingPage() {
                           : "Generate Outline"}
                       </Button>
                     ) : (
-                      <Textarea
-                        value={outline}
-                        onChange={(e) => setOutline(e.target.value)}
-                        className="min-h-[300px] bg-[#1a1a1f] border-[#2a2a2f] text-white placeholder:text-gray-500"
-                        placeholder="Your personalized outline will appear here..."
-                      />
+                      <div className="space-y-6">
+                        <div className="relative">
+                          <Textarea
+                            value={outlineData.outline}
+                            readOnly
+                            className="min-h-[400px] font-mono text-sm bg-[#1a1a1f] border-[#2a2a2f] text-gray-300"
+                          />
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className="absolute top-2 right-2 text-gray-400 hover:text-white"
+                            onClick={() =>
+                              navigator.clipboard.writeText(outlineData.outline)
+                            }
+                          >
+                            Copy
+                          </Button>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <Card className="bg-[#1a1a1f] border-[#2a2a2f]">
+                            <CardHeader>
+                              <CardTitle className="text-sm font-medium text-gray-300">
+                                Key Topics
+                              </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                              <ul className="space-y-2">
+                                {outlineData.topics.map((topic, i) => (
+                                  <li key={i} className="text-gray-400 text-sm">
+                                    • {topic}
+                                  </li>
+                                ))}
+                              </ul>
+                            </CardContent>
+                          </Card>
+
+                          <Card className="bg-[#1a1a1f] border-[#2a2a2f]">
+                            <CardHeader>
+                              <CardTitle className="text-sm font-medium text-gray-300">
+                                Focus Areas
+                              </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                              <ul className="space-y-2">
+                                {outlineData.focusAreas.map((area, i) => (
+                                  <li key={i} className="text-gray-400 text-sm">
+                                    • {area}
+                                  </li>
+                                ))}
+                              </ul>
+                            </CardContent>
+                          </Card>
+                        </div>
+
+                        <Button
+                          onClick={handleGenerateOutline}
+                          variant="outline"
+                          className="w-full border-[#2a2a2f] text-gray-300 hover:text-white"
+                        >
+                          Generate New Outline
+                        </Button>
+                      </div>
                     )}
                   </CardContent>
                 </Card>
