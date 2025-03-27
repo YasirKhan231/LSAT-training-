@@ -123,25 +123,23 @@ export default function SettingsPage() {
           </CardContent>
         </Card>
 
-        {/* Subscription Section */}
-        <div className="flex justify-center">
-          <Card className="bg-[#121218] border-[#1a1a1f] text-white w-full max-w-md">
-            <CardHeader>
-              <CardTitle className="text-center">Subscription</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <p className="text-slate-400 text-center">
-                Upgrade to a premium plan for exclusive features.
-              </p>
-              <Button
-                onClick={handleSubscriptionRedirect}
-                className="w-full bg-[#1a1a1f] hover:bg-[#2a2a2f] text-white"
-              >
-                View Subscription Plans
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
+        {/* Subscription Section - Updated to match width */}
+        <Card className="bg-[#121218] border-[#1a1a1f] text-white">
+          <CardHeader>
+            <CardTitle>Subscription</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-slate-400">
+              Upgrade to a premium plan for exclusive features.
+            </p>
+            <Button
+              onClick={handleSubscriptionRedirect}
+              className="w-full bg-[#1a1a1f] hover:bg-[#2a2a2f] text-white"
+            >
+              View Subscription Plans
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
