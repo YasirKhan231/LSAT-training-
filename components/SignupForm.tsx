@@ -148,7 +148,7 @@ export default function SignupForm() {
   return (
     <div className="w-full">
       {error && (
-        <div className="bg-red-900/10 border-l-4 border-red-400 p-3 mb-4 rounded-lg animate-fadeIn">
+        <div className="bg-white border-l-4 border-red-400 p-3 mb-4 rounded-lg animate-fadeIn">
           <div className="flex items-center">
             <AlertCircle className="h-4 w-4 text-red-400 mr-2 flex-shrink-0" />
             <p className="text-sm text-red-400">{error}</p>
@@ -159,7 +159,7 @@ export default function SignupForm() {
       <form onSubmit={handleSignup} className="space-y-4">
         <div>
           <div className="flex items-center justify-between mb-1">
-            <label htmlFor="name" className="text-xs font-medium text-gray-300">
+            <label htmlFor="name" className="text-xs font-medium text-gray-500">
               Full name
             </label>
             <span className="text-xs text-gray-400">Optional</span>
@@ -175,7 +175,7 @@ export default function SignupForm() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               onBlur={() => markFieldAsTouched("name")}
-              className="w-full pl-10 pr-3 py-2 text-sm border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#121218] focus:border-[#121218] transition-all duration-200 bg-[#1a1d2a] text-white"
+              className="w-full pl-10 pr-3 py-2 text-sm border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#121218] focus:border-[#121218] transition-all duration-200 bg-white text-white"
             />
           </div>
         </div>
@@ -183,7 +183,7 @@ export default function SignupForm() {
         <div>
           <label
             htmlFor="email"
-            className="block text-xs font-medium text-gray-300 mb-2"
+            className="block text-xs font-medium text-gray-500 mb-2"
           >
             Email address
           </label>
@@ -199,7 +199,7 @@ export default function SignupForm() {
               onChange={(e) => setEmail(e.target.value)}
               onBlur={() => markFieldAsTouched("email")}
               required
-              className={`w-full pl-10 pr-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 transition-all duration-200 bg-[#1a1d2a] text-white ${
+              className={`w-full pl-10 pr-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 transition-all duration-200 bg-white text-white ${
                 formTouched.email && !isValidEmail && email
                   ? "border-red-400 focus:ring-red-500 focus:border-red-500"
                   : formTouched.email && isValidEmail && email
@@ -227,7 +227,7 @@ export default function SignupForm() {
         <div>
           <label
             htmlFor="password"
-            className="block text-xs font-medium text-gray-300 mb-2"
+            className="block text-xs font-medium text-gray-500 mb-2"
           >
             Password
           </label>
@@ -243,7 +243,7 @@ export default function SignupForm() {
               onChange={(e) => setPassword(e.target.value)}
               onBlur={() => markFieldAsTouched("password")}
               required
-              className={`w-full pl-10 pr-10 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 transition-all duration-200 bg-[#1a1d2a] text-white ${
+              className={`w-full pl-10 pr-10 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 transition-all duration-200 bg-white text-white ${
                 formTouched.password && !hasMinLength && password
                   ? "border-red-400 focus:ring-red-500 focus:border-red-500"
                   : formTouched.password && hasMinLength && password
@@ -253,7 +253,7 @@ export default function SignupForm() {
             />
             <button
               type="button"
-              className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-300 transition-colors"
+              className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-500 transition-colors"
               onClick={() => setShowPassword(!showPassword)}
             >
               {showPassword ? (
@@ -287,7 +287,7 @@ export default function SignupForm() {
         <div>
           <label
             htmlFor="confirmPassword"
-            className="block text-xs font-medium text-gray-300 mb-2"
+            className="block text-xs font-medium text-gray-500 mb-2"
           >
             Confirm password
           </label>
@@ -303,7 +303,7 @@ export default function SignupForm() {
               onChange={(e) => setConfirmPassword(e.target.value)}
               onBlur={() => markFieldAsTouched("confirmPassword")}
               required
-              className={`w-full pl-10 pr-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 transition-all duration-200 bg-[#1a1d2a] text-white ${
+              className={`w-full pl-10 pr-3 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 transition-all duration-200 bg-white text-white ${
                 formTouched.confirmPassword && confirmPassword
                   ? passwordsMatch
                     ? "border-green-400 focus:ring-green-500 focus:border-green-500"
@@ -333,7 +333,7 @@ export default function SignupForm() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-2.5 px-4 text-sm font-medium rounded-lg text-white bg-gradient-to-r from-[#0a0a0f] via-[#121218] to-[#0a0a0f] hover:from-[#0a0a0f] hover:via-[#181820] hover:to-[#0a0a0f] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#121218] shadow-sm hover:shadow transition-all duration-200 border border-gray-700/30"
+            className="w-full py-2.5 px-4 bg-black text-sm font-medium rounded-lg text-white hover:from-[#0a0a0f] hover:via-[#181820] hover:to-[#0a0a0f] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#121218] shadow-sm hover:shadow transition-all duration-200 border border-gray-700/30"
           >
             {isLoading ? (
               <div className="flex items-center justify-center">
@@ -369,7 +369,7 @@ export default function SignupForm() {
         Already have an account?{" "}
         <Link
           href="/login"
-          className="font-medium text-gray-300 hover:text-white"
+          className="font-medium text-gray-500 hover:text-white"
         >
           Sign in
         </Link>

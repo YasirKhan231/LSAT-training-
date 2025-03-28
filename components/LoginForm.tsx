@@ -49,7 +49,7 @@ export default function LoginForm() {
   return (
     <div className="w-full">
       {error && (
-        <div className="bg-red-900/20 border-l-4 border-red-500 p-3 mb-4 rounded-lg animate-fadeIn">
+        <div className="bg-white border-l-4 border-red-500 p-3 mb-4 rounded-lg animate-fadeIn">
           <div className="flex items-center">
             <AlertCircle className="h-4 w-4 text-red-500 mr-2 flex-shrink-0" />
             <p className="text-sm text-red-400">{error}</p>
@@ -61,7 +61,7 @@ export default function LoginForm() {
         <div>
           <label
             htmlFor="email"
-            className="block text-sm font-medium text-gray-300 mb-2"
+            className="block text-sm font-medium text-gray-500 mb-2"
           >
             Email address
           </label>
@@ -76,7 +76,7 @@ export default function LoginForm() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full pl-10 pr-3 py-2 text-sm bg-[#1a1d2a] border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#121218] focus:border-[#121218] transition-all duration-200 text-white"
+              className="w-full pl-10 pr-3 py-2 text-sm bg-white border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#121218] focus:border-[#121218] transition-all duration-200 text-white"
             />
           </div>
         </div>
@@ -85,13 +85,13 @@ export default function LoginForm() {
           <div className="flex items-center justify-between mb-2">
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-gray-300"
+              className="block text-sm font-medium text-gray-500"
             >
               Password
             </label>
             <Link
               href="/forgot-password"
-              className="text-sm text-gray-400 hover:text-gray-300 transition-colors"
+              className="text-sm text-gray-500 hover:text-gray-300 transition-colors"
             >
               Forgot password?
             </Link>
@@ -107,7 +107,7 @@ export default function LoginForm() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full pl-10 pr-10 py-2 text-sm bg-[#1a1d2a] border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#121218] focus:border-[#121218] transition-all duration-200 text-white"
+              className="w-full pl-10 pr-10 py-2 text-sm bg-white border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#121218] focus:border-[#121218] transition-all duration-200 text-white"
             />
             <button
               type="button"

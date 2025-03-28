@@ -98,7 +98,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       {/* Overlay (only for mobile) */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden"
+          className="fixed inset-0 bg-white backdrop-blur-sm z-40 md:hidden"
           onClick={(e) => {
             e.preventDefault();
             onClose();
@@ -108,7 +108,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-[280px] bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] shadow-lg ${
+        className={`fixed inset-y-0 left-0 z-50 w-[280px] bg-white shadow-lg ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } transition-transform duration-300 ease-in-out md:translate-x-0 md:w-64 overflow-hidden flex flex-col border-r border-[#1a1a1f]`}
         style={{
@@ -120,7 +120,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         {/* Sidebar Header */}
         <div className="px-6 py-4 border-b border-[#1a1a1f] flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-2">
-            <span className="text-xl font-bold text-white">Prep For Law</span>
+            <span className="text-xl font-bold text-black">Prep For Law</span>
           </Link>
           <button
             onClick={(e) => {
@@ -129,7 +129,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
               console.log("Close button clicked"); // Debugging
               onClose?.(); // Safe call
             }}
-            className="p-1 rounded-lg text-gray-400 hover:bg-[#1a1a1f] hover:text-white transition-colors"
+            className="p-1 rounded-lg text-black hover:bg-[#1a1a1f] hover:text-white transition-colors"
             aria-label="Close sidebar"
           >
             <X className="h-5 w-5" />
@@ -145,8 +145,8 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                     <div
                       className={`flex items-center justify-between w-full px-4 py-2 text-sm rounded-lg transition-colors duration-200 ${
                         pathname.startsWith(item.href)
-                          ? "bg-[#1a1a1f] text-white"
-                          : "text-gray-300 hover:bg-[#1a1a1f]"
+                          ? "bg-[#1a1a1f]"
+                          : "text-black hover:bg-[#1a1a1f] hover:text-white"
                       }`}
                     >
                       <Link
@@ -161,7 +161,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                           e.stopPropagation();
                           toggleExpand(item.href);
                         }}
-                        className="p-1 hover:bg-[#1a1a1f] rounded-lg"
+                        className="p-1 hover:bg-[#1a1a1f] rounded-lg text-black"
                       >
                         {expandedItems.includes(item.href) ? (
                           <ChevronDown className="h-4 w-4" />
@@ -179,7 +179,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                               className={`flex items-center px-4 py-2 text-sm rounded-lg transition-colors duration-200 ${
                                 pathname === child.href
                                   ? "bg-[#1a1a1f] text-white"
-                                  : "text-gray-300 hover:bg-[#1a1a1f]"
+                                  : "text-black hover:bg-[#1a1a1f] hover:text-white"
                               }`}
                             >
                               <child.icon className="h-4 w-4 mr-3" />
@@ -196,7 +196,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                     className={`flex items-center px-4 py-2 text-sm rounded-lg transition-colors duration-200 ${
                       pathname === item.href
                         ? "bg-[#1a1a1f] text-white"
-                        : "text-gray-300 hover:bg-[#1a1a1f]"
+                        : "text-black hover:bg-[#1a1a1f] hover:text-white"
                     }`}
                   >
                     <item.icon className="h-5 w-5 mr-3" />
@@ -225,7 +225,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           {userLoggedIn ? (
             <div className="space-y-3">
               <div className="px-4 py-2">
-                <p className="text-sm text-gray-400 truncate bg-[#1a1a1f] p-2 rounded">
+                <p className="text-sm text-gray-400 truncate p-2 rounded">
                   {auth.currentUser?.email}
                 </p>
               </div>
@@ -258,7 +258,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
       {/* Logout Confirmation Dialog */}
       {showLogoutConfirm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/50 backdrop-blur-sm">
           <div className="bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] p-6 rounded-lg border border-[#1a1a1f] shadow-xl max-w-md w-full mx-4">
             <h3 className="text-lg font-medium text-white mb-4">
               Confirm Logout

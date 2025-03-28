@@ -54,10 +54,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.className}>
       <UserProvider>
-        <body className="min-h-screen bg-gradient-to-b from-[#0a0a0f] to-[#121218]">
+        <body className="min-h-screen">
           {/* Mobile Navigation Bar */}
           {showSidebar && isMobile && (
-            <nav className="fixed top-0 left-0 right-0 z-40 bg-[#121218]/50 backdrop-blur-md shadow-md md:hidden flex items-center justify-between px-4 py-3">
+            <nav className="fixed top-0 left-0 right-0 z-40  backdrop-blur-md shadow-md md:hidden flex items-center justify-between px-4 py-3">
               <span className="text-xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
                 Prep For Law
               </span>

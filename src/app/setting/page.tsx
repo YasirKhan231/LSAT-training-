@@ -36,8 +36,8 @@ export default function SettingsPage() {
 
   if (!user) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]">
-        <div className="text-white">Loading...</div>
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="text-black">Loading...</div>
       </div>
     );
   }
@@ -47,17 +47,17 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] py-8 px-4">
+    <div className="min-h-screen bg-white py-8 px-4">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-white mb-2">Settings</h1>
-          <p className="text-slate-400">
+          <h1 className="text-3xl font-bold text-black mb-2">Settings</h1>
+          <p className="text-slate-500">
             Manage your account settings and preferences
           </p>
         </div>
 
         {/* Account Information */}
-        <Card className="bg-[#121218] border-[#1a1a1f] text-white mb-6">
+        <Card className="bg-white border-[#1a1a1f] text-black mb-6">
           <CardHeader>
             <CardTitle>Account Information</CardTitle>
           </CardHeader>
@@ -67,7 +67,7 @@ export default function SettingsPage() {
               <Input
                 id="name"
                 defaultValue={user.displayName || ""}
-                className="bg-[#0a0a0f] border-[#1a1a1f] text-white"
+                className="bg-white border-[#1a1a1f] text-black"
               />
             </div>
             <div className="space-y-2">
@@ -76,7 +76,7 @@ export default function SettingsPage() {
                 id="email"
                 defaultValue={user.email || ""}
                 readOnly
-                className="bg-[#0a0a0f] border-[#1a1a1f] text-white cursor-default opacity-70"
+                className="bg-white border-[#1a1a1f] text-black cursor-default opacity-70"
               />
             </div>
             <Separator className="my-4 bg-[#1a1a1f]" />
@@ -85,7 +85,7 @@ export default function SettingsPage() {
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
                   <Label>Two-factor Authentication</Label>
-                  <p className="text-sm text-slate-400">
+                  <p className="text-sm text-slate-500">
                     Add an extra layer of security to your account
                   </p>
                 </div>
@@ -96,7 +96,7 @@ export default function SettingsPage() {
         </Card>
 
         {/* Preferences */}
-        <Card className="bg-[#121218] border-[#1a1a1f] text-white mb-6">
+        <Card className="bg-white border-[#1a1a1f] text-black mb-6">
           <CardHeader>
             <CardTitle>Preferences</CardTitle>
           </CardHeader>
@@ -104,7 +104,7 @@ export default function SettingsPage() {
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
                 <Label>Dark Mode</Label>
-                <p className="text-sm text-slate-400">
+                <p className="text-sm text-slate-500">
                   Use dark theme across the application
                 </p>
               </div>
@@ -114,7 +114,7 @@ export default function SettingsPage() {
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
                 <Label>Compact View</Label>
-                <p className="text-sm text-slate-400">
+                <p className="text-sm text-slate-500">
                   Display more content with less spacing
                 </p>
               </div>
@@ -124,17 +124,17 @@ export default function SettingsPage() {
         </Card>
 
         {/* Subscription Section - Updated to match width */}
-        <Card className="bg-[#121218] border-[#1a1a1f] text-white">
+        <Card className="bg-white border-[#1a1a1f] text-black">
           <CardHeader>
             <CardTitle>Subscription</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <p className="text-slate-400">
+            <p className="text-slate-500">
               Upgrade to a premium plan for exclusive features.
             </p>
             <Button
               onClick={handleSubscriptionRedirect}
-              className="w-full bg-[#1a1a1f] hover:bg-[#2a2a2f] text-white"
+              className="w-full bg-[#1a1a1f] hover:bg-gray-600 text-white"
             >
               View Subscription Plans
             </Button>

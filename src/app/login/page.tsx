@@ -7,13 +7,13 @@ import GoogleSignIn from "../../../components/GoogleSignin";
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen flex bg-[#0a0a0f]">
+    <div className="min-h-screen flex bg-white">
       {/* Left Panel - Branding & Features */}
-      <div className="hidden lg:flex lg:w-1/2 relative bg-gradient-to-br from-[#0a0a0f] via-[#121218] to-[#0a0a0f]">
+      <div className="hidden lg:flex lg:w-1/2 relative bg-white text-black">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-5">
           <svg
-            className="w-full h-full"
+            className="w-full h-full text-black"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 100 100"
           >
@@ -37,15 +37,15 @@ export default function LoginPage() {
         </div>
 
         {/* Abstract Shapes */}
-        <div className="absolute w-96 h-96 rounded-full bg-gray-800 blur-3xl opacity-10 -bottom-20 -left-20 animate-pulse"></div>
-        <div className="absolute w-96 h-96 rounded-full bg-gray-700 blur-3xl opacity-10 top-10 -right-20 animate-pulse"></div>
+        <div className="absolute w-96 h-96 rounded-full bg-black blur-3xl opacity-10 -bottom-20 -left-20 animate-pulse"></div>
+        <div className="absolute w-96 h-96 rounded-full bg-black blur-3xl opacity-10 top-10 -right-20 animate-pulse"></div>
 
         {/* Content */}
-        <div className="relative flex flex-col justify-center p-12 text-white">
+        <div className="relative flex flex-col justify-center p-12 text-black">
           {/* Logo */}
           <div className="flex items-center mb-12">
-            <div className="h-12 w-12 rounded-full bg-gradient-to-br from-gray-500 to-gray-600 flex items-center justify-center">
-              <Shield className="h-6 w-6 text-white" />
+            <div className="h-12 w-12 rounded-full bg-white flex items-center justify-center">
+              <Shield className="h-6 w-6 text-black" />
             </div>
             <span className="ml-4 text-3xl font-bold">Prep For Law</span>
           </div>
@@ -53,29 +53,29 @@ export default function LoginPage() {
           <h2 className="text-4xl font-bold mb-6 animate-fadeIn">
             Securely Access Your Account
           </h2>
-          <p className="text-xl text-gray-400 mb-12 animate-fadeIn animation-delay-200">
+          <p className="text-xl text-gray-500 mb-12 animate-fadeIn animation-delay-200">
             Join thousands of students who have improved their BAR exam scores
             with our AI-powered platform.
           </p>
 
           <div className="grid gap-6 animate-slideUp animation-delay-400">
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
+            <div className="bg-white backdrop-blur-sm rounded-xl p-6 border border-white/10">
               <h3 className="font-semibold text-xl mb-2">
                 AI-Powered Learning
               </h3>
-              <p className="text-gray-400">
+              <p className="text-gray-500">
                 Get personalized study plans and real-time feedback tailored to
                 your needs.
               </p>
             </div>
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10">
+              <div className="bg-white backdrop-blur-sm rounded-xl p-4 border border-white/10">
                 <div className="text-2xl font-bold mb-1">93%</div>
-                <p className="text-gray-400">Score improvement</p>
+                <p className="text-gray-500">Score improvement</p>
               </div>
-              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10">
+              <div className="bg-white backdrop-blur-sm rounded-xl p-4 border border-white/10">
                 <div className="text-2xl font-bold mb-1">5,000+</div>
-                <p className="text-gray-400">Practice questions</p>
+                <p className="text-gray-500">Practice questions</p>
               </div>
             </div>
           </div>
@@ -84,22 +84,22 @@ export default function LoginPage() {
 
       {/* Right Panel - Login Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-4">
-        <div className="w-full max-w-md bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] rounded-2xl shadow-xl p-8 transition-all duration-300 hover:shadow-2xl animate-fadeIn border border-[#1a1a1f]">
+        <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 transition-all duration-300 hover:shadow-2xl animate-fadeIn border border-[#1a1a1f]">
           {/* Mobile Logo */}
           <div className="lg:hidden flex justify-center mb-6">
             <Link href="/" className="flex items-center">
               <Shield className="h-8 w-8 text-gray-500" />
-              <span className="ml-2 text-2xl font-bold text-white">
+              <span className="ml-2 text-2xl font-bold text-black">
                 Prep For Law
               </span>
             </Link>
           </div>
 
           <div className="text-center mb-8">
-            <h1 className="text-2xl font-bold text-white">
+            <h1 className="text-2xl font-bold text-black">
               Securely Access Your Account
             </h1>
-            <p className="text-gray-400 mt-2">
+            <p className="text-gray-500 mt-2">
               Sign in to your account to continue
             </p>
           </div>
@@ -111,7 +111,7 @@ export default function LoginPage() {
               <div className="w-full border-t border-[#1a1a1f]"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-[#121218] text-gray-400">
+              <span className="px-2 bg-white text-gray-500">
                 Or continue with
               </span>
             </div>
@@ -121,16 +121,16 @@ export default function LoginPage() {
           <div className="mt-6 flex items-center justify-between text-sm">
             <Link
               href="/"
-              className="text-gray-400 hover:text-white flex items-center transition-colors"
+              className="text-gray-500 hover:text-black flex items-center transition-colors"
             >
               <ArrowLeft className="h-4 w-4 mr-1" />
               Back to home
             </Link>
-            <p className="text-gray-400">
+            <p className="text-gray-500">
               Need an account?{" "}
               <Link
                 href="/Signup"
-                className="font-medium text-gray-400 hover:text-gray-300 transition-colors"
+                className="font-medium text-gray-500 hover:text-gray-300 transition-colors"
               >
                 Sign up
               </Link>
