@@ -1,65 +1,173 @@
 "use client";
 
 import Link from "next/link";
-import "./globals.css";
+import { useState, useEffect, useRef } from "react";
 import {
-  ArrowRight,
+  Plus,
+  X,
+  Sparkles,
+  Flame,
+  Menu,
   CheckCircle,
+  Shield,
   BarChart,
   BookOpen,
-  Shield,
   Star,
-  Menu,
+  ArrowRight,
+  ChevronDown,
+  Gavel,
+  Scale,
+  Landmark,
+  Bookmark,
+  BookText,
 } from "lucide-react";
-import { useEffect, useState } from "react";
-import Kyle from "../../public/Kyle.png";
-import gabriele from "../../public/gabriele.png";
-import Benjamin from "../../public/benjamin.png";
+import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
+
 export default function LandingPage() {
-  const [text, setText] = useState("");
-  const texts = [
-    "Ace Your Bar Exam",
-    "Master Legal Concepts",
-    "Pass with Confidence",
-  ];
-  const [index, setIndex] = useState(0);
-  const [textIndex, setTextIndex] = useState(0);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [countdown, setCountdown] = useState({
+    days: 2,
+    hours: 19,
+    minutes: 7,
+    seconds: 38,
+  });
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const featuresRef = useRef<HTMLDivElement>(null);
+  const howItWorksRef = useRef<HTMLDivElement>(null);
+  const testimonialsRef = useRef<HTMLDivElement>(null);
 
+  // Handle scroll events
   useEffect(() => {
-    if (index < texts[textIndex].length) {
-      const timeout = setTimeout(() => {
-        setText((prev) => prev + texts[textIndex][index]);
-        setIndex(index + 1);
-      }, 100);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-      return () => clearTimeout(timeout);
-    } else {
-      // After completing the text, wait for 2 seconds, then reset and move to the next text
-      const timeout = setTimeout(() => {
-        setText("");
-        setIndex(0);
-        setTextIndex((prev) => (prev + 1) % texts.length);
-      }, 2000);
+  // Countdown timer
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCountdown((prev) => {
+        const newSeconds = prev.seconds - 1;
+        if (newSeconds >= 0) return { ...prev, seconds: newSeconds };
 
-      return () => clearTimeout(timeout);
-    }
-  }, [index, textIndex, texts]);
+        const newMinutes = prev.minutes - 1;
+        if (newMinutes >= 0)
+          return { ...prev, minutes: newMinutes, seconds: 59 };
+
+        const newHours = prev.hours - 1;
+        if (newHours >= 0)
+          return { ...prev, hours: newHours, minutes: 59, seconds: 59 };
+
+        const newDays = prev.days - 1;
+        if (newDays >= 0)
+          return { days: newDays, hours: 23, minutes: 59, seconds: 59 };
+
+        clearInterval(timer);
+        return prev;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const toggleFaq = (index: number) => {
+    setOpenFaq(openFaq === index ? null : index);
+  };
+
+  const faqItems = [
+    {
+      question: "What do I get access to exactly?",
+      answer:
+        "You'll get access to our AI-powered platform that helps you prepare for the bar exam with comprehensive study materials, practice exams, and personalized feedback. Our system adapts to your learning style and focuses on areas where you need the most improvement.",
+    },
+    {
+      question: "How many practice exams are included?",
+      answer:
+        "We have over 50+ full-length practice exams covering all subjects tested on the bar exam. Each exam is designed to simulate the actual testing experience with realistic questions and time constraints.",
+    },
+    {
+      question: "How does the personalized study plan work?",
+      answer:
+        "Our AI analyzes your performance on diagnostic tests and practice exams to identify your strengths and weaknesses. It then creates a customized study schedule that prioritizes the areas where you need the most improvement, ensuring efficient and effective preparation.",
+    },
+    {
+      question: "Is there a guarantee I'll pass the bar exam?",
+      answer:
+        "While we can't guarantee everyone will pass, our program has a 92% success rate for first-time test takers who complete our recommended study plan. If you don't pass, we offer extended access to our platform at no additional cost until you do.",
+    },
+    {
+      question: "What subjects are covered?",
+      answer:
+        "Our platform covers all subjects tested on the bar exam, including Constitutional Law, Contracts, Criminal Law and Procedure, Evidence, Real Property, Torts, and more. We also provide specialized materials for state-specific portions of the exam.",
+    },
+    {
+      question: "Do you offer live instruction?",
+      answer:
+        "Yes, we offer weekly live webinars with experienced bar exam instructors who can answer your questions in real-time. These sessions are recorded and available for replay if you can't attend live.",
+    },
+    {
+      question: "How long before the exam should I start studying?",
+      answer:
+        "For optimal results, we recommend starting your preparation 3-6 months before your exam date. This gives you enough time to thoroughly review all subjects, complete practice exams, and address any weak areas without feeling rushed.",
+    },
+  ];
+
+  // Animation variants
+  const fadeIn = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6 },
+    },
+  };
+
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const countdownItemVariant = {
+    hidden: { scale: 0.8, opacity: 0 },
+    visible: {
+      scale: 1,
+      opacity: 1,
+      transition: { type: "spring", stiffness: 300, damping: 15 },
+    },
+  };
 
   return (
-    <div className="min-h-screen bg-[#0a0c14] text-white">
+    <div className="min-h-screen bg-white overflow-hidden">
       {/* Navbar */}
-      <nav className="py-5 px-4 md:px-8 border-b border-gray-800/40">
+      <motion.nav
+        className={`py-5 px-4 text-black md:px-8 fixed w-full z-50 transition-all duration-300 ${
+          scrolled ? "bg-white shadow-md" : "bg-white backdrop-blur-sm"
+        }`}
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+      >
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <Link href="/" className="text-white text-xl font-semibold">
-            Prep For Law
+          <Link href="/" className="text-xl font-semibold flex items-center">
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <div className="flex items-center">
+                <Gavel className="h-6 w-6 mr-2 text-black" />
+                <span className="font-instrument">LexPrep</span>
+              </div>
+            </motion.div>
           </Link>
           <div className="hidden md:flex items-center space-x-8">
-            <Link
-              href="/dashboard"
-              className="text-gray-300 hover:text-white text-sm flex items-center"
-            >
-              <span className="w-5 h-5 mr-2 opacity-70">
+            <Link href="/dashboard" className="text-sm flex items-center group">
+              <span className="w-5 h-5 mr-2 opacity-70 group-hover:text-black transition-colors">
                 <svg
                   viewBox="0 0 24 24"
                   fill="none"
@@ -87,13 +195,13 @@ export default function LandingPage() {
                   />
                 </svg>
               </span>
-              Dashboard
+              <span className="relative overflow-hidden group-hover:text-black transition-colors">
+                Dashboard
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-black group-hover:w-full transition-all duration-300"></span>
+              </span>
             </Link>
-            <Link
-              href="/login"
-              className="text-gray-300 hover:text-white text-sm flex items-center"
-            >
-              <span className="w-5 h-5 mr-2 opacity-70">
+            <Link href="/login" className="text-sm flex items-center group">
+              <span className="w-5 h-5 mr-2 opacity-70 group-hover:text-black transition-colors">
                 <svg
                   viewBox="0 0 24 24"
                   fill="none"
@@ -122,13 +230,16 @@ export default function LandingPage() {
                   />
                 </svg>
               </span>
-              Login
+              <span className="relative overflow-hidden group-hover:text-black transition-colors">
+                Login
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-black group-hover:w-full transition-all duration-300"></span>
+              </span>
             </Link>
             <Link
               href="/subscription"
-              className="text-gray-300 hover:text-white text-sm flex items-center"
+              className="text-sm flex items-center group"
             >
-              <span className="w-5 h-5 mr-2 opacity-70">
+              <span className="w-5 h-5 mr-2 opacity-70 group-hover:text-black transition-colors">
                 <svg
                   viewBox="0 0 24 24"
                   fill="none"
@@ -143,417 +254,798 @@ export default function LandingPage() {
                   />
                 </svg>
               </span>
-              Pricing
+              <span className="relative overflow-hidden group-hover:text-black transition-colors">
+                Pricing
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-black group-hover:w-full transition-all duration-300"></span>
+              </span>
             </Link>
           </div>
-          <button
-            className="md:hidden text-white"
+          <motion.button
+            className="md:hidden"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            whileTap={{ scale: 0.9 }}
           >
-            <Menu className="h-6 w-6" />
-          </button>
+            {mobileMenuOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
+          </motion.button>
           <Link href="/login" className="hidden md:block">
-            <button className="bg-white text-black hover:bg-gray-100 px-4 py-2 rounded-md text-sm font-medium">
+            <motion.button
+              className="bg-black text-white hover:bg-gray-800 px-4 py-2 rounded-md text-sm font-medium border border-black shadow-sm hover:shadow-md transition-all"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
               Sign in
-            </button>
+            </motion.button>
           </Link>
         </div>
-        {mobileMenuOpen && (
-          <div className="md:hidden bg-[#0e1018]/90 backdrop-blur-sm mt-2 p-4 rounded-md">
-            <div className="flex flex-col space-y-3">
-              <Link
-                href="/dashboard"
-                className="text-gray-300 hover:text-white"
-              >
-                Dashboard
-              </Link>
-              <Link href="/login" className="text-gray-300 hover:text-white">
-                Login
-              </Link>
-              <Link
-                href="/subscription"
-                className="text-gray-300 hover:text-white"
-              >
-                Pricing
-              </Link>
-            </div>
-          </div>
-        )}
-      </nav>
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              className="md:hidden bg-white shadow-lg mt-2 p-4 rounded-md absolute left-4 right-4"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.2 }}
+            >
+              <div className="flex flex-col space-y-4">
+                <Link
+                  href="/dashboard"
+                  className="text-gray-800 hover:text-black transition-colors py-2 border-b border-gray-100"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Dashboard
+                </Link>
+                <Link
+                  href="/login"
+                  className="text-gray-800 hover:text-black transition-colors py-2 border-b border-gray-100"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Login
+                </Link>
+                <Link
+                  href="/subscription"
+                  className="text-gray-800 hover:text-black transition-colors py-2"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Pricing
+                </Link>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.nav>
 
       {/* Hero Section */}
-      <section className="pt-20 pb-32 px-4 text-center relative">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(25,33,52,0.8)_0%,rgba(10,12,20,0)_70%)]"></div>
-        <div className="max-w-3xl mx-auto relative z-10">
-          <div className="inline-block text-gray-400 text-sm mb-3">
-            Bar Exam Preparation
-          </div>
-          <h1 className="text-5xl md:text-6xl font-bold mb-4 leading-tight">
-            The Ultimate Guide to
-            <br />
-            <span className="text-gray-400">Bar Exam Success</span>
-          </h1>
-          <div className="h-8 flex items-center justify-center mb-6">
-            <p className="text-lg text-gray-200 font-medium">
-              {text}
-              <span className="inline-block h-[22px] w-[2px] bg-white mx-1 mt-1 animate-pulse"></span>
+      <section className="text-black relative pt-32 pb-24 overflow-hidden bg-gradient-to-b from-white to-gray-50">
+        {/* Countdown Timer */}
+        <motion.div
+          className="flex justify-center mb-8"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+        >
+          <motion.div
+            className="bg-white backdrop-blur-sm rounded-full px-6 py-3 flex items-center space-x-3 shadow-lg border border-gray-200"
+            whileHover={{ scale: 1.02 }}
+          >
+            <Flame className="h-5 w-5 text-black" />
+            <span className="text-sm font-medium">Launch Event Ends</span>
+            <motion.div
+              className="flex space-x-2"
+              variants={staggerContainer}
+              initial="hidden"
+              animate="visible"
+            >
+              <motion.div
+                variants={countdownItemVariant}
+                className="bg-black text-white rounded-md px-2 py-1 text-sm font-bold"
+              >
+                {countdown.days}
+                <span className="text-xs font-normal ml-1">d</span>
+              </motion.div>
+              <motion.span variants={countdownItemVariant}>:</motion.span>
+              <motion.div
+                variants={countdownItemVariant}
+                className="bg-black text-white rounded-md px-2 py-1 text-sm font-bold"
+              >
+                {String(countdown.hours).padStart(2, "0")}
+                <span className="text-xs font-normal ml-1">h</span>
+              </motion.div>
+              <motion.span variants={countdownItemVariant}>:</motion.span>
+              <motion.div
+                variants={countdownItemVariant}
+                className="bg-black text-white rounded-md px-2 py-1 text-sm font-bold"
+              >
+                {String(countdown.minutes).padStart(2, "0")}
+                <span className="text-xs font-normal ml-1">m</span>
+              </motion.div>
+              <motion.span variants={countdownItemVariant}>:</motion.span>
+              <motion.div
+                variants={countdownItemVariant}
+                className="bg-black text-white rounded-md px-2 py-1 text-sm font-bold"
+              >
+                {String(countdown.seconds).padStart(2, "0")}
+                <span className="text-xs font-normal ml-1">s</span>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+        </motion.div>
+
+        <div className="text-black max-w-6xl mx-auto px-4 text-center relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <h1 className="font-instrument text-black text-5xl md:text-7xl font-normal leading-tight mb-6">
+              Bar Exam Preparation
+              <br />
+              <motion.span
+                className="relative inline-block"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.8, duration: 0.8 }}
+              >
+                The Ultimate Guide to{" "}
+                <span className="text-black relative font-instrument italic ">
+                  Bar Exam Success
+                  <motion.span
+                    className="absolute -bottom-2 left-0 w-full h-1 bg-black"
+                    initial={{ width: 0 }}
+                    animate={{ width: "100%" }}
+                    transition={{ delay: 1.2, duration: 0.8 }}
+                  />
+                </span>
+              </motion.span>
+            </h1>
+            <motion.p
+              className="text-gray-800 text-lg md:text-xl max-w-3xl mx-auto"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.0, duration: 0.8 }}
+            >
+              Comprehensive study materials, practice exams, and expert guidance
+              to help you achieve your best score on the bar exam.
+            </motion.p>
+          </motion.div>
+
+          <motion.div
+            className="flex justify-center items-center my-8"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 1.2, duration: 0.5 }}
+          >
+            <p className="text-lg flex items-center bg-white backdrop-blur-sm px-6 py-3 rounded-full shadow-md border border-gray-200">
+              The first{" "}
+              <motion.span
+                className="inline-block bg-black text-white rounded-md px-3 py-1 text-sm mx-2 font-bold"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                AI Agents
+              </motion.span>{" "}
+              to automate preparation
             </p>
-          </div>
-          <p className="text-gray-300 mb-10 max-w-2xl mx-auto">
-            Comprehensive study materials, practice exams, and expert guidance
-            to help you achieve your best score on the bar exam.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link href="/login">
-              <button className="bg-[#1a1f2e] hover:bg-[#252b3d] border border-gray-700 text-white px-6 py-3 rounded-md text-sm font-medium flex items-center justify-center group w-full sm:w-auto">
-                Get Started
-                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-              </button>
-            </Link>
-            <Link href="/subscription">
-              <button className="border border-gray-700 text-white hover:bg-white/5 px-6 py-3 rounded-md text-sm font-medium w-full sm:w-auto">
-                View Pricing
-              </button>
-            </Link>
-          </div>
+          </motion.div>
+
+          <motion.div
+            className="flex flex-col items-center mt-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.4, duration: 0.5 }}
+          >
+            <motion.button
+              className="bg-black hover:bg-gray-800 text-white font-medium px-8 py-4 rounded-full flex items-center mb-4 shadow-lg hover:shadow-xl transition-all"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Sparkles className="h-5 w-5 mr-2" />
+              <Link href="/login" className="flex items-center">
+                Get Started <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </motion.button>
+
+            <motion.div
+              className="flex items-center mt-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.6, duration: 0.5 }}
+            >
+              <div className="flex -space-x-2">
+                {[...Array(3)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    className={`w-8 h-8 rounded-full bg-gray-${
+                      300 + i * 100
+                    } border-2 border-white shadow-md`}
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ delay: 1.6 + i * 0.1, duration: 0.3 }}
+                  />
+                ))}
+              </div>
+              <motion.span
+                className="ml-3 text-sm bg-white backdrop-blur-sm px-3 py-1 rounded-full shadow-sm"
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 1.9, duration: 0.3 }}
+              >
+                <span className="font-bold">300+</span> Successful Students
+              </motion.span>
+            </motion.div>
+          </motion.div>
         </div>
+
+        {/* Scroll indicator */}
+        <motion.div
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2, duration: 0.5 }}
+        >
+          <motion.div
+            className="flex flex-col items-center cursor-pointer"
+            animate={{ y: [0, 10, 0] }}
+            transition={{ repeat: Number.POSITIVE_INFINITY, duration: 1.5 }}
+            onClick={() =>
+              featuresRef.current?.scrollIntoView({ behavior: "smooth" })
+            }
+          >
+            <span className="text-sm text-gray-500 mb-2">
+              Scroll to explore
+            </span>
+            <ChevronDown className="h-6 w-6 text-black" />
+          </motion.div>
+        </motion.div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-20 px-4 bg-[#0a0c14] border-t border-gray-800/40">
+      {/* Social Proof Section */}
+      <section
+        ref={featuresRef}
+        className="py-24 px-4 text-black relative overflow-hidden bg-white"
+      >
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold mb-4 text-center">
-            Advanced Study Features
-          </h2>
-          <p className="text-center text-gray-400 mb-16 max-w-3xl mx-auto">
-            Our technology uses proprietary methods to transform complex legal
-            concepts while preserving clarity and comprehension.
-          </p>
-          <div className="grid md:grid-cols-3 gap-6">
-            {/* Feature 1 */}
-            <div className="bg-[#0e1018] p-8 rounded-lg border border-gray-800/40">
-              <div className="mb-6 w-10 h-10 flex items-center justify-center">
-                <Shield className="h-6 w-6 text-gray-300" />
-              </div>
-              <h3 className="text-lg font-semibold mb-3">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            variants={fadeIn}
+            className="text-center mb-16"
+          >
+            <span className="inline-block text-sm font-semibold text-black mb-3 bg-gray-100 px-4 py-1 rounded-full">
+              ADVANCED FEATURES
+            </span>
+            <h2 className="font-instrument text-4xl md:text-5xl font-normal mb-6 text-center leading-tight">
+              Advanced Study Features
+            </h2>
+            <p className="text-xl max-w-3xl mx-auto text-gray-600">
+              Our technology uses proprietary methods to transform complex legal
+              concepts while preserving clarity and comprehension.
+            </p>
+          </motion.div>
+
+          <motion.div
+            className="grid md:grid-cols-3 gap-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={staggerContainer}
+          >
+            {/* Features Section 1 */}
+            <motion.div
+              className="p-8 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all bg-white group hover:border-gray-300"
+              variants={fadeIn}
+              whileHover={{ y: -5 }}
+            >
+              <motion.div
+                className="mb-6 w-16 h-16 flex items-center justify-center bg-gray-100 rounded-2xl text-black group-hover:bg-gray-200 transition-colors"
+                whileHover={{ rotate: 5 }}
+              >
+                <Shield className="h-8 w-8" />
+              </motion.div>
+              <h3 className="text-xl font-semibold mb-3 group-hover:text-black transition-colors">
                 Comprehensive Study Plans
               </h3>
-              <p className="text-gray-400 text-sm">
+              <p className="text-gray-600 text-sm mb-6">
                 Tailored study plans designed to cover all areas of the bar
                 exam, ensuring you're fully prepared for every section.
               </p>
-              <ul className="mt-4 space-y-2">
-                <li className="flex items-start text-sm text-gray-400">
-                  <CheckCircle className="h-4 w-4 text-gray-300 mr-2 mt-1 flex-shrink-0" />
-                  <span>Customized schedules</span>
+              <ul className="mt-4 space-y-3">
+                <li className="flex items-start text-sm">
+                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                  <span>Customized schedules based on your strengths</span>
                 </li>
-                <li className="flex items-start text-sm text-gray-400">
-                  <CheckCircle className="h-4 w-4 text-gray-300 mr-2 mt-1 flex-shrink-0" />
-                  <span>Progress tracking</span>
+                <li className="flex items-start text-sm">
+                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                  <span>Real-time progress tracking and adjustments</span>
                 </li>
               </ul>
-            </div>
+            </motion.div>
 
             {/* Feature 2 */}
-            <div className="bg-[#0e1018] p-8 rounded-lg border border-gray-800/40">
-              <div className="mb-6 w-10 h-10 flex items-center justify-center">
-                <BarChart className="h-6 w-6 text-gray-300" />
-              </div>
-              <h3 className="text-lg font-semibold mb-3">
+            <motion.div
+              className="p-8 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all bg-white group hover:border-gray-300"
+              variants={fadeIn}
+              whileHover={{ y: -5 }}
+            >
+              <motion.div
+                className="mb-6 w-16 h-16 flex items-center justify-center bg-gray-100 rounded-2xl text-black group-hover:bg-gray-200 transition-colors"
+                whileHover={{ rotate: 5 }}
+              >
+                <BarChart className="h-8 w-8" />
+              </motion.div>
+              <h3 className="text-xl font-semibold mb-3 group-hover:text-black transition-colors">
                 Full-Length Mock Exams
               </h3>
-              <p className="text-gray-400 text-sm">
+              <p className="text-gray-600 text-sm mb-6">
                 Practice with realistic simulations of the actual bar exam under
                 timed conditions with high-quality questions.
               </p>
-              <ul className="mt-4 space-y-2">
-                <li className="flex items-start text-sm text-gray-400">
-                  <CheckCircle className="h-4 w-4 text-gray-300 mr-2 mt-1 flex-shrink-0" />
-                  <span>Timed practice sessions</span>
+              <ul className="mt-4 space-y-3">
+                <li className="flex items-start text-sm">
+                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                  <span>Timed practice sessions with realistic conditions</span>
                 </li>
-                <li className="flex items-start text-sm text-gray-400">
-                  <CheckCircle className="h-4 w-4 text-gray-300 mr-2 mt-1 flex-shrink-0" />
-                  <span>Detailed performance analytics</span>
+                <li className="flex items-start text-sm">
+                  <CheckCircle className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0 text-green-500" />
+                  <span>Detailed performance analytics and insights</span>
                 </li>
               </ul>
-            </div>
+            </motion.div>
 
             {/* Feature 3 */}
-            <div className="bg-[#0e1018] p-8 rounded-lg border border-gray-800/40">
-              <div className="mb-6 w-10 h-10 flex items-center justify-center">
-                <BookOpen className="h-6 w-6 text-gray-300" />
-              </div>
-              <h3 className="text-lg font-semibold mb-3">
+            <motion.div
+              className="p-8 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all bg-white group hover:border-gray-300"
+              variants={fadeIn}
+              whileHover={{ y: -5 }}
+            >
+              <motion.div
+                className="mb-6 w-16 h-16 flex items-center justify-center bg-gray-100 rounded-2xl text-black group-hover:bg-gray-200 transition-colors"
+                whileHover={{ rotate: 5 }}
+              >
+                <BookOpen className="h-8 w-8" />
+              </motion.div>
+              <h3 className="text-xl font-semibold mb-3 group-hover:text-black transition-colors">
                 Interactive Legal Modules
               </h3>
-              <p className="text-gray-400 text-sm">
+              <p className="text-gray-600 text-sm mb-6">
                 Master challenging legal concepts with our visual, interactive
                 learning modules designed by experts.
               </p>
-              <ul className="mt-4 space-y-2">
-                <li className="flex items-start text-sm text-gray-400">
-                  <CheckCircle className="h-4 w-4 text-gray-300 mr-2 mt-1 flex-shrink-0" />
-                  <span>Visual case studies</span>
+              <ul className="mt-4 space-y-3">
+                <li className="flex items-start text-sm">
+                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                  <span>Visual case studies and concept mapping</span>
                 </li>
-                <li className="flex items-start text-sm text-gray-400">
-                  <CheckCircle className="h-4 w-4 text-gray-300 mr-2 mt-1 flex-shrink-0" />
-                  <span>Step-by-step explanations</span>
+                <li className="flex items-start text-sm">
+                  <CheckCircle className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                  <span>Step-by-step explanations with examples</span>
                 </li>
               </ul>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
-      {/* How It Works Section */}
-      <section className="py-20 px-4 bg-[#0a0c14] border-t border-gray-800/40">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold mb-16 text-center">
-            How Our Bar Prep Works
-          </h2>
-          <p className="text-center text-gray-400 mb-16 max-w-3xl mx-auto">
-            A simple step-by-step process to help you succeed on your bar exam
-          </p>
+      <section
+        ref={howItWorksRef}
+        className="py-24 px-4 border-t border-gray-100 bg-gray-50 relative overflow-hidden"
+      >
+        {/* Background decoration */}
+        <div className="absolute inset-0 overflow-hidden opacity-10">
+          <div className="absolute top-20 right-20">
+            <Scale className="w-32 h-32 text-gray-400" />
+          </div>
+          <div className="absolute bottom-20 left-20">
+            <Landmark className="w-32 h-32 text-gray-400" />
+          </div>
+        </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="w-12 h-12 rounded-full bg-[#1a1f2e] border border-gray-700 flex items-center justify-center text-lg font-medium mx-auto mb-6">
+        <div className="max-w-6xl mx-auto relative z-10">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            variants={fadeIn}
+            className="text-center mb-16"
+          >
+            <span className="inline-block text-sm font-semibold text-black mb-3 bg-gray-100 px-4 py-1 rounded-full">
+              OUR PROCESS
+            </span>
+            <h2 className="font-instrument text-4xl md:text-5xl font-normal mb-8 text-center leading-tight text-black">
+              How Our Bar Prep Works
+            </h2>
+            <p className="text-center text-gray-600 mb-16 max-w-3xl mx-auto text-lg">
+              A simple step-by-step process to help you succeed on your bar exam
+            </p>
+          </motion.div>
+
+          <motion.div
+            className="grid md:grid-cols-3 gap-8 relative"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={staggerContainer}
+          >
+            {/* Process connector line */}
+            <div className="hidden md:block absolute top-8 left-[calc(16.67%+1rem)] right-[calc(16.67%+1rem)] h-0.5 bg-gray-300 z-0"></div>
+
+            <motion.div className="text-center relative z-10" variants={fadeIn}>
+              <motion.div
+                className="w-16 h-16 rounded-full bg-black border-4 border-gray-100 flex items-center justify-center text-xl font-bold text-white mx-auto mb-8 shadow-lg"
+                whileHover={{ scale: 1.1 }}
+                initial={{ scale: 0.8, opacity: 0 }}
+                whileInView={{ scale: 1, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ type: "spring", stiffness: 300, damping: 15 }}
+              >
                 1
-              </div>
-              <h3 className="text-lg font-semibold mb-3">Assessment</h3>
-              <p className="text-gray-400 text-sm">
+              </motion.div>
+              <h3 className="text-xl font-semibold mb-4 text-black">
+                Assessment
+              </h3>
+              <p className="text-gray-600 text-base">
                 Start with a diagnostic test to identify your strengths and
                 weaknesses in bar exam subjects.
               </p>
-            </div>
-            <div className="text-center">
-              <div className="w-12 h-12 rounded-full bg-[#1a1f2e] border border-gray-700 flex items-center justify-center text-lg font-medium mx-auto mb-6">
+            </motion.div>
+
+            <motion.div className="text-center relative z-10" variants={fadeIn}>
+              <motion.div
+                className="w-16 h-16 rounded-full bg-black border-4 border-gray-100 flex items-center justify-center text-xl font-bold text-white mx-auto mb-8 shadow-lg"
+                whileHover={{ scale: 1.1 }}
+                initial={{ scale: 0.8, opacity: 0 }}
+                whileInView={{ scale: 1, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 15,
+                  delay: 0.2,
+                }}
+              >
                 2
-              </div>
-              <h3 className="text-lg font-semibold mb-3">Training</h3>
-              <p className="text-gray-400 text-sm">
+              </motion.div>
+              <h3 className="text-xl font-semibold mb-4 text-black">
+                Training
+              </h3>
+              <p className="text-gray-600 text-base">
                 Focus on areas that need improvement with tailored study
                 materials and expert guidance.
               </p>
-            </div>
-            <div className="text-center">
-              <div className="w-12 h-12 rounded-full bg-[#1a1f2e] border border-gray-700 flex items-center justify-center text-lg font-medium mx-auto mb-6">
+            </motion.div>
+
+            <motion.div className="text-center relative z-10" variants={fadeIn}>
+              <motion.div
+                className="w-16 h-16 rounded-full bg-black border-4 border-gray-100 flex items-center justify-center text-xl font-bold text-white mx-auto mb-8 shadow-lg"
+                whileHover={{ scale: 1.1 }}
+                initial={{ scale: 0.8, opacity: 0 }}
+                whileInView={{ scale: 1, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 15,
+                  delay: 0.4,
+                }}
+              >
                 3
-              </div>
-              <h3 className="text-lg font-semibold mb-3">Practice</h3>
-              <p className="text-gray-400 text-sm">
+              </motion.div>
+              <h3 className="text-xl font-semibold mb-4 text-black">
+                Practice
+              </h3>
+              <p className="text-gray-600 text-base">
                 Take full-length practice exams and review detailed explanations
                 to reinforce your learning.
               </p>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
       {/* Testimonials */}
-      <section className="py-20 px-4 bg-[#0a0c14] border-t border-gray-800/40">
+      <section
+        ref={testimonialsRef}
+        className="py-24 px-4 border-t border-gray-100 bg-white"
+      >
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold mb-16 text-center">
-            What Our Users Say
-          </h2>
-          <p className="text-center text-gray-400 mb-16 max-w-3xl mx-auto">
-            Join thousands of aspiring lawyers who trust Prep For Law to help
-            them pass the bar exam
-          </p>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            variants={fadeIn}
+            className="text-center mb-16"
+          >
+            <span className="inline-block text-sm font-semibold text-black mb-3 bg-gray-100 px-4 py-1 rounded-full">
+              TESTIMONIALS
+            </span>
+            <h2 className="font-instrument text-4xl md:text-5xl font-normal mb-8 text-center leading-tight text-black">
+              What Our Users Say
+            </h2>
+            <p className="text-center text-gray-600 mb-16 max-w-3xl mx-auto text-lg">
+              Join thousands of aspiring lawyers who trust LexPrep to help them
+              pass the bar exam
+            </p>
+          </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-[#0e1018] p-8 rounded-lg border border-gray-800/40">
-              <div className="flex mb-4">
+          <motion.div
+            className="grid md:grid-cols-3 gap-8"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={staggerContainer}
+          >
+            <motion.div
+              className="bg-white p-8 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all relative"
+              variants={fadeIn}
+              whileHover={{ y: -5 }}
+            >
+              <div className="absolute -top-5 left-8 bg-gray-100 p-2 rounded-full">
+                <Gavel className="h-5 w-5 text-black" />
+              </div>
+              <div className="flex mb-4 mt-4">
                 <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
                 <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
                 <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
                 <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
                 <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
               </div>
-              <p className="text-gray-300 text-sm mb-6">
-                "Prep For Law has been a game changer for my studies. The
+              <p className="text-gray-700 text-base mb-6 italic">
+                "LexPrep has been a game changer for my studies. The
                 comprehensive study materials and mock exams helped me pass the
                 bar exam on my first attempt!"
               </p>
               <div className="flex items-center">
-                <div className="w-10 h-10 rounded-full mr-3 overflow-hidden">
-                  <img
-                    src={Benjamin.src}
-                    alt="Benjamin Chen"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div>
+                <div className="text-black">
                   <h3 className="text-sm font-semibold">Benjamin Chen</h3>
-                  <p className="text-xs text-gray-400">Harvard Law '24</p>
+                  <p className="text-xs text-gray-500">Harvard Law '24</p>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="bg-[#0e1018] p-8 rounded-lg border border-gray-800/40">
-              <div className="flex mb-4">
+            <motion.div
+              className="bg-white p-8 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all relative"
+              variants={fadeIn}
+              whileHover={{ y: -5 }}
+            >
+              <div className="absolute -top-5 left-8 bg-gray-100 p-2 rounded-full">
+                <Scale className="h-5 w-5 text-black" />
+              </div>
+              <div className="flex mb-4 mt-4">
                 <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
                 <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
                 <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
                 <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
                 <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
               </div>
-              <p className="text-gray-300 text-sm mb-6">
+              <p className="text-gray-700 text-base mb-6 italic">
                 "The practice exams were incredibly realistic and helped me
                 build the confidence I needed to succeed. I highly recommend
-                Prep For Law to anyone preparing for the bar exam."
+                LexPrep to anyone preparing for the bar exam."
               </p>
               <div className="flex items-center">
-                <div className="w-10 h-10 rounded-full mr-3 overflow-hidden">
-                  <img
-                    src={gabriele.src}
+                <div className="w-12 h-12 rounded-full mr-3 overflow-hidden bg-gray-200 flex items-center justify-center">
+                  <Image
+                    src="/placeholder.svg?height=48&width=48"
                     alt="Gabriele Muratori"
+                    width={48}
+                    height={48}
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <div>
+                <div className="text-black">
                   <h3 className="text-sm font-semibold">Gabriele Muratori</h3>
-                  <p className="text-xs text-gray-400">Columbia Law '23</p>
+                  <p className="text-xs text-gray-500">Columbia Law '23</p>
                 </div>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="bg-[#0e1018] p-8 rounded-lg border border-gray-800/40">
-              <div className="flex mb-4">
+            <motion.div
+              className="bg-white p-8 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-all relative"
+              variants={fadeIn}
+              whileHover={{ y: -5 }}
+            >
+              <div className="absolute -top-5 left-8 bg-gray-100 p-2 rounded-full">
+                <Landmark className="h-5 w-5 text-black" />
+              </div>
+              <div className="flex mb-4 mt-4">
                 <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
                 <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
                 <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
                 <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
                 <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
               </div>
-              <p className="text-gray-300 text-sm mb-6">
+              <p className="text-gray-700 text-base mb-6 italic">
                 "As a working professional, I needed a flexible study solution.
-                Prep For Law provided exactly what I needed with their on-demand
+                LexPrep provided exactly what I needed with their on-demand
                 resources and personalized study plan."
               </p>
               <div className="flex items-center">
-                <div className="w-10 h-10 rounded-full mr-3 overflow-hidden">
-                  <img
-                    src={Kyle.src}
+                <div className="w-12 h-12 rounded-full mr-3 overflow-hidden bg-gray-200 flex items-center justify-center">
+                  <Image
+                    src="/placeholder.svg?height=48&width=48"
                     alt="Kyle"
+                    width={48}
+                    height={48}
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <div>
-                  <h3 className="text-sm font-semibold">Kyle</h3>
-                  <p className="text-xs text-gray-400">NYU Law '23</p>
+                <div className="text-black">
+                  <h3 className="text-sm font-semibold">Kyle Thompson</h3>
+                  <p className="text-xs text-gray-500">NYU Law '23</p>
                 </div>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
       {/* FAQ Section */}
-      <section className="py-20 px-4 bg-[#0a0c14] border-t border-gray-800/40">
+      <section className="py-24 px-4 bg-gray-50 border-t border-gray-100">
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl font-bold mb-16 text-center">
-            Frequently Asked Questions
-          </h2>
-          <p className="text-center text-gray-400 mb-16 max-w-3xl mx-auto">
-            Everything you need to know about our service
-          </p>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            variants={fadeIn}
+            className="text-center mb-16"
+          >
 
-          <div className="space-y-6">
-            <div className="bg-[#0e1018] p-6 rounded-lg border border-gray-800/40">
-              <h3 className="text-lg font-medium mb-2">
-                Is this service legal?
-              </h3>
-              <p className="text-gray-400 text-sm">
-                Yes, our service is completely legal. We provide study materials
-                and practice exams to help you prepare for the bar exam.
-              </p>
-            </div>
+            <h2 className="font-instrument text-4xl font-normal mb-8 text-center text-black">
+              Frequently Asked Questions
+            </h2>
+          </motion.div>
 
-            <div className="bg-[#0e1018] p-6 rounded-lg border border-gray-800/40">
-              <h3 className="text-lg font-medium mb-2">
-                How effective are your study materials?
-              </h3>
-              <p className="text-gray-400 text-sm">
-                Our study materials are designed by legal experts and have
-                helped thousands of students pass the bar exam on their first
-                attempt.
-              </p>
-            </div>
-
-            <div className="bg-[#0e1018] p-6 rounded-lg border border-gray-800/40">
-              <h3 className="text-lg font-medium mb-2">
-                Can I access the materials on multiple devices?
-              </h3>
-              <p className="text-gray-400 text-sm">
-                Yes, you can access your study materials on any device with an
-                internet connection.
-              </p>
-            </div>
-
-            <div className="bg-[#0e1018] p-6 rounded-lg border border-gray-800/40">
-              <h3 className="text-lg font-medium mb-2">
-                Is my payment information secure?
-              </h3>
-              <p className="text-gray-400 text-sm">
-                We use industry-standard encryption to protect your payment
-                information and ensure your data is secure.
-              </p>
-            </div>
-          </div>
+          <motion.div
+            className="space-y-4"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+            variants={staggerContainer}
+          >
+            {faqItems.map((item, index) => (
+              <motion.div
+                key={index}
+                className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm"
+                variants={fadeIn}
+              >
+                <motion.button
+                  className="flex justify-between items-center w-full text-left p-6"
+                  onClick={() => toggleFaq(index)}
+                  whileHover={{ backgroundColor: "rgba(0, 0, 0, 0.02)" }}
+                >
+                  <h3 className="text-lg font-medium text-black">
+                    {item.question}
+                  </h3>
+                  <motion.span
+                    animate={{ rotate: openFaq === index ? 45 : 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <Plus
+                      className={`h-6 w-6 ${
+                        openFaq === index ? "text-black" : "text-gray-400"
+                      }`}
+                    />
+                  </motion.span>
+                </motion.button>
+                <AnimatePresence>
+                  {openFaq === index && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="p-6 pt-0 text-gray-600 border-t border-gray-100">
+                        <p>{item.answer}</p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-20 px-4 bg-[#0a0c14] border-t border-gray-800/40 text-center">
+      <section className="py-24 px-4 border-t border-gray-100 text-center bg-gradient-to-b from-white to-gray-50">
         <div className="max-w-3xl mx-auto">
-          <p className="text-xs uppercase tracking-wider mb-2 text-gray-400">
-            THE FUTURE OF BAR EXAM PREP
-          </p>
-          <h2 className="text-4xl font-bold mb-6">
-            Ready to pass the bar exam
-            <br />
-            with confidence?
-          </h2>
-          <p className="text-gray-400 text-sm mb-8">
-            Join thousands of aspiring lawyers who trust Prep For Law to help
-            them achieve their goals.
-          </p>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+            variants={fadeIn}
+          >
+            <p className="text-xs uppercase tracking-wider mb-2 text-black font-semibold">
+              THE FUTURE OF BAR EXAM PREP
+            </p>
+            <h2 className="font-instrument text-black text-4xl md:text-5xl font-normal mb-8 text-center leading-tight">
+              Ready to pass the bar exam
+              <br />
+              with confidence?
+            </h2>
+            <p className="text-gray-600 text-lg mb-12">
+              Join thousands of aspiring lawyers who trust LexPrep to help them
+              achieve their goals.
+            </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <Link href="/login">
-              <button className="bg-[#1a1f2e] hover:bg-[#252b3d] border border-gray-700 text-white px-6 py-3 rounded-md text-sm font-medium">
-                Get Started Now
-              </button>
-            </Link>
-            <Link href="/subscription">
-              <button className="border border-gray-700 text-white hover:bg-white/5 px-6 py-3 rounded-md text-sm font-medium">
-                View Pricing Plans
-              </button>
-            </Link>
-          </div>
+            <motion.div
+              className="flex flex-col sm:flex-row gap-4 justify-center mb-12"
+              variants={staggerContainer}
+            >
+              <motion.div variants={fadeIn}>
+                <Link href="/login">
+                  <motion.button
+                    className="bg-black hover:bg-gray-800 text-white px-8 py-4 rounded-full text-base font-medium shadow-lg hover:shadow-xl transition-all flex items-center justify-center w-full sm:w-auto"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Get Started Now <ArrowRight className="ml-2 h-4 w-4" />
+                  </motion.button>
+                </Link>
+              </motion.div>
+              <motion.div variants={fadeIn}>
+                <Link href="/subscription">
+                  <motion.button
+                    className="border border-gray-300 bg-white text-gray-800 hover:bg-gray-50 px-8 py-4 rounded-full text-base font-medium shadow-sm hover:shadow-md transition-all w-full sm:w-auto"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    View Pricing Plans
+                  </motion.button>
+                </Link>
+              </motion.div>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-8 px-4 bg-[#0a0c14] border-t border-gray-800/40">
+      <footer className="py-12 px-4 border-t border-gray-200 bg-white">
         <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-center mb-8">
-            <div className="mb-6 md:mb-0">
-              <Link href="/" className="text-white text-xl font-semibold">
-                Prep For Law
+          <div className="flex flex-col md:flex-row justify-between items-center mb-12">
+            <motion.div
+              className="mb-8 md:mb-0"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+            >
+              <Link
+                href="/"
+                className="font-instrument text-black text-2xl font-normal mb-2 inline-block"
+              >
+                <div className="flex items-center">
+                  <Gavel className="h-6 w-6 mr-2" />
+                  LexPrep
+                </div>
               </Link>
-              <p className="text-gray-400 text-xs mt-2 max-w-xs">
+              <p className="text-gray-600 text-sm mt-2 max-w-xs">
                 A comprehensive bar exam preparation platform designed to help
                 you succeed.
               </p>
-            </div>
-            <div className="flex space-x-4">
+            </motion.div>
+            <motion.div
+              className="flex space-x-4"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
               <Link href="#" aria-label="Twitter">
-                <div className="w-8 h-8 rounded-full bg-[#1a1f2e] flex items-center justify-center">
+                <motion.div
+                  className="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white shadow-md"
+                  whileHover={{ scale: 1.1, backgroundColor: "#333" }}
+                  whileTap={{ scale: 0.9 }}
+                >
                   <svg
-                    width="16"
-                    height="16"
+                    width="18"
+                    height="18"
                     viewBox="0 0 24 24"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -566,13 +1058,17 @@ export default function LandingPage() {
                       strokeLinejoin="round"
                     />
                   </svg>
-                </div>
+                </motion.div>
               </Link>
               <Link href="#" aria-label="LinkedIn">
-                <div className="w-8 h-8 rounded-full bg-[#1a1f2e] flex items-center justify-center">
+                <motion.div
+                  className="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white shadow-md"
+                  whileHover={{ scale: 1.1, backgroundColor: "#333" }}
+                  whileTap={{ scale: 0.9 }}
+                >
                   <svg
-                    width="16"
-                    height="16"
+                    width="18"
+                    height="18"
                     viewBox="0 0 24 24"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -601,26 +1097,41 @@ export default function LandingPage() {
                       strokeLinejoin="round"
                     />
                   </svg>
-                </div>
+                </motion.div>
               </Link>
-            </div>
+            </motion.div>
           </div>
-          <div className="border-t border-gray-800/40 pt-8 flex flex-col md:flex-row justify-between items-center">
-            <div className="text-xs text-gray-500">
-              © 2024 Prep For Law - All rights reserved
+          <motion.div
+            className="border-t border-gray-200 pt-8 flex flex-col md:flex-row justify-between items-center"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
+            <div className="text-sm text-gray-500 mb-4 md:mb-0">
+              © 2024 LexPrep - All rights reserved
             </div>
-            <div className="flex space-x-6 mt-4 md:mt-0 text-xs text-gray-500">
-              <Link href="/privacy" className="hover:text-gray-400">
+            <div className="flex flex-wrap justify-center space-x-6 text-sm text-gray-500">
+              <Link
+                href="/privacy"
+                className="hover:text-black transition-colors mb-2 md:mb-0"
+              >
                 Privacy Policy
               </Link>
-              <Link href="/terms" className="hover:text-gray-400">
+              <Link
+                href="/terms"
+                className="hover:text-black transition-colors mb-2 md:mb-0"
+              >
                 Terms of Service
               </Link>
-              <Link href="/contact" className="hover:text-gray-400">
+              <Link
+                href="/contact"
+                className="hover:text-black transition-colors mb-2 md:mb-0"
+              >
                 Contact Us
               </Link>
             </div>
-          </div>
+          </motion.div>
         </div>
       </footer>
     </div>
