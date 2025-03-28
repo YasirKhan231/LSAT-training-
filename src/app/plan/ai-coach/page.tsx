@@ -147,7 +147,7 @@ export default function AICoach() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] text-[#64748B] px-3 py-6">
+    <div className="min-h-screen bg-white text-[#64748B] px-3 py-6">
       <div className="mx-auto max-w-[1800px]">
         {!isMobile ? (
           <>
@@ -156,20 +156,20 @@ export default function AICoach() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="mr-2 text-[#64748B] hover:text-white hover:bg-gradient-to-b hover:from-[#0a0a0f] hover:via-[#121218] hover:to-[#0a0a0f]"
+                  className="mr-2 text-[#64748B] hover:text-black hover:bg-gradient-to-b hover:from-[#0a0a0f] hover:via-[#121218] hover:to-[#0a0a0f]"
                 >
                   <ArrowLeft className="h-5 w-5" />
                 </Button>
               </Link>
-              <h1 className="text-3xl font-bold text-white">AI Coach</h1>
+              <h1 className="text-3xl font-bold text-black">AI Coach</h1>
             </div>
 
             <div className="grid gap-6 md:grid-cols-3">
               {/* Left Side: Performance Insights and Recent Activity */}
               <div className="md:col-span-1">
-                <Card className="border-[#1E293B] shadow-xl bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] backdrop-blur-sm">
+                <Card className="border-[#1E293B] shadow-xl bg-white backdrop-blur-sm">
                   <CardHeader>
-                    <CardTitle className="text-white">
+                    <CardTitle className="text-black">
                       Performance Insights
                     </CardTitle>
                     <CardDescription className="text-[#64748B]">
@@ -183,7 +183,7 @@ export default function AICoach() {
                           <div
                             className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 
                                        border-t-[#0a0a0f] border-b-[#0a0a0f]
-                                       bg-gradient-to-r from-[#0a0a0f] via-[#121218] to-[#0a0a0f]"
+                                       bg-white"
                           ></div>
                         </div>
                       ) : performanceInsight &&
@@ -207,8 +207,8 @@ export default function AICoach() {
                                     insight.totalQuestions) *
                                   100
                                 }
-                                className="h-2 bg-[#1E293B]"
-                                indicatorClassName="bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]"
+                                className="h-2 bg-white"
+                                indicatorClassName="bg-white"
                               />
                             </div>
                           ))
@@ -220,7 +220,7 @@ export default function AICoach() {
                     </div>
 
                     <div className="mt-6">
-                      <h3 className="mb-2 text-sm font-medium text-white">
+                      <h3 className="mb-2 text-sm font-medium text-black">
                         Recent Activity
                       </h3>
                       <div className="space-y-3">
@@ -228,7 +228,7 @@ export default function AICoach() {
                           practiceHistory.map((session, index) => (
                             <div
                               key={index}
-                              className="flex items-start space-x-3 rounded-md bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] p-2 border border-[#334155]/50"
+                              className="flex items-start space-x-3 rounded-md bg-white"
                             >
                               <div className="mt-0.5 rounded-full bg-[#0a0a0f]/30 p-1 border border-[#4F46E5]/30">
                                 <BookOpen className="h-3 w-3 " />
@@ -257,9 +257,9 @@ export default function AICoach() {
 
               {/* Right Side: ChatGPT-like Chat UI */}
               <div className="md:col-span-2 flex flex-col">
-                <Card className="flex flex-col h-[calc(100vh-130px)] border-[#1E293B] shadow-xl bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] backdrop-blur-sm">
+                <Card className="flex flex-col h-[calc(100vh-130px)] border-[#1E293B] shadow-xl bg-gradient-to-b bg-white backdrop-blur-sm">
                   <CardHeader>
-                    <CardTitle className="text-xl text-white">
+                    <CardTitle className="text-xl text-black">
                       Chat with AI Coach
                     </CardTitle>
                   </CardHeader>
@@ -280,8 +280,8 @@ export default function AICoach() {
                           <div
                             className={`rounded-lg p-4 max-w-[70%] ${
                               message.role === "assistant"
-                                ? "bg-[#1E293B] text-[#CBD5E1] border border-[#334155]/50"
-                                : "bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] text-white shadow-[0_0_10px_2px_rgba(255,255,255,0.3)]"
+                                ? "bg-white text-[#CBD5E1] border border-[#334155]/50"
+                                : "bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] text-black shadow-[0_0_10px_2px_rgba(255,255,255,0.3)]"
                             }`}
                           >
                             <p className="text-sm leading-relaxed">
@@ -292,7 +292,7 @@ export default function AICoach() {
                       ))}
                       {isChatLoading && (
                         <div className="flex justify-start">
-                          <div className="rounded-lg bg-[#1E293B] p-4 border border-[#334155]/50">
+                          <div className="rounded-lg bg-white p-4 border border-[#334155]/50">
                             <div className="flex space-x-2">
                               <div className="h-2 w-2 animate-bounce rounded-full bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]"></div>
                               <div
@@ -309,20 +309,20 @@ export default function AICoach() {
                       )}
                     </div>
                   </CardContent>
-                  <div className="border-t border-[#1E293B] p-3 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]">
+                  <div className="border-t border-[#1E293B] p-3 bg-white">
                     <div className="flex items-center space-x-2">
                       <Textarea
                         placeholder="Ask your AI coach a question..."
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         onKeyDown={handleKeyDown}
-                        className="flex-1 resize-none rounded-md border-[#2a2a3f] bg-[#121218] p-2 text-sm focus:border-[#3a3a4f] focus:ring-0 text-[#CBD5E1] placeholder:text-[#64748B] focus:shadow-[0_0_0_1px_rgba(255,255,255,0.1)] transition-all"
+                        className="flex-1 resize-none rounded-md border-[#2a2a3f] bg-white p-2 text-sm focus:border-[#3a3a4f] focus:ring-0 text-[#CBD5E1] placeholder:text-[#64748B] focus:shadow-[0_0_0_1px_rgba(255,255,255,0.1)] transition-all"
                         rows={1}
                       />
                       <Button
                         onClick={handleSend}
                         disabled={isChatLoading || !input.trim()}
-                        className="rounded-md bg-[#1a1a1f] border border-[#2a2a3f] p-2 text-white hover:bg-[#2a2a3f] hover:border-[#3a3a4f] disabled:opacity-50 transition-colors"
+                        className="rounded-md  border border-[#2a2a3f] p-2 text-black hover:bg-[#2a2a3f] hover:border-[#3a3a4f] disabled:opacity-50 transition-colors"
                       >
                         <Send className="h-5 w-5" />
                       </Button>
@@ -341,12 +341,12 @@ export default function AICoach() {
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="mr-2 text-[#64748B] hover:text-white"
+                    className="mr-2 text-[#64748B] hover:text-black"
                   >
                     <ArrowLeft className="h-5 w-5" />
                   </Button>
                 </Link>
-                <h1 className="text-xl font-bold text-white">AI Coach</h1>
+                <h1 className="text-xl font-bold text-black">AI Coach</h1>
               </div>
             </div>
 
@@ -364,8 +364,8 @@ export default function AICoach() {
                     <div
                       className={`rounded-lg p-3 max-w-[80%] ${
                         message.role === "assistant"
-                          ? "bg-[#1E293B] text-[#CBD5E1] border border-[#334155]/50"
-                          : "bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] text-white shadow-[0_0_10px_2px_rgba(255,255,255,0.3)]"
+                          ? "bg-white text-[#CBD5E1] border border-[#334155]/50"
+                          : "bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] text-black shadow-[0_0_10px_2px_rgba(255,255,255,0.3)]"
                       }`}
                     >
                       <p className="text-sm leading-relaxed">
@@ -376,7 +376,7 @@ export default function AICoach() {
                 ))}
                 {isChatLoading && (
                   <div className="flex justify-start">
-                    <div className="rounded-lg bg-[#1E293B] p-3 border border-[#334155]/50">
+                    <div className="rounded-lg bg-white p-3 border border-[#334155]/50">
                       <div className="flex space-x-2">
                         <div className="h-2 w-2 animate-bounce rounded-full bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]"></div>
                         <div
@@ -407,7 +407,7 @@ export default function AICoach() {
                 <Button
                   onClick={handleSend}
                   disabled={isChatLoading || !input.trim()}
-                  className="rounded-md bg-[#1a1a1f] border border-[#2a2a3f] p-2 text-white hover:bg-[#2a2a3f] hover:border-[#3a3a4f] disabled:opacity-50 transition-colors"
+                  className="rounded-md bg-[#1a1a1f] border border-[#2a2a3f] p-2 text-black hover:bg-[#2a2a3f] hover:border-[#3a3a4f] disabled:opacity-50 transition-colors"
                 >
                   <Send className="h-5 w-5" />
                 </Button>

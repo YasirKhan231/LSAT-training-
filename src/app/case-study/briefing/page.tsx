@@ -199,27 +199,27 @@ export default function CaseBriefingPage() {
   const selectedCaseData = sampleCases.find((c) => c.id === selectedCase);
 
   return (
-    <div className="container mx-auto px-4 py-8 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]">
+    <div className="container mx-auto px-4 py-8 bg-white">
       <div className="mb-6 flex items-center gap-4">
         <Link href="/case-study">
           <Button
             variant="ghost"
             size="icon"
-            className="text-gray-300 hover:bg-[#1a1a1f] hover:text-white"
+            className="text-gray-300 hover:bg-white hover:text-black"
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
         </Link>
-        <h1 className="text-3xl font-bold text-white">
+        <h1 className="text-3xl font-bold text-black">
           Case Briefing Practice
         </h1>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Case Selection */}
-        <Card className="lg:col-span-1 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] border-[#1a1a1f]">
+        <Card className="lg:col-span-1 bg-white">
           <CardHeader>
-            <CardTitle className="text-white">Available Cases</CardTitle>
+            <CardTitle className="text-black">Available Cases</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             {/* In the Case Selection card */}
@@ -229,12 +229,12 @@ export default function CaseBriefingPage() {
                 placeholder="Search cases..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full bg-[#1a1a1f] border border-[#2a2a2f] rounded-lg px-4 py-2.5 text-gray-200 placeholder-gray-500 focus:outline-none focus:border-[#3a3a3f] focus:ring-1 focus:ring-[#3a3a3f] transition-colors"
+                className="w-full bg-white border border-[#2a2a2f] rounded-lg px-4 py-2.5 text-black placeholder-gray-500 focus:outline-none focus:border-[#3a3a3f] focus:ring-1 focus:ring-[#3a3a3f] transition-colors"
               />
               {searchTerm && (
                 <button
                   onClick={() => setSearchTerm("")}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-black transition-colors"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -265,8 +265,8 @@ export default function CaseBriefingPage() {
                     }
                     className={`w-full justify-start text-left truncate ${
                       selectedCase === caseItem.id
-                        ? "bg-[#1a1a1f] hover:bg-[#2a2a2f] text-white"
-                        : "bg-[#1a1a1f] border-[#2a2a2f] text-gray-200 hover:bg-[#2a2a2f]"
+                        ? "bg-white hover:bg-[#2a2a2f] text-black"
+                        : "bg-white border-[#2a2a2f] text-black hover:bg-[#2a2a2f]"
                     }`}
                     onClick={() => setSelectedCase(caseItem.id)}
                   >
@@ -284,7 +284,7 @@ export default function CaseBriefingPage() {
         <div className="lg:col-span-2">
           {selectedCaseData ? (
             <Tabs defaultValue="briefing" className="w-full">
-              <TabsList className="grid w-full grid-cols-3 bg-[#1a1a1f]">
+              <TabsList className="grid w-full grid-cols-3 bg-white">
                 <TabsTrigger
                   value="briefing"
                   className="data-[state=active]:bg-[#2a2a2f] data-[state=active]:text-gray-300"
@@ -307,15 +307,15 @@ export default function CaseBriefingPage() {
 
               {/* Case Briefing Tab */}
               <TabsContent value="briefing">
-                <Card className="bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] border-[#1a1a1f]">
+                <Card className="bg-white border-[#1a1a1f]">
                   <CardHeader>
-                    <CardTitle className="text-white">
+                    <CardTitle className="text-black">
                       {selectedCaseData.title}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div>
-                      <h3 className="font-medium text-white">Facts</h3>
+                      <h3 className="font-medium text-black">Facts</h3>
                       <p className="text-gray-400">{selectedCaseData.facts}</p>
                       <Textarea
                         placeholder="Summarize the facts..."
@@ -323,11 +323,11 @@ export default function CaseBriefingPage() {
                         onChange={(e) =>
                           handleBriefChange("facts", e.target.value)
                         }
-                        className="mt-2 bg-[#1a1a1f] border-[#2a2a2f] text-white placeholder:text-gray-500"
+                        className="mt-2 bg-white border-[#2a2a2f] text-black placeholder:text-gray-500"
                       />
                     </div>
                     <div>
-                      <h3 className="font-medium text-white">Issue</h3>
+                      <h3 className="font-medium text-black">Issue</h3>
                       <p className="text-gray-400">{selectedCaseData.issue}</p>
                       <Textarea
                         placeholder="State the legal issue..."
@@ -335,40 +335,40 @@ export default function CaseBriefingPage() {
                         onChange={(e) =>
                           handleBriefChange("issue", e.target.value)
                         }
-                        className="mt-2 bg-[#1a1a1f] border-[#2a2a2f] text-white placeholder:text-gray-500"
+                        className="mt-2 bg-white border-[#2a2a2f] text-black placeholder:text-gray-500"
                       />
                     </div>
                     <div>
-                      <h3 className="font-medium text-white">Rule</h3>
+                      <h3 className="font-medium text-black">Rule</h3>
                       <Textarea
                         placeholder="Identify the applicable rule or precedent..."
                         value={brief.rule}
                         onChange={(e) =>
                           handleBriefChange("rule", e.target.value)
                         }
-                        className="bg-[#1a1a1f] border-[#2a2a2f] text-white placeholder:text-gray-500"
+                        className="bg-white border-[#2a2a2f] text-black placeholder:text-gray-500"
                       />
                     </div>
                     <div>
-                      <h3 className="font-medium text-white">Application</h3>
+                      <h3 className="font-medium text-black">Application</h3>
                       <Textarea
                         placeholder="Explain how the rule applies to the facts..."
                         value={brief.application}
                         onChange={(e) =>
                           handleBriefChange("application", e.target.value)
                         }
-                        className="bg-[#1a1a1f] border-[#2a2a2f] text-white placeholder:text-gray-500"
+                        className="bg-white border-[#2a2a2f] text-black placeholder:text-gray-500"
                       />
                     </div>
                     <div>
-                      <h3 className="font-medium text-white">Conclusion</h3>
+                      <h3 className="font-medium text-black">Conclusion</h3>
                       <Textarea
                         placeholder="State the court's conclusion..."
                         value={brief.conclusion}
                         onChange={(e) =>
                           handleBriefChange("conclusion", e.target.value)
                         }
-                        className="bg-[#1a1a1f] border-[#2a2a2f] text-white placeholder:text-gray-500"
+                        className="bg-white border-[#2a2a2f] text-black placeholder:text-gray-500"
                       />
                     </div>
                     <Button
@@ -377,7 +377,7 @@ export default function CaseBriefingPage() {
                         isSubmittingBrief ||
                         !Object.values(brief).every((v) => v.trim())
                       }
-                      className="w-full bg-[#1a1a1f] hover:bg-[#2a2a2f] text-white disabled:bg-[#1a1a1f] disabled:text-gray-400"
+                      className="w-full bg-white hover:bg-[#2a2a2f] text-black disabled:bg-white disabled:text-gray-400"
                     >
                       <Send className="mr-2 h-4 w-4" />
                       {isSubmittingBrief ? "Analyzing..." : "Submit Brief"}
@@ -385,74 +385,74 @@ export default function CaseBriefingPage() {
                   </CardContent>
                 </Card>
                 {briefFeedback && (
-                  <Card className="mt-6 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] border-[#1a1a1f]">
+                  <Card className="mt-6 bg-white border-[#1a1a1f]">
                     <CardHeader>
-                      <CardTitle className="text-white">AI Feedback</CardTitle>
+                      <CardTitle className="text-black">AI Feedback</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div>
-                        <h3 className="font-medium text-white">
+                        <h3 className="font-medium text-black">
                           Facts ({(briefFeedback.factsScore * 100).toFixed(0)}%)
                         </h3>
                         <Progress
                           value={briefFeedback.factsScore * 100}
-                          className="bg-[#1a1a1f]"
+                          className="bg-white"
                         />
                         <p className="text-sm text-gray-400">
                           {briefFeedback.factsFeedback}
                         </p>
                       </div>
                       <div>
-                        <h3 className="font-medium text-white">
+                        <h3 className="font-medium text-black">
                           Issue ({(briefFeedback.issueScore * 100).toFixed(0)}%)
                         </h3>
                         <Progress
                           value={briefFeedback.issueScore * 100}
-                          className="bg-[#1a1a1f]"
+                          className="bg-white"
                         />
                         <p className="text-sm text-gray-400">
                           {briefFeedback.issueFeedback}
                         </p>
                       </div>
                       <div>
-                        <h3 className="font-medium text-white">
+                        <h3 className="font-medium text-black">
                           Rule ({(briefFeedback.ruleScore * 100).toFixed(0)}%)
                         </h3>
                         <Progress
                           value={briefFeedback.ruleScore * 100}
-                          className="bg-[#1a1a1f]"
+                          className="bg-white"
                         />
                         <p className="text-sm text-gray-400">
                           {briefFeedback.ruleFeedback}
                         </p>
                       </div>
                       <div>
-                        <h3 className="font-medium text-white">
+                        <h3 className="font-medium text-black">
                           Application (
                           {(briefFeedback.applicationScore * 100).toFixed(0)}%)
                         </h3>
                         <Progress
                           value={briefFeedback.applicationScore * 100}
-                          className="bg-[#1a1a1f]"
+                          className="bg-white"
                         />
                         <p className="text-sm text-gray-400">
                           {briefFeedback.applicationFeedback}
                         </p>
                       </div>
                       <div>
-                        <h3 className="font-medium text-white">
+                        <h3 className="font-medium text-black">
                           Conclusion (
                           {(briefFeedback.conclusionScore * 100).toFixed(0)}%)
                         </h3>
                         <Progress
                           value={briefFeedback.conclusionScore * 100}
-                          className="bg-[#1a1a1f]"
+                          className="bg-white"
                         />
                         <p className="text-sm text-gray-400">
                           {briefFeedback.conclusionFeedback}
                         </p>
                       </div>
-                      <div className="bg-[#1a1a1f]/20 p-4 rounded-lg border border-[#2a2a2f]">
+                      <div className="bg-white/20 p-4 rounded-lg border border-[#2a2a2f]">
                         <h3 className="font-medium text-gray-300">
                           Suggestions
                         </h3>
@@ -463,7 +463,7 @@ export default function CaseBriefingPage() {
                         </ul>
                       </div>
                       <div>
-                        <h3 className="font-medium text-white">Model Brief</h3>
+                        <h3 className="font-medium text-black">Model Brief</h3>
                         <p className="text-sm text-gray-400">
                           <strong className="text-gray-300">Facts:</strong>{" "}
                           {briefFeedback.modelBrief.facts}
@@ -492,9 +492,9 @@ export default function CaseBriefingPage() {
 
               {/* Hypothetical Questions Tab */}
               <TabsContent value="hypothetical">
-                <Card className="bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] border-[#1a1a1f]">
+                <Card className="bg-white border-[#1a1a1f]">
                   <CardHeader>
-                    <CardTitle className="text-white">
+                    <CardTitle className="text-black">
                       Legal Hypothetical
                     </CardTitle>
                   </CardHeader>
@@ -502,7 +502,7 @@ export default function CaseBriefingPage() {
                     {!hypothetical ? (
                       <Button
                         onClick={handleGenerateHypothetical}
-                        className="w-full bg-[#1a1a1f] hover:bg-[#2a2a2f] text-white"
+                        className="w-full bg-white hover:bg-[#2a2a2f] text-black"
                       >
                         <Brain className="mr-2 h-4 w-4" />
                         Generate Hypothetical
@@ -514,12 +514,12 @@ export default function CaseBriefingPage() {
                           placeholder="Write your legal analysis here..."
                           value={hypoResponse}
                           onChange={(e) => setHypoResponse(e.target.value)}
-                          className="min-h-[200px] bg-[#1a1a1f] border-[#2a2a2f] text-white placeholder:text-gray-500"
+                          className="min-h-[200px] bg-white border-[#2a2a2f] text-black placeholder:text-gray-500"
                         />
                         <Button
                           onClick={handleSubmitHypo}
                           disabled={isSubmittingHypo || !hypoResponse.trim()}
-                          className="w-full bg-[#1a1a1f] hover:bg-[#2a2a2f] text-white disabled:bg-[#1a1a1f] disabled:text-gray-400"
+                          className="w-full bg-white hover:bg-[#2a2a2f] text-black disabled:bg-white disabled:text-gray-400"
                         >
                           <Send className="mr-2 h-4 w-4" />
                           {isSubmittingHypo
@@ -531,64 +531,64 @@ export default function CaseBriefingPage() {
                   </CardContent>
                 </Card>
                 {hypoFeedback && (
-                  <Card className="mt-6 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] border-[#1a1a1f]">
+                  <Card className="mt-6 bg-white border-[#1a1a1f]">
                     <CardHeader>
-                      <CardTitle className="text-white">AI Feedback</CardTitle>
+                      <CardTitle className="text-black">AI Feedback</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div>
-                        <h3 className="font-medium text-white">
+                        <h3 className="font-medium text-black">
                           Issue Spotting (
                           {(hypoFeedback.issueSpottingScore * 100).toFixed(0)}%)
                         </h3>
                         <Progress
                           value={hypoFeedback.issueSpottingScore * 100}
-                          className="bg-[#1a1a1f]"
+                          className="bg-white"
                         />
                         <p className="text-sm text-gray-400">
                           {hypoFeedback.issueSpottingFeedback}
                         </p>
                       </div>
                       <div>
-                        <h3 className="font-medium text-white">
+                        <h3 className="font-medium text-black">
                           Reasoning (
                           {(hypoFeedback.reasoningScore * 100).toFixed(0)}%)
                         </h3>
                         <Progress
                           value={hypoFeedback.reasoningScore * 100}
-                          className="bg-[#1a1a1f]"
+                          className="bg-white"
                         />
                         <p className="text-sm text-gray-400">
                           {hypoFeedback.reasoningFeedback}
                         </p>
                       </div>
                       <div>
-                        <h3 className="font-medium text-white">
+                        <h3 className="font-medium text-black">
                           Precedent (
                           {(hypoFeedback.precedentScore * 100).toFixed(0)}%)
                         </h3>
                         <Progress
                           value={hypoFeedback.precedentScore * 100}
-                          className="bg-[#1a1a1f]"
+                          className="bg-white"
                         />
                         <p className="text-sm text-gray-400">
                           {hypoFeedback.precedentFeedback}
                         </p>
                       </div>
                       <div>
-                        <h3 className="font-medium text-white">
+                        <h3 className="font-medium text-black">
                           Clarity (
                           {(hypoFeedback.clarityScore * 100).toFixed(0)}%)
                         </h3>
                         <Progress
                           value={hypoFeedback.clarityScore * 100}
-                          className="bg-[#1a1a1f]"
+                          className="bg-white"
                         />
                         <p className="text-sm text-gray-400">
                           {hypoFeedback.clarityFeedback}
                         </p>
                       </div>
-                      <div className="bg-[#1a1a1f]/20 p-4 rounded-lg border border-[#2a2a2f]">
+                      <div className="bg-white/20 p-4 rounded-lg border border-[#2a2a2f]">
                         <h3 className="font-medium text-gray-300">
                           Suggestions
                         </h3>
@@ -599,7 +599,7 @@ export default function CaseBriefingPage() {
                         </ul>
                       </div>
                       <div>
-                        <h3 className="font-medium text-white">
+                        <h3 className="font-medium text-black">
                           Model Response
                         </h3>
                         <p className="text-sm text-gray-400">
@@ -613,9 +613,9 @@ export default function CaseBriefingPage() {
 
               {/* Outline Tab */}
               <TabsContent value="outline">
-                <Card className="bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] border-[#1a1a1f]">
+                <Card className="bg-white border-[#1a1a1f]">
                   <CardHeader>
-                    <CardTitle className="text-white">
+                    <CardTitle className="text-black">
                       Constitutional Law Outline
                     </CardTitle>
                   </CardHeader>
@@ -624,7 +624,7 @@ export default function CaseBriefingPage() {
                       <Button
                         onClick={handleGenerateOutline}
                         disabled={isLoadingOutline}
-                        className="w-full bg-[#1a1a1f] hover:bg-[#2a2a2f] text-white"
+                        className="w-full bg-white hover:bg-[#2a2a2f] text-black"
                       >
                         <Scale className="mr-2 h-4 w-4" />
                         {isLoadingOutline
@@ -637,12 +637,12 @@ export default function CaseBriefingPage() {
                           <Textarea
                             value={outlineData.outline}
                             readOnly
-                            className="min-h-[400px] font-mono text-sm bg-[#1a1a1f] border-[#2a2a2f] text-gray-300"
+                            className="min-h-[400px] font-mono text-sm bg-white border-[#2a2a2f] text-gray-300"
                           />
                           <Button
                             size="sm"
                             variant="ghost"
-                            className="absolute top-2 right-2 text-gray-400 hover:text-white"
+                            className="absolute top-2 right-2 text-gray-400 hover:text-black"
                             onClick={() =>
                               navigator.clipboard.writeText(outlineData.outline)
                             }
@@ -652,7 +652,7 @@ export default function CaseBriefingPage() {
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <Card className="bg-[#1a1a1f] border-[#2a2a2f]">
+                          <Card className="bg-white border-[#2a2a2f]">
                             <CardHeader>
                               <CardTitle className="text-sm font-medium text-gray-300">
                                 Key Topics
@@ -669,7 +669,7 @@ export default function CaseBriefingPage() {
                             </CardContent>
                           </Card>
 
-                          <Card className="bg-[#1a1a1f] border-[#2a2a2f]">
+                          <Card className="bg-white border-[#2a2a2f]">
                             <CardHeader>
                               <CardTitle className="text-sm font-medium text-gray-300">
                                 Focus Areas
@@ -690,7 +690,7 @@ export default function CaseBriefingPage() {
                         <Button
                           onClick={handleGenerateOutline}
                           variant="outline"
-                          className="w-full border-[#2a2a2f] text-gray-300 hover:text-white"
+                          className="w-full border-[#2a2a2f] text-gray-300 hover:text-black"
                         >
                           Generate New Outline
                         </Button>
@@ -701,7 +701,7 @@ export default function CaseBriefingPage() {
               </TabsContent>
             </Tabs>
           ) : (
-            <Card className="bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] border-[#1a1a1f]">
+            <Card className="bg-white border-[#1a1a1f]">
               <CardContent className="p-6 text-center text-gray-400">
                 Select a case from the list to begin
               </CardContent>

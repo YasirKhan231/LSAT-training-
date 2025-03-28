@@ -114,11 +114,11 @@ export default function EssayPracticeIndex() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] min-h-screen">
+    <div className="container mx-auto px-4 py-8 bg-white min-h-screen">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8 text-center">
-          <h1 className="text-4xl font-bold text-white mb-4">Essay Practice</h1>
-          <p className="text-gray-400 max-w-2xl mx-auto">
+          <h1 className="text-4xl font-bold text-black mb-4">Essay Practice</h1>
+          <p className="text-gray-500 max-w-2xl mx-auto">
             Select an essay question below to practice your legal writing
             skills. Each question has a time limit to simulate exam conditions.
           </p>
@@ -128,13 +128,13 @@ export default function EssayPracticeIndex() {
           {essayQuestions.map((question) => (
             <Card
               key={question.id}
-              className={`bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] border-[#1a1a1f] cursor-pointer transition-all hover:border-[#2a2a3f]`}
+              className={`bg-white border-[#1a1a1f] cursor-pointer transition-all hover:border-[#2a2a3f]`}
               onClick={() => handleQuestionClick(question)}
             >
               <CardContent className="p-6">
                 <div className="flex justify-between items-start">
                   <div>
-                    <h2 className="text-xl font-semibold text-white mb-2">
+                    <h2 className="text-xl font-semibold text-black mb-2">
                       {question.title}
                     </h2>
                     <div className="flex gap-3 mb-3">
@@ -148,7 +148,7 @@ export default function EssayPracticeIndex() {
                         {question.timeLimit} minutes
                       </span>
                     </div>
-                    <p className="text-gray-400 line-clamp-2">
+                    <p className="text-gray-500 line-clamp-2">
                       {question.prompt}
                     </p>
                   </div>
@@ -170,16 +170,16 @@ export default function EssayPracticeIndex() {
         {/* Confirmation Dialog */}
         {showConfirmation && selectedQuestion && (
           <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
-            <div className="bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] border border-[#2a2a3f] rounded-lg p-6 max-w-md w-full shadow-xl">
+            <div className="bg-white border border-[#2a2a3f] rounded-lg p-6 max-w-md w-full shadow-xl">
               <div className="flex flex-col items-center text-center mb-4">
                 {" "}
                 {/* Changed to flex-col and center */}
-                <h3 className="text-xl font-semibold text-white mb-2">
+                <h3 className="text-xl font-semibold text-black mb-2">
                   Start Essay Practice
                 </h3>
                 <button
                   onClick={handleCloseConfirmation}
-                  className="text-gray-400 hover:text-white absolute top-4 right-4"
+                  className="text-gray-500 hover:text-black absolute top-4 right-4"
                 >
                   <X className="h-5 w-5" />
                 </button>
@@ -187,12 +187,12 @@ export default function EssayPracticeIndex() {
               <div className="mb-6 text-center">
                 {" "}
                 {/* Added text-center */}
-                <h4 className="text-lg font-medium text-white mb-4">
+                <h4 className="text-lg font-medium text-black mb-4">
                   {" "}
                   {/* Increased mb */}
                   {selectedQuestion.title}
                 </h4>
-                <p className="text-gray-400 mb-4 px-3 text-center">
+                <p className="text-gray-500 mb-4 px-3 text-center">
                   {" "}
                   {/* Added px-4 and text-center */}
                   {selectedQuestion.prompt}
@@ -210,7 +210,7 @@ export default function EssayPracticeIndex() {
                     {selectedQuestion.timeLimit} minutes
                   </span>
                 </div>
-                <p className="text-sm text-gray-400 text-center">
+                <p className="text-sm text-gray-500 text-center">
                   {" "}
                   {/* Added text-center */}
                   You will have {selectedQuestion.timeLimit} minutes to complete
@@ -223,13 +223,13 @@ export default function EssayPracticeIndex() {
                 <Button
                   variant="outline"
                   onClick={handleCloseConfirmation}
-                  className="border-[#2a2a3f] text-white hover:bg-[#1a1a1f]"
+                  className="border-[#2a2a3f] text-black hover:bg-[#1a1a1f]"
                 >
                   Cancel
                 </Button>
                 <Button
                   onClick={handleStartPractice}
-                  className="bg-gradient-to-r from-[#3a3a4f] to-[#2a2a3f] hover:from-[#4a4a5f] hover:to-[#3a3a4f] text-white"
+                  className="bg-gradient-to-r from-[#3a3a4f] to-[#2a2a3f] hover:from-[#4a4a5f] hover:to-[#3a3a4f] text-black"
                 >
                   Start Now
                   <ArrowRight className="ml-2 h-4 w-4" />

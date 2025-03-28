@@ -77,12 +77,12 @@ export default function HomePage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] min-h-screen">
+    <div className="container mx-auto px-4 py-8 bg-white min-h-screen">
       <div className="mb-12 text-center">
         <div className="flex justify-center mb-4">
-          <Scale className="h-12 w-12 text-white" />
+          <Scale className="h-12 w-12 text-black" />
         </div>
-        <h1 className="text-4xl font-bold text-white mb-4">
+        <h1 className="text-4xl font-bold text-black mb-4">
           Legal Analysis Practice
         </h1>
         <p className="text-xl text-gray-400 max-w-2xl mx-auto">
@@ -95,7 +95,7 @@ export default function HomePage() {
         {legalProblems.map((problem) => (
           <Card
             key={problem.id}
-            className={`bg-[#121218] border-[#1a1a1f] hover:bg-[#1a1a1f] transition-colors cursor-pointer h-full ${
+            className={`bg-white border-[#1a1a1f] hover:bg-gray-100 transition-colors cursor-pointer h-full ${
               selectedProblem === problem.id
                 ? "ring-2 ring-[#2a2a32] dark:ring-[#3a3a42]"
                 : ""
@@ -103,7 +103,7 @@ export default function HomePage() {
             onClick={() => handleSelectProblem(problem.id)}
           >
             <CardHeader>
-              <CardTitle className="text-white">{problem.title}</CardTitle>
+              <CardTitle className="text-black">{problem.title}</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-gray-400">{problem.summary}</p>
@@ -119,7 +119,7 @@ export default function HomePage() {
         <div className="mt-8 flex justify-center">
           <Button
             onClick={handleStartAnalysis}
-            className="bg-[#1a1a1f] hover:bg-[#2a2a2f] text-white border border-[#2a2a32] px-8 py-6 text-lg transition-colors duration-300"
+            className="bg-[#1a1a1f] hover:bg-[#2a2a2f] text-black border border-[#2a2a32] px-8 py-6 text-lg transition-colors duration-300"
           >
             <PlayCircle className="mr-2 h-5 w-5" />
             Start Analysis

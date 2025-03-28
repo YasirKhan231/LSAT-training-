@@ -183,7 +183,7 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]">
+      <div className="flex justify-center items-center h-screen ">
         <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-white"></div>
       </div>
     );
@@ -191,14 +191,14 @@ export default function DashboardPage() {
 
   if (error)
     return (
-      <div className="text-center p-4 text-red-400 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]">
+      <div className="text-center p-4 text-red-400">
         Error: {error}
       </div>
     );
 
   if (!userData)
     return (
-      <div className="text-center p-4 text-gray-300 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]">
+      <div className="text-center p-4">
         No user data found.
       </div>
     );
@@ -226,31 +226,31 @@ export default function DashboardPage() {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] px-4 py-6 sm:px-6 lg:px-8 text-gray-300">
+      <div className="min-h-screen bg-white px-4 py-6 sm:px-6 lg:px-8 text-gray-300">
         <header className="py-6">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start space-y-4 sm:space-y-0">
             <div>
-              <h1 className="text-3xl sm:text-3xl font-extrabold text-white">
+              <h1 className="text-3xl sm:text-3xl font-extrabold text-black font-instrument">
                 Welcome back, {userName}!
               </h1>
               <p className="mt-2 text-base sm:text-lg text-gray-400">
                 Track your progress and continue your Bar Exam prep
               </p>
             </div>
-            <Card className="w-full sm:w-64 border-[#1E293B] shadow-xl bg-gradient-to-r from-[#0a0a0f] to-[#121218] backdrop-blur-sm">
+            <Card className="w-full sm:w-64 border-[#1E293B] shadow-xl bg-white backdrop-blur-sm">
               <CardHeader className="pb-1 pt-3">
-                <CardTitle className="text-xs sm:text-sm text-white">
+                <CardTitle className="text-xs sm:text-sm text-black">
                   Bar Exam: {formatBarExamTestDate(userData.barExamTestDate)}
                 </CardTitle>
               </CardHeader>
               <CardContent className="pb-3">
-                <div className="grid grid-cols-4 gap-1 text-center">
+                <div className="grid grid-cols-4 gap-1 text-center bg-white">
                   {["days", "hours", "minutes", "seconds"].map((unit, idx) => (
                     <div
                       key={idx}
-                      className="bg-[#1E293B] p-1 sm:p-2 rounded-md shadow-sm border border-[#334155]"
+                      className="bg-white p-1 sm:p-2 rounded-md shadow-sm border border-[#334155]"
                     >
-                      <div className="text-base sm:text-lg font-bold text-white">
+                      <div className="text-base sm:text-lg font-bold text-black">
                         {timeRemaining[unit as keyof typeof timeRemaining]}
                       </div>
                       <div className="text-xs text-[#64748B]">
@@ -265,38 +265,38 @@ export default function DashboardPage() {
         </header>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card className="border-[#1E293B] shadow-xl bg-gradient-to-b from-[#0a0a0f] to-[#121218] backdrop-blur-sm">
+          <Card className="border-[#1E293B] shadow-xl bg-white backdrop-blur-sm">
             <CardHeader className="pb-2">
               <CardTitle className="text-xs sm:text-sm font-medium text-[#64748B]">
                 Practice Questions
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl sm:text-3xl font-semibold text-white">
+              <div className="text-2xl sm:text-3xl font-semibold text-black">
                 {PracticeQuestions}
               </div>
             </CardContent>
           </Card>
-          <Card className="border-[#1E293B] shadow-xl bg-gradient-to-b from-[#0a0a0f] to-[#121218] backdrop-blur-sm">
+          <Card className="border-[#1E293B] shadow-xl bg-white backdrop-blur-sm">
             <CardHeader className="pb-2">
               <CardTitle className="text-xs sm:text-sm font-medium text-[#64748B]">
                 Current Score
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl sm:text-3xl font-semibold text-white">
+              <div className="text-2xl sm:text-3xl font-semibold text-black">
                 {currentScore}
               </div>
             </CardContent>
           </Card>
-          <Card className="border-[#1E293B] shadow-xl bg-gradient-to-b from-[#0a0a0f] to-[#121218] backdrop-blur-sm">
+          <Card className="border-[#1E293B] shadow-xl bg-white backdrop-blur-sm">
             <CardHeader className="pb-2">
               <CardTitle className="text-xs sm:text-sm font-medium text-[#64748B]">
                 Target Score
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl sm:text-3xl font-semibold text-white">
+              <div className="text-2xl sm:text-3xl font-semibold text-black">
                 {targetScore}
               </div>
               <div className="text-xs text-[#64748B] mt-1">
@@ -304,14 +304,14 @@ export default function DashboardPage() {
               </div>
             </CardContent>
           </Card>
-          <Card className="border-[#1E293B] shadow-xl bg-gradient-to-b from-[#0a0a0f] to-[#121218] backdrop-blur-sm">
+          <Card className="border-[#1E293B] shadow-xl bg-white backdrop-blur-sm">
             <CardHeader className="pb-2">
               <CardTitle className="text-xs sm:text-sm font-medium text-[#64748B]">
                 Current Streak
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl sm:text-3xl font-semibold text-white">
+              <div className="text-2xl sm:text-3xl font-semibold text-black">
                 {StudyStreak} days
               </div>
             </CardContent>
@@ -319,9 +319,9 @@ export default function DashboardPage() {
         </div>
 
         <div className="mt-6">
-          <Card className="border-[#1E293B] shadow-xl bg-gradient-to-b from-[#0a0a0f] to-[#121218] backdrop-blur-sm">
+          <Card className="border-[#1E293B] shadow-xl bg-white backdrop-blur-sm">
             <CardHeader>
-              <CardTitle className="text-base sm:text-lg font-medium text-white">
+              <CardTitle className="text-base sm:text-lg font-medium text-black">
                 Today's Study Plan
               </CardTitle>
               <CardDescription className="text-xs sm:text-sm text-[#64748B]">
@@ -333,7 +333,7 @@ export default function DashboardPage() {
                 {tasks.map((task, index) => (
                   <div
                     key={index}
-                    className={`flex items-center justify-between p-3 rounded-md bg-[#1E293B]/30 border transition-all duration-300 ${
+                    className={`flex items-center justify-between p-3 rounded-md text-black border transition-all duration-300 ${
                       completedTasks.includes(index)
                         ? "opacity-50 border-dashed border-[#334155]/50"
                         : "border-[#334155]/30"
@@ -342,8 +342,8 @@ export default function DashboardPage() {
                     <p
                       className={`text-sm font-medium ${
                         completedTasks.includes(index)
-                          ? "text-gray-400 line-through"
-                          : "text-gray-300"
+                          ? "text-black line-through"
+                          : "text-black"
                       }`}
                     >
                       {task}
@@ -352,14 +352,14 @@ export default function DashboardPage() {
                       onClick={() => handleTaskCompletion(index)}
                       className={`p-1 rounded-full border transition-colors ${
                         completedTasks.includes(index)
-                          ? "border-[#334155]/50 bg-[#334155]/30"
-                          : "border-[#334155] hover:bg-[#334155]"
+                          ? "border-[#334155]/50 bg-black"
+                          : "border-[#334155] hover:bg-black"
                       }`}
                     >
                       <div
                         className={`h-4 w-4 border rounded-sm flex items-center justify-center ${
                           completedTasks.includes(index)
-                            ? "bg-[#334155]/70 border-gray-500"
+                            ? "bg-black border-gray-500"
                             : "border-gray-400"
                         }`}
                       >
@@ -386,7 +386,7 @@ export default function DashboardPage() {
                 <Link href="/plan/study-plan">
                   <Button
                     variant="outline"
-                    className="w-full border-[#334155] bg-[#1E293B]/50 hover:bg-[#334155] text-gray-300"
+                    className="w-full border-[#334155] bg-[#1E293B] hover:bg-[#334155] text-white"
                   >
                     View Full Study Plan
                     <ArrowRight className="ml-2 h-4 w-4" />
@@ -398,13 +398,13 @@ export default function DashboardPage() {
         </div>
 
         <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <Card className="border-[#1E293B] shadow-xl bg-gradient-to-b from-[#0a0a0f] to-[#121218] backdrop-blur-sm">
+          <Card className="border-[#1E293B] shadow-xl bg-white backdrop-blur-sm">
             <CardHeader>
               <div className="flex items-center justify-between">
-                <CardTitle className="text-base sm:text-lg font-medium text-white">
+                <CardTitle className="text-base sm:text-lg font-medium text-black">
                   Performance Insights
                 </CardTitle>
-                <BarChart className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+                <BarChart className="h-4 w-4 sm:h-5 sm:w-5 text-black" />
               </div>
               <CardDescription className="text-xs sm:text-sm text-[#64748B]">
                 {performanceInsights.length > 0
@@ -419,7 +419,7 @@ export default function DashboardPage() {
                     <div key={index} className="space-y-1">
                       <div className="flex justify-between text-xs sm:text-sm">
                         <span className="text-gray-300">{insight.examId}</span>
-                        <span className="font-medium text-white">
+                        <span className="font-medium text-black">
                           {Math.round(
                             (insight.correctAnswers / insight.totalQuestions) *
                               100
@@ -445,13 +445,13 @@ export default function DashboardPage() {
               )}
             </CardContent>
           </Card>
-          <Card className="border-[#1E293B] shadow-xl bg-gradient-to-b from-[#0a0a0f] to-[#121218] backdrop-blur-sm">
+          <Card className="border-[#1E293B] shadow-xl bg-white backdrop-blur-sm">
             <CardHeader>
               <div className="flex items-center justify-between">
-                <CardTitle className="text-base sm:text-lg font-medium text-white">
+                <CardTitle className="text-base sm:text-lg font-medium text-black">
                   Practice History
                 </CardTitle>
-                <LineChart className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+                <LineChart className="h-4 w-4 sm:h-5 sm:w-5 text-black" />
               </div>
               <CardDescription className="text-xs sm:text-sm text-[#64748B]">
                 Your progress over the last {practiceHistory.length} sessions
@@ -486,7 +486,7 @@ export default function DashboardPage() {
         </div>
 
         <div className="mt-6">
-          <h2 className="text-base sm:text-lg font-medium text-white">
+          <h2 className="text-base sm:text-lg font-medium text-black">
             Suggested Practice
           </h2>
           <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -508,9 +508,9 @@ export default function DashboardPage() {
               },
             ].map((item, index) => (
               <Link href={item.link} key={index} className="block">
-                <Card className="h-full border-[#1E293B] shadow-xl bg-gradient-to-b from-[#0a0a0f] to-[#121218] backdrop-blur-sm transition transform hover:scale-105 hover:shadow-lg hover:border-white/50">
+                <Card className="h-full border-[#1E293B] shadow-xl bg-white backdrop-blur-sm transition transform hover:scale-105 hover:shadow-lg hover:border-white/50">
                   <CardHeader className="pb-2">
-                    <CardTitle className="text-base sm:text-lg font-medium text-white">
+                    <CardTitle className="text-base sm:text-lg font-medium text-black">
                       {item.title}
                     </CardTitle>
                   </CardHeader>
@@ -520,7 +520,7 @@ export default function DashboardPage() {
                     </p>
                   </CardContent>
                   <CardFooter className="bg-[#1E293B]/30 flex justify-end">
-                    <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                    <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-black" />
                   </CardFooter>
                 </Card>
               </Link>
@@ -529,7 +529,7 @@ export default function DashboardPage() {
         </div>
 
         <div className="mt-6 mb-8">
-          <h2 className="text-base sm:text-lg font-medium text-white">
+          <h2 className="text-base sm:text-lg font-medium text-black">
             Continue Your Preparation
           </h2>
           <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -551,9 +551,9 @@ export default function DashboardPage() {
               },
             ].map((item, index) => (
               <Link href={item.link} key={index} className="block">
-                <div className="bg-gradient-to-b from-[#0a0a0f] to-[#121218] backdrop-blur-sm shadow-xl rounded-lg border border-[#1E293B] transition transform hover:scale-105 hover:shadow-md hover:border-white/50">
+                <div className="bg-white backdrop-blur-sm shadow-xl rounded-lg border border-[#1E293B] transition transform hover:scale-105 hover:shadow-md hover:border-white/50">
                   <div className="px-4 py-4 sm:px-6 sm:py-5">
-                    <h3 className="text-base sm:text-lg font-medium text-white">
+                    <h3 className="text-base sm:text-lg font-medium text-black">
                       {item.title}
                     </h3>
                     <p className="mt-2 text-xs sm:text-sm text-[#64748B]">
@@ -561,7 +561,7 @@ export default function DashboardPage() {
                     </p>
                   </div>
                   <div className="bg-[#1E293B]/30 px-4 py-3 sm:px-6 flex justify-end">
-                    <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                    <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-black" />
                   </div>
                 </div>
               </Link>

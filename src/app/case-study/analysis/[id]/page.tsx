@@ -224,7 +224,7 @@ export default function LegalAnalysisPage() {
           <Button
             variant="ghost"
             size="icon"
-            className="text-gray-400 hover:bg-[#1a1a1f] hover:text-white"
+            className="text-gray-500 hover:bg-[#1a1a1f] hover:text-white"
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
@@ -243,11 +243,11 @@ export default function LegalAnalysisPage() {
             <div className="space-y-4">
               <div>
                 <h3 className="font-medium mb-2 text-white">Facts:</h3>
-                <p className="text-gray-400">{problem.facts}</p>
+                <p className="text-gray-500">{problem.facts}</p>
               </div>
               <div>
                 <h3 className="font-medium mb-2 text-white">Question:</h3>
-                <p className="text-gray-400">{problem.question}</p>
+                <p className="text-gray-500">{problem.question}</p>
               </div>
             </div>
           </CardContent>
@@ -287,17 +287,17 @@ export default function LegalAnalysisPage() {
                   <div className="space-y-4">
                     <div>
                       <h3 className="font-medium mb-2 text-white">Score:</h3>
-                      <p className="text-gray-400">{feedback.score * 100}%</p>
+                      <p className="text-gray-500">{feedback.score * 100}%</p>
                     </div>
                     <div>
                       <h3 className="font-medium mb-2 text-white">Feedback:</h3>
-                      <p className="text-gray-400">{feedback.feedback}</p>
+                      <p className="text-gray-500">{feedback.feedback}</p>
                     </div>
                     <div>
                       <h3 className="font-medium mb-2 text-white">
                         Suggestions:
                       </h3>
-                      <ul className="list-disc list-inside text-gray-400">
+                      <ul className="list-disc list-inside text-gray-500">
                         {feedback.suggestions.map(
                           (suggestion: string, index: number) => (
                             <li key={index}>{suggestion}</li>
@@ -309,22 +309,22 @@ export default function LegalAnalysisPage() {
                       <h3 className="font-medium mb-2 text-white">
                         Model Analysis:
                       </h3>
-                      <div className="space-y-3 text-gray-400">
+                      <div className="space-y-3 text-gray-500">
                         <div>
                           <h4 className="font-medium text-gray-300">Facts:</h4>
-                          <p className="text-gray-400">
+                          <p className="text-gray-500">
                             {feedback.analysis.facts}
                           </p>
                         </div>
                         <div>
                           <h4 className="font-medium text-gray-300">Issue:</h4>
-                          <p className="text-gray-400">
+                          <p className="text-gray-500">
                             {feedback.analysis.issue}
                           </p>
                         </div>
                         <div>
                           <h4 className="font-medium text-gray-300">Rule:</h4>
-                          <p className="text-gray-400">
+                          <p className="text-gray-500">
                             {feedback.analysis.rule}
                           </p>
                         </div>
@@ -332,7 +332,7 @@ export default function LegalAnalysisPage() {
                           <h4 className="font-medium text-gray-300">
                             Application:
                           </h4>
-                          <p className="text-gray-400">
+                          <p className="text-gray-500">
                             {feedback.analysis.application}
                           </p>
                         </div>
@@ -340,7 +340,7 @@ export default function LegalAnalysisPage() {
                           <h4 className="font-medium text-gray-300">
                             Conclusion:
                           </h4>
-                          <p className="text-gray-400">
+                          <p className="text-gray-500">
                             {feedback.analysis.conclusion}
                           </p>
                         </div>
