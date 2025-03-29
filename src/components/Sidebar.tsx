@@ -48,7 +48,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       setShowLogoutConfirm(false);
     }
   };
-  // Add this to your Sidebar component
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -59,6 +59,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [onClose]);
+
   const toggleExpand = (href: string) => {
     setExpandedItems((prev) =>
       prev.includes(href)
@@ -98,7 +99,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       {/* Overlay (only for mobile) */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-white backdrop-blur-sm z-40 md:hidden"
+          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 md:hidden"
           onClick={(e) => {
             e.preventDefault();
             onClose();
@@ -110,26 +111,25 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       <aside
         className={`fixed inset-y-0 left-0 z-50 w-[280px] bg-white shadow-lg ${
           isOpen ? "translate-x-0" : "-translate-x-full"
-        } transition-transform duration-300 ease-in-out md:translate-x-0 md:w-64 overflow-hidden flex flex-col border-r border-[#1a1a1f]`}
+        } transition-transform duration-300 ease-in-out md:translate-x-0 md:w-64 overflow-hidden flex flex-col border-r border-gray-200`}
         style={{
-          // Force re-render by adding a unique key based on isOpen
-          // This is a nuclear option if transitions aren't working
           display: isOpen ? "flex" : "none",
         }}
       >
         {/* Sidebar Header */}
-        <div className="px-6 py-4 border-b border-[#1a1a1f] flex items-center justify-between">
+        <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-2">
-            <span className="text-xl font-bold text-black">Prep For Law</span>
+            <span className="text-xl font-bold text-gray-900">
+              Prep For Law
+            </span>
           </Link>
           <button
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              console.log("Close button clicked"); // Debugging
-              onClose?.(); // Safe call
+              onClose?.();
             }}
-            className="p-1 rounded-lg text-black hover:bg-[#1a1a1f] hover:text-white transition-colors"
+            className="p-1 rounded-lg text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-colors"
             aria-label="Close sidebar"
           >
             <X className="h-5 w-5" />
@@ -143,17 +143,23 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                 {item.children ? (
                   <div>
                     <div
-                      className={`flex items-center justify-between w-full px-4 py-2 text-sm rounded-lg transition-colors duration-200 ${
+                      className={`group flex items-center justify-between w-full px-4 py-2 text-sm rounded-lg transition-colors duration-200 ${
                         pathname.startsWith(item.href)
-                          ? "bg-[#1a1a1f]"
-                          : "text-black hover:bg-[#1a1a1f] hover:text-white"
+                          ? "bg-gray-900 text-white"
+                          : "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                       }`}
                     >
                       <Link
                         href={item.href}
                         className="flex items-center flex-1"
                       >
-                        <item.icon className="h-5 w-5 mr-3" />
+                        <item.icon
+                          className={`h-5 w-5 mr-3 ${
+                            pathname.startsWith(item.href)
+                              ? "text-white"
+                              : "text-gray-500 group-hover:text-gray-900"
+                          }`}
+                        />
                         <span>{item.label}</span>
                       </Link>
                       <button
@@ -161,7 +167,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                           e.stopPropagation();
                           toggleExpand(item.href);
                         }}
-                        className="p-1 hover:bg-[#1a1a1f] rounded-lg text-black"
+                        className="p-1 hover:bg-gray-200 rounded-lg text-gray-500 hover:text-gray-900"
                       >
                         {expandedItems.includes(item.href) ? (
                           <ChevronDown className="h-4 w-4" />
@@ -176,13 +182,19 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                           <li key={child.href}>
                             <Link
                               href={child.href}
-                              className={`flex items-center px-4 py-2 text-sm rounded-lg transition-colors duration-200 ${
+                              className={`group flex items-center px-4 py-2 text-sm rounded-lg transition-colors duration-200 ${
                                 pathname === child.href
-                                  ? "bg-[#1a1a1f] text-white"
-                                  : "text-black hover:bg-[#1a1a1f] hover:text-white"
+                                  ? "bg-gray-800 text-white"
+                                  : "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                               }`}
                             >
-                              <child.icon className="h-4 w-4 mr-3" />
+                              <child.icon
+                                className={`h-4 w-4 mr-3 ${
+                                  pathname === child.href
+                                    ? "text-white"
+                                    : "text-gray-500 group-hover:text-gray-900"
+                                }`}
+                              />
                               <span>{child.label}</span>
                             </Link>
                           </li>
@@ -193,13 +205,19 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                 ) : (
                   <Link
                     href={item.href}
-                    className={`flex items-center px-4 py-2 text-sm rounded-lg transition-colors duration-200 ${
+                    className={`group flex items-center px-4 py-2 text-sm rounded-lg transition-colors duration-200 ${
                       pathname === item.href
-                        ? "bg-[#1a1a1f] text-white"
-                        : "text-black hover:bg-[#1a1a1f] hover:text-white"
+                        ? "bg-gray-900 text-white"
+                        : "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                     }`}
                   >
-                    <item.icon className="h-5 w-5 mr-3" />
+                    <item.icon
+                      className={`h-5 w-5 mr-3 ${
+                        pathname === item.href
+                          ? "text-white"
+                          : "text-gray-500 group-hover:text-gray-900"
+                      }`}
+                    />
                     <span>{item.label}</span>
                   </Link>
                 )}
@@ -208,11 +226,11 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           </ul>
         </nav>
 
-        <div className="border-t border-[#1a1a1f] p-4">
+        <div className="border-t border-gray-200 p-4">
           {isSubscriptionActive && (
             <div className="mb-4">
-              <div className="flex items-center px-4 py-2 bg-[#1a1a1f] rounded-lg border border-[#2a2a2f]">
-                <Crown className="h-5 w-5 text-amber-500 mr-2" />
+              <div className="flex items-center px-4 py-2 bg-gray-900 rounded-lg border border-gray-800">
+                <Crown className="h-5 w-5 text-white mr-2" />
                 <span className="text-sm font-medium text-white">
                   {subscriptionTier === "one-time"
                     ? "Premium"
@@ -225,13 +243,13 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           {userLoggedIn ? (
             <div className="space-y-3">
               <div className="px-4 py-2">
-                <p className="text-sm text-gray-400 truncate p-2 rounded">
+                <p className="text-sm text-gray-600 truncate p-2 rounded">
                   {auth.currentUser?.email}
                 </p>
               </div>
               <button
                 onClick={() => setShowLogoutConfirm(true)}
-                className="flex items-center w-full px-4 py-2 text-center bg-[#1a1a1f] text-white rounded-lg transition-colors duration-200 hover:bg-red-900 hover:text-white border border-[#2a2a2f]"
+                className="flex items-center w-full px-4 py-2 text-center bg-gray-900 text-white rounded-lg transition-colors duration-200 hover:bg-gray-800"
               >
                 <LogOut className="h-5 w-5 mr-3" />
                 <span className="text-center">Sign Out</span>
@@ -241,13 +259,13 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
             <div className="space-y-2">
               <Link
                 href="/login"
-                className="block w-full px-4 py-2 text-sm text-center text-white bg-[#1a1a1f] border border-[#2a2a2f] rounded-lg hover:bg-[#2a2a2f] transition-colors duration-200"
+                className="block w-full px-4 py-2 text-sm text-center text-white bg-gray-900 border border-gray-800 rounded-lg hover:bg-gray-800 transition-colors duration-200"
               >
                 Login
               </Link>
               <Link
                 href="/Signup"
-                className="block w-full px-4 py-2 text-sm text-center text-white bg-[#1a1a1f] rounded-lg hover:bg-[#2a2a2f] transition-colors duration-200"
+                className="block w-full px-4 py-2 text-sm text-center text-white bg-gray-900 rounded-lg hover:bg-gray-800 transition-colors duration-200"
               >
                 Sign Up
               </Link>
@@ -258,24 +276,24 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
       {/* Logout Confirmation Dialog */}
       {showLogoutConfirm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/50 backdrop-blur-sm">
-          <div className="bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] p-6 rounded-lg border border-[#1a1a1f] shadow-xl max-w-md w-full mx-4">
-            <h3 className="text-lg font-medium text-white mb-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm">
+          <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-xl max-w-md w-full mx-4">
+            <h3 className="text-lg font-medium text-gray-900 mb-4">
               Confirm Logout
             </h3>
-            <p className="text-gray-300 mb-6">
+            <p className="text-gray-600 mb-6">
               Are you sure you want to sign out?
             </p>
             <div className="flex justify-end space-x-3">
               <button
                 onClick={() => setShowLogoutConfirm(false)}
-                className="px-4 py-2 text-sm text-gray-300 hover:text-white bg-[#1a1a1f] rounded-lg border border-[#2a2a2f] hover:bg-[#2a2a2f] transition-colors"
+                className="px-4 py-2 text-sm text-gray-700 hover:text-gray-900 bg-white rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={handleLogout}
-                className="px-4 py-2 text-sm text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors"
+                className="px-4 py-2 text-sm text-white bg-gray-900 hover:bg-gray-800 rounded-lg transition-colors"
               >
                 Yes, Sign Out
               </button>

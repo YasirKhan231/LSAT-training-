@@ -249,7 +249,7 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
 
   if (!currentQuestion) {
     return (
-      <div className="flex justify-center items-center h-64 text-slate-300 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]">
+      <div className="flex justify-center items-center h-64 text-gray-600 bg-white">
         Loading questions...
       </div>
     );
@@ -259,26 +259,26 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
 
   if (isCompleted) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]">
-        <Card className="w-full max-w-2xl border-2 border-[#121218] shadow-lg shadow-white/10 rounded-xl overflow-hidden bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]">
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <Card className="w-full max-w-2xl border border-gray-200 shadow-lg rounded-xl overflow-hidden bg-white">
           <CardHeader className="pb-3">
-            <CardTitle className="text-xl text-slate-100 text-center">
+            <CardTitle className="text-xl text-gray-900 text-center">
               Congratulations!
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="text-center">
               <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-4" />
-              <p className="text-lg text-slate-200">
+              <p className="text-lg text-gray-700">
                 You have successfully completed the question bank for{" "}
-                <span className="font-bold text-white">
+                <span className="font-bold text-gray-900">
                   {subject
                     .replace(/-/g, " ")
                     .replace(/\b\w/g, (l) => l.toUpperCase())}
                 </span>
                 .
               </p>
-              <p className="text-sm text-slate-300 mt-2">
+              <p className="text-sm text-gray-500 mt-2">
                 You answered {responses.filter((r) => r.isCorrect).length} out
                 of {questions.length} questions correctly.
               </p>
@@ -287,13 +287,13 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
           <CardFooter className="flex justify-center gap-4">
             <Button
               onClick={() => router.push("/dashboard")}
-              className="bg-gradient-to-r from-[#0a0a0f] via-[#121218] to-[#0a0a0f] hover:from-[#121218] hover:via-[#1a1a23] hover:to-[#121218] text-white border border-[#24242e] shadow-md shadow-white/5"
+              className="bg-white hover:bg-gray-50 text-gray-900 border border-gray-300 shadow-md"
             >
               Go to Dashboard
             </Button>
             <Button
               onClick={() => router.push("/question-bank")}
-              className="bg-gradient-to-r from-[#0a0a0f] via-[#121218] to-[#0a0a0f] hover:from-[#121218] hover:via-[#1a1a23] hover:to-[#121218] text-white border border-[#24242e] shadow-md shadow-white/5"
+              className="bg-white hover:bg-gray-50 text-gray-900 border border-gray-300 shadow-md"
             >
               Take Another Practice
             </Button>
@@ -304,17 +304,15 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
   }
 
   return (
-    <div className="max-w-3xl mx-auto bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] min-h-screen p-4 relative overflow-hidden">
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9IiNmZmZmZmYwMiIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSIgb3BhY2l0eT0iMC4wMiIvPjwvc3ZnPg==')] opacity-10 pointer-events-none"></div>
-
-      <div className="mb-6 bg-gradient-to-r from-[#0a0a0f] via-[#121218] to-[#0a0a0f] p-4 rounded-lg shadow-lg shadow-white/5 relative z-10">
+    <div className="max-w-3xl mx-auto bg-white min-h-screen p-4 relative overflow-hidden">
+      <div className="mb-6 bg-white p-4 rounded-lg shadow relative z-10">
         <div className="flex justify-between items-center mb-2">
-          <span className="text-sm text-slate-300">
+          <span className="text-sm text-gray-600">
             Question {currentIndex + 1} of {questions.length}
           </span>
           <Badge
             variant="outline"
-            className="bg-gradient-to-r from-[#0a0a0f] via-[#121218] to-[#0a0a0f] text-slate-200 border-[#24242e] shadow-sm"
+            className="bg-white text-gray-700 border-gray-300 shadow-sm"
           >
             {subject
               .replace(/-/g, " ")
@@ -323,15 +321,15 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
         </div>
         <Progress
           value={progress}
-          className="h-2 bg-[#0a0a0f] shadow-inner"
-          indicatorClassName="bg-gradient-to-r from-white/80 via-white/60 to-white/80 shadow-lg shadow-white/30"
+          className="h-2 bg-gray-100"
+          indicatorClassName="bg-gray-900"
         />
       </div>
 
-      <Card className="mb-6 border-2 border-[#121218] shadow-lg shadow-white/10 rounded-xl overflow-hidden bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] relative z-10">
+      <Card className="mb-6 border border-gray-200 shadow rounded-xl overflow-hidden bg-white relative z-10">
         <CardHeader className="pb-3">
           <div className="flex justify-between">
-            <CardTitle className="text-xl text-slate-100">
+            <CardTitle className="text-xl text-gray-900">
               Question {currentIndex + 1}
             </CardTitle>
             <div className="flex items-center gap-2">
@@ -340,8 +338,8 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
                 size="icon"
                 onClick={toggleBookmark}
                 className={cn(
-                  bookmarked[currentIndex] ? "text-white" : "text-slate-500",
-                  "hover:bg-[#121218] hover:text-white shadow-sm"
+                  bookmarked[currentIndex] ? "text-gray-900" : "text-gray-500",
+                  "hover:bg-gray-100 hover:text-gray-900"
                 )}
               >
                 {bookmarked[currentIndex] ? (
@@ -354,7 +352,7 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
                 variant="ghost"
                 size="sm"
                 onClick={handleExit}
-                className="text-slate-300 hover:text-white hover:bg-[#121218] shadow-sm"
+                className="text-gray-600 hover:text-gray-900 hover:bg-gray-100"
               >
                 Exit
               </Button>
@@ -363,7 +361,7 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            <p className="text-sm md:text-base leading-relaxed text-slate-200">
+            <p className="text-sm md:text-base leading-relaxed text-gray-800">
               {currentQuestion.text}
             </p>
 
@@ -380,23 +378,23 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
                     "flex items-center space-x-2 p-3 rounded-md border transition-all",
                     isAnswered &&
                       option.id === currentQuestion.correctAnswer &&
-                      "border-green-600 bg-green-900/20 shadow-lg shadow-green-900/30",
+                      "border-green-300 bg-green-50",
                     isAnswered &&
                       selectedAnswer === option.id &&
                       option.id !== currentQuestion.correctAnswer &&
-                      "border-red-600 bg-red-900/20 shadow-lg shadow-red-900/30",
+                      "border-red-300 bg-red-50",
                     !isAnswered &&
                       selectedAnswer === option.id &&
-                      "border-white/30 bg-[#121218] shadow-lg shadow-white/10",
+                      "border-gray-300 bg-gray-100",
                     !isAnswered &&
-                      "hover:border-white/30 hover:shadow-md hover:shadow-white/5 border-[#24242e]",
-                    "my-2 bg-[#121218] text-slate-200"
+                      "hover:border-gray-300 hover:shadow-sm border-gray-200",
+                    "my-2 bg-white text-gray-800"
                   )}
                 >
                   <RadioGroupItem
                     value={option.id}
                     id={option.id}
-                    className="border-[#24242e] text-white"
+                    className="border-gray-300 text-gray-900"
                   />
                   <Label
                     htmlFor={option.id}
@@ -415,7 +413,7 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
               variant="outline"
               onClick={handlePrevQuestion}
               disabled={currentIndex === 0}
-              className="flex items-center bg-gradient-to-r from-[#0a0a0f] via-[#121218] to-[#0a0a0f] hover:from-[#121218] hover:via-[#1a1a23] hover:to-[#121218] text-slate-200 border-[#24242e] shadow-md shadow-white/5"
+              className="flex items-center bg-white hover:bg-gray-50 text-gray-700 border-gray-300"
             >
               <ArrowLeft className="mr-2 h-4 w-4" /> Previous
             </Button>
@@ -424,39 +422,39 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
               <Button
                 onClick={handleAnswerSubmit}
                 disabled={!selectedAnswer}
-                className="bg-gradient-to-r from-[#0a0a0f] via-[#121218] to-[#0a0a0f] hover:from-[#121218] hover:via-[#1a1a23] hover:to-[#121218] text-white shadow-lg shadow-white/10"
+                className="bg-gray-900 hover:bg-gray-800 text-white"
               >
                 Submit Answer
               </Button>
             ) : currentIndex === questions.length - 1 ? (
               <Button
                 onClick={handleNextQuestion}
-                className="flex items-center bg-gradient-to-r from-[#0a0a0f] via-[#121218] to-[#0a0a0f] hover:from-[#121218] hover:via-[#1a1a23] hover:to-[#121218] text-white shadow-lg shadow-white/10"
+                className="flex items-center bg-gray-900 hover:bg-gray-800 text-white"
               >
                 Finish
               </Button>
             ) : (
               <Button
                 onClick={handleNextQuestion}
-                className="flex items-center bg-gradient-to-r from-[#0a0a0f] via-[#121218] to-[#0a0a0f] hover:from-[#121218] hover:via-[#1a1a23] hover:to-[#121218] text-white shadow-lg shadow-white/10"
+                className="flex items-center bg-gray-900 hover:bg-gray-800 text-white"
               >
                 Next <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             )}
           </div>
 
-          <div className="w-full border border-[#24242e] rounded-md bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] p-3 shadow-lg shadow-white/5">
+          <div className="w-full border border-gray-200 rounded-md bg-white p-3 shadow-sm">
             <div className="flex justify-between items-center mb-2">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={prevPage}
                 disabled={currentPage === 0}
-                className="text-slate-300 hover:text-white hover:bg-[#1a1a23] p-1 h-8 shadow-sm"
+                className="text-gray-600 hover:text-gray-900 hover:bg-gray-100 p-1 h-8"
               >
                 <ChevronLeft className="h-5 w-5" />
               </Button>
-              <span className="text-sm text-slate-300">
+              <span className="text-sm text-gray-600">
                 Questions {currentPage * questionsPerPage + 1}-
                 {Math.min(
                   (currentPage + 1) * questionsPerPage,
@@ -468,7 +466,7 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
                 size="sm"
                 onClick={nextPage}
                 disabled={currentPage >= totalPages - 1}
-                className="text-slate-300 hover:text-white hover:bg-[#1a1a23] p-1 h-8 shadow-sm"
+                className="text-gray-600 hover:text-gray-900 hover:bg-gray-100 p-1 h-8"
               >
                 <ChevronRight className="h-5 w-5" />
               </Button>
@@ -481,12 +479,12 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
                   className={cn(
                     "w-8 h-8 flex items-center justify-center rounded-md text-sm border shadow-sm transition-all",
                     currentIndex === idx
-                      ? "bg-gradient-to-r from-[#0a0a0f] via-[#121218] to-[#0a0a0f] text-white border-white/30 shadow-lg shadow-white/20"
+                      ? "bg-gray-900 text-white border-gray-700"
                       : responses.some(
                           (r) => r.questionId === questions[idx]?.id
                         )
-                      ? "bg-[#1a1a23] text-slate-200 border-[#24242e] shadow-md shadow-white/10"
-                      : "bg-[#121218] text-slate-300 border-[#24242e] hover:bg-[#1a1a23] hover:shadow-md hover:shadow-white/5"
+                      ? "bg-gray-100 text-gray-700 border-gray-300"
+                      : "bg-white text-gray-600 border-gray-300 hover:bg-gray-50"
                   )}
                 >
                   {idx + 1}
@@ -498,15 +496,15 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
       </Card>
 
       {feedback && (
-        <Card className="border-[#121218] bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] shadow-lg shadow-white/5 relative z-10">
+        <Card className="border-gray-200 bg-white shadow relative z-10">
           <CardContent className="pt-6">
             <div className="space-y-4">
               <div
                 className={cn(
                   "p-4 rounded-lg",
                   feedback.isCorrect
-                    ? "bg-green-900/20 border border-green-800 shadow-lg shadow-green-900/30"
-                    : "bg-amber-900/20 border border-amber-800 shadow-lg shadow-amber-900/30"
+                    ? "bg-green-50 border border-green-200"
+                    : "bg-amber-50 border border-amber-200"
                 )}
               >
                 <div className="flex items-start gap-2">
@@ -516,10 +514,10 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
                     <AlertCircle className="h-5 w-5 text-amber-500 mt-1" />
                   )}
                   <div>
-                    <h4 className="font-medium mb-1 text-slate-100">
+                    <h4 className="font-medium mb-1 text-gray-900">
                       {feedback.isCorrect ? "Correct!" : "Incorrect"}
                     </h4>
-                    <p className="text-sm text-slate-300">
+                    <p className="text-sm text-gray-600">
                       {feedback.isCorrect
                         ? "Great job! You selected the right answer."
                         : `The correct answer was: ${feedback.correctAnswer}`}
@@ -532,24 +530,24 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
                 <Button
                   onClick={() => setShowExplanation(!showExplanation)}
                   variant="outline"
-                  className="w-full bg-[#121218] border-[#24242e] text-slate-200 hover:bg-[#1a1a23] hover:text-white shadow-md"
+                  className="w-full bg-white border-gray-300 text-gray-700 hover:bg-gray-50 hover:text-gray-900"
                 >
                   {showExplanation ? "Hide Explanation" : "Show Explanation"}
                 </Button>
                 {showExplanation && (
-                  <div className="mt-4 p-4 rounded-lg bg-[#121218] border border-[#24242e] shadow-sm">
-                    <h4 className="font-medium mb-2 text-slate-100">
+                  <div className="mt-4 p-4 rounded-lg bg-gray-50 border border-gray-200">
+                    <h4 className="font-medium mb-2 text-gray-900">
                       Explanation
                     </h4>
-                    <p className="text-sm text-slate-300">
+                    <p className="text-sm text-gray-600">
                       {feedback.explanation}
                     </p>
                     {feedback.aiSuggestion && (
                       <div className="mt-4">
-                        <h4 className="font-medium mb-2 text-slate-100">
+                        <h4 className="font-medium mb-2 text-gray-900">
                           AI Suggestion
                         </h4>
-                        <p className="text-sm text-slate-300">
+                        <p className="text-sm text-gray-600">
                           {feedback.aiSuggestion}
                         </p>
                       </div>

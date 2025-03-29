@@ -78,8 +78,8 @@ export function StudyPlanGenerator({ onClose, uuid }: StudyPlanGeneratorProps) {
           weeklyHours,
           challengingAreas,
           preferredSchedule,
-          specificAreas: focusAreas, // Map focusAreas to specificAreas
-          barExamPreparationMaterial: materials, // Map materials to barExamPreparationMaterial
+          specificAreas: focusAreas,
+          barExamPreparationMaterial: materials,
           additionalInformation: additionalInfo,
         };
 
@@ -118,10 +118,12 @@ export function StudyPlanGenerator({ onClose, uuid }: StudyPlanGeneratorProps) {
   };
 
   return (
-    <Card className="mx-auto max-w-2xl bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] border-[#1a1a1f] text-white">
+    <Card className="mx-auto max-w-2xl bg-white border-gray-200">
       <CardHeader>
-        <CardTitle>Generate Your Personalized Study Plan</CardTitle>
-        <CardDescription className="text-gray-400">
+        <CardTitle className="text-gray-900">
+          Generate Your Personalized Study Plan
+        </CardTitle>
+        <CardDescription className="text-gray-600">
           Answer a few questions to help the AI create a customized Bar Exam
           study plan for you.
         </CardDescription>
@@ -130,39 +132,39 @@ export function StudyPlanGenerator({ onClose, uuid }: StudyPlanGeneratorProps) {
         {step === 1 && (
           <div className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="exam-date" className="text-white">
+              <Label htmlFor="exam-date" className="text-gray-800">
                 When is your Bar Exam?
               </Label>
               <div className="flex items-center gap-2">
-                <LucideCalendar className="h-4 w-4 text-gray-400" />
+                <LucideCalendar className="h-4 w-4 text-gray-500" />
                 <Input
                   type="date"
                   id="exam-date"
                   value={barExamDate}
                   onChange={(e) => setBarExamDate(e.target.value)}
-                  className="bg-[#1a1a1f] border-[#2a2a2f] text-white"
+                  className="bg-white border-gray-300 text-gray-900"
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="target-score" className="text-white">
+              <Label htmlFor="target-score" className="text-gray-800">
                 What is your target Bar Exam score?
               </Label>
               <div className="flex items-center gap-2">
-                <LucideTarget className="h-4 w-4 text-gray-400" />
+                <LucideTarget className="h-4 w-4 text-gray-500" />
                 <Select
                   value={targetScore}
                   onValueChange={(value) => setTargetScore(value)}
                 >
                   <SelectTrigger
                     id="target-score"
-                    className="bg-[#1a1a1f] border-[#2a2a2f] text-white"
+                    className="bg-white border-gray-300 text-gray-900"
                   >
                     <SelectValue placeholder="Select target score" />
                   </SelectTrigger>
-                  <SelectContent className="bg-[#1a1a1f] border-[#2a2a2f] text-white">
-                    {Array.from({ length: 11 }, (_, i) => 280 + i * 10).map(
+                  <SelectContent className="bg-white border-gray-300 text-gray-900">
+                    {Array.from({ length: 13 }, (_, i) => 280 + i * 10).map(
                       (score) => (
                         <SelectItem key={score} value={score.toString()}>
                           {score}
@@ -175,22 +177,22 @@ export function StudyPlanGenerator({ onClose, uuid }: StudyPlanGeneratorProps) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="current-score" className="text-white">
+              <Label htmlFor="current-score" className="text-gray-800">
                 What is your current Bar Exam score or practice test score?
               </Label>
               <div className="flex items-center gap-2">
-                <LucideBarChart className="h-4 w-4 text-gray-400" />
+                <LucideBarChart className="h-4 w-4 text-gray-500" />
                 <Select
                   value={currentScore}
                   onValueChange={(value) => setCurrentScore(value)}
                 >
                   <SelectTrigger
                     id="current-score"
-                    className="bg-[#1a1a1f] border-[#2a2a2f] text-white"
+                    className="bg-white border-gray-300 text-gray-900"
                   >
                     <SelectValue placeholder="Select current score" />
                   </SelectTrigger>
-                  <SelectContent className="bg-[#1a1a1f] border-[#2a2a2f] text-white">
+                  <SelectContent className="bg-white border-gray-300 text-gray-900">
                     <SelectItem value="0">
                       I haven't taken a practice test yet
                     </SelectItem>
@@ -211,21 +213,21 @@ export function StudyPlanGenerator({ onClose, uuid }: StudyPlanGeneratorProps) {
         {step === 2 && (
           <div className="space-y-6">
             <div className="space-y-2">
-              <Label className="text-white">
+              <Label className="text-gray-800">
                 How many hours per week can you dedicate to Bar Exam
                 preparation?
               </Label>
               <div className="flex items-center gap-2">
-                <LucideClock className="h-4 w-4 text-gray-400" />
+                <LucideClock className="h-4 w-4 text-gray-500" />
                 <div className="flex-1 space-y-2">
                   <Slider
                     defaultValue={[weeklyHours]}
                     max={40}
                     step={1}
                     onValueChange={(value) => setWeeklyHours(value[0])}
-                    className="bg-[#1a1a1f]"
+                    className="bg-gray-100"
                   />
-                  <div className="flex justify-between text-xs text-gray-400">
+                  <div className="flex justify-between text-xs text-gray-500">
                     <span>5 hours</span>
                     <span>15 hours</span>
                     <span>40+ hours</span>
@@ -235,7 +237,7 @@ export function StudyPlanGenerator({ onClose, uuid }: StudyPlanGeneratorProps) {
             </div>
 
             <div className="space-y-2">
-              <Label className="text-white">
+              <Label className="text-gray-800">
                 Which section do you find most challenging?
               </Label>
               <RadioGroup
@@ -246,9 +248,9 @@ export function StudyPlanGenerator({ onClose, uuid }: StudyPlanGeneratorProps) {
                   <RadioGroupItem
                     value="constitutional"
                     id="constitutional"
-                    className="border-[#2a2a2f]"
+                    className="border-gray-300"
                   />
-                  <Label htmlFor="constitutional" className="text-white">
+                  <Label htmlFor="constitutional" className="text-gray-800">
                     Constitutional Law
                   </Label>
                 </div>
@@ -256,9 +258,9 @@ export function StudyPlanGenerator({ onClose, uuid }: StudyPlanGeneratorProps) {
                   <RadioGroupItem
                     value="contracts"
                     id="contracts"
-                    className="border-[#2a2a2f]"
+                    className="border-gray-300"
                   />
-                  <Label htmlFor="contracts" className="text-white">
+                  <Label htmlFor="contracts" className="text-gray-800">
                     Contracts
                   </Label>
                 </div>
@@ -266,9 +268,9 @@ export function StudyPlanGenerator({ onClose, uuid }: StudyPlanGeneratorProps) {
                   <RadioGroupItem
                     value="criminal"
                     id="criminal"
-                    className="border-[#2a2a2f]"
+                    className="border-gray-300"
                   />
-                  <Label htmlFor="criminal" className="text-white">
+                  <Label htmlFor="criminal" className="text-gray-800">
                     Criminal Law & Procedure
                   </Label>
                 </div>
@@ -276,7 +278,7 @@ export function StudyPlanGenerator({ onClose, uuid }: StudyPlanGeneratorProps) {
             </div>
 
             <div className="space-y-2">
-              <Label className="text-white">
+              <Label className="text-gray-800">
                 What is your preferred study schedule?
               </Label>
               <RadioGroup
@@ -287,9 +289,9 @@ export function StudyPlanGenerator({ onClose, uuid }: StudyPlanGeneratorProps) {
                   <RadioGroupItem
                     value="weekday"
                     id="weekday"
-                    className="border-[#2a2a2f]"
+                    className="border-gray-300"
                   />
-                  <Label htmlFor="weekday" className="text-white">
+                  <Label htmlFor="weekday" className="text-gray-800">
                     Weekdays (Monday-Friday)
                   </Label>
                 </div>
@@ -297,9 +299,9 @@ export function StudyPlanGenerator({ onClose, uuid }: StudyPlanGeneratorProps) {
                   <RadioGroupItem
                     value="weekend"
                     id="weekend"
-                    className="border-[#2a2a2f]"
+                    className="border-gray-300"
                   />
-                  <Label htmlFor="weekend" className="text-white">
+                  <Label htmlFor="weekend" className="text-gray-800">
                     Weekends (Saturday-Sunday)
                   </Label>
                 </div>
@@ -307,9 +309,9 @@ export function StudyPlanGenerator({ onClose, uuid }: StudyPlanGeneratorProps) {
                   <RadioGroupItem
                     value="everyday"
                     id="everyday"
-                    className="border-[#2a2a2f]"
+                    className="border-gray-300"
                   />
-                  <Label htmlFor="everyday" className="text-white">
+                  <Label htmlFor="everyday" className="text-gray-800">
                     Every day
                   </Label>
                 </div>
@@ -321,7 +323,7 @@ export function StudyPlanGenerator({ onClose, uuid }: StudyPlanGeneratorProps) {
         {step === 3 && (
           <div className="space-y-6">
             <div className="space-y-2">
-              <Label className="text-white">
+              <Label className="text-gray-800">
                 Do you have any specific areas you want to focus on?
               </Label>
               <div className="grid grid-cols-2 gap-2">
@@ -344,9 +346,9 @@ export function StudyPlanGenerator({ onClose, uuid }: StudyPlanGeneratorProps) {
                           : focusAreas.filter((a) => a !== area.id);
                         setFocusAreas(updatedAreas);
                       }}
-                      className="rounded border-[#2a2a2f] bg-[#1a1a1f]"
+                      className="rounded border-gray-300 bg-white text-primary focus:ring-primary h-4 w-4"
                     />
-                    <Label htmlFor={area.id} className="text-white">
+                    <Label htmlFor={area.id} className="text-gray-800">
                       {area.label}
                     </Label>
                   </div>
@@ -355,7 +357,7 @@ export function StudyPlanGenerator({ onClose, uuid }: StudyPlanGeneratorProps) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="materials" className="text-white">
+              <Label htmlFor="materials" className="text-gray-800">
                 What Bar Exam prep materials do you have access to?
               </Label>
               <Select
@@ -364,11 +366,11 @@ export function StudyPlanGenerator({ onClose, uuid }: StudyPlanGeneratorProps) {
               >
                 <SelectTrigger
                   id="materials"
-                  className="bg-[#1a1a1f] border-[#2a2a2f] text-white"
+                  className="bg-white border-gray-300 text-gray-900"
                 >
                   <SelectValue placeholder="Select materials" />
                 </SelectTrigger>
-                <SelectContent className="bg-[#1a1a1f] border-[#2a2a2f] text-white">
+                <SelectContent className="bg-white border-gray-300 text-gray-900">
                   <SelectItem value="kaplan">Kaplan</SelectItem>
                   <SelectItem value="barbri">Barbri</SelectItem>
                   <SelectItem value="themis">Themis</SelectItem>
@@ -379,13 +381,13 @@ export function StudyPlanGenerator({ onClose, uuid }: StudyPlanGeneratorProps) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="additional" className="text-white">
+              <Label htmlFor="additional" className="text-gray-800">
                 Any additional information you'd like to share?
               </Label>
               <Input
                 id="additional"
                 placeholder="E.g., specific challenges, learning style, etc."
-                className="h-20 bg-[#1a1a1f] border-[#2a2a2f] text-white placeholder:text-gray-500"
+                className="h-20 bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
                 value={additionalInfo}
                 onChange={(e) => setAdditionalInfo(e.target.value)}
               />
@@ -395,8 +397,8 @@ export function StudyPlanGenerator({ onClose, uuid }: StudyPlanGeneratorProps) {
 
         {isGenerating && (
           <div className="flex flex-col items-center justify-center py-8">
-            <div className="mb-4 h-12 w-12 animate-spin rounded-full border-4 border-[#1a1a1f] border-t-gray-500"></div>
-            <p className="text-center text-gray-400">
+            <div className="mb-4 h-12 w-12 animate-spin rounded-full border-4 border-gray-200 border-t-primary"></div>
+            <p className="text-center text-gray-600">
               Generating your personalized study plan...
               <br />
               This will take just a moment.
@@ -408,14 +410,14 @@ export function StudyPlanGenerator({ onClose, uuid }: StudyPlanGeneratorProps) {
         <Button
           variant="outline"
           onClick={handleBack}
-          className="bg-[#1a1a1f] border-[#2a2a2f] text-white hover:bg-[#2a2a2f]"
+          className="bg-white border-gray-300 text-gray-700 hover:bg-gray-50"
         >
           {step === 1 ? "Cancel" : "Back"}
         </Button>
         <Button
           onClick={handleNext}
           disabled={!isFormValid() || isGenerating}
-          className="bg-[#1a1a1f] hover:bg-[#2a2a2f] text-white"
+          className="bg-primary hover:bg-primary/90 text-white"
         >
           {step === 3 ? "Generate Plan" : "Next"}
         </Button>

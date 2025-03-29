@@ -161,7 +161,7 @@ export default function LandingPage() {
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <div className="flex items-center">
                 <Gavel className="h-6 w-6 mr-2 text-black" />
-                <span className="font-instrument">LexPrep</span>
+                <span className="font-instrument">Prep for Law</span>
               </div>
             </motion.div>
           </Link>
@@ -766,8 +766,8 @@ export default function LandingPage() {
               What Our Users Say
             </h2>
             <p className="text-center text-gray-600 mb-16 max-w-3xl mx-auto text-lg">
-              Join thousands of aspiring lawyers who trust LexPrep to help them
-              pass the bar exam
+              Join thousands of aspiring lawyers who trust Prep for Law to help
+              them pass the bar exam
             </p>
           </motion.div>
 
@@ -794,7 +794,7 @@ export default function LandingPage() {
                 <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
               </div>
               <p className="text-gray-700 text-base mb-6 italic">
-                "LexPrep has been a game changer for my studies. The
+                "Prep for Law has been a game changer for my studies. The
                 comprehensive study materials and mock exams helped me pass the
                 bar exam on my first attempt!"
               </p>
@@ -824,7 +824,7 @@ export default function LandingPage() {
               <p className="text-gray-700 text-base mb-6 italic">
                 "The practice exams were incredibly realistic and helped me
                 build the confidence I needed to succeed. I highly recommend
-                LexPrep to anyone preparing for the bar exam."
+                Prep for Law to anyone preparing for the bar exam."
               </p>
               <div className="flex items-center">
                 <div className="w-12 h-12 rounded-full mr-3 overflow-hidden bg-gray-200 flex items-center justify-center">
@@ -860,7 +860,7 @@ export default function LandingPage() {
               </div>
               <p className="text-gray-700 text-base mb-6 italic">
                 "As a working professional, I needed a flexible study solution.
-                LexPrep provided exactly what I needed with their on-demand
+                Prep for Law provided exactly what I needed with their on-demand
                 resources and personalized study plan."
               </p>
               <div className="flex items-center">
@@ -893,7 +893,6 @@ export default function LandingPage() {
             variants={fadeIn}
             className="text-center mb-16"
           >
-
             <h2 className="font-instrument text-4xl font-normal mb-8 text-center text-black">
               Frequently Asked Questions
             </h2>
@@ -970,8 +969,8 @@ export default function LandingPage() {
               with confidence?
             </h2>
             <p className="text-gray-600 text-lg mb-12">
-              Join thousands of aspiring lawyers who trust LexPrep to help them
-              achieve their goals.
+              Join thousands of aspiring lawyers who trust Prep for Law to help
+              them achieve their goals.
             </p>
 
             <motion.div
@@ -1022,7 +1021,7 @@ export default function LandingPage() {
               >
                 <div className="flex items-center">
                   <Gavel className="h-6 w-6 mr-2" />
-                  LexPrep
+                  Prep for Law
                 </div>
               </Link>
               <p className="text-gray-600 text-sm mt-2 max-w-xs">
@@ -1109,7 +1108,7 @@ export default function LandingPage() {
             transition={{ duration: 0.5, delay: 0.4 }}
           >
             <div className="text-sm text-gray-500 mb-4 md:mb-0">
-              © 2024 LexPrep - All rights reserved
+              © 2024 Prep for Law - All rights reserved
             </div>
             <div className="flex flex-wrap justify-center space-x-6 text-sm text-gray-500">
               <Link

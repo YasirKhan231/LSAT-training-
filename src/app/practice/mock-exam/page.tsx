@@ -66,25 +66,25 @@ export default function MockExamPage() {
     <ProtectedRoute>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-white">
         <header className="py-8">
-          <h1 className="text-3xl font-extrabold text-black">
+          <h1 className="text-3xl font-extrabold text-gray-900">
             Full-Length BAR simulated exams
           </h1>
-          <p className="mt-2 text-lg text-black">
+          <p className="mt-2 text-lg text-gray-700">
             Take realistic timed BAR practice tests with AI-powered analysis and
             feedback
           </p>
 
           {!isSubscriptionActive && (
-            <div className="mt-4 bg-white border border-[#1a1a1f] rounded-md p-4 shadow-lg">
+            <div className="mt-4 bg-gray-50 border border-gray-200 rounded-md p-4 shadow-sm">
               <div className="flex items-start">
-                <div className="bg-white p-2 rounded-full border border-[#2a2a3f] mr-3">
-                  <Crown className="h-5 w-5 text-amber-400" />
+                <div className="bg-amber-50 p-2 rounded-full border border-amber-200 mr-3">
+                  <Crown className="h-5 w-5 text-amber-600" />
                 </div>
-                <p className="text-black flex-1">
+                <p className="text-gray-700 flex-1">
                   Free users get access to all practice exams.{" "}
                   <Link
                     href="/subscription"
-                    className="ml-1 font-medium text-amber-400 hover:text-amber-300 underline underline-offset-4 transition-colors"
+                    className="ml-1 font-medium text-amber-600 hover:text-amber-500 underline underline-offset-4 transition-colors"
                   >
                     Upgrade to Premium
                   </Link>{" "}
@@ -98,33 +98,35 @@ export default function MockExamPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
           {/* Left Column - Exam List */}
           <div className="lg:col-span-2">
-            <h2 className="text-xl font-bold text-black mb-4">
+            <h2 className="text-xl font-bold text-gray-900 mb-4">
               Available Practice Tests
             </h2>
             <div className="space-y-4">
               {availableExamsForUser.map((exam) => (
                 <Card
                   key={exam.id}
-                  className={`transition-all cursor-pointer bg-white border-[#1a1a1f] hover:border-[#2a2a2f] ${
-                    selectedExam?.id === exam.id ? "ring-2 ring-[#3a3a4f]" : ""
+                  className={`transition-all cursor-pointer bg-white border-gray-200 hover:border-gray-300 ${
+                    selectedExam?.id === exam.id ? "ring-2 ring-gray-900" : ""
                   }`}
                   onClick={() => handleExamClick(exam)}
                 >
                   <CardHeader className="pb-2">
                     <div className="flex justify-between items-center">
-                      <CardTitle className="text-black">{exam.title}</CardTitle>
+                      <CardTitle className="text-gray-900">
+                        {exam.title}
+                      </CardTitle>
                       <Badge
                         variant={
                           exam.difficulty === "Hard" ? "destructive" : "default"
                         }
-                        className="bg-black text-white border-[#1a1a1f]"
+                        className="bg-gray-900 text-white"
                       >
                         {exam.difficulty}
                       </Badge>
                     </div>
                   </CardHeader>
                   <CardContent className="pb-2">
-                    <div className="text-sm text-black">
+                    <div className="text-sm text-gray-700">
                       <p>
                         {exam.questions} questions •{" "}
                         {Math.floor(exam.duration / 60)}h {exam.duration % 60}m
@@ -139,7 +141,7 @@ export default function MockExamPage() {
                       {exam.aiAssisted && (
                         <Badge
                           variant="outline"
-                          className="text-black border-[#1a1a1f] bg-white"
+                          className="text-gray-700 border-gray-300 bg-white"
                         >
                           AI-Assisted
                         </Badge>
@@ -147,7 +149,7 @@ export default function MockExamPage() {
                       {exam.isCustomizable && (
                         <Badge
                           variant="outline"
-                          className="text-black border-[#1a1a1f] bg-white"
+                          className="text-gray-700 border-gray-300 bg-white"
                         >
                           Customizable
                         </Badge>
@@ -161,12 +163,12 @@ export default function MockExamPage() {
 
           {/* Right Column - Placeholder Content */}
           <div className="hidden lg:block">
-            <h2 className="text-xl font-bold text-black mb-4">
+            <h2 className="text-xl font-bold text-gray-900 mb-4">
               Exam Preparation Tips
             </h2>
-            <Card className="bg-white border-[#1a1a1f]">
+            <Card className="bg-white border-gray-200">
               <CardContent className="p-6">
-                <div className="space-y-4 text-black">
+                <div className="space-y-4 text-gray-700">
                   <div>
                     <h3 className="font-medium mb-2">Time Management</h3>
                     <p className="text-sm">
@@ -195,15 +197,15 @@ export default function MockExamPage() {
 
         {/* Exam Details Popup */}
         {showPopup && selectedExam && (
-          <div className="fixed inset-0 bg-white bg-opacity-70 flex items-center justify-center z-50 p-4">
-            <div className="bg-white border border-[#2a2a3f] rounded-lg p-6 w-full max-w-2xl">
+          <div className="fixed inset-0 bg-gray-500 bg-opacity-70 flex items-center justify-center z-50 p-4">
+            <div className="bg-white border border-gray-300 rounded-lg p-6 w-full max-w-2xl shadow-xl">
               <div className="flex justify-between items-start mb-4">
-                <h2 className="text-2xl font-bold text-black">
+                <h2 className="text-2xl font-bold text-gray-900">
                   {selectedExam.title}
                 </h2>
                 <button
                   onClick={() => setShowPopup(false)}
-                  className="text-gray-400 hover:text-black"
+                  className="text-gray-500 hover:text-gray-700"
                 >
                   <X className="h-5 w-5" />
                 </button>
@@ -212,41 +214,41 @@ export default function MockExamPage() {
               <div className="space-y-6">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <h3 className="text-sm font-medium text-gray-400 mb-1">
+                    <h3 className="text-sm font-medium text-gray-500 mb-1">
                       Questions
                     </h3>
-                    <p className="text-black">{selectedExam.questions}</p>
+                    <p className="text-gray-900">{selectedExam.questions}</p>
                   </div>
                   <div>
-                    <h3 className="text-sm font-medium text-gray-400 mb-1">
+                    <h3 className="text-sm font-medium text-gray-500 mb-1">
                       Duration
                     </h3>
-                    <p className="text-black">
+                    <p className="text-gray-900">
                       {Math.floor(selectedExam.duration / 60)}h{" "}
                       {selectedExam.duration % 60}m
                     </p>
                   </div>
                   <div>
-                    <h3 className="text-sm font-medium text-gray-400 mb-1">
+                    <h3 className="text-sm font-medium text-gray-500 mb-1">
                       Difficulty
                     </h3>
-                    <p className="text-black">{selectedExam.difficulty}</p>
+                    <p className="text-gray-900">{selectedExam.difficulty}</p>
                   </div>
                   <div>
-                    <h3 className="text-sm font-medium text-gray-400 mb-1">
+                    <h3 className="text-sm font-medium text-gray-500 mb-1">
                       Sections
                     </h3>
-                    <p className="text-black">
+                    <p className="text-gray-900">
                       {selectedExam.sections.length} sections
                     </p>
                   </div>
                 </div>
 
                 <div>
-                  <h3 className="text-sm font-medium text-gray-400 mb-2">
+                  <h3 className="text-sm font-medium text-gray-500 mb-2">
                     Features
                   </h3>
-                  <ul className="list-disc list-inside text-black space-y-1">
+                  <ul className="list-disc list-inside text-gray-700 space-y-1">
                     <li>Realistic exam conditions with timed sections</li>
                     <li>AI-powered performance analysis</li>
                     <li>Instant scoring and feedback</li>
@@ -256,7 +258,7 @@ export default function MockExamPage() {
                 </div>
 
                 <div>
-                  <h3 className="text-sm font-medium text-gray-400 mb-2">
+                  <h3 className="text-sm font-medium text-gray-500 mb-2">
                     Settings
                   </h3>
                   <div className="space-y-3">
@@ -267,7 +269,7 @@ export default function MockExamPage() {
                         className="mr-2"
                         defaultChecked
                       />
-                      <label htmlFor="timing" className="text-sm text-black">
+                      <label htmlFor="timing" className="text-sm text-gray-700">
                         Enable strict timing
                       </label>
                     </div>
@@ -278,7 +280,10 @@ export default function MockExamPage() {
                         className="mr-2"
                         defaultChecked
                       />
-                      <label htmlFor="ai-hints" className="text-sm text-black">
+                      <label
+                        htmlFor="ai-hints"
+                        className="text-sm text-gray-700"
+                      >
                         Enable AI hints (limited to 3 per section)
                       </label>
                     </div>
@@ -287,7 +292,7 @@ export default function MockExamPage() {
 
                 <div className="pt-4">
                   <Link href={`/practice/mock-exam/${selectedExam.id}`}>
-                    <Button className="w-full bg-white hover:bg-whitehover:text-black text-black border border-[#1a1a1f]">
+                    <Button className="w-full bg-gray-900 hover:bg-gray-800 text-white">
                       Start Exam
                     </Button>
                   </Link>
@@ -298,11 +303,11 @@ export default function MockExamPage() {
         )}
 
         {/* Premium feature: Custom Exam Creation */}
-        <div className="mt-12 bg-white rounded-lg p-6 border border-[#1a1a1f]">
-          <h2 className="text-xl font-bold text-black mb-2">
+        <div className="mt-12 bg-gray-50 rounded-lg p-6 border border-gray-200">
+          <h2 className="text-xl font-bold text-gray-900 mb-2">
             AI-Powered Exam Creation
           </h2>
-          <p className="text-black mb-4">
+          <p className="text-gray-700 mb-4">
             {isSubscriptionActive
               ? "Create a custom exam tailored to your specific needs and weaknesses"
               : "Upgrade to premium to create custom exams tailored to your specific needs and weaknesses"}
@@ -310,7 +315,7 @@ export default function MockExamPage() {
           <Link href={isSubscriptionActive ? "#" : "/subscription"}>
             <Button
               variant="outline"
-              className="bg-white border-[#1a1a1f] text-black hover:bg-gray-100"
+              className="bg-white border-gray-300 text-gray-700 hover:bg-gray-100 hover:text-black"
             >
               {isSubscriptionActive
                 ? "Create Custom Exam"

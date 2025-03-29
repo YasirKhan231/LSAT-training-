@@ -1,11 +1,10 @@
-"use client"; // Mark this component as a Client Component
-
+"use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import app from "@/lib/firebase";
 import { ArrowLeft, BookOpen, Clock, Edit } from "lucide-react";
-import { usePathname } from "next/navigation"; // Use `usePathname` from `next/navigation`
+import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -16,19 +15,18 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { StudyPlanGenerator } from "@/components/study-plan-generator";
-import { studyPlans, type StudyPlanKey } from "@/data/plan"; // Import studyPlans and StudyPlanKey
+import { studyPlans, type StudyPlanKey } from "@/data/plan";
 
 export default function StudyPlan() {
   const [showGenerator, setShowGenerator] = useState(false);
   const [uuid, setUuid] = useState<string | null>(null);
   const [userData, setUserData] = useState<any>(null);
-  const [planKey, setPlanKey] = useState<StudyPlanKey>("terrible"); // State to store plan key
+  const [planKey, setPlanKey] = useState<StudyPlanKey>("terrible");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const auth = getAuth(app);
-  const pathname = usePathname(); // Use `usePathname` to detect route changes
+  const pathname = usePathname();
 
-  // Fetch the authenticated user's UID when the component mounts
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
@@ -44,14 +42,12 @@ export default function StudyPlan() {
     return () => unsubscribe();
   }, [auth]);
 
-  // Re-fetch data when the route changes or UUID changes
   useEffect(() => {
     if (uuid) {
       fetchUserData(uuid);
     }
-  }, [pathname, uuid]); // Use `pathname` instead of `router.pathname`
+  }, [pathname, uuid]);
 
-  // Fetch user data from the backend API
   const fetchUserData = async (uid: string) => {
     try {
       const response = await fetch(`/api/user?uuid=${uid}`);
@@ -60,8 +56,6 @@ export default function StudyPlan() {
       }
       const data = await response.json();
       setUserData(data);
-
-      // Set planKey based on questionDataKey from the database
       setPlanKey(data.questionDataKey || "terrible");
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -71,7 +65,6 @@ export default function StudyPlan() {
     }
   };
 
-  // Calculate days remaining until the Bar Exam
   const calculateDaysRemaining = (barExamTestDate: string) => {
     const today = new Date();
     const examDate = new Date(barExamTestDate);
@@ -79,7 +72,6 @@ export default function StudyPlan() {
     return Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
   };
 
-  // Format the Bar Exam date
   const formatBarExamDate = (barExamTestDate: string) => {
     const date = new Date(barExamTestDate);
     return date.toLocaleDateString("en-US", {
@@ -89,7 +81,6 @@ export default function StudyPlan() {
     });
   };
 
-  // Get today's date in a readable format
   const getTodayDate = () => {
     const today = new Date();
     return today.toLocaleDateString("en-US", {
@@ -100,26 +91,20 @@ export default function StudyPlan() {
     });
   };
 
-  // Get the current week's date range (from today to 7 days later)
   const getCurrentWeekDates = () => {
     const today = new Date();
     const endOfWeek = new Date(today);
-    endOfWeek.setDate(today.getDate() + 6); // Add 6 days to get the end of the week
-
-    const startDate = today.toLocaleDateString("en-US", {
+    endOfWeek.setDate(today.getDate() + 6);
+    return `${today.toLocaleDateString("en-US", {
       month: "long",
       day: "numeric",
-    });
-    const endDate = endOfWeek.toLocaleDateString("en-US", {
+    })} - ${endOfWeek.toLocaleDateString("en-US", {
       month: "long",
       day: "numeric",
       year: "numeric",
-    });
-
-    return `${startDate} - ${endDate}`;
+    })}`;
   };
 
-  // Get the current month and year
   const getCurrentMonth = () => {
     const today = new Date();
     return today.toLocaleDateString("en-US", {
@@ -130,15 +115,15 @@ export default function StudyPlan() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
+      <div className="flex justify-center items-center h-screen bg-white">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900"></div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="container mx-auto px-4 py-6 text-red-400 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]">
+      <div className="container mx-auto px-4 py-6 text-red-600 bg-white">
         {error}
       </div>
     );
@@ -146,17 +131,16 @@ export default function StudyPlan() {
 
   if (!userData) {
     return (
-      <div className="container mx-auto px-4 py-6 text-white bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]">
+      <div className="container mx-auto px-4 py-6 text-gray-900 bg-white">
         No user data found.
       </div>
     );
   }
 
-  // Get the study plan based on the planKey
   const studyPlan = studyPlans[planKey];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] text-white px-4 py-6">
+    <div className="min-h-screen bg-white text-gray-900 px-4 py-6">
       <div className="mx-auto w-full max-w-6xl">
         <div className="mb-6 flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -164,18 +148,18 @@ export default function StudyPlan() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="text-white hover:text-white hover:bg-[#1a1a1f]"
+                className="text-gray-900 hover:text-gray-900 hover:bg-gray-100"
               >
                 <ArrowLeft className="h-5 w-5" />
               </Button>
             </Link>
-            <h1 className="text-2xl sm:text-3xl font-bold text-white">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
               Bar Exam Study Plan
             </h1>
           </div>
           <Button
             onClick={() => setShowGenerator(true)}
-            className="bg-gradient-to-r from-[#121218] to-[#1a1a1f] hover:from-[#1a1a1f] hover:to-[#1a1a1f] text-white border-none"
+            className="bg-gray-900 text-white hover:bg-gray-800"
           >
             <Edit className="mr-2 h-4 w-4" />
             <span className="hidden sm:inline">Adjust Plan</span>
@@ -183,73 +167,78 @@ export default function StudyPlan() {
           </Button>
         </div>
 
-        {showGenerator && uuid ? ( // Only show StudyPlanGenerator if UUID (UID) is available
+        {showGenerator && uuid ? (
           <StudyPlanGenerator
             onClose={() => setShowGenerator(false)}
-            uuid={uuid} // Pass the UID as the UUID to the StudyPlanGenerator
+            uuid={uuid}
           />
         ) : (
           <>
-            {/* Bar Exam Date and Scores */}
-            <div className="mb-6 rounded-lg border border-[#1a1a1f] bg-[#121218]/20 p-4 backdrop-blur-sm">
+            <div className="mb-6 rounded-lg border border-gray-200 bg-gray-50 p-4">
               <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <h3 className="font-medium text-white">Your Bar Exam Date</h3>
-                  <p className="text-sm text-white">
+                  <h3 className="font-medium text-gray-900">
+                    Your Bar Exam Date
+                  </h3>
+                  <p className="text-sm text-gray-700">
                     {formatBarExamDate(userData.barExamTestDate)} (
                     {calculateDaysRemaining(userData.barExamTestDate)} days
                     remaining)
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium text-white">
+                  <span className="text-sm font-medium text-gray-900">
                     Target:{" "}
-                    <span className="text-white">{userData.targetScore}</span>
+                    <span className="text-gray-900">
+                      {userData.targetScore}
+                    </span>
                   </span>
-                  <span className="text-sm font-medium text-slate-500">|</span>
-                  <span className="text-sm font-medium text-white">
+                  <span className="text-sm font-medium text-gray-400">|</span>
+                  <span className="text-sm font-medium text-gray-900">
                     Current:{" "}
-                    <span className="text-white">{userData.currentScore}</span>
+                    <span className="text-gray-900">
+                      {userData.currentScore}
+                    </span>
                   </span>
                 </div>
               </div>
             </div>
 
             <Tabs defaultValue="weekly" className="space-y-6">
-              <TabsList className="mb-6 grid w-full grid-cols-3 bg-[#121218] p-1">
+              <TabsList className="mb-6 grid w-full grid-cols-3 bg-gray-100 p-1">
                 <TabsTrigger
                   value="daily"
-                  className="data-[state=active]:bg-[#1a1a1f] data-[state=active]:text-white text-xs sm:text-sm"
+                  className="data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=active]:shadow-sm text-xs sm:text-sm"
                 >
                   Daily
                 </TabsTrigger>
                 <TabsTrigger
                   value="weekly"
-                  className="data-[state=active]:bg-[#1a1a1f] data-[state=active]:text-white text-xs sm:text-sm"
+                  className="data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=active]:shadow-sm text-xs sm:text-sm"
                 >
                   Weekly
                 </TabsTrigger>
                 <TabsTrigger
                   value="monthly"
-                  className="data-[state=active]:bg-[#1a1a1f] data-[state=active]:text-white text-xs sm:text-sm"
+                  className="data-[state=active]:bg-white data-[state=active]:text-gray-900 data-[state=active]:shadow-sm text-xs sm:text-sm"
                 >
                   Monthly
                 </TabsTrigger>
               </TabsList>
 
               <TabsContent value="daily" className="space-y-6">
-                <Card className="border-[#1a1a1f] shadow-xl bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] backdrop-blur-sm">
+                <Card className="border-gray-200 shadow-sm">
                   <CardHeader>
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                       <div>
-                        <CardTitle className="text-white">
+                        <CardTitle className="text-gray-900">
                           Today's Study Plan
                         </CardTitle>
-                        <CardDescription className="text-white">
+                        <CardDescription className="text-gray-600">
                           {getTodayDate()}
                         </CardDescription>
                       </div>
-                      <div className="flex items-center gap-2 text-sm text-white">
+                      <div className="flex items-center gap-2 text-sm text-gray-700">
                         <Clock className="h-4 w-4" />
                         <span>3 hours total</span>
                       </div>
@@ -260,21 +249,23 @@ export default function StudyPlan() {
                       {studyPlan.today.map((task: string, index: number) => (
                         <div
                           key={index}
-                          className="rounded-lg border border-[#1a1a1f] p-4 bg-[#121218]/20"
+                          className="rounded-lg border border-gray-200 p-4 bg-white"
                         >
                           <div className="mb-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                             <div className="flex items-center gap-2">
-                              <div className="rounded-full bg-[#121218]/30 p-1.5 border border-[#1a1a1f]/30">
-                                <BookOpen className="h-4 w-4 text-white" />
+                              <div className="rounded-full bg-gray-100 p-1.5 border border-gray-200">
+                                <BookOpen className="h-4 w-4 text-gray-900" />
                               </div>
-                              <h3 className="font-medium text-white">{task}</h3>
+                              <h3 className="font-medium text-gray-900">
+                                {task}
+                              </h3>
                             </div>
-                            <div className="flex items-center gap-2 text-sm text-white">
+                            <div className="flex items-center gap-2 text-sm text-gray-700">
                               <Clock className="h-4 w-4" />
                               <span>30 minutes</span>
                             </div>
                           </div>
-                          <p className="text-sm text-white">
+                          <p className="text-sm text-gray-700">
                             Complete 15 practice questions focusing on{" "}
                             {task.toLowerCase()}.
                           </p>
@@ -286,12 +277,12 @@ export default function StudyPlan() {
               </TabsContent>
 
               <TabsContent value="weekly" className="space-y-6">
-                <Card className="border-[#1a1a1f] shadow-xl bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] backdrop-blur-sm">
+                <Card className="border-gray-200 shadow-sm">
                   <CardHeader>
-                    <CardTitle className="text-white">
+                    <CardTitle className="text-gray-900">
                       Weekly Study Plan
                     </CardTitle>
-                    <CardDescription className="text-white">
+                    <CardDescription className="text-gray-600">
                       {getCurrentWeekDates()}
                     </CardDescription>
                   </CardHeader>
@@ -301,17 +292,14 @@ export default function StudyPlan() {
                         (tasks: string[], index: number) => (
                           <div
                             key={index}
-                            className="rounded-lg border border-[#1a1a1f] p-4 bg-[#121218]/20"
+                            className="rounded-lg border border-gray-200 p-4 bg-white"
                           >
-                            <h3 className="mb-3 font-medium text-white">
+                            <h3 className="mb-3 font-medium text-gray-900">
                               Week {index + 1}
                             </h3>
-                            <ul className="ml-4 sm:ml-6 list-disc space-y-2">
+                            <ul className="ml-4 sm:ml-6 list-disc space-y-2 text-gray-700">
                               {tasks.map((task, taskIndex) => (
-                                <li
-                                  key={taskIndex}
-                                  className="text-sm text-white"
-                                >
+                                <li key={taskIndex} className="text-sm">
                                   {task}
                                 </li>
                               ))}
@@ -325,12 +313,12 @@ export default function StudyPlan() {
               </TabsContent>
 
               <TabsContent value="monthly" className="space-y-6">
-                <Card className="border-[#1a1a1f] shadow-xl bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] backdrop-blur-sm">
+                <Card className="border-gray-200 shadow-sm">
                   <CardHeader>
-                    <CardTitle className="text-white">
+                    <CardTitle className="text-gray-900">
                       Monthly Study Plan
                     </CardTitle>
-                    <CardDescription className="text-white">
+                    <CardDescription className="text-gray-600">
                       {getCurrentMonth()}
                     </CardDescription>
                   </CardHeader>
@@ -340,17 +328,14 @@ export default function StudyPlan() {
                         (tasks: string[], index: number) => (
                           <div
                             key={index}
-                            className="rounded-lg border border-[#1a1a1f] p-4 bg-[#121218]/20"
+                            className="rounded-lg border border-gray-200 p-4 bg-white"
                           >
-                            <h3 className="mb-3 font-medium text-white">
+                            <h3 className="mb-3 font-medium text-gray-900">
                               Month {index + 1}
                             </h3>
-                            <ul className="ml-4 sm:ml-6 list-disc space-y-2">
+                            <ul className="ml-4 sm:ml-6 list-disc space-y-2 text-gray-700">
                               {tasks.map((task, taskIndex) => (
-                                <li
-                                  key={taskIndex}
-                                  className="text-sm text-white"
-                                >
+                                <li key={taskIndex} className="text-sm">
                                   {task}
                                 </li>
                               ))}

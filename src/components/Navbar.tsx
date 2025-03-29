@@ -32,7 +32,7 @@ export default function Navbar() {
       return (
         <Link
           href="/subscription"
-          className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-gradient-to-r from-amber-800 to-amber-600 text-amber-300 font-medium"
+          className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-gradient-to-r from-amber-600 to-amber-500 text-white font-medium"
         >
           <Crown className="h-4 w-4 mr-1" />
           {subscriptionTier === "one-time" ? "Premium" : "Weekly Premium"}
@@ -43,7 +43,7 @@ export default function Navbar() {
     return (
       <Link
         href="/subscription"
-        className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-[#1a1a1f] text-gray-300 font-medium hover:bg-[#2a2a2f]"
+        className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-gray-100 text-gray-800 font-medium hover:bg-gray-200"
       >
         Upgrade
       </Link>
@@ -96,12 +96,14 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] shadow-sm border-b border-[#1a1a1f]">
+    <nav className="bg-white shadow-sm border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex">
             <Link href="/" className="flex items-center">
-              <span className="text-xl font-bold text-white">Prep For Law</span>
+              <span className="text-xl font-bold text-gray-900">
+                Prep For Law
+              </span>
             </Link>
             {userLoggedIn && (
               <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
@@ -111,8 +113,8 @@ export default function Navbar() {
                       href={item.href}
                       className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
                         pathname === item.href
-                          ? "border-gray-500 text-white"
-                          : "border-transparent text-gray-400 hover:border-[#2a2a2f] hover:text-gray-300"
+                          ? "border-blue-500 text-gray-900"
+                          : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
                       }`}
                     >
                       {item.icon}
@@ -120,15 +122,15 @@ export default function Navbar() {
                     </Link>
 
                     {item.subItems && (
-                      <div className="absolute left-0 mt-2 w-48 bg-[#121218] rounded-md shadow-lg py-1 z-10 hidden group-hover:block border border-[#1a1a1f]">
+                      <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden group-hover:block border border-gray-200">
                         {item.subItems.map((subItem) => (
                           <Link
                             key={subItem.href}
                             href={subItem.href}
                             className={`block px-4 py-2 text-sm ${
                               pathname === subItem.href
-                                ? "bg-[#1a1a1f] text-gray-300"
-                                : "text-gray-300 hover:bg-[#1a1a1f]"
+                                ? "bg-gray-100 text-gray-900"
+                                : "text-gray-700 hover:bg-gray-100"
                             }`}
                           >
                             <div className="flex items-center">
@@ -149,7 +151,7 @@ export default function Navbar() {
             <div className="ml-4 sm:hidden">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-300 hover:bg-[#1a1a1f]"
+                className="inline-flex items-center justify-center p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100"
               >
                 <span className="sr-only">Open main menu</span>
                 {isMenuOpen ? (
@@ -172,8 +174,8 @@ export default function Navbar() {
                   href={item.href}
                   className={`block px-3 py-2 rounded-md text-base font-medium ${
                     pathname === item.href
-                      ? "bg-[#1a1a1f] text-gray-300"
-                      : "text-gray-300 hover:bg-[#1a1a1f]"
+                      ? "bg-gray-100 text-gray-900"
+                      : "text-gray-700 hover:bg-gray-100"
                   }`}
                 >
                   <div className="flex items-center">
@@ -190,8 +192,8 @@ export default function Navbar() {
                         href={subItem.href}
                         className={`block px-3 py-2 rounded-md text-sm font-medium ${
                           pathname === subItem.href
-                            ? "bg-[#1a1a1f] text-gray-300"
-                            : "text-gray-400 hover:bg-[#1a1a1f]"
+                            ? "bg-gray-100 text-gray-900"
+                            : "text-gray-600 hover:bg-gray-100"
                         }`}
                       >
                         <div className="flex items-center">

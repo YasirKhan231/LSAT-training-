@@ -15,8 +15,9 @@ import {
   BrainCircuit,
 } from "lucide-react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import app from "@/lib/firebase"; // Import your Firebase app instance
+import app from "@/lib/firebase";
 import { useRouter } from "next/navigation";
+
 interface ExamResult {
   examId: string;
   barScore: number;
@@ -43,27 +44,26 @@ export default function ResultsPage() {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [uuid, setUuid] = useState<string | null>(null); // Track user UUID
+  const [uuid, setUuid] = useState<string | null>(null);
   const router = useRouter();
-  // Fetch UUID from Firebase Auth
+
   useEffect(() => {
     const auth = getAuth(app);
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        setUuid(user.uid); // Set the UUID from Firebase Auth
+        setUuid(user.uid);
       } else {
         console.error("User not authenticated");
         setUuid(null);
       }
     });
 
-    return () => unsubscribe(); // Cleanup subscription
+    return () => unsubscribe();
   }, []);
 
-  // Fetch user data using UUID
   useEffect(() => {
     const fetchUserData = async () => {
-      if (!uuid) return; // Ensure UUID is available
+      if (!uuid) return;
 
       try {
         const response = await fetch(`/api/user?uuid=${uuid}`);
@@ -83,7 +83,6 @@ export default function ResultsPage() {
     fetchUserData();
   }, [uuid]);
 
-  // Handle exit and send data to the backend
   const handleExit = async () => {
     if (!uuid) {
       console.error("UUID is not set. User may not be authenticated.");
@@ -105,8 +104,6 @@ export default function ResultsPage() {
       if (!response.ok) {
         throw new Error("Failed to send data to the backend");
       }
-
-      console.log("Data sent to the backend successfully");
     } catch (err) {
       console.error("Error sending data to the backend:", err);
     }
@@ -114,43 +111,35 @@ export default function ResultsPage() {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-white"></div>
+      <div className="flex justify-center items-center h-screen bg-white">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900"></div>
       </div>
     );
   }
 
   if (error) {
-    return (
-      <div className="text-white bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]">
-        {error}
-      </div>
-    );
+    return <div className="text-gray-900 bg-white">{error}</div>;
   }
 
   if (!userData || !userData.examResult) {
-    return (
-      <div className="text-white bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]">
-        Results not found
-      </div>
-    );
+    return <div className="text-gray-900 bg-white">Results not found</div>;
   }
 
   const results = userData.examResult;
 
   return (
     <ProtectedRoute>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-white">
         <header className="mb-8">
           <div className="flex justify-between items-center">
-            <h1 className="text-3xl font-extrabold text-white">
+            <h1 className="text-3xl font-extrabold text-gray-900">
               Exam Results & Analysis
             </h1>
             <div className="flex space-x-3">
               <Link href="/practice/mock-exam">
                 <Button
                   size="sm"
-                  className="bg-[#121218] hover:bg-[#1a1a1f] text-white border border-[#1a1a1f]"
+                  className="bg-gray-900 hover:bg-gray-800 text-white border border-gray-900"
                 >
                   Take Another Exam
                 </Button>
@@ -158,54 +147,56 @@ export default function ResultsPage() {
               <Button
                 size="sm"
                 onClick={() => router.push("/dashboard")}
-                className="bg-[#121218] hover:bg-[#1a1a1f] text-white border border-[#1a1a1f]"
+                className="bg-gray-900 hover:bg-gray-800 text-white border border-gray-900"
               >
                 Exit
               </Button>
             </div>
           </div>
-          <p className="mt-2 text-lg text-white">
+          <p className="mt-2 text-lg text-gray-700">
             AI-powered analysis of your {results.examId} performance
           </p>
         </header>
 
         {/* Score Overview */}
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-3 mb-8">
-          <Card className="bg-[#121218] border-[#1a1a1f]">
+          <Card className="bg-white border-gray-200">
             <CardHeader className="pb-2">
-              <CardTitle className="text-lg font-medium text-white">
+              <CardTitle className="text-lg font-medium text-gray-900">
                 BAR Score
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-baseline">
-                <span className="text-5xl font-bold text-white">
+                <span className="text-5xl font-bold text-gray-900">
                   {results.barScore}
                 </span>
-                <span className="ml-2 text-white">/ {userData.totalMarks}</span>
+                <span className="ml-2 text-gray-700">
+                  / {userData.totalMarks}
+                </span>
               </div>
-              <p className="mt-1 text-sm text-white">
+              <p className="mt-1 text-sm text-gray-700">
                 {results.percentile}th percentile
               </p>
             </CardContent>
           </Card>
 
-          <Card className="bg-[#121218] border-[#1a1a1f]">
+          <Card className="bg-white border-gray-200">
             <CardHeader className="pb-2">
-              <CardTitle className="text-lg font-medium text-white">
+              <CardTitle className="text-lg font-medium text-gray-900">
                 Questions
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-baseline">
-                <span className="text-5xl font-bold text-[#6366f1]">
+                <span className="text-5xl font-bold text-gray-900">
                   {results.correctAnswers}
                 </span>
-                <span className="ml-2 text-white">
+                <span className="ml-2 text-gray-700">
                   / {results.totalQuestions} correct
                 </span>
               </div>
-              <p className="mt-1 text-sm text-white">
+              <p className="mt-1 text-sm text-gray-700">
                 {Math.round(
                   (results.correctAnswers / results.totalQuestions) * 100
                 )}
@@ -214,20 +205,20 @@ export default function ResultsPage() {
             </CardContent>
           </Card>
 
-          <Card className="bg-[#121218] border-[#1a1a1f]">
+          <Card className="bg-white border-gray-200">
             <CardHeader className="pb-2">
-              <CardTitle className="text-lg font-medium text-white">
+              <CardTitle className="text-lg font-medium text-gray-900">
                 Time Management
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-baseline">
-                <span className="text-5xl font-bold text-white">
+                <span className="text-5xl font-bold text-gray-900">
                   {results.totalTimeMinutes}
                 </span>
-                <span className="ml-2 text-white">minutes total</span>
+                <span className="ml-2 text-gray-700">minutes total</span>
               </div>
-              <p className="mt-1 text-sm text-white">
+              <p className="mt-1 text-sm text-gray-700">
                 ~{results.averageTimePerQuestion} seconds per question
               </p>
             </CardContent>
@@ -235,20 +226,20 @@ export default function ResultsPage() {
         </div>
 
         {/* Main Results Interface */}
-        <Tabs defaultValue="overview" className="text-white">
-          <TabsList className="mb-6 bg-[#121218]">
+        <Tabs defaultValue="overview" className="text-gray-900">
+          <TabsList className="mb-6 bg-white border border-gray-200">
             <TabsTrigger
               value="overview"
-              className="data-[state=active]:bg-[#1a1a1f]/30 data-[state=active]:text-white"
+              className="data-[state=active]:bg-gray-100 data-[state=active]:text-gray-900"
             >
-              <BarChart3 className="h-4 w-4 mr-1" />
+              <BarChart3 className="h-4 w-4 mr-1 text-gray-900" />
               Overview
             </TabsTrigger>
             <TabsTrigger
               value="ai-analysis"
-              className="data-[state=active]:bg-[#1a1a1f]/30 data-[state=active]:text-white"
+              className="data-[state=active]:bg-gray-100 data-[state=active]:text-gray-900"
             >
-              <BrainCircuit className="h-4 w-4 mr-1" />
+              <BrainCircuit className="h-4 w-4 mr-1 text-gray-900" />
               AI Analysis
             </TabsTrigger>
           </TabsList>
@@ -256,9 +247,9 @@ export default function ResultsPage() {
           {/* Overview Tab */}
           <TabsContent value="overview">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card className="bg-[#121218] border-[#1a1a1f]">
+              <Card className="bg-white border-gray-200">
                 <CardHeader>
-                  <CardTitle className="text-white">
+                  <CardTitle className="text-gray-900">
                     Performance Summary
                   </CardTitle>
                 </CardHeader>
@@ -266,10 +257,10 @@ export default function ResultsPage() {
                   <div className="space-y-4">
                     <div>
                       <div className="flex justify-between items-center mb-1">
-                        <span className="text-sm font-medium text-white">
+                        <span className="text-sm font-medium text-gray-900">
                           Correct
                         </span>
-                        <span className="text-sm text-white">
+                        <span className="text-sm text-gray-700">
                           {results.correctAnswers} questions
                         </span>
                       </div>
@@ -278,17 +269,17 @@ export default function ResultsPage() {
                           (results.correctAnswers / results.totalQuestions) *
                           100
                         }
-                        className="h-2 bg-[#1a1a1f]"
-                        indicatorClassName="bg-[#6366f1]"
+                        className="h-2 bg-gray-100"
+                        indicatorClassName="bg-gray-900"
                       />
                     </div>
 
                     <div>
                       <div className="flex justify-between items-center mb-1">
-                        <span className="text-sm font-medium text-white">
+                        <span className="text-sm font-medium text-gray-900">
                           Incorrect
                         </span>
-                        <span className="text-sm text-white">
+                        <span className="text-sm text-gray-700">
                           {results.incorrectAnswers} questions
                         </span>
                       </div>
@@ -297,17 +288,17 @@ export default function ResultsPage() {
                           (results.incorrectAnswers / results.totalQuestions) *
                           100
                         }
-                        className="h-2 bg-[#1a1a1f]"
-                        indicatorClassName="bg-[#6366f1]"
+                        className="h-2 bg-gray-100"
+                        indicatorClassName="bg-gray-900"
                       />
                     </div>
 
                     <div>
                       <div className="flex justify-between items-center mb-1">
-                        <span className="text-sm font-medium text-white">
+                        <span className="text-sm font-medium text-gray-900">
                           Skipped
                         </span>
-                        <span className="text-sm text-white">
+                        <span className="text-sm text-gray-700">
                           {results.skippedAnswers} questions
                         </span>
                       </div>
@@ -316,8 +307,8 @@ export default function ResultsPage() {
                           (results.skippedAnswers / results.totalQuestions) *
                           100
                         }
-                        className="h-2 bg-[#1a1a1f]"
-                        indicatorClassName="bg-[#6366f1]"
+                        className="h-2 bg-gray-100"
+                        indicatorClassName="bg-gray-900"
                       />
                     </div>
                   </div>
@@ -325,25 +316,25 @@ export default function ResultsPage() {
               </Card>
 
               <div className="space-y-6">
-                <Card className="bg-[#121218] border-[#1a1a1f]">
+                <Card className="bg-white border-gray-200">
                   <CardHeader>
-                    <CardTitle className="text-white">Strengths</CardTitle>
+                    <CardTitle className="text-gray-900">Strengths</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <ul className="space-y-2">
                       {results.strengths.map((strength, index) => (
                         <li key={index} className="flex items-start">
-                          <CheckCircle2 className="h-5 w-5 text-[#6366f1] mr-2 shrink-0 mt-0.5" />
-                          <span className="text-white">{strength}</span>
+                          <CheckCircle2 className="h-5 w-5 text-gray-900 mr-2 shrink-0 mt-0.5" />
+                          <span className="text-gray-900">{strength}</span>
                         </li>
                       ))}
                     </ul>
                   </CardContent>
                 </Card>
 
-                <Card className="bg-[#121218] border-[#1a1a1f]">
+                <Card className="bg-white border-gray-200">
                   <CardHeader>
-                    <CardTitle className="text-white">
+                    <CardTitle className="text-gray-900">
                       Areas for Improvement
                     </CardTitle>
                   </CardHeader>
@@ -351,8 +342,8 @@ export default function ResultsPage() {
                     <ul className="space-y-2">
                       {results.areasForImprovement.map((area, index) => (
                         <li key={index} className="flex items-start">
-                          <AlertCircle className="h-5 w-5 text-[#6366f1] mr-2 shrink-0 mt-0.5" />
-                          <span className="text-white">{area}</span>
+                          <AlertCircle className="h-5 w-5 text-gray-900 mr-2 shrink-0 mt-0.5" />
+                          <span className="text-gray-900">{area}</span>
                         </li>
                       ))}
                     </ul>
@@ -365,15 +356,15 @@ export default function ResultsPage() {
           {/* AI Analysis Tab */}
           <TabsContent value="ai-analysis">
             <div className="space-y-6">
-              <div className="bg-[#121218]/20 p-6 rounded-lg border border-[#1a1a1f]">
-                <h3 className="text-lg font-medium text-white mb-3">
+              <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
+                <h3 className="text-lg font-medium text-gray-900 mb-3">
                   AI-Generated Study Recommendation
                 </h3>
-                <p className="text-white mb-4">
+                <p className="text-gray-700 mb-4">
                   Based on your performance, I recommend focusing on the
                   following areas:
                 </p>
-                <ul className="space-y-2 text-white">
+                <ul className="space-y-2 text-gray-900">
                   {results.areasForImprovement.map((area, index) => (
                     <li key={index} className="flex items-start">
                       <span className="font-bold mr-2">{index + 1}.</span>
@@ -382,7 +373,7 @@ export default function ResultsPage() {
                   ))}
                 </ul>
                 <div className="mt-4">
-                  <Button className="bg-[#121218] hover:bg-[#1a1a1f] text-white border border-[#1a1a1f]">
+                  <Button className="bg-gray-900 hover:bg-gray-800 text-white border border-gray-900">
                     Create Personalized Study Plan
                   </Button>
                 </div>

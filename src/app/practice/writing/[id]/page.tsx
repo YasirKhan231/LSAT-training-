@@ -1,7 +1,6 @@
 "use client";
 
 import type React from "react";
-
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,7 +18,6 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
-// Sample essay questions data (same as in index page)
 const essayQuestions = [
   {
     id: "constitutional-law",
@@ -28,7 +26,7 @@ const essayQuestions = [
       "Analyze the following constitutional law issue: The state of Jefferson has passed a law requiring all social media companies to verify the age of their users and prohibit access to anyone under 18. Discuss the constitutional implications of this law.",
     category: "Constitutional Law",
     difficulty: "Advanced",
-    timeLimit: 60, // minutes
+    timeLimit: 60,
   },
   {
     id: "contract-law",
@@ -37,7 +35,7 @@ const essayQuestions = [
       "A software company offers a 'free trial' of their product but requires users to provide credit card information. The terms state that users will be automatically charged after 30 days unless they cancel. Many users report they were unaware of the automatic renewal. Analyze the contract law issues presented.",
     category: "Contract Law",
     difficulty: "Intermediate",
-    timeLimit: 45, // minutes
+    timeLimit: 45,
   },
   {
     id: "criminal-law",
@@ -46,7 +44,7 @@ const essayQuestions = [
       "A defendant is charged with burglary after entering an unlocked garage and taking a bicycle. The defendant claims they believed the bicycle was abandoned property. Analyze the elements of burglary and whether the prosecution can prove their case.",
     category: "Criminal Law",
     difficulty: "Intermediate",
-    timeLimit: 50, // minutes
+    timeLimit: 50,
   },
   {
     id: "international-law",
@@ -55,7 +53,7 @@ const essayQuestions = [
       "Two neighboring countries dispute ownership of an island that emerged in a river that forms their border due to geological activity. Analyze this territorial dispute under international law principles.",
     category: "International Law",
     difficulty: "Advanced",
-    timeLimit: 60, // minutes
+    timeLimit: 60,
   },
   {
     id: "torts",
@@ -64,7 +62,7 @@ const essayQuestions = [
       "A grocery store fails to clean up a spilled liquid for over an hour despite multiple employees walking past it. A customer slips and suffers serious injuries. Analyze the potential tort claims against the grocery store and possible defenses.",
     category: "Torts",
     difficulty: "Intermediate",
-    timeLimit: 45, // minutes
+    timeLimit: 45,
   },
   {
     id: "property-law",
@@ -73,7 +71,7 @@ const essayQuestions = [
       "Two neighbors dispute ownership of a strip of land between their properties. One neighbor has maintained the land (mowing grass, planting flowers) for 15 years but never had formal title. The other neighbor holds the deed to the property. Analyze the adverse possession claim.",
     category: "Property Law",
     difficulty: "Advanced",
-    timeLimit: 55, // minutes
+    timeLimit: 55,
   },
   {
     id: "civil-procedure",
@@ -82,7 +80,7 @@ const essayQuestions = [
       "A plaintiff files a lawsuit in federal court based on diversity jurisdiction. The defendant moves to dismiss for improper venue. The plaintiff argues the venue is proper because a substantial part of the events occurred there. Analyze the venue requirements and how the court should rule.",
     category: "Civil Procedure",
     difficulty: "Advanced",
-    timeLimit: 50, // minutes
+    timeLimit: 50,
   },
   {
     id: "evidence",
@@ -91,7 +89,7 @@ const essayQuestions = [
       "In a criminal trial, the prosecution wants to introduce the defendant's prior conviction for the same offense from 10 years ago. The defense objects. Analyze whether the evidence should be admitted under the Federal Rules of Evidence.",
     category: "Evidence",
     difficulty: "Intermediate",
-    timeLimit: 40, // minutes
+    timeLimit: 40,
   },
   {
     id: "professional-responsibility",
@@ -100,7 +98,34 @@ const essayQuestions = [
       "A lawyer discovers their client intends to commit perjury during an upcoming deposition. The client refuses to change their testimony. Analyze the lawyer's ethical obligations under the Model Rules of Professional Conduct.",
     category: "Professional Responsibility",
     difficulty: "Intermediate",
-    timeLimit: 45, // minutes
+    timeLimit: 45,
+  },
+  {
+    id: "family-law",
+    title: "Family Law Case Study",
+    prompt:
+      "A same-sex couple married in State A moves to State B, where same-sex marriage is not recognized. They seek to divorce in State B. Analyze the constitutional and conflict of law issues presented.",
+    category: "Family Law",
+    difficulty: "Advanced",
+    timeLimit: 55,
+  },
+  {
+    id: "tax-law",
+    title: "Tax Law Analysis",
+    prompt:
+      "A state imposes a higher sales tax rate on out-of-state online retailers than on in-state brick-and-mortar stores. Analyze whether this tax scheme violates the Commerce Clause of the U.S. Constitution.",
+    category: "Tax Law",
+    difficulty: "Advanced",
+    timeLimit: 50,
+  },
+  {
+    id: "environmental-law",
+    title: "Environmental Law Issue",
+    prompt:
+      "A federal agency issues new regulations limiting greenhouse gas emissions from power plants. Several states and industry groups challenge the regulations. Analyze the statutory and constitutional arguments for and against the regulations.",
+    category: "Environmental Law",
+    difficulty: "Advanced",
+    timeLimit: 60,
   },
 ];
 
@@ -119,9 +144,8 @@ export default function EssayPracticePage() {
   const [sessionStarted, setSessionStarted] = useState(false);
 
   useEffect(() => {
-    // Set the time limit based on the selected question
     if (question) {
-      setTimeRemaining(question.timeLimit * 60); // Convert minutes to seconds
+      setTimeRemaining(question.timeLimit * 60);
     }
   }, [question]);
 
@@ -153,22 +177,16 @@ export default function EssayPracticePage() {
       setFeedback(data);
     } catch (error) {
       console.error("Error submitting essay:", error);
-      // Mock feedback for demonstration purposes
       setFeedback({
         structure: 0.75,
-        structureFeedback:
-          "Good organization with clear introduction, body paragraphs, and conclusion.",
+        structureFeedback: "Good organization with clear sections.",
         legalAnalysis: 0.68,
-        legalAnalysisFeedback:
-          "Solid analysis of First Amendment issues, but could expand on Commerce Clause implications.",
+        legalAnalysisFeedback: "Solid legal analysis but could expand further.",
         writingQuality: 0.82,
-        writingQualityFeedback:
-          "Clear writing style with good use of legal terminology and minimal grammatical errors.",
+        writingQualityFeedback: "Clear writing with minimal errors.",
         suggestions: [
-          "Consider discussing relevant case law such as Packingham v. North Carolina.",
-          "Expand on the state's interest in protecting minors versus First Amendment rights.",
-          "Address potential technological challenges in age verification.",
-          "Consider the impact on interstate commerce more thoroughly.",
+          "Consider discussing relevant case law.",
+          "Expand on constitutional implications.",
         ],
       });
     }
@@ -203,7 +221,6 @@ export default function EssayPracticePage() {
     }
   };
 
-  // Timer effect
   useEffect(() => {
     if (isTimerRunning && timeRemaining > 0) {
       const timer = setInterval(() => {
@@ -218,16 +235,16 @@ export default function EssayPracticePage() {
 
   if (!question) {
     return (
-      <div className="container mx-auto px-4 py-8 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] min-h-screen">
+      <div className="container mx-auto px-4 py-8 bg-white min-h-screen">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-3xl font-bold text-white mb-4">
+          <h1 className="text-3xl font-bold text-gray-900 mb-4">
             Question Not Found
           </h1>
-          <p className="text-gray-400 mb-6">
+          <p className="text-gray-600 mb-6">
             The essay question you're looking for doesn't exist.
           </p>
           <Link href="/practice/writing">
-            <Button className="bg-[#1a1a1f] hover:bg-[#2a2a2f] text-white">
+            <Button className="bg-gray-900 hover:bg-gray-800 text-white">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Questions
             </Button>
@@ -238,29 +255,29 @@ export default function EssayPracticePage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] min-h-screen">
+    <div className="container mx-auto px-4 py-8 bg-white min-h-screen">
       <div className="max-w-4xl mx-auto">
         <div className="flex justify-between items-center mb-6">
           <div className="flex items-center">
             <Link href="/practice/writing">
               <Button
                 variant="ghost"
-                className="text-gray-400 hover:text-white"
+                className="text-gray-600 hover:text-gray-900"
               >
                 <ArrowLeft className="h-5 w-5" />
               </Button>
             </Link>
-            <h1 className="text-3xl font-bold text-white ml-2">
+            <h1 className="text-3xl font-bold text-gray-900 ml-2">
               {question.title}
             </h1>
           </div>
           <div className="flex items-center space-x-2">
-            <Clock className="h-5 w-5 text-gray-400" />
+            <Clock className="h-5 w-5 text-gray-600" />
             <span
               className={`font-mono ${
                 timeRemaining < 300 && isTimerRunning
-                  ? "text-red-500"
-                  : "text-white"
+                  ? "text-red-600"
+                  : "text-gray-900"
               }`}
             >
               {formatTime(timeRemaining)}
@@ -269,35 +286,35 @@ export default function EssayPracticePage() {
         </div>
 
         <div className="flex gap-3 mb-6">
-          <span className="inline-block px-2 py-1 text-xs rounded-full bg-[#1a1a1f] text-gray-300">
+          <span className="inline-block px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-700">
             {question.category}
           </span>
-          <span className="inline-block px-2 py-1 text-xs rounded-full bg-[#1a1a1f] text-gray-300">
+          <span className="inline-block px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-700">
             {question.difficulty}
           </span>
-          <span className="inline-block px-2 py-1 text-xs rounded-full bg-[#1a1a1f] text-gray-300">
+          <span className="inline-block px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-700">
             {question.timeLimit} minutes
           </span>
         </div>
 
-        <Card className="mb-6 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] border-[#1a1a1f]">
+        <Card className="mb-6 bg-white border-gray-200">
           <CardHeader>
-            <CardTitle className="text-white">Prompt</CardTitle>
+            <CardTitle className="text-gray-900">Prompt</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-gray-400">{question.prompt}</p>
+            <p className="text-gray-700">{question.prompt}</p>
           </CardContent>
         </Card>
 
         {!sessionStarted && !feedback ? (
           <div className="flex flex-col items-center justify-center py-12">
-            <p className="text-gray-400 mb-6 text-center max-w-lg">
+            <p className="text-gray-600 mb-6 text-center max-w-lg">
               You will have {question.timeLimit} minutes to complete this essay.
               The timer will start when you click the button below.
             </p>
             <Button
               onClick={startSession}
-              className="flex items-center bg-[#1a1a1f] hover:bg-[#2a2a2f] text-white px-6 py-2"
+              className="flex items-center bg-gray-900 hover:bg-gray-800 text-white px-6 py-2"
               size="lg"
             >
               <Play className="mr-2 h-4 w-4" />
@@ -306,11 +323,11 @@ export default function EssayPracticePage() {
           </div>
         ) : (
           <>
-            <Card className="mb-6 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] border-[#1a1a1f]">
+            <Card className="mb-6 bg-white border-gray-200">
               <CardContent className="p-4">
                 <Textarea
                   placeholder="Write your essay here..."
-                  className="min-h-[400px] p-4 bg-[#1a1a1f] border-[#2a2a2f] text-white placeholder:text-gray-500"
+                  className="min-h-[400px] p-4 bg-white border-gray-300 text-gray-900 placeholder:text-gray-400"
                   value={essay}
                   onChange={handleInputChange}
                   disabled={!!feedback || !isTimerRunning}
@@ -326,7 +343,7 @@ export default function EssayPracticePage() {
                       <Button
                         onClick={pauseTimer}
                         variant="outline"
-                        className="flex items-center border-[#2a2a2f] text-white"
+                        className="flex items-center border-gray-300 text-gray-900"
                       >
                         <Pause className="mr-2 h-4 w-4" />
                         Pause
@@ -335,7 +352,7 @@ export default function EssayPracticePage() {
                       <Button
                         onClick={resumeTimer}
                         variant="outline"
-                        className="flex items-center border-[#2a2a2f] text-white"
+                        className="flex items-center border-gray-300 text-gray-900"
                       >
                         <Play className="mr-2 h-4 w-4" />
                         Resume
@@ -346,7 +363,7 @@ export default function EssayPracticePage() {
                 <Button
                   onClick={resetSession}
                   variant="outline"
-                  className="flex items-center border-[#2a2a2f] text-white"
+                  className="flex items-center border-gray-300 text-gray-900"
                 >
                   <RotateCcw className="mr-2 h-4 w-4" />
                   Reset
@@ -357,7 +374,7 @@ export default function EssayPracticePage() {
                 <Button
                   onClick={handleSubmit}
                   disabled={isSubmitting || !essay.trim() || !sessionStarted}
-                  className="flex items-center bg-[#1a1a1f] hover:bg-[#2a2a2f] text-white"
+                  className="flex items-center bg-gray-900 hover:bg-gray-800 text-white"
                 >
                   <Send className="mr-2 h-4 w-4" />
                   {isSubmitting ? "Analyzing..." : "Submit for Analysis"}
@@ -368,55 +385,58 @@ export default function EssayPracticePage() {
         )}
 
         {feedback && (
-          <Card className="mt-6 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] border-[#1a1a1f]">
+          <Card className="mt-6 bg-white border-gray-200">
             <CardHeader className="flex flex-row items-center">
-              <CardTitle className="text-white">AI Analysis</CardTitle>
-              <CheckCircle className="ml-2 h-5 w-5 text-green-500" />
+              <CardTitle className="text-gray-900">AI Analysis</CardTitle>
+              <CheckCircle className="ml-2 h-5 w-5 text-green-600" />
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div>
-                  <h3 className="font-medium mb-2 text-white">Structure</h3>
+                  <h3 className="font-medium mb-2 text-gray-900">Structure</h3>
                   <Progress
                     value={feedback.structure * 100}
-                    className="mb-2 bg-[#1a1a1f]"
+                    className="mb-2 bg-gray-100"
+                    indicatorClassName="bg-gray-900"
                   />
-                  <p className="text-sm text-gray-400">
+                  <p className="text-sm text-gray-700">
                     {feedback.structureFeedback}
                   </p>
                 </div>
 
                 <div>
-                  <h3 className="font-medium mb-2 text-white">
+                  <h3 className="font-medium mb-2 text-gray-900">
                     Legal Analysis
                   </h3>
                   <Progress
                     value={feedback.legalAnalysis * 100}
-                    className="mb-2 bg-[#1a1a1f]"
+                    className="mb-2 bg-gray-100"
+                    indicatorClassName="bg-gray-900"
                   />
-                  <p className="text-sm text-gray-400">
+                  <p className="text-sm text-gray-700">
                     {feedback.legalAnalysisFeedback}
                   </p>
                 </div>
 
                 <div>
-                  <h3 className="font-medium mb-2 text-white">
+                  <h3 className="font-medium mb-2 text-gray-900">
                     Writing Quality
                   </h3>
                   <Progress
                     value={feedback.writingQuality * 100}
-                    className="mb-2 bg-[#1a1a1f]"
+                    className="mb-2 bg-gray-100"
+                    indicatorClassName="bg-gray-900"
                   />
-                  <p className="text-sm text-gray-400">
+                  <p className="text-sm text-gray-700">
                     {feedback.writingQualityFeedback}
                   </p>
                 </div>
 
-                <div className="bg-[#1a1a1f]/50 p-4 rounded-lg border border-[#2a2a2f]">
-                  <h3 className="font-medium mb-2 text-white">
+                <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                  <h3 className="font-medium mb-2 text-gray-900">
                     Improvement Suggestions
                   </h3>
-                  <ul className="list-disc list-inside text-gray-300 space-y-1">
+                  <ul className="list-disc list-inside text-gray-700 space-y-1">
                     {feedback.suggestions.map(
                       (suggestion: string, index: number) => (
                         <li key={index}>{suggestion}</li>

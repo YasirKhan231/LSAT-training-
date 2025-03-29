@@ -190,18 +190,10 @@ export default function DashboardPage() {
   }
 
   if (error)
-    return (
-      <div className="text-center p-4 text-red-400">
-        Error: {error}
-      </div>
-    );
+    return <div className="text-center p-4 text-red-400">Error: {error}</div>;
 
   if (!userData)
-    return (
-      <div className="text-center p-4">
-        No user data found.
-      </div>
-    );
+    return <div className="text-center p-4">No user data found.</div>;
 
   const {
     practiceHistory = [],

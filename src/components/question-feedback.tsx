@@ -32,17 +32,17 @@ export function QuestionFeedbackComponent({
     <div>
       <Card
         className={cn(
-          "border-2 shadow-md rounded-xl overflow-hidden bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f]",
-          feedback.isCorrect ? "border-green-800" : "border-red-800"
+          "border shadow rounded-xl overflow-hidden bg-white",
+          feedback.isCorrect ? "border-green-300" : "border-red-300"
         )}
       >
         <CardHeader
           className={cn(
             "pb-2",
-            feedback.isCorrect ? "bg-green-900/20" : "bg-red-900/20"
+            feedback.isCorrect ? "bg-green-50" : "bg-red-50"
           )}
         >
-          <CardTitle className="flex items-center text-lg text-white">
+          <CardTitle className="flex items-center text-lg text-gray-900">
             {feedback.isCorrect ? (
               <>
                 <CheckCircle className="mr-2 h-5 w-5 text-green-500" />
@@ -58,14 +58,14 @@ export function QuestionFeedbackComponent({
         </CardHeader>
         <CardContent className="pt-4">
           <div className="space-y-4">
-            <p className="text-sm text-gray-400">{feedback.aiSuggestion}</p>
+            <p className="text-sm text-gray-600">{feedback.aiSuggestion}</p>
 
             <div className="flex items-center gap-2">
               <Button
                 variant="outline"
                 size="sm"
                 onClick={onToggleExplanation}
-                className="flex items-center bg-[#1a1a1f] border-[#2a2a2f] text-white hover:bg-[#2a2a2f]"
+                className="flex items-center bg-white border-gray-300 text-gray-700 hover:bg-gray-50"
               >
                 <HelpCircle className="mr-2 h-4 w-4" />
                 {showExplanation ? "Hide Explanation" : "Show Explanation"}
@@ -76,7 +76,7 @@ export function QuestionFeedbackComponent({
                   variant="outline"
                   size="sm"
                   onClick={() => setShowAIResponse(!showAIResponse)}
-                  className="flex items-center bg-[#1a1a1f] border-[#2a2a2f] text-white hover:bg-[#2a2a2f]"
+                  className="flex items-center bg-white border-gray-300 text-gray-700 hover:bg-gray-50"
                 >
                   <MessageSquare className="mr-2 h-4 w-4" />
                   {showAIResponse ? "Hide AI Response" : "Ask AI for Help"}
@@ -85,19 +85,19 @@ export function QuestionFeedbackComponent({
             </div>
 
             {showExplanation && (
-              <div className="mt-4 p-4 bg-[#1a1a1f]/50 rounded-md shadow-sm border border-[#2a2a2f]">
-                <h4 className="font-medium mb-2 text-white">Explanation</h4>
-                <p className="text-sm text-gray-300">{feedback.explanation}</p>
+              <div className="mt-4 p-4 bg-gray-50 rounded-md shadow-sm border border-gray-200">
+                <h4 className="font-medium mb-2 text-gray-900">Explanation</h4>
+                <p className="text-sm text-gray-600">{feedback.explanation}</p>
               </div>
             )}
 
             {showAIResponse && aiResponse && (
-              <div className="mt-4 p-4 bg-[#1a1a1f]/50 rounded-md shadow-sm border border-[#2a2a2f]">
-                <h4 className="font-medium mb-2 flex items-center text-white">
-                  <MessageSquare className="mr-2 h-4 w-4 text-gray-400" />
+              <div className="mt-4 p-4 bg-gray-50 rounded-md shadow-sm border border-gray-200">
+                <h4 className="font-medium mb-2 flex items-center text-gray-900">
+                  <MessageSquare className="mr-2 h-4 w-4 text-gray-500" />
                   AI Assistance
                 </h4>
-                <p className="text-sm text-gray-300">{aiResponse}</p>
+                <p className="text-sm text-gray-600">{aiResponse}</p>
               </div>
             )}
           </div>
