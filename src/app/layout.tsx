@@ -15,12 +15,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true); // Changed to true by default
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
+      // Close sidebar by default on mobile
+      if (window.innerWidth < 768) {
+        setIsSidebarOpen(false);
+      }
     };
 
     checkMobile();
