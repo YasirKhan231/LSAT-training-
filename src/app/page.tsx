@@ -27,10 +27,10 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function LandingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [countdown, setCountdown] = useState({
-    days: 2,
-    hours: 19,
-    minutes: 7,
-    seconds: 38,
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
   });
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -46,28 +46,61 @@ export default function LandingPage() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+  useEffect(() => {
+    // Only run on client
+    if (typeof window === "undefined") return;
+
+    const examDate = new Date("2025-07-30T00:00:00");
+
+    const updateCountdown = () => {
+      const now = new Date();
+      const diff = examDate.getTime() - now.getTime();
+
+      if (diff <= 0) {
+        setCountdown({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+        return;
+      }
+
+      setCountdown({
+        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+        minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
+        seconds: Math.floor((diff % (1000 * 60)) / 1000),
+      });
+    };
+
+    // Initial update
+    updateCountdown();
+
+    // Set up interval
+    const timer = setInterval(updateCountdown, 1000);
+
+    // Clean up
+    return () => clearInterval(timer);
+  }, []);
 
   // Countdown timer
   useEffect(() => {
     const timer = setInterval(() => {
       setCountdown((prev) => {
-        const newSeconds = prev.seconds - 1;
-        if (newSeconds >= 0) return { ...prev, seconds: newSeconds };
+        // If we've reached the exam date, stop the timer
+        const examDate = new Date("2025-07-30T00:00:00").getTime();
+        const now = new Date().getTime();
+        if (now >= examDate) {
+          clearInterval(timer);
+          return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+        }
 
-        const newMinutes = prev.minutes - 1;
-        if (newMinutes >= 0)
-          return { ...prev, minutes: newMinutes, seconds: 59 };
+        // Calculate new time remaining
+        const diff = examDate - now;
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor(
+          (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-        const newHours = prev.hours - 1;
-        if (newHours >= 0)
-          return { ...prev, hours: newHours, minutes: 59, seconds: 59 };
-
-        const newDays = prev.days - 1;
-        if (newDays >= 0)
-          return { days: newDays, hours: 23, minutes: 59, seconds: 59 };
-
-        clearInterval(timer);
-        return prev;
+        return { days, hours, minutes, seconds };
       });
     }, 1000);
 
@@ -331,8 +364,8 @@ export default function LandingPage() {
             className="bg-white backdrop-blur-sm rounded-full px-6 py-3 flex items-center space-x-3 shadow-lg border border-gray-200"
             whileHover={{ scale: 1.02 }}
           >
-            <Flame className="h-5 w-5 text-black" />
-            <span className="text-sm font-medium">Launch Event Ends</span>
+            <Bookmark className="h-5 w-5 text-black" />
+            <span className="text-sm font-medium">Bar Exam: July 30, 2025</span>
             <motion.div
               className="flex space-x-2"
               variants={staggerContainer}
