@@ -203,70 +203,70 @@ export default function LegalAnalysisPage() {
 
   if (isLoadingProblem) {
     return (
-      <div className="container mx-auto px-4 py-8 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] min-h-screen flex items-center justify-center">
-        <p className="text-white">Loading problem...</p>
+      <div className="container mx-auto px-4 py-8 bg-white min-h-screen flex items-center justify-center">
+        <p className="text-black">Loading problem...</p>
       </div>
     );
   }
 
   if (!problem) {
     return (
-      <div className="container mx-auto px-4 py-8 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] min-h-screen flex items-center justify-center">
-        <p className="text-white">Problem not found</p>
+      <div className="container mx-auto px-4 py-8 bg-white min-h-screen flex items-center justify-center">
+        <p className="text-black">Problem not found</p>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] min-h-screen">
+    <div className="container mx-auto px-4 py-8 bg-white min-h-screen">
       <div className="mb-6 flex items-center gap-4">
         <Link href="/case-study/analysis">
           <Button
             variant="ghost"
             size="icon"
-            className="text-gray-500 hover:bg-[#1a1a1f] hover:text-white"
+            className="text-gray-600 hover:bg-gray-100 hover:text-black"
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
         </Link>
-        <h1 className="text-3xl font-bold text-white">
+        <h1 className="text-3xl font-bold text-black">
           Legal Analysis Practice
         </h1>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="bg-[#121218] border-[#1a1a1f]">
+        <Card className="bg-white border-gray-200">
           <CardHeader>
-            <CardTitle className="text-white">{problem.title}</CardTitle>
+            <CardTitle className="text-black">{problem.title}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <div>
-                <h3 className="font-medium mb-2 text-white">Facts:</h3>
-                <p className="text-gray-500">{problem.facts}</p>
+                <h3 className="font-medium mb-2 text-black">Facts:</h3>
+                <p className="text-gray-700">{problem.facts}</p>
               </div>
               <div>
-                <h3 className="font-medium mb-2 text-white">Question:</h3>
-                <p className="text-gray-500">{problem.question}</p>
+                <h3 className="font-medium mb-2 text-black">Question:</h3>
+                <p className="text-gray-700">{problem.question}</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
         <div className="space-y-6">
-          <Card className="bg-[#121218] border-[#1a1a1f]">
+          <Card className="bg-white border-gray-200">
             <CardHeader>
-              <CardTitle className="text-white">Your Analysis</CardTitle>
+              <CardTitle className="text-black">Your Analysis</CardTitle>
             </CardHeader>
             <CardContent>
               <Textarea
                 value={analysis}
                 onChange={(e) => setAnalysis(e.target.value)}
                 placeholder="Enter your legal analysis here..."
-                className="min-h-[200px] bg-[#0a0a0f] border-[#1a1a1f] text-white placeholder:text-gray-500"
+                className="min-h-[200px] bg-white border-gray-300 text-black placeholder:text-gray-500"
               />
               <Button
-                className="w-full mt-4 bg-[#1a1a1f] hover:bg-[#2a2a2f] text-white"
+                className="w-full mt-4 bg-gray-800 hover:bg-gray-700 text-white"
                 onClick={handleSubmitAnalysis}
                 disabled={isLoading}
               >
@@ -276,9 +276,9 @@ export default function LegalAnalysisPage() {
             </CardContent>
           </Card>
           {feedback && (
-            <Card className="bg-[#121218] border-[#1a1a1f]">
+            <Card className="bg-white border-gray-200">
               <CardHeader>
-                <CardTitle className="text-white">AI Feedback</CardTitle>
+                <CardTitle className="text-black">AI Feedback</CardTitle>
               </CardHeader>
               <CardContent>
                 {feedback.error ? (
@@ -286,18 +286,18 @@ export default function LegalAnalysisPage() {
                 ) : (
                   <div className="space-y-4">
                     <div>
-                      <h3 className="font-medium mb-2 text-white">Score:</h3>
-                      <p className="text-gray-500">{feedback.score * 100}%</p>
+                      <h3 className="font-medium mb-2 text-black">Score:</h3>
+                      <p className="text-gray-700">{feedback.score * 100}%</p>
                     </div>
                     <div>
-                      <h3 className="font-medium mb-2 text-white">Feedback:</h3>
-                      <p className="text-gray-500">{feedback.feedback}</p>
+                      <h3 className="font-medium mb-2 text-black">Feedback:</h3>
+                      <p className="text-gray-700">{feedback.feedback}</p>
                     </div>
                     <div>
-                      <h3 className="font-medium mb-2 text-white">
+                      <h3 className="font-medium mb-2 text-black">
                         Suggestions:
                       </h3>
-                      <ul className="list-disc list-inside text-gray-500">
+                      <ul className="list-disc list-inside text-gray-700">
                         {feedback.suggestions.map(
                           (suggestion: string, index: number) => (
                             <li key={index}>{suggestion}</li>
@@ -306,41 +306,41 @@ export default function LegalAnalysisPage() {
                       </ul>
                     </div>
                     <div>
-                      <h3 className="font-medium mb-2 text-white">
+                      <h3 className="font-medium mb-2 text-black">
                         Model Analysis:
                       </h3>
-                      <div className="space-y-3 text-gray-500">
+                      <div className="space-y-3 text-gray-700">
                         <div>
-                          <h4 className="font-medium text-gray-300">Facts:</h4>
-                          <p className="text-gray-500">
+                          <h4 className="font-medium text-gray-800">Facts:</h4>
+                          <p className="text-gray-700">
                             {feedback.analysis.facts}
                           </p>
                         </div>
                         <div>
-                          <h4 className="font-medium text-gray-300">Issue:</h4>
-                          <p className="text-gray-500">
+                          <h4 className="font-medium text-gray-800">Issue:</h4>
+                          <p className="text-gray-700">
                             {feedback.analysis.issue}
                           </p>
                         </div>
                         <div>
-                          <h4 className="font-medium text-gray-300">Rule:</h4>
-                          <p className="text-gray-500">
+                          <h4 className="font-medium text-gray-800">Rule:</h4>
+                          <p className="text-gray-700">
                             {feedback.analysis.rule}
                           </p>
                         </div>
                         <div>
-                          <h4 className="font-medium text-gray-300">
+                          <h4 className="font-medium text-gray-800">
                             Application:
                           </h4>
-                          <p className="text-gray-500">
+                          <p className="text-gray-700">
                             {feedback.analysis.application}
                           </p>
                         </div>
                         <div>
-                          <h4 className="font-medium text-gray-300">
+                          <h4 className="font-medium text-gray-800">
                             Conclusion:
                           </h4>
-                          <p className="text-gray-500">
+                          <p className="text-gray-700">
                             {feedback.analysis.conclusion}
                           </p>
                         </div>

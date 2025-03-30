@@ -123,26 +123,26 @@ export default function LegalEthicsPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] min-h-screen">
+    <div className="container mx-auto px-4 py-8 bg-white min-h-screen">
       <div className="mb-6 flex items-center gap-4">
         <Link href="/case-study">
           <Button
             variant="ghost"
             size="icon"
-            className="text-gray-400 hover:bg-[#1a1a1f] hover:text-white"
+            className="text-gray-600 hover:bg-gray-100 hover:text-black"
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
         </Link>
-        <h1 className="text-3xl font-bold text-white">Legal Ethics Practice</h1>
+        <h1 className="text-3xl font-bold text-black">Legal Ethics Practice</h1>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Scenario Selection */}
-        <Card className="lg:col-span-1 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] border-[#1a1a1f]">
+        <Card className="lg:col-span-1 bg-white border-gray-200">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-white">
-              <Shield className="h-5 w-5 text-gray-400" />
+            <CardTitle className="flex items-center gap-2 text-black">
+              <Shield className="h-5 w-5 text-gray-600" />
               Ethical Dilemmas
             </CardTitle>
           </CardHeader>
@@ -151,28 +151,28 @@ export default function LegalEthicsPage() {
               {ethicsScenarios.map((item) => (
                 <Card
                   key={item.id}
-                  className="bg-[#121218] border-[#1a1a1f] hover:bg-[#1a1a1f] transition-colors cursor-pointer"
+                  className="bg-gray-50 border-gray-200 hover:bg-gray-100 transition-colors cursor-pointer"
                   onClick={() => handleSelectScenario(item.scenario)}
                 >
                   <CardContent className="p-4">
-                    <h3 className="font-medium text-white mb-1">
+                    <h3 className="font-medium text-black mb-1">
                       {item.title}
                     </h3>
-                    <p className="text-sm text-gray-400">
+                    <p className="text-sm text-gray-600">
                       {item.scenario.substring(0, 100)}...
                     </p>
                   </CardContent>
                 </Card>
               ))}
               <div className="mt-4">
-                <p className="text-sm text-gray-400 mb-2">
+                <p className="text-sm text-gray-600 mb-2">
                   Or enter your own ethical scenario:
                 </p>
                 <Textarea
                   value={scenario}
                   onChange={(e) => setScenario(e.target.value)}
                   placeholder="Describe the ethical dilemma..."
-                  className="bg-[#1a1a1f] border-[#2a2a2f] text-white placeholder:text-gray-500"
+                  className="bg-white border-gray-300 text-black placeholder:text-gray-400"
                 />
               </div>
             </div>
@@ -181,31 +181,31 @@ export default function LegalEthicsPage() {
 
         {/* Response Submission */}
         <div className="lg:col-span-2 space-y-6">
-          <Card className="bg-[#121218] border-[#1a1a1f]">
+          <Card className="bg-white border-gray-200">
             <CardHeader>
-              <CardTitle className="text-white">Ethical Analysis</CardTitle>
+              <CardTitle className="text-black">Ethical Analysis</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               {scenario ? (
                 <>
                   <div>
-                    <h3 className="font-medium mb-2 text-white">
+                    <h3 className="font-medium mb-2 text-black">
                       Ethical Scenario:
                     </h3>
-                    <p className="text-gray-400 mb-4">{scenario}</p>
+                    <p className="text-gray-700 mb-4">{scenario}</p>
                   </div>
                   <div className="mb-4">
-                    <h3 className="font-medium mb-2 text-white">
+                    <h3 className="font-medium mb-2 text-black">
                       Jurisdiction:
                     </h3>
                     <Select
                       onValueChange={setJurisdiction}
                       value={jurisdiction}
                     >
-                      <SelectTrigger className="bg-[#1a1a1f] border-[#2a2a2f] text-white">
+                      <SelectTrigger className="bg-white border-gray-300 text-black">
                         <SelectValue placeholder="Select jurisdiction" />
                       </SelectTrigger>
-                      <SelectContent className="bg-[#1a1a1f] border-[#2a2a2f] text-white">
+                      <SelectContent className="bg-white border-gray-300 text-black">
                         <SelectItem value="model">
                           Model Rules of Professional Conduct
                         </SelectItem>
@@ -217,10 +217,10 @@ export default function LegalEthicsPage() {
                     </Select>
                   </div>
                   <div>
-                    <h3 className="font-medium mb-2 text-white">
+                    <h3 className="font-medium mb-2 text-black">
                       Your Response:
                     </h3>
-                    <p className="text-sm text-gray-400 mb-2">
+                    <p className="text-sm text-gray-600 mb-2">
                       Analyze the ethical issues, identify relevant rules, and
                       explain how you would resolve this dilemma.
                     </p>
@@ -228,10 +228,10 @@ export default function LegalEthicsPage() {
                       value={userResponse}
                       onChange={(e) => setUserResponse(e.target.value)}
                       placeholder="This ethical situation involves several considerations. First, I would identify the applicable rules of professional conduct..."
-                      className="min-h-[200px] bg-[#0a0a0f] border-[#1a1a1f] text-white placeholder:text-gray-500"
+                      className="min-h-[200px] bg-white border-gray-300 text-black placeholder:text-gray-400"
                     />
                     <Button
-                      className="w-full mt-4 bg-[#1a1a1f] hover:bg-[#2a2a2f] text-white"
+                      className="w-full mt-4 bg-black text-white hover:bg-gray-800"
                       onClick={handleSubmitResponse}
                       disabled={
                         isLoading || !scenario.trim() || !userResponse.trim()
@@ -243,7 +243,7 @@ export default function LegalEthicsPage() {
                   </div>
                 </>
               ) : (
-                <p className="text-center text-gray-400">
+                <p className="text-center text-gray-600">
                   Select an ethical scenario from the list or enter your own to
                   begin
                 </p>
@@ -252,9 +252,9 @@ export default function LegalEthicsPage() {
           </Card>
 
           {feedback && (
-            <Card className="bg-[#121218] border-[#1a1a1f]">
+            <Card className="bg-white border-gray-200">
               <CardHeader>
-                <CardTitle className="text-white">Ethics Feedback</CardTitle>
+                <CardTitle className="text-black">Ethics Feedback</CardTitle>
               </CardHeader>
               <CardContent>
                 {feedback.error ? (
@@ -263,69 +263,73 @@ export default function LegalEthicsPage() {
                   <div className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <h3 className="font-medium mb-2 text-white">
+                        <h3 className="font-medium mb-2 text-black">
                           Ethical Analysis:
                         </h3>
                         <Progress
                           value={feedback.ethicalAnalysis * 100}
-                          className="bg-[#1a1a1f]"
+                          className="bg-gray-200"
+                          indicatorClassName="bg-gray-800"
                         />
-                        <p className="text-sm text-gray-400 mt-1">
+                        <p className="text-sm text-gray-600 mt-1">
                           {(feedback.ethicalAnalysis * 100).toFixed(0)}%
                         </p>
                       </div>
                       <div>
-                        <h3 className="font-medium mb-2 text-white">
+                        <h3 className="font-medium mb-2 text-black">
                           Rule Identification:
                         </h3>
                         <Progress
                           value={feedback.ruleIdentification * 100}
-                          className="bg-[#1a1a1f]"
+                          className="bg-gray-200"
+                          indicatorClassName="bg-gray-800"
                         />
-                        <p className="text-sm text-gray-400 mt-1">
+                        <p className="text-sm text-gray-600 mt-1">
                           {(feedback.ruleIdentification * 100).toFixed(0)}%
                         </p>
                       </div>
                       <div>
-                        <h3 className="font-medium mb-2 text-white">
+                        <h3 className="font-medium mb-2 text-black">
                           Conflict Resolution:
                         </h3>
                         <Progress
                           value={feedback.conflictResolution * 100}
-                          className="bg-[#1a1a1f]"
+                          className="bg-gray-200"
+                          indicatorClassName="bg-gray-800"
                         />
-                        <p className="text-sm text-gray-400 mt-1">
+                        <p className="text-sm text-gray-600 mt-1">
                           {(feedback.conflictResolution * 100).toFixed(0)}%
                         </p>
                       </div>
                       <div>
-                        <h3 className="font-medium mb-2 text-white">
+                        <h3 className="font-medium mb-2 text-black">
                           Professional Judgment:
                         </h3>
                         <Progress
                           value={feedback.professionalJudgment * 100}
-                          className="bg-[#1a1a1f]"
+                          className="bg-gray-200"
+                          indicatorClassName="bg-gray-800"
                         />
-                        <p className="text-sm text-gray-400 mt-1">
+                        <p className="text-sm text-gray-600 mt-1">
                           {(feedback.professionalJudgment * 100).toFixed(0)}%
                         </p>
                       </div>
                     </div>
 
                     <div>
-                      <h3 className="font-medium mb-2 text-white">
+                      <h3 className="font-medium mb-2 text-black">
                         Overall Feedback:
                       </h3>
-                      <p className="text-gray-400">
+                      <p className="text-gray-700">
                         {feedback.overallFeedback}
                       </p>
                     </div>
 
                     <div>
-                      <h3 className="font-medium mb-2 text-white">
+                      <h3 className="font-medium mb-2 text-black">
                         Relevant Rules:
                       </h3>
-                      <ul className="list-disc list-inside text-gray-400">
+                      <ul className="list-disc list-inside text-gray-700">
                         {feedback.relevantRules.map((rule, index) => (
                           <li key={index}>{rule}</li>
                         ))}
@@ -333,10 +337,10 @@ export default function LegalEthicsPage() {
                     </div>
 
                     <div>
-                      <h3 className="font-medium mb-2 text-white">
+                      <h3 className="font-medium mb-2 text-black">
                         Ethical Considerations:
                       </h3>
-                      <ul className="list-disc list-inside text-gray-400">
+                      <ul className="list-disc list-inside text-gray-700">
                         {feedback.ethicalConsiderations.map(
                           (consideration, index) => (
                             <li key={index}>{consideration}</li>
@@ -346,10 +350,10 @@ export default function LegalEthicsPage() {
                     </div>
 
                     <div>
-                      <h3 className="font-medium mb-2 text-white">
+                      <h3 className="font-medium mb-2 text-black">
                         Alternative Approaches:
                       </h3>
-                      <ul className="list-disc list-inside text-gray-400">
+                      <ul className="list-disc list-inside text-gray-700">
                         {feedback.alternativeApproaches.map(
                           (approach, index) => (
                             <li key={index}>{approach}</li>
@@ -359,10 +363,10 @@ export default function LegalEthicsPage() {
                     </div>
 
                     <div>
-                      <h3 className="font-medium mb-2 text-white">
+                      <h3 className="font-medium mb-2 text-black">
                         Potential Consequences:
                       </h3>
-                      <ul className="list-disc list-inside text-gray-400">
+                      <ul className="list-disc list-inside text-gray-700">
                         {feedback.potentialConsequences.map(
                           (consequence, index) => (
                             <li key={index}>{consequence}</li>
@@ -372,10 +376,10 @@ export default function LegalEthicsPage() {
                     </div>
 
                     <div>
-                      <h3 className="font-medium mb-2 text-white">
+                      <h3 className="font-medium mb-2 text-black">
                         Model Response:
                       </h3>
-                      <div className="bg-[#1a1a1f]/20 p-4 rounded-lg border border-[#2a2a2f] text-gray-400">
+                      <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 text-gray-700">
                         {feedback.modelResponse}
                       </div>
                     </div>

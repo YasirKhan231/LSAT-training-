@@ -117,26 +117,26 @@ export default function MootCourtPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] min-h-screen">
+    <div className="container mx-auto px-4 py-8 bg-white min-h-screen">
       <div className="mb-6 flex items-center gap-4">
         <Link href="/case-study">
           <Button
             variant="ghost"
             size="icon"
-            className="text-gray-400 hover:bg-[#1a1a1f] hover:text-white"
+            className="text-gray-600 hover:bg-gray-100 hover:text-black"
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
         </Link>
-        <h1 className="text-3xl font-bold text-white">Moot Court Practice</h1>
+        <h1 className="text-3xl font-bold text-black">Moot Court Practice</h1>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Case Selection */}
-        <Card className="lg:col-span-1 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] border-[#1a1a1f]">
+        <Card className="lg:col-span-1 bg-white border-gray-200">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-white">
-              <Gavel className="h-5 w-5 text-gray-400" />
+            <CardTitle className="flex items-center gap-2 text-black">
+              <Gavel className="h-5 w-5 text-gray-600" />
               Moot Court Cases
             </CardTitle>
           </CardHeader>
@@ -145,21 +145,21 @@ export default function MootCourtPage() {
               {mootCourtCases.map((caseItem) => (
                 <Card
                   key={caseItem.id}
-                  className="bg-[#121218] border-[#1a1a1f] hover:bg-[#1a1a1f] transition-colors cursor-pointer"
+                  className="bg-gray-50 border-gray-200 hover:bg-gray-100 transition-colors cursor-pointer"
                   onClick={() => handleSelectCase(caseItem.scenario)}
                 >
                   <CardContent className="p-4">
-                    <h3 className="font-medium text-white mb-1">
+                    <h3 className="font-medium text-black mb-1">
                       {caseItem.title}
                     </h3>
-                    <p className="text-sm text-gray-400">
+                    <p className="text-sm text-gray-600">
                       {caseItem.scenario.substring(0, 100)}...
                     </p>
                     <div className="mt-2 flex flex-wrap gap-2">
                       {caseItem.sides.map((sideName, index) => (
                         <span
                           key={index}
-                          className="text-xs bg-[#2a2a2f] text-gray-300 px-2 py-1 rounded"
+                          className="text-xs bg-gray-200 text-gray-800 px-2 py-1 rounded"
                         >
                           {sideName}
                         </span>
@@ -169,11 +169,11 @@ export default function MootCourtPage() {
                 </Card>
               ))}
               <div className="mt-4 space-y-2">
-                <p className="text-sm text-gray-400">
+                <p className="text-sm text-gray-600">
                   Or enter your own case scenario:
                 </p>
-                <div className="p-3 bg-[#1a1a1f]/50 border border-[#2a2a2f] rounded-md mb-3">
-                  <p className="text-xs text-gray-400 italic">
+                <div className="p-3 bg-gray-50 border border-gray-200 rounded-md mb-3">
+                  <p className="text-xs text-gray-600 italic">
                     Example: A small coffee shop named 'Moonbucks Coffee' with a
                     similar logo to a major coffee chain has been sued for
                     trademark infringement. The small business argues their
@@ -184,7 +184,7 @@ export default function MootCourtPage() {
                   value={caseScenario}
                   onChange={(e) => setCaseScenario(e.target.value)}
                   placeholder="Describe the legal scenario..."
-                  className="min-h-[120px] bg-[#1a1a1f] border-[#2a2a2f] text-white placeholder:text-gray-500"
+                  className="min-h-[120px] bg-white border-gray-300 text-black placeholder:text-gray-400"
                 />
               </div>
             </div>
@@ -193,28 +193,28 @@ export default function MootCourtPage() {
 
         {/* Argument Submission */}
         <div className="lg:col-span-2 space-y-6">
-          <Card className="bg-[#121218] border-[#1a1a1f]">
+          <Card className="bg-white border-gray-200">
             <CardHeader>
-              <CardTitle className="text-white">Oral Argument</CardTitle>
+              <CardTitle className="text-black">Oral Argument</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               {caseScenario ? (
                 <>
                   <div>
-                    <h3 className="font-medium mb-2 text-white">
+                    <h3 className="font-medium mb-2 text-black">
                       Case Scenario:
                     </h3>
-                    <p className="text-gray-400 mb-4">{caseScenario}</p>
+                    <p className="text-gray-700 mb-4">{caseScenario}</p>
                   </div>
                   <div className="mb-4">
-                    <h3 className="font-medium mb-2 text-white">
+                    <h3 className="font-medium mb-2 text-black">
                       Select Your Side:
                     </h3>
                     <Select onValueChange={setSide} value={side}>
-                      <SelectTrigger className="bg-[#1a1a1f] border-[#2a2a2f] text-white">
+                      <SelectTrigger className="bg-white border-gray-300 text-black">
                         <SelectValue placeholder="Choose your role" />
                       </SelectTrigger>
-                      <SelectContent className="bg-[#1a1a1f] border-[#2a2a2f] text-white">
+                      <SelectContent className="bg-white border-gray-300 text-black">
                         <SelectItem value="plaintiff">
                           Plaintiff/Petitioner
                         </SelectItem>
@@ -227,10 +227,10 @@ export default function MootCourtPage() {
                     </Select>
                   </div>
                   <div>
-                    <h3 className="font-medium mb-2 text-white">
+                    <h3 className="font-medium mb-2 text-black">
                       Your Argument:
                     </h3>
-                    <p className="text-sm text-gray-400 mb-2">
+                    <p className="text-sm text-gray-600 mb-2">
                       Present your oral argument as if you were speaking to a
                       panel of judges. Include your legal reasoning, relevant
                       precedents, and address potential counterarguments.
@@ -239,10 +239,10 @@ export default function MootCourtPage() {
                       value={userArgument}
                       onChange={(e) => setUserArgument(e.target.value)}
                       placeholder="May it please the court, I represent the [side] in this case. The issue before the court today is..."
-                      className="min-h-[200px] bg-[#0a0a0f] border-[#1a1a1f] text-white placeholder:text-gray-500"
+                      className="min-h-[200px] bg-white border-gray-300 text-black placeholder:text-gray-400"
                     />
                     <Button
-                      className="w-full mt-4 bg-[#1a1a1f] hover:bg-[#2a2a2f] text-white"
+                      className="w-full mt-4 bg-black text-white hover:bg-gray-800"
                       onClick={handleSubmitArgument}
                       disabled={
                         isLoading ||
@@ -257,7 +257,7 @@ export default function MootCourtPage() {
                   </div>
                 </>
               ) : (
-                <p className="text-center text-gray-400">
+                <p className="text-center text-gray-600">
                   Select a case scenario from the list or enter your own to
                   begin
                 </p>
@@ -266,9 +266,9 @@ export default function MootCourtPage() {
           </Card>
 
           {feedback && (
-            <Card className="bg-[#121218] border-[#1a1a1f]">
+            <Card className="bg-white border-gray-200">
               <CardHeader>
-                <CardTitle className="text-white">Bench Feedback</CardTitle>
+                <CardTitle className="text-black">Bench Feedback</CardTitle>
               </CardHeader>
               <CardContent>
                 {feedback.error ? (
@@ -277,80 +277,84 @@ export default function MootCourtPage() {
                   <div className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <h3 className="font-medium mb-2 text-white">
+                        <h3 className="font-medium mb-2 text-black">
                           Persuasiveness:
                         </h3>
                         <Progress
                           value={feedback.persuasiveness * 100}
-                          className="bg-[#1a1a1f]"
+                          className="bg-gray-200"
+                          indicatorClassName="bg-gray-800"
                         />
-                        <p className="text-sm text-gray-400 mt-1">
+                        <p className="text-sm text-gray-600 mt-1">
                           {(feedback.persuasiveness * 100).toFixed(0)}%
                         </p>
                       </div>
                       <div>
-                        <h3 className="font-medium mb-2 text-white">
+                        <h3 className="font-medium mb-2 text-black">
                           Legal Reasoning:
                         </h3>
                         <Progress
                           value={feedback.legalReasoning * 100}
-                          className="bg-[#1a1a1f]"
+                          className="bg-gray-200"
+                          indicatorClassName="bg-gray-800"
                         />
-                        <p className="text-sm text-gray-400 mt-1">
+                        <p className="text-sm text-gray-600 mt-1">
                           {(feedback.legalReasoning * 100).toFixed(0)}%
                         </p>
                       </div>
                       <div>
-                        <h3 className="font-medium mb-2 text-white">
+                        <h3 className="font-medium mb-2 text-black">
                           Case Usage:
                         </h3>
                         <Progress
                           value={feedback.caseUsage * 100}
-                          className="bg-[#1a1a1f]"
+                          className="bg-gray-200"
+                          indicatorClassName="bg-gray-800"
                         />
-                        <p className="text-sm text-gray-400 mt-1">
+                        <p className="text-sm text-gray-600 mt-1">
                           {(feedback.caseUsage * 100).toFixed(0)}%
                         </p>
                       </div>
                       <div>
-                        <h3 className="font-medium mb-2 text-white">
+                        <h3 className="font-medium mb-2 text-black">
                           Delivery:
                         </h3>
                         <Progress
                           value={feedback.delivery * 100}
-                          className="bg-[#1a1a1f]"
+                          className="bg-gray-200"
+                          indicatorClassName="bg-gray-800"
                         />
-                        <p className="text-sm text-gray-400 mt-1">
+                        <p className="text-sm text-gray-600 mt-1">
                           {(feedback.delivery * 100).toFixed(0)}%
                         </p>
                       </div>
                     </div>
 
                     <div>
-                      <h3 className="font-medium mb-2 text-white">
+                      <h3 className="font-medium mb-2 text-black">
                         Overall Feedback:
                       </h3>
-                      <p className="text-gray-400">
+                      <p className="text-gray-700">
                         {feedback.overallFeedback}
                       </p>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <h3 className="font-medium mb-2 text-white">
+                        <h3 className="font-medium mb-2 text-black">
                           Strengths:
                         </h3>
-                        <ul className="list-disc list-inside text-gray-400">
+                        <ul className="list-disc list-inside text-gray-700">
                           {feedback.strengthPoints.map((point, index) => (
                             <li key={index}>{point}</li>
                           ))}
                         </ul>
                       </div>
                       <div>
-                        <h3 className="font-medium mb-2 text-white">
+                        <h3 className="font-medium mb-2 text-black">
                           Areas for Improvement:
                         </h3>
-                        <ul className="list-disc list-inside text-gray-400">
+                        <ul className="list-disc list-inside text-gray-700">
                           {feedback.improvementAreas.map((area, index) => (
                             <li key={index}>{area}</li>
                           ))}
@@ -359,10 +363,10 @@ export default function MootCourtPage() {
                     </div>
 
                     <div>
-                      <h3 className="font-medium mb-2 text-white">
+                      <h3 className="font-medium mb-2 text-black">
                         Potential Counter-Arguments:
                       </h3>
-                      <ul className="list-disc list-inside text-gray-400">
+                      <ul className="list-disc list-inside text-gray-700">
                         {feedback.counterArguments.map((argument, index) => (
                           <li key={index}>{argument}</li>
                         ))}
@@ -370,14 +374,14 @@ export default function MootCourtPage() {
                     </div>
 
                     <div>
-                      <h3 className="font-medium mb-2 text-white">
+                      <h3 className="font-medium mb-2 text-black">
                         Bench Questions:
                       </h3>
-                      <p className="text-sm text-gray-400 mb-2">
+                      <p className="text-sm text-gray-600 mb-2">
                         Practice responding to these questions a judge might
                         ask:
                       </p>
-                      <ul className="list-disc list-inside text-gray-400">
+                      <ul className="list-disc list-inside text-gray-700">
                         {feedback.benchQuestions.map((question, index) => (
                           <li key={index}>{question}</li>
                         ))}

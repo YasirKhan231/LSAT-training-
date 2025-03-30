@@ -8,7 +8,6 @@ import { Progress } from "@/components/ui/progress";
 import { ArrowLeft, Send, Brain, Scale } from "lucide-react";
 import Link from "next/link";
 import { sampleCases } from "@/lib/sampleCases";
-
 interface CaseData {
   id: string;
   title: string;
@@ -96,18 +95,42 @@ export default function CaseBriefingPage() {
     setIsSubmittingBrief(true);
 
     try {
-      const response = await fetch("/api/case-briefing", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          caseData: sampleCases.find((c) => c.id === selectedCase),
-          userBrief: brief,
-        }),
-      });
-
-      if (!response.ok) throw new Error("Failed to analyze brief");
-      const data = await response.json();
-      setBriefFeedback(data);
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const feedback: BriefFeedback = {
+        factsScore: 0.85,
+        issueScore: 0.9,
+        ruleScore: 0.75,
+        applicationScore: 0.8,
+        conclusionScore: 0.95,
+        factsFeedback:
+          "Good summary of key facts, but could include more context about the political climate.",
+        issueFeedback:
+          "Excellent identification of the constitutional issue at stake.",
+        ruleFeedback:
+          "Correct rule identified but could cite more supporting precedent.",
+        applicationFeedback:
+          "Solid application of law to facts, though could explore counterarguments.",
+        conclusionFeedback:
+          "Very clear and accurate conclusion that follows from your analysis.",
+        suggestions: [
+          "Include more historical context about judicial review",
+          "Discuss potential counterarguments to your position",
+          "Cite at least one additional supporting case",
+        ],
+        modelBrief: {
+          facts:
+            "The case arose when William Marbury petitioned the Supreme Court to force Secretary of State James Madison to deliver his judicial commission.",
+          issue:
+            "Whether the Supreme Court has the authority to issue writs of mandamus under the Judiciary Act of 1789 and declare acts of Congress unconstitutional.",
+          rule: "The Constitution establishes the Supreme Court's original jurisdiction, which Congress cannot expand through legislation.",
+          application:
+            "While the Judiciary Act authorized such writs, this conflicted with the Constitution's explicit enumeration of original jurisdiction cases.",
+          conclusion:
+            "The Court ruled the relevant section of the Judiciary Act unconstitutional, establishing judicial review.",
+        },
+      };
+      setBriefFeedback(feedback);
     } catch (error) {
       console.error("Error submitting brief:", error);
     } finally {
@@ -118,16 +141,11 @@ export default function CaseBriefingPage() {
   const handleGenerateHypothetical = async () => {
     if (!selectedCase) return;
     try {
-      const response = await fetch(
-        "/api/case-study/case-briefing/hypothetical",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ caseId: selectedCase }),
-        }
-      );
-      const data = await response.json();
-      setHypothetical(data.hypothetical);
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const hypo =
+        "Suppose Congress passes a law stripping the Supreme Court of jurisdiction over cases involving abortion rights. How would you analyze the constitutionality of this law under Marbury v. Madison?";
+      setHypothetical(hypo);
       setHypoResponse("");
       setHypoFeedback(null);
     } catch (error) {
@@ -140,13 +158,30 @@ export default function CaseBriefingPage() {
     setIsSubmittingHypo(true);
 
     try {
-      const response = await fetch("/api/case-briefing/hypothetical", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ hypothetical, userResponse: hypoResponse }),
-      });
-      const data = await response.json();
-      setHypoFeedback(data);
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const feedback: HypotheticalFeedback = {
+        issueSpottingScore: 0.88,
+        reasoningScore: 0.82,
+        precedentScore: 0.9,
+        clarityScore: 0.85,
+        issueSpottingFeedback:
+          "You correctly identified the key constitutional issue about jurisdiction stripping.",
+        reasoningFeedback:
+          "Logical progression but could strengthen the federalism analysis.",
+        precedentFeedback:
+          "Excellent use of Marbury and related cases about judicial power.",
+        clarityFeedback:
+          "Clear writing though some sentences could be more concise.",
+        suggestions: [
+          "Discuss the Exceptions Clause in Article III",
+          "Consider separation of powers implications",
+          "Reference more recent cases about jurisdiction stripping",
+        ],
+        modelResponse:
+          "Under Marbury, Congress cannot remove the Court's constitutional authority to interpret laws. While Article III gives Congress some control over jurisdiction, complete removal of judicial review for entire categories of cases would violate separation of powers. The Court has upheld limited jurisdiction stripping but never complete removal of judicial review for constitutional questions.",
+      };
+      setHypoFeedback(feedback);
     } catch (error) {
       console.error("Error submitting hypothetical response:", error);
     } finally {
@@ -157,33 +192,14 @@ export default function CaseBriefingPage() {
   const handleGenerateOutline = async () => {
     setIsLoadingOutline(true);
     try {
-      const response = await fetch("/api/case-briefing/outline", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId: "user123" }),
-      });
-
-      if (!response.ok) throw new Error("Failed to generate outline");
-
-      const data = await response.json();
-
-      if (!data.outline) {
-        throw new Error("Received empty outline");
-      }
-
-      let cleanOutline = data.outline
-        .replace(/^```markdown|```$/g, "")
-        .replace(/\n\n+/g, "\n\n")
-        .trim();
-
-      if (!cleanOutline.endsWith(".")) {
-        cleanOutline += "\n\n[Outline complete]";
-      }
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      const outline = `# Constitutional Law Outline\n\n## I. Judicial Review\n   A. Marbury v. Madison (1803)\n      1. Established judicial review\n      2. Constitution is supreme law\n   B. Limits on Judicial Review\n      1. Political question doctrine\n      2. Standing requirements\n\n## II. Federalism\n   A. McCulloch v. Maryland (1819)\n      1. Necessary and Proper Clause\n      2. Supremacy Clause\n   B. Commerce Clause\n      1. Gibbons v. Ogden\n      2. Modern applications\n\n## III. Individual Rights\n   A. Equal Protection\n      1. Brown v. Board\n      2. Strict scrutiny\n   B. Due Process\n      1. Substantive due process\n      2. Roe v. Wade`;
 
       setOutlineData({
-        outline: cleanOutline,
-        topics: data.metadata?.topics || [],
-        focusAreas: data.metadata?.focusAreas || [],
+        outline,
+        topics: ["Judicial Review", "Federalism", "Individual Rights"],
+        focusAreas: ["Marbury analysis", "Commerce Clause", "Equal Protection"],
       });
     } catch (error: any) {
       setOutlineData({
@@ -205,7 +221,7 @@ export default function CaseBriefingPage() {
           <Button
             variant="ghost"
             size="icon"
-            className="text-gray-300 hover:bg-white hover:text-black"
+            className="text-gray-600 hover:bg-gray-100 hover:text-black"
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
@@ -217,19 +233,18 @@ export default function CaseBriefingPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Case Selection */}
-        <Card className="lg:col-span-1 bg-white">
+        <Card className="lg:col-span-1 bg-white border-gray-200 shadow-sm">
           <CardHeader>
             <CardTitle className="text-black">Available Cases</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            {/* In the Case Selection card */}
             <div className="relative mb-4">
               <input
                 type="text"
                 placeholder="Search cases..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full bg-white border border-[#2a2a2f] rounded-lg px-4 py-2.5 text-black placeholder-gray-500 focus:outline-none focus:border-[#3a3a3f] focus:ring-1 focus:ring-[#3a3a3f] transition-colors"
+                className="w-full bg-white border border-gray-300 rounded-lg px-4 py-2.5 text-black placeholder-gray-500 focus:outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500 transition-colors"
               />
               {searchTerm && (
                 <button
@@ -254,7 +269,6 @@ export default function CaseBriefingPage() {
               )}
             </div>
 
-            {/* Updated responsive height version */}
             <div className="space-y-2 h-[40vh] md:h-[calc(100vh-300px)] overflow-y-auto pr-1">
               {filteredCases.length > 0 ? (
                 filteredCases.map((caseItem) => (
@@ -265,8 +279,8 @@ export default function CaseBriefingPage() {
                     }
                     className={`w-full justify-start text-left truncate ${
                       selectedCase === caseItem.id
-                        ? "bg-white hover:bg-[#2a2a2f] text-black"
-                        : "bg-white border-[#2a2a2f] text-black hover:bg-[#2a2a2f]"
+                        ? "bg-black text-white hover:bg-gray-800"
+                        : "bg-white border-gray-300 text-black "
                     }`}
                     onClick={() => setSelectedCase(caseItem.id)}
                   >
@@ -274,7 +288,7 @@ export default function CaseBriefingPage() {
                   </Button>
                 ))
               ) : (
-                <p className="text-gray-400 text-center py-4">No cases found</p>
+                <p className="text-gray-500 text-center py-4">No cases found</p>
               )}
             </div>
           </CardContent>
@@ -284,22 +298,22 @@ export default function CaseBriefingPage() {
         <div className="lg:col-span-2">
           {selectedCaseData ? (
             <Tabs defaultValue="briefing" className="w-full">
-              <TabsList className="grid w-full grid-cols-3 bg-white">
+              <TabsList className="grid w-full grid-cols-3 bg-gray-100">
                 <TabsTrigger
                   value="briefing"
-                  className="data-[state=active]:bg-[#2a2a2f] data-[state=active]:text-gray-300"
+                  className="data-[state=active]:bg-black data-[state=active]:text-white"
                 >
                   Case Briefing
                 </TabsTrigger>
                 <TabsTrigger
                   value="hypothetical"
-                  className="data-[state=active]:bg-[#2a2a2f] data-[state=active]:text-gray-300"
+                  className="data-[state=active]:bg-black data-[state=active]:text-white"
                 >
                   Hypothetical
                 </TabsTrigger>
                 <TabsTrigger
                   value="outline"
-                  className="data-[state=active]:bg-[#2a2a2f] data-[state=active]:text-gray-300"
+                  className="data-[state=active]:bg-black data-[state=active]:text-white"
                 >
                   Outline
                 </TabsTrigger>
@@ -307,7 +321,7 @@ export default function CaseBriefingPage() {
 
               {/* Case Briefing Tab */}
               <TabsContent value="briefing">
-                <Card className="bg-white border-[#1a1a1f]">
+                <Card className="bg-white border-gray-200 shadow-sm">
                   <CardHeader>
                     <CardTitle className="text-black">
                       {selectedCaseData.title}
@@ -315,60 +329,64 @@ export default function CaseBriefingPage() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div>
-                      <h3 className="font-medium text-black">Facts</h3>
-                      <p className="text-gray-400">{selectedCaseData.facts}</p>
+                      <h3 className="font-medium text-gray-800">Facts</h3>
+                      <p className="text-gray-700 mb-2">
+                        {selectedCaseData.facts}
+                      </p>
                       <Textarea
                         placeholder="Summarize the facts..."
                         value={brief.facts}
                         onChange={(e) =>
                           handleBriefChange("facts", e.target.value)
                         }
-                        className="mt-2 bg-white border-[#2a2a2f] text-black placeholder:text-gray-500"
+                        className="mt-2 bg-white border-gray-300 text-black placeholder:text-gray-500"
                       />
                     </div>
                     <div>
-                      <h3 className="font-medium text-black">Issue</h3>
-                      <p className="text-gray-400">{selectedCaseData.issue}</p>
+                      <h3 className="font-medium text-gray-800">Issue</h3>
+                      <p className="text-gray-700 mb-2">
+                        {selectedCaseData.issue}
+                      </p>
                       <Textarea
                         placeholder="State the legal issue..."
                         value={brief.issue}
                         onChange={(e) =>
                           handleBriefChange("issue", e.target.value)
                         }
-                        className="mt-2 bg-white border-[#2a2a2f] text-black placeholder:text-gray-500"
+                        className="mt-2 bg-white border-gray-300 text-black placeholder:text-gray-500"
                       />
                     </div>
                     <div>
-                      <h3 className="font-medium text-black">Rule</h3>
+                      <h3 className="font-medium text-gray-800">Rule</h3>
                       <Textarea
                         placeholder="Identify the applicable rule or precedent..."
                         value={brief.rule}
                         onChange={(e) =>
                           handleBriefChange("rule", e.target.value)
                         }
-                        className="bg-white border-[#2a2a2f] text-black placeholder:text-gray-500"
+                        className="bg-white border-gray-300 text-black placeholder:text-gray-500"
                       />
                     </div>
                     <div>
-                      <h3 className="font-medium text-black">Application</h3>
+                      <h3 className="font-medium text-gray-800">Application</h3>
                       <Textarea
                         placeholder="Explain how the rule applies to the facts..."
                         value={brief.application}
                         onChange={(e) =>
                           handleBriefChange("application", e.target.value)
                         }
-                        className="bg-white border-[#2a2a2f] text-black placeholder:text-gray-500"
+                        className="bg-white border-gray-300 text-black placeholder:text-gray-500"
                       />
                     </div>
                     <div>
-                      <h3 className="font-medium text-black">Conclusion</h3>
+                      <h3 className="font-medium text-gray-800">Conclusion</h3>
                       <Textarea
                         placeholder="State the court's conclusion..."
                         value={brief.conclusion}
                         onChange={(e) =>
                           handleBriefChange("conclusion", e.target.value)
                         }
-                        className="bg-white border-[#2a2a2f] text-black placeholder:text-gray-500"
+                        className="bg-white border-gray-300 text-black placeholder:text-gray-500"
                       />
                     </div>
                     <Button
@@ -377,113 +395,131 @@ export default function CaseBriefingPage() {
                         isSubmittingBrief ||
                         !Object.values(brief).every((v) => v.trim())
                       }
-                      className="w-full bg-white hover:bg-[#2a2a2f] text-black disabled:bg-white disabled:text-gray-400"
+                      className="w-full bg-black text-white hover:bg-gray-800 disabled:bg-gray-300 disabled:text-gray-500"
                     >
                       <Send className="mr-2 h-4 w-4" />
                       {isSubmittingBrief ? "Analyzing..." : "Submit Brief"}
                     </Button>
                   </CardContent>
                 </Card>
+
                 {briefFeedback && (
-                  <Card className="mt-6 bg-white border-[#1a1a1f]">
+                  <Card className="mt-6 bg-white border-gray-200 shadow-sm">
                     <CardHeader>
                       <CardTitle className="text-black">AI Feedback</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div>
-                        <h3 className="font-medium text-black">
+                        <h3 className="font-medium text-gray-800">
                           Facts ({(briefFeedback.factsScore * 100).toFixed(0)}%)
                         </h3>
                         <Progress
                           value={briefFeedback.factsScore * 100}
-                          className="bg-white"
+                          className="bg-gray-200 h-2"
+                          indicatorClassName="bg-gray-700"
                         />
-                        <p className="text-sm text-gray-400">
+                        <p className="text-sm text-gray-700 mt-2">
                           {briefFeedback.factsFeedback}
                         </p>
                       </div>
                       <div>
-                        <h3 className="font-medium text-black">
+                        <h3 className="font-medium text-gray-800">
                           Issue ({(briefFeedback.issueScore * 100).toFixed(0)}%)
                         </h3>
                         <Progress
                           value={briefFeedback.issueScore * 100}
-                          className="bg-white"
+                          className="bg-gray-200 h-2"
+                          indicatorClassName="bg-gray-700"
                         />
-                        <p className="text-sm text-gray-400">
+                        <p className="text-sm text-gray-700 mt-2">
                           {briefFeedback.issueFeedback}
                         </p>
                       </div>
                       <div>
-                        <h3 className="font-medium text-black">
+                        <h3 className="font-medium text-gray-800">
                           Rule ({(briefFeedback.ruleScore * 100).toFixed(0)}%)
                         </h3>
                         <Progress
                           value={briefFeedback.ruleScore * 100}
-                          className="bg-white"
+                          className="bg-gray-200 h-2"
+                          indicatorClassName="bg-gray-700"
                         />
-                        <p className="text-sm text-gray-400">
+                        <p className="text-sm text-gray-700 mt-2">
                           {briefFeedback.ruleFeedback}
                         </p>
                       </div>
                       <div>
-                        <h3 className="font-medium text-black">
+                        <h3 className="font-medium text-gray-800">
                           Application (
                           {(briefFeedback.applicationScore * 100).toFixed(0)}%)
                         </h3>
                         <Progress
                           value={briefFeedback.applicationScore * 100}
-                          className="bg-white"
+                          className="bg-gray-200 h-2"
+                          indicatorClassName="bg-gray-700"
                         />
-                        <p className="text-sm text-gray-400">
+                        <p className="text-sm text-gray-700 mt-2">
                           {briefFeedback.applicationFeedback}
                         </p>
                       </div>
                       <div>
-                        <h3 className="font-medium text-black">
+                        <h3 className="font-medium text-gray-800">
                           Conclusion (
                           {(briefFeedback.conclusionScore * 100).toFixed(0)}%)
                         </h3>
                         <Progress
                           value={briefFeedback.conclusionScore * 100}
-                          className="bg-white"
+                          className="bg-gray-200 h-2"
+                          indicatorClassName="bg-gray-700"
                         />
-                        <p className="text-sm text-gray-400">
+                        <p className="text-sm text-gray-700 mt-2">
                           {briefFeedback.conclusionFeedback}
                         </p>
                       </div>
-                      <div className="bg-white/20 p-4 rounded-lg border border-[#2a2a2f]">
-                        <h3 className="font-medium text-gray-300">
+                      <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <h3 className="font-medium text-gray-800">
                           Suggestions
                         </h3>
-                        <ul className="list-disc list-inside text-gray-400">
+                        <ul className="list-disc list-inside text-gray-700 mt-2 space-y-1">
                           {briefFeedback.suggestions.map((s, i) => (
                             <li key={i}>{s}</li>
                           ))}
                         </ul>
                       </div>
                       <div>
-                        <h3 className="font-medium text-black">Model Brief</h3>
-                        <p className="text-sm text-gray-400">
-                          <strong className="text-gray-300">Facts:</strong>{" "}
-                          {briefFeedback.modelBrief.facts}
-                          <br />
-                          <strong className="text-gray-300">Issue:</strong>{" "}
-                          {briefFeedback.modelBrief.issue}
-                          <br />
-                          <strong className="text-gray-300">Rule:</strong>{" "}
-                          {briefFeedback.modelBrief.rule}
-                          <br />
-                          <strong className="text-gray-300">
-                            Application:
-                          </strong>{" "}
-                          {briefFeedback.modelBrief.application}
-                          <br />
-                          <strong className="text-gray-300">
-                            Conclusion:
-                          </strong>{" "}
-                          {briefFeedback.modelBrief.conclusion}
-                        </p>
+                        <h3 className="font-medium text-gray-800">
+                          Model Brief
+                        </h3>
+                        <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 mt-2">
+                          <p className="text-sm text-gray-700">
+                            <strong className="text-gray-800">Facts:</strong>{" "}
+                            {briefFeedback.modelBrief.facts}
+                            <br />
+                            <br />
+                            <strong className="text-gray-800">
+                              Issue:
+                            </strong>{" "}
+                            {briefFeedback.modelBrief.issue}
+                            <br />
+                            <br />
+                            <strong className="text-gray-800">
+                              Rule:
+                            </strong>{" "}
+                            {briefFeedback.modelBrief.rule}
+                            <br />
+                            <br />
+                            <strong className="text-gray-800">
+                              Application:
+                            </strong>{" "}
+                            {briefFeedback.modelBrief.application}
+                            <br />
+                            <br />
+                            <strong className="text-gray-800">
+                              Conclusion:
+                            </strong>{" "}
+                            {briefFeedback.modelBrief.conclusion}
+                          </p>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
@@ -492,7 +528,7 @@ export default function CaseBriefingPage() {
 
               {/* Hypothetical Questions Tab */}
               <TabsContent value="hypothetical">
-                <Card className="bg-white border-[#1a1a1f]">
+                <Card className="bg-white border-gray-200 shadow-sm">
                   <CardHeader>
                     <CardTitle className="text-black">
                       Legal Hypothetical
@@ -502,24 +538,26 @@ export default function CaseBriefingPage() {
                     {!hypothetical ? (
                       <Button
                         onClick={handleGenerateHypothetical}
-                        className="w-full bg-white hover:bg-[#2a2a2f] text-black"
+                        className="w-full bg-black text-white hover:bg-gray-800"
                       >
                         <Brain className="mr-2 h-4 w-4" />
                         Generate Hypothetical
                       </Button>
                     ) : (
                       <>
-                        <p className="text-gray-400">{hypothetical}</p>
+                        <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                          <p className="text-gray-700">{hypothetical}</p>
+                        </div>
                         <Textarea
                           placeholder="Write your legal analysis here..."
                           value={hypoResponse}
                           onChange={(e) => setHypoResponse(e.target.value)}
-                          className="min-h-[200px] bg-white border-[#2a2a2f] text-black placeholder:text-gray-500"
+                          className="min-h-[200px] bg-white border-gray-300 text-black placeholder:text-gray-500"
                         />
                         <Button
                           onClick={handleSubmitHypo}
                           disabled={isSubmittingHypo || !hypoResponse.trim()}
-                          className="w-full bg-white hover:bg-[#2a2a2f] text-black disabled:bg-white disabled:text-gray-400"
+                          className="w-full bg-black text-white hover:bg-gray-800 disabled:bg-gray-300 disabled:text-gray-500"
                         >
                           <Send className="mr-2 h-4 w-4" />
                           {isSubmittingHypo
@@ -531,80 +569,86 @@ export default function CaseBriefingPage() {
                   </CardContent>
                 </Card>
                 {hypoFeedback && (
-                  <Card className="mt-6 bg-white border-[#1a1a1f]">
+                  <Card className="mt-6 bg-white border-gray-200 shadow-sm">
                     <CardHeader>
                       <CardTitle className="text-black">AI Feedback</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div>
-                        <h3 className="font-medium text-black">
+                        <h3 className="font-medium text-gray-800">
                           Issue Spotting (
                           {(hypoFeedback.issueSpottingScore * 100).toFixed(0)}%)
                         </h3>
                         <Progress
                           value={hypoFeedback.issueSpottingScore * 100}
-                          className="bg-white"
+                          className="bg-gray-200 h-2"
+                          indicatorClassName="bg-gray-700"
                         />
-                        <p className="text-sm text-gray-400">
+                        <p className="text-sm text-gray-700 mt-2">
                           {hypoFeedback.issueSpottingFeedback}
                         </p>
                       </div>
                       <div>
-                        <h3 className="font-medium text-black">
+                        <h3 className="font-medium text-gray-800">
                           Reasoning (
                           {(hypoFeedback.reasoningScore * 100).toFixed(0)}%)
                         </h3>
                         <Progress
                           value={hypoFeedback.reasoningScore * 100}
-                          className="bg-white"
+                          className="bg-gray-200 h-2"
+                          indicatorClassName="bg-gray-700"
                         />
-                        <p className="text-sm text-gray-400">
+                        <p className="text-sm text-gray-700 mt-2">
                           {hypoFeedback.reasoningFeedback}
                         </p>
                       </div>
                       <div>
-                        <h3 className="font-medium text-black">
+                        <h3 className="font-medium text-gray-800">
                           Precedent (
                           {(hypoFeedback.precedentScore * 100).toFixed(0)}%)
                         </h3>
                         <Progress
                           value={hypoFeedback.precedentScore * 100}
-                          className="bg-white"
+                          className="bg-gray-200 h-2"
+                          indicatorClassName="bg-gray-700"
                         />
-                        <p className="text-sm text-gray-400">
+                        <p className="text-sm text-gray-700 mt-2">
                           {hypoFeedback.precedentFeedback}
                         </p>
                       </div>
                       <div>
-                        <h3 className="font-medium text-black">
+                        <h3 className="font-medium text-gray-800">
                           Clarity (
                           {(hypoFeedback.clarityScore * 100).toFixed(0)}%)
                         </h3>
                         <Progress
                           value={hypoFeedback.clarityScore * 100}
-                          className="bg-white"
+                          className="bg-gray-200 h-2"
+                          indicatorClassName="bg-gray-700"
                         />
-                        <p className="text-sm text-gray-400">
+                        <p className="text-sm text-gray-700 mt-2">
                           {hypoFeedback.clarityFeedback}
                         </p>
                       </div>
-                      <div className="bg-white/20 p-4 rounded-lg border border-[#2a2a2f]">
-                        <h3 className="font-medium text-gray-300">
+                      <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <h3 className="font-medium text-gray-800">
                           Suggestions
                         </h3>
-                        <ul className="list-disc list-inside text-gray-400">
+                        <ul className="list-disc list-inside text-gray-700 mt-2 space-y-1">
                           {hypoFeedback.suggestions.map((s, i) => (
                             <li key={i}>{s}</li>
                           ))}
                         </ul>
                       </div>
                       <div>
-                        <h3 className="font-medium text-black">
+                        <h3 className="font-medium text-gray-800">
                           Model Response
                         </h3>
-                        <p className="text-sm text-gray-400">
-                          {hypoFeedback.modelResponse}
-                        </p>
+                        <div className="bg-gray-50 p-4 rounded-lg border border-gray-200 mt-2">
+                          <p className="text-sm text-gray-700">
+                            {hypoFeedback.modelResponse}
+                          </p>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
@@ -613,7 +657,7 @@ export default function CaseBriefingPage() {
 
               {/* Outline Tab */}
               <TabsContent value="outline">
-                <Card className="bg-white border-[#1a1a1f]">
+                <Card className="bg-white border-gray-200 shadow-sm">
                   <CardHeader>
                     <CardTitle className="text-black">
                       Constitutional Law Outline
@@ -624,7 +668,7 @@ export default function CaseBriefingPage() {
                       <Button
                         onClick={handleGenerateOutline}
                         disabled={isLoadingOutline}
-                        className="w-full bg-white hover:bg-[#2a2a2f] text-black"
+                        className="w-full bg-black text-white hover:bg-gray-800"
                       >
                         <Scale className="mr-2 h-4 w-4" />
                         {isLoadingOutline
@@ -637,12 +681,12 @@ export default function CaseBriefingPage() {
                           <Textarea
                             value={outlineData.outline}
                             readOnly
-                            className="min-h-[400px] font-mono text-sm bg-white border-[#2a2a2f] text-gray-300"
+                            className="min-h-[400px] font-mono text-sm bg-gray-50 border-gray-300 text-gray-800"
                           />
                           <Button
                             size="sm"
-                            variant="ghost"
-                            className="absolute top-2 right-2 text-gray-400 hover:text-black"
+                            variant="outline"
+                            className="absolute top-2 right-2 bg-white border-gray-300 text-gray-700 hover:text-black hover:bg-gray-100"
                             onClick={() =>
                               navigator.clipboard.writeText(outlineData.outline)
                             }
@@ -652,16 +696,16 @@ export default function CaseBriefingPage() {
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <Card className="bg-white border-[#2a2a2f]">
+                          <Card className="bg-white border-gray-200">
                             <CardHeader>
-                              <CardTitle className="text-sm font-medium text-gray-300">
+                              <CardTitle className="text-sm font-medium text-gray-800">
                                 Key Topics
                               </CardTitle>
                             </CardHeader>
                             <CardContent>
                               <ul className="space-y-2">
                                 {outlineData.topics.map((topic, i) => (
-                                  <li key={i} className="text-gray-400 text-sm">
+                                  <li key={i} className="text-gray-700 text-sm">
                                     • {topic}
                                   </li>
                                 ))}
@@ -669,16 +713,16 @@ export default function CaseBriefingPage() {
                             </CardContent>
                           </Card>
 
-                          <Card className="bg-white border-[#2a2a2f]">
+                          <Card className="bg-white border-gray-200">
                             <CardHeader>
-                              <CardTitle className="text-sm font-medium text-gray-300">
+                              <CardTitle className="text-sm font-medium text-gray-800">
                                 Focus Areas
                               </CardTitle>
                             </CardHeader>
                             <CardContent>
                               <ul className="space-y-2">
                                 {outlineData.focusAreas.map((area, i) => (
-                                  <li key={i} className="text-gray-400 text-sm">
+                                  <li key={i} className="text-gray-700 text-sm">
                                     • {area}
                                   </li>
                                 ))}
@@ -690,7 +734,7 @@ export default function CaseBriefingPage() {
                         <Button
                           onClick={handleGenerateOutline}
                           variant="outline"
-                          className="w-full border-[#2a2a2f] text-gray-300 hover:text-black"
+                          className="w-full border-gray-300 text-gray-700 hover:text-black hover:bg-gray-100"
                         >
                           Generate New Outline
                         </Button>
@@ -701,8 +745,8 @@ export default function CaseBriefingPage() {
               </TabsContent>
             </Tabs>
           ) : (
-            <Card className="bg-white border-[#1a1a1f]">
-              <CardContent className="p-6 text-center text-gray-400">
+            <Card className="bg-white border-gray-200 shadow-sm">
+              <CardContent className="p-6 text-center text-gray-600">
                 Select a case from the list to begin
               </CardContent>
             </Card>

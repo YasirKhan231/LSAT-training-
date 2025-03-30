@@ -229,7 +229,7 @@ export default function EssayPracticeIndex() {
                 </Button>
                 <Button
                   onClick={handleStartPractice}
-                  className="bg-gradient-to-r from-[#3a3a4f] to-[#2a2a3f] hover:from-[#4a4a5f] hover:to-[#3a3a4f] text-black"
+                  className="bg-gradient-to-r from-[#161515] to-[#222228] hover:from-[#161515] hover:to-[#222228] text-white"
                 >
                   Start Now
                   <ArrowRight className="ml-2 h-4 w-4" />

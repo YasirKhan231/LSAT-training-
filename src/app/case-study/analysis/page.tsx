@@ -95,10 +95,8 @@ export default function HomePage() {
         {legalProblems.map((problem) => (
           <Card
             key={problem.id}
-            className={`bg-white border-[#1a1a1f] hover:bg-gray-100 transition-colors cursor-pointer h-full ${
-              selectedProblem === problem.id
-                ? "ring-2 ring-[#2a2a32] dark:ring-[#3a3a42]"
-                : ""
+            className={`bg-white border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer h-full ${
+              selectedProblem === problem.id ? "ring-2 ring-gray-300" : ""
             }`}
             onClick={() => handleSelectProblem(problem.id)}
           >
@@ -106,7 +104,7 @@ export default function HomePage() {
               <CardTitle className="text-black">{problem.title}</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-400">{problem.summary}</p>
+              <p className="text-gray-700">{problem.summary}</p>
               <div className="flex justify-end mt-4">
                 <ArrowRight className="h-5 w-5 text-gray-400" />
               </div>
@@ -119,7 +117,7 @@ export default function HomePage() {
         <div className="mt-8 flex justify-center">
           <Button
             onClick={handleStartAnalysis}
-            className="bg-[#1a1a1f] hover:bg-[#2a2a2f] text-black border border-[#2a2a32] px-8 py-6 text-lg transition-colors duration-300"
+            className="bg-[#1a1a1f] hover:bg-[#2a2a2f] text-white border border-gray-300 px-8 py-6 text-lg transition-colors duration-300"
           >
             <PlayCircle className="mr-2 h-5 w-5" />
             Start Analysis

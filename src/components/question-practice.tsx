@@ -122,7 +122,15 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
     }
 
     if (currentIndex < questions.length - 1) {
-      setCurrentIndex(currentIndex + 1);
+      const newIndex = currentIndex + 1;
+      setCurrentIndex(newIndex);
+
+      // Update page if we cross the boundary
+      const newPage = Math.floor(newIndex / questionsPerPage);
+      if (newPage !== currentPage) {
+        setCurrentPage(newPage);
+      }
+
       setSelectedAnswer(null);
       setIsAnswered(false);
       setFeedback(null);
@@ -135,7 +143,15 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
 
   const handlePrevQuestion = () => {
     if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
+      const newIndex = currentIndex - 1;
+      setCurrentIndex(newIndex);
+
+      // Update page if we cross the boundary
+      const newPage = Math.floor(newIndex / questionsPerPage);
+      if (newPage !== currentPage) {
+        setCurrentPage(newPage);
+      }
+
       setSelectedAnswer(null);
       setIsAnswered(false);
       setFeedback(null);
@@ -225,6 +241,11 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
     setIsAnswered(false);
     setFeedback(null);
     setShowExplanation(false);
+    // Update page when jumping to a question
+    const newPage = Math.floor(index / questionsPerPage);
+    if (newPage !== currentPage) {
+      setCurrentPage(newPage);
+    }
   };
 
   const totalPages = Math.ceil(questions.length / questionsPerPage);
@@ -238,12 +259,24 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
   const nextPage = () => {
     if (currentPage < totalPages - 1) {
       setCurrentPage(currentPage + 1);
+      // Jump to first question of new page
+      setCurrentIndex(currentPage * questionsPerPage + questionsPerPage);
+      setSelectedAnswer(null);
+      setIsAnswered(false);
+      setFeedback(null);
+      setShowExplanation(false);
     }
   };
 
   const prevPage = () => {
     if (currentPage > 0) {
       setCurrentPage(currentPage - 1);
+      // Jump to first question of new page
+      setCurrentIndex((currentPage - 1) * questionsPerPage);
+      setSelectedAnswer(null);
+      setIsAnswered(false);
+      setFeedback(null);
+      setShowExplanation(false);
     }
   };
 
@@ -371,39 +404,73 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
               className="mt-4"
               disabled={isAnswered}
             >
-              {currentQuestion.options.map((option, index) => (
-                <div
-                  key={index}
-                  className={cn(
-                    "flex items-center space-x-2 p-3 rounded-md border transition-all",
-                    isAnswered &&
-                      option.id === currentQuestion.correctAnswer &&
-                      "border-green-300 bg-green-50",
-                    isAnswered &&
-                      selectedAnswer === option.id &&
-                      option.id !== currentQuestion.correctAnswer &&
-                      "border-red-300 bg-red-50",
-                    !isAnswered &&
-                      selectedAnswer === option.id &&
-                      "border-gray-300 bg-gray-100",
-                    !isAnswered &&
-                      "hover:border-gray-300 hover:shadow-sm border-gray-200",
-                    "my-2 bg-white text-gray-800"
-                  )}
-                >
-                  <RadioGroupItem
-                    value={option.id}
-                    id={option.id}
-                    className="border-gray-300 text-gray-900"
-                  />
-                  <Label
-                    htmlFor={option.id}
-                    className="flex-grow cursor-pointer"
+              {currentQuestion.options.map((option, index) => {
+                const isCorrectAnswer =
+                  option.id === currentQuestion.correctAnswer;
+                const isSelected = selectedAnswer === option.id;
+                const showFeedback =
+                  isAnswered && (isCorrectAnswer || isSelected);
+
+                return (
+                  <div
+                    key={index}
+                    className={cn(
+                      "flex items-center space-x-2 p-3 rounded-md border transition-all",
+                      // Correct answer styling (shows when answered)
+                      isAnswered &&
+                        isCorrectAnswer &&
+                        "bg-green-50 border-green-200",
+                      // Selected but wrong answer styling
+                      isAnswered &&
+                        isSelected &&
+                        !isCorrectAnswer &&
+                        "bg-gray-50 border-gray-200",
+                      // Not answered but selected styling
+                      !isAnswered && isSelected && "bg-gray-50 border-gray-200",
+                      // Default styling
+                      !isAnswered &&
+                        "bg-white border-gray-200 hover:bg-gray-50",
+                      "my-2"
+                    )}
                   >
-                    {option.text}
-                  </Label>
-                </div>
-              ))}
+                    <RadioGroupItem
+                      value={option.id}
+                      id={option.id}
+                      className={cn(
+                        isAnswered && isCorrectAnswer
+                          ? "text-green-600"
+                          : "text-gray-700",
+                        isAnswered &&
+                          isSelected &&
+                          !isCorrectAnswer &&
+                          "text-gray-500"
+                      )}
+                    />
+                    <Label
+                      htmlFor={option.id}
+                      className={cn(
+                        "flex-grow cursor-pointer text-gray-800", // Dark gray text for all options
+                        isAnswered && isCorrectAnswer && "text-gray-800",
+                        isAnswered &&
+                          isSelected &&
+                          !isCorrectAnswer &&
+                          "text-gray-600"
+                      )}
+                    >
+                      {option.text}
+                    </Label>
+                    {showFeedback && (
+                      <>
+                        {isCorrectAnswer ? (
+                          <CheckCircle className="h-5 w-5 text-green-500" />
+                        ) : (
+                          <AlertCircle className="h-5 w-5 text-gray-400" />
+                        )}
+                      </>
+                    )}
+                  </div>
+                );
+              })}
             </RadioGroup>
           </div>
         </CardContent>
@@ -413,7 +480,7 @@ export function QuestionPractice({ subject }: QuestionPracticeProps) {
               variant="outline"
               onClick={handlePrevQuestion}
               disabled={currentIndex === 0}
-              className="flex items-center bg-white hover:bg-gray-50 text-gray-700 border-gray-300"
+              className="flex items-center bg-white hover:text-black hover:bg-gray-50 text-gray-700 border-gray-300"
             >
               <ArrowLeft className="mr-2 h-4 w-4" /> Previous
             </Button>

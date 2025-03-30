@@ -97,28 +97,28 @@ export default function LegalResearchPage() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] min-h-screen">
+    <div className="container mx-auto px-4 py-8 bg-white min-h-screen">
       <div className="mb-6 flex items-center gap-4">
         <Link href="/case-study">
           <Button
             variant="ghost"
             size="icon"
-            className="text-gray-400 hover:bg-[#1a1a1f] hover:text-white"
+            className="text-gray-600 hover:bg-gray-100 hover:text-black"
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>
         </Link>
-        <h1 className="text-3xl font-bold text-white">
+        <h1 className="text-3xl font-bold text-black">
           Legal Research Practice
         </h1>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Research Topics */}
-        <Card className="lg:col-span-1 bg-gradient-to-b from-[#0a0a0f] via-[#121218] to-[#0a0a0f] border-[#1a1a1f]">
+        <Card className="lg:col-span-1 bg-white border-gray-200">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-white">
-              <BookOpen className="h-5 w-5 text-gray-400" />
+            <CardTitle className="flex items-center gap-2 text-black">
+              <BookOpen className="h-5 w-5 text-gray-600" />
               Research Topics
             </CardTitle>
           </CardHeader>
@@ -127,27 +127,26 @@ export default function LegalResearchPage() {
               {researchTopics.map((topic) => (
                 <Card
                   key={topic.id}
-                  className="bg-[#121218] border-[#1a1a1f] hover:bg-[#1a1a1f] transition-colors cursor-pointer"
+                  className="bg-gray-50 border-gray-200 hover:bg-gray-100 transition-colors cursor-pointer"
                   onClick={() => handleSelectTopic(topic.description)}
                 >
                   <CardContent className="p-4">
-                    <h3 className="font-medium text-white mb-1">
+                    <h3 className="font-medium text-black mb-1">
                       {topic.title}
                     </h3>
-                    <p className="text-sm text-gray-400">{topic.description}</p>
+                    <p className="text-sm text-gray-600">{topic.description}</p>
                   </CardContent>
                 </Card>
               ))}
               <div className="mt-4">
-                <p className="text-sm text-gray-400 mb-2">
+                <p className="text-sm text-gray-600 mb-2">
                   Or enter your own research query:
                 </p>
                 <Input
                   value={researchQuery}
                   onChange={(e) => setResearchQuery(e.target.value)}
                   placeholder="Enter research question..."
-                  className="bg-[#1a1a1f] border-[#2a2a2f] text-white placeholder:text-gray-500 
-             w-full px-3 py-2 overflow-x-auto whitespace-nowrap"
+                  className="bg-white border-gray-300 text-black placeholder:text-gray-400 w-full px-3 py-2 overflow-x-auto whitespace-nowrap"
                 />
               </div>
             </div>
@@ -156,20 +155,20 @@ export default function LegalResearchPage() {
 
         {/* Research Submission */}
         <div className="lg:col-span-2 space-y-6">
-          <Card className="bg-[#121218] border-[#1a1a1f]">
+          <Card className="bg-white border-gray-200">
             <CardHeader>
-              <CardTitle className="text-white">Submit Your Research</CardTitle>
+              <CardTitle className="text-black">Submit Your Research</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
-                <h3 className="font-medium mb-2 text-white">Research Query:</h3>
-                <p className="text-gray-400 mb-4">
+                <h3 className="font-medium mb-2 text-black">Research Query:</h3>
+                <p className="text-gray-700 mb-4">
                   {researchQuery || "Select a topic or enter your own query"}
                 </p>
               </div>
               <div>
-                <h3 className="font-medium mb-2 text-white">Your Sources:</h3>
-                <p className="text-sm text-gray-400 mb-2">
+                <h3 className="font-medium mb-2 text-black">Your Sources:</h3>
+                <p className="text-sm text-gray-600 mb-2">
                   List the cases, statutes, regulations, or other legal sources
                   you've found relevant to this query. Include brief
                   explanations of why each source is relevant.
@@ -178,10 +177,10 @@ export default function LegalResearchPage() {
                   value={userSources}
                   onChange={(e) => setUserSources(e.target.value)}
                   placeholder="Example: Carpenter v. United States (2018) - Established that the government needs a warrant to access cell phone location data, relevant because..."
-                  className="min-h-[200px] bg-[#0a0a0f] border-[#1a1a1f] text-white placeholder:text-gray-500"
+                  className="min-h-[200px] bg-white border-gray-300 text-black placeholder:text-gray-400"
                 />
                 <Button
-                  className="w-full mt-4 bg-[#1a1a1f] hover:bg-[#2a2a2f] text-white"
+                  className="w-full mt-4 bg-black text-white hover:bg-gray-800"
                   onClick={handleSubmitResearch}
                   disabled={
                     isLoading || !researchQuery.trim() || !userSources.trim()
@@ -195,9 +194,9 @@ export default function LegalResearchPage() {
           </Card>
 
           {feedback && (
-            <Card className="bg-[#121218] border-[#1a1a1f]">
+            <Card className="bg-white border-gray-200">
               <CardHeader>
-                <CardTitle className="text-white">Research Feedback</CardTitle>
+                <CardTitle className="text-black">Research Feedback</CardTitle>
               </CardHeader>
               <CardContent>
                 {feedback.error ? (
@@ -205,44 +204,44 @@ export default function LegalResearchPage() {
                 ) : (
                   <div className="space-y-4">
                     <div>
-                      <h3 className="font-medium mb-2 text-white">Score:</h3>
-                      <p className="text-gray-400">{feedback.score * 100}%</p>
+                      <h3 className="font-medium mb-2 text-black">Score:</h3>
+                      <p className="text-gray-700">{feedback.score * 100}%</p>
                     </div>
                     <div>
-                      <h3 className="font-medium mb-2 text-white">Feedback:</h3>
-                      <p className="text-gray-400">{feedback.feedback}</p>
+                      <h3 className="font-medium mb-2 text-black">Feedback:</h3>
+                      <p className="text-gray-700">{feedback.feedback}</p>
                     </div>
                     <div>
-                      <h3 className="font-medium mb-2 text-white">
+                      <h3 className="font-medium mb-2 text-black">
                         Source Analysis:
                       </h3>
-                      <p className="text-gray-400">
+                      <p className="text-gray-700">
                         {feedback.sourcesAnalysis}
                       </p>
                     </div>
                     <div>
-                      <h3 className="font-medium mb-2 text-white">
+                      <h3 className="font-medium mb-2 text-black">
                         Missing Precedents:
                       </h3>
-                      <ul className="list-disc list-inside text-gray-400">
+                      <ul className="list-disc list-inside text-gray-700">
                         {feedback.missingPrecedents.map((precedent, index) => (
                           <li key={index}>{precedent}</li>
                         ))}
                       </ul>
                     </div>
                     <div>
-                      <h3 className="font-medium mb-2 text-white">
+                      <h3 className="font-medium mb-2 text-black">
                         Suggested Research:
                       </h3>
-                      <p className="text-gray-400">
+                      <p className="text-gray-700">
                         {feedback.suggestedResearch}
                       </p>
                     </div>
                     <div>
-                      <h3 className="font-medium mb-2 text-white">
+                      <h3 className="font-medium mb-2 text-black">
                         Model Sources:
                       </h3>
-                      <ul className="list-disc list-inside text-gray-400">
+                      <ul className="list-disc list-inside text-gray-700">
                         {feedback.modelSources.map((source, index) => (
                           <li key={index}>{source}</li>
                         ))}
