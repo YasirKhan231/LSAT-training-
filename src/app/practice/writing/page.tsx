@@ -16,7 +16,7 @@ const essayQuestions = [
       "Analyze the following constitutional law issue: The state of Jefferson has passed a law requiring all social media companies to verify the age of their users and prohibit access to anyone under 18. Discuss the constitutional implications of this law.",
     category: "Constitutional Law",
     difficulty: "Advanced",
-    timeLimit: 60, // minutes
+    timeLimit: 60,
   },
   {
     id: "contract-law",
@@ -25,7 +25,7 @@ const essayQuestions = [
       "A software company offers a 'free trial' of their product but requires users to provide credit card information. The terms state that users will be automatically charged after 30 days unless they cancel. Many users report they were unaware of the automatic renewal. Analyze the contract law issues presented.",
     category: "Contract Law",
     difficulty: "Intermediate",
-    timeLimit: 45, // minutes
+    timeLimit: 45,
   },
   {
     id: "criminal-law",
@@ -34,7 +34,7 @@ const essayQuestions = [
       "A defendant is charged with burglary after entering an unlocked garage and taking a bicycle. The defendant claims they believed the bicycle was abandoned property. Analyze the elements of burglary and whether the prosecution can prove their case.",
     category: "Criminal Law",
     difficulty: "Intermediate",
-    timeLimit: 50, // minutes
+    timeLimit: 50,
   },
   {
     id: "international-law",
@@ -43,7 +43,7 @@ const essayQuestions = [
       "Two neighboring countries dispute ownership of an island that emerged in a river that forms their border due to geological activity. Analyze this territorial dispute under international law principles.",
     category: "International Law",
     difficulty: "Advanced",
-    timeLimit: 60, // minutes
+    timeLimit: 60,
   },
   {
     id: "torts",
@@ -52,7 +52,7 @@ const essayQuestions = [
       "A grocery store fails to clean up a spilled liquid for over an hour despite multiple employees walking past it. A customer slips and suffers serious injuries. Analyze the potential tort claims against the grocery store and possible defenses.",
     category: "Torts",
     difficulty: "Intermediate",
-    timeLimit: 45, // minutes
+    timeLimit: 45,
   },
   {
     id: "property-law",
@@ -61,7 +61,7 @@ const essayQuestions = [
       "Two neighbors dispute ownership of a strip of land between their properties. One neighbor has maintained the land (mowing grass, planting flowers) for 15 years but never had formal title. The other neighbor holds the deed to the property. Analyze the adverse possession claim.",
     category: "Property Law",
     difficulty: "Advanced",
-    timeLimit: 55, // minutes
+    timeLimit: 55,
   },
   {
     id: "civil-procedure",
@@ -70,7 +70,7 @@ const essayQuestions = [
       "A plaintiff files a lawsuit in federal court based on diversity jurisdiction. The defendant moves to dismiss for improper venue. The plaintiff argues the venue is proper because a substantial part of the events occurred there. Analyze the venue requirements and how the court should rule.",
     category: "Civil Procedure",
     difficulty: "Advanced",
-    timeLimit: 50, // minutes
+    timeLimit: 50,
   },
   {
     id: "evidence",
@@ -79,7 +79,7 @@ const essayQuestions = [
       "In a criminal trial, the prosecution wants to introduce the defendant's prior conviction for the same offense from 10 years ago. The defense objects. Analyze whether the evidence should be admitted under the Federal Rules of Evidence.",
     category: "Evidence",
     difficulty: "Intermediate",
-    timeLimit: 40, // minutes
+    timeLimit: 40,
   },
   {
     id: "professional-responsibility",
@@ -88,7 +88,7 @@ const essayQuestions = [
       "A lawyer discovers their client intends to commit perjury during an upcoming deposition. The client refuses to change their testimony. Analyze the lawyer's ethical obligations under the Model Rules of Professional Conduct.",
     category: "Professional Responsibility",
     difficulty: "Intermediate",
-    timeLimit: 45, // minutes
+    timeLimit: 45,
   },
 ];
 
@@ -117,8 +117,10 @@ export default function EssayPracticeIndex() {
     <div className="container mx-auto px-4 py-8 bg-white min-h-screen">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8 text-center">
-          <h1 className="text-4xl font-bold text-black mb-4">Essay Practice</h1>
-          <p className="text-gray-500 max-w-2xl mx-auto">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            Essay Practice
+          </h1>
+          <p className="text-gray-600 max-w-2xl mx-auto">
             Select an essay question below to practice your legal writing
             skills. Each question has a time limit to simulate exam conditions.
           </p>
@@ -128,34 +130,34 @@ export default function EssayPracticeIndex() {
           {essayQuestions.map((question) => (
             <Card
               key={question.id}
-              className={`bg-white border-[#1a1a1f] cursor-pointer transition-all hover:border-[#2a2a3f]`}
+              className="bg-white border border-gray-200 cursor-pointer transition-all hover:border-gray-400"
               onClick={() => handleQuestionClick(question)}
             >
               <CardContent className="p-6">
                 <div className="flex justify-between items-start">
                   <div>
-                    <h2 className="text-xl font-semibold text-black mb-2">
+                    <h2 className="text-xl font-semibold text-gray-900 mb-2">
                       {question.title}
                     </h2>
                     <div className="flex gap-3 mb-3">
-                      <span className="inline-block px-2 py-1 text-xs rounded-full bg-[#1a1a1f] text-gray-300">
+                      <span className="inline-block px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-700">
                         {question.category}
                       </span>
-                      <span className="inline-block px-2 py-1 text-xs rounded-full bg-[#1a1a1f] text-gray-300">
+                      <span className="inline-block px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-700">
                         {question.difficulty}
                       </span>
-                      <span className="inline-block px-2 py-1 text-xs rounded-full bg-[#1a1a1f] text-gray-300">
+                      <span className="inline-block px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-700">
                         {question.timeLimit} minutes
                       </span>
                     </div>
-                    <p className="text-gray-500 line-clamp-2">
+                    <p className="text-gray-600 line-clamp-2">
                       {question.prompt}
                     </p>
                   </div>
                   <div className="ml-4">
                     <Link
                       href={`/essay-practice/${question.id}`}
-                      className="text-[#7a7a9f] hover:text-[#9a9abf]"
+                      className="text-gray-500 hover:text-gray-700"
                       onClick={(e) => e.stopPropagation()}
                     >
                       <BookOpen className="h-5 w-5" />
@@ -169,67 +171,53 @@ export default function EssayPracticeIndex() {
 
         {/* Confirmation Dialog */}
         {showConfirmation && selectedQuestion && (
-          <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
-            <div className="bg-white border border-[#2a2a3f] rounded-lg p-6 max-w-md w-full shadow-xl">
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white border border-gray-300 rounded-lg p-6 max-w-md w-full shadow-xl">
               <div className="flex flex-col items-center text-center mb-4">
-                {" "}
-                {/* Changed to flex-col and center */}
-                <h3 className="text-xl font-semibold text-black mb-2">
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
                   Start Essay Practice
                 </h3>
                 <button
                   onClick={handleCloseConfirmation}
-                  className="text-gray-500 hover:text-black absolute top-4 right-4"
+                  className="text-gray-500 hover:text-gray-700 absolute top-4 right-4"
                 >
                   <X className="h-5 w-5" />
                 </button>
               </div>
               <div className="mb-6 text-center">
-                {" "}
-                {/* Added text-center */}
-                <h4 className="text-lg font-medium text-black mb-4">
-                  {" "}
-                  {/* Increased mb */}
+                <h4 className="text-lg font-medium text-gray-900 mb-4">
                   {selectedQuestion.title}
                 </h4>
-                <p className="text-gray-500 mb-4 px-3 text-center">
-                  {" "}
-                  {/* Added px-4 and text-center */}
+                <p className="text-gray-600 mb-4 px-3 text-center">
                   {selectedQuestion.prompt}
                 </p>
                 <div className="flex gap-1 mb-4 justify-center">
-                  {" "}
-                  {/* Added justify-center */}
-                  <span className="inline-block px-2 py-1 text-xs rounded-full bg-[#1a1a1f] text-gray-300">
+                  <span className="inline-block px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-700">
                     {selectedQuestion.category}
                   </span>
-                  <span className="inline-block px-2 py-1 text-xs rounded-full bg-[#1a1a1f] text-gray-300">
+                  <span className="inline-block px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-700">
                     {selectedQuestion.difficulty}
                   </span>
-                  <span className="inline-block px-2 py-1 text-xs rounded-full bg-[#1a1a1f] text-gray-300">
+                  <span className="inline-block px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-700">
                     {selectedQuestion.timeLimit} minutes
                   </span>
                 </div>
                 <p className="text-sm text-gray-500 text-center">
-                  {" "}
-                  {/* Added text-center */}
                   You will have {selectedQuestion.timeLimit} minutes to complete
                   this essay.
                 </p>
               </div>
               <div className="flex justify-center gap-3">
-                {" "}
-                {/* Keep justify-center */}
                 <Button
                   variant="outline"
                   onClick={handleCloseConfirmation}
-                  className="border-[#2a2a3f] text-black hover:bg-[#1a1a1f]"
+                  className="border-gray-300 text-gray-700 hover:bg-gray-100"
                 >
                   Cancel
                 </Button>
                 <Button
                   onClick={handleStartPractice}
-                  className="bg-gradient-to-r from-[#161515] to-[#222228] hover:from-[#161515] hover:to-[#222228] text-white"
+                  className="bg-gray-800 hover:bg-gray-700 text-white"
                 >
                   Start Now
                   <ArrowRight className="ml-2 h-4 w-4" />

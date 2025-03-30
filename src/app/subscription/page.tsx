@@ -97,7 +97,7 @@ export default function SubscriptionPage() {
               <CardFooter>
                 <Button
                   variant="outline"
-                  className="w-full border-[#1a1a1f]  text-white"
+                  className="w-full border-[#1a1a1f]  text-black"
                   disabled
                 >
                   Current Plan

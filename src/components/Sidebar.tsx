@@ -49,17 +49,6 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     }
   };
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        onClose?.();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [onClose]);
-
   const toggleExpand = (href: string) => {
     setExpandedItems((prev) =>
       prev.includes(href)
