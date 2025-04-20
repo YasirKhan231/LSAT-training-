@@ -255,7 +255,7 @@ export default function OnboardingForm() {
 
       // Redirect to plan page after a short delay
       setTimeout(() => {
-        router.push("/plan");
+        router.push("/dashboard");
       }, 2000);
     } catch (error) {
       console.error("Onboarding submission error:", error);

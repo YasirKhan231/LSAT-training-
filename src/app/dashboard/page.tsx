@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import ProtectedRoute from "../../../components/ProtectRoute";
 import { auth } from "@/lib/firebase";
 import Link from "next/link";
@@ -124,6 +124,7 @@ export default function DashboardPage() {
   const [uuid, setUuid] = useState<string | null>(null);
   const [tasks, setTasks] = useState<string[]>([]);
   const [completedTasks, setCompletedTasks] = useState<number[]>([]);
+  const dialogShownRef = useRef(false);
 
   const fetchUserData = async (uid: string) => {
     try {
@@ -167,7 +168,7 @@ export default function DashboardPage() {
   }, [uuid]);
 
   useEffect(() => {
-    if (!userData?.barExamTestDate) return;
+    if (!userData?.barExamTestDate || dialogShownRef.current) return;
 
     const examDate = new Date(userData.barExamTestDate).getTime();
     const updateCountdown = () => {
@@ -176,8 +177,9 @@ export default function DashboardPage() {
 
       if (distance < 0) {
         setExamPassed(true);
-        if (!userData.examResult) {
+        if (!userData.examResult && !dialogShownRef.current) {
           setShowExamResultDialog(true);
+          dialogShownRef.current = true;
         }
         return;
       }
@@ -234,7 +236,17 @@ export default function DashboardPage() {
 
       if (!response.ok) throw new Error("Failed to update exam result");
 
+      // Reset dialog state and mark as shown
       setShowExamResultDialog(false);
+      dialogShownRef.current = true;
+      
+      // Reset form fields
+      setExamResult("");
+      setNewExamDate("");
+      setNewCurrentScore("");
+      setNewTargetScore("");
+
+      // Refresh data
       if (uuid) fetchUserData(uuid);
     } catch (err) {
       console.error("Error submitting exam result:", err);
@@ -294,7 +306,11 @@ export default function DashboardPage() {
         {/* Exam Result Dialog */}
         <Dialog
           open={showExamResultDialog}
-          onOpenChange={setShowExamResultDialog}
+          onOpenChange={(open) => {
+            if (!open || !userData?.examResult) {
+              setShowExamResultDialog(open);
+            }
+          }}
         >
           <DialogContent className="bg-white text-black">
             <DialogHeader>
@@ -343,7 +359,6 @@ export default function DashboardPage() {
                   value={newCurrentScore}
                   onValueChange={(value) => {
                     setNewCurrentScore(value);
-                    // Ensure target score is >= current score
                     if (parseInt(newTargetScore) < parseInt(value)) {
                       setNewTargetScore(value);
                     }

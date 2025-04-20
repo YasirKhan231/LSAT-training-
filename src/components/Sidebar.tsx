@@ -22,6 +22,7 @@ import {
   PenTool,
   Settings,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -37,10 +38,12 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     isSubscriptionActive,
     subscriptionTier,
   } = useUser();
+  const router = useRouter();
 
   const handleLogout = async () => {
     try {
       await signOut(auth);
+      router.push("/signin");
       onClose();
     } catch (error) {
       console.error("Error signing out:", error);
